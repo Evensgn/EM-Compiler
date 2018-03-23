@@ -57,6 +57,13 @@ typeType
     |   nonArrayTypeType        # nonArrayType
     ;
 
+nonArrayTypeType
+    :   Int
+    |   Bool
+    |   String
+    |   Identifier
+    ;
+
 // ---- Statement ----
 statement
     :   block                   # blockStmt
@@ -123,24 +130,74 @@ expression
 
 primaryExpression
     :   Identifier                                      # identifierExpr
-    |   literal                                         # literalExpr
+    |   constant                                        # constExpr
     |   '(' expression ')'                              # subExpr
-    |
     ;
 
-literal
-    :   type=
+constant
+    :   IntegerConstant             # intConst
+    |   StringConst                 # stringConst
+    |   NullLiteral                 # nullLiteral
+    |   BoolConstant                # boolConst
+    ;
+
+creator
+    :   nonArrayTypeType ('[' expression ']')+ ('[' ']')+ ('[' expression ']')+     # errorCreator
+    |   nonArrayTypeType ('[' expression ']')+ ('[' ']')*                           # arrayCreator
+    |   nonArrayTypeType                                                            # nonArrayCreator
+    ;
+
+// ---- Reserved Words ----
+Bool        : 'bool';
+Int         : 'int';
+String      : 'string';
+Null        : 'null';
+Void        : 'void';
+True        : 'true';
+False       : 'false';
+If          : 'if';
+For         : 'for';
+While       : 'while';
+Break       : 'break';
+Continue    : 'continue';
+Return      : 'return';
+New         : 'new';
+Class       : 'class';
+
+// ---- Constant ----
+IntegerConstant
+    :   [1-9] [0-9]*
+    |   '0'
+    ;
+
+StringConst
+    :   '"' StringCharacter* '"'
+    ;
+
+fragment StringCharacter
+    :   ~["\\\r\n]
+    |   '\\' ["n\\]
+    ;
+
+NullLiteral
+    :   Null
+    ;
+
+BoolConstant
+    :   True
+    |   False
+    ;
 
 // ---- Identifier ----
 Identifier
     :   IdentifierNonDigit (IdentifierNonDigit | Digit)*
     ;
 
-IdentifierNonDigit
+fragment IdentifierNonDigit
     :   [a-zA-Z_]
     ;
 
-Digit
+fragment Digit
     :   [0-9]
     ;
 
