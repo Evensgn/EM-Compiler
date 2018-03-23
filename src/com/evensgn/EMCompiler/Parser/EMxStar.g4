@@ -96,6 +96,41 @@ jumpStatement
     |   Return expression? ';'      # returnStmt
     ;
 
+// ---- Expression ----
+expression
+    :   expression op=('++' | '--')                     # suffixExpr
+    |   expression '(' parameterList? ')'               # funcCallExpr
+    |   expression '[' expression ']'                   # subscriptExpr
+    |   expression '.' Identifier                       # memberAccessExpr
+    |   <assoc=right> op=('++'|'--') expression         # unaryExpr
+    |   <assoc=right> op=('+' | '-') expression         # unaryExpr
+    |   <assoc=right> op=('!' | '~') expression         # unaryExpr
+    |   <assoc=right> New creator                       # newExpr
+    |   expression op=('*' | '/' | '%') expression      # binaryExpr
+    |   expression op=('+' | '-') expression            # binaryExpr
+    |   expression op=('<<'|'>>') expression            # binaryExpr
+    |   expression op=('<' | '>') expression            # binaryExpr
+    |   expression op=('<='|'>=') expression            # binaryExpr
+    |   expression op=('=='|'!=') expression            # binaryExpr
+    |   expression op='&' expression                    # binaryExpr
+    |   expression op='^' expression                    # binaryExpr
+    |   expression op='|' expression                    # binaryExpr
+    |   expression op='&&' expression                   # binaryExpr
+    |   expression op='||' expression                   # binaryExpr
+    |   <assoc=right> expression op='=' expression      # assignExpr
+    |   primaryExpression                               # primaryExpr
+    ;
+
+primaryExpression
+    :   Identifier                                      # identifierExpr
+    |   literal                                         # literalExpr
+    |   '(' expression ')'                              # subExpr
+    |
+    ;
+
+literal
+    :   type=
+
 // ---- Identifier ----
 Identifier
     :   IdentifierNonDigit (IdentifierNonDigit | Digit)*
@@ -107,4 +142,21 @@ IdentifierNonDigit
 
 Digit
     :   [0-9]
+    ;
+
+// ---- Skip ----
+WhiteSpace
+    :   [ \t]+ -> skip
+    ;
+
+NewLine
+    :   '\r'? '\n' -> skip
+    ;
+
+LineComment
+    :   '//' ~[\r\n]* -> skip
+    ;
+
+BlockComment
+    :   '/*' .*? '*/' -> skip
     ;
