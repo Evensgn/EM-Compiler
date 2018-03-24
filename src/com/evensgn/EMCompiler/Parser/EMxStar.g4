@@ -148,21 +148,21 @@ creator
     ;
 
 // ---- Reserved Words ----
-Bool        : 'bool';
-Int         : 'int';
-String      : 'string';
-Null        : 'null';
-Void        : 'void';
-True        : 'true';
-False       : 'false';
-If          : 'if';
-For         : 'for';
-While       : 'while';
-Break       : 'break';
-Continue    : 'continue';
-Return      : 'return';
-New         : 'new';
-Class       : 'class';
+Bool                : 'bool';
+Int                 : 'int';
+String              : 'string';
+fragment Null       : 'null';
+Void                : 'void';
+fragment True       : 'true';
+fragment False      : 'false';
+If                  : 'if';
+For                 : 'for';
+While               : 'while';
+Break               : 'break';
+Continue            : 'continue';
+Return              : 'return';
+New                 : 'new';
+Class               : 'class';
 
 // ---- Constant ----
 IntegerConstant
