@@ -18,7 +18,7 @@ programSection
 
 // ---- Declaration -----
 functionDeclaration
-    :   typeTypeOrVoid Identifier '(' parameterDeclarationList? ')' block
+    :   typeTypeOrVoid? Identifier '(' parameterDeclarationList? ')' block
     ;
 
 classDeclaration
