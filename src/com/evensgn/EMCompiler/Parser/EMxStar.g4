@@ -1,8 +1,10 @@
 grammar EMxStar; // Evensgn-Mx*
 
+/*
 @header {
 package com.evensgn.EMCompiler.Parser;
 }
+*/
 
 program
     :   programSection* EOF
@@ -68,7 +70,7 @@ nonArrayTypeType
 statement
     :   block                   # blockStmt
     |   expression ';'          # exprStmt
-    |   conditionStmt           # condStmt
+    |   conditionStatement      # condStmt
     |   loopStatement           # loopStmt
     |   jumpStatement           # jumpStmt
     |   ';'                     # blankStmt
@@ -80,7 +82,7 @@ block
 
 blockStatement
     :   statement               # stmt
-    |   variableDeclaration     # varDecl
+    |   variableDeclaration     # varDeclStmt
     ;
 
 conditionStatement
@@ -147,7 +149,11 @@ creator
     |   nonArrayTypeType                                                            # nonArrayCreator
     ;
 
-// ---- Reserved Words ----
+parameterList
+    :   expression (',' expression)*
+    ;
+
+// ---- Reserved Keywords ----
 Bool                : 'bool';
 Int                 : 'int';
 String              : 'string';
@@ -156,6 +162,7 @@ Void                : 'void';
 fragment True       : 'true';
 fragment False      : 'false';
 If                  : 'if';
+Else                : 'else';
 For                 : 'for';
 While               : 'while';
 Break               : 'break';
