@@ -1,10 +1,8 @@
 grammar EMxStar; // Evensgn-Mx*
 
-/*
 @header {
 package com.evensgn.EMCompiler.Parser;
 }
-*/
 
 program
     :   programSection* EOF
