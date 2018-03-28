@@ -1,8 +1,12 @@
 package com.evensgn.EMCompiler;
 
-public class Main {
+import com.evensgn.EMCompiler.FrontEnd.*;
 
-    public static void main(String[] args) {
-	    System.out.println("Hello, world!");
+import java.io.IOException;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        TestTree.testTree();
+        System.out.println("Hello, this is a test.");
     }
 }
