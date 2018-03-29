@@ -1,6 +1,6 @@
 # EM-Compiler
 
-**EM-Compiler** (Evensgn Mx* Compiler) is a compiler for course Compiler 2018 at ACM Class, Shanghai Jiao Tong University.
+**EMCompiler** (Evensgn Mx* Compiler) is a compiler for course Compiler 2018 at ACM Class, Shanghai Jiao Tong University.
 
 | Source Language | Target Language |
 |:---------------:|:---------------:|
