@@ -25,28 +25,30 @@ public class Main {
     }
 
     private static void errorArgs() {
-        System.out.println("Error: Got unknown arguments");
+        System.out.println("Error: invalid arguments");
         printHelp();
+        System.exit(1);
     }
 
     public static void main(String[] args) throws Exception {
         String inFile = null, outFile = null;
+        boolean isPrintHelp = false, isPrintVersion = false, isPrintConfig = false;
         for (int i = 0; i < args.length; ++i) {
             String arg = args[i];
             switch (arg) {
                 case "-h":
                 case "--help":
-                    printHelp();
+                    isPrintHelp = true;
                     break;
 
                 case "-v":
                 case "--version":
-                    printVersion();
+                    isPrintVersion = true;
                     break;
 
                 case "-c":
                 case "--config":
-                    printConfig();
+                    isPrintConfig = true;
                     break;
 
                 case "-o":
@@ -59,6 +61,10 @@ public class Main {
                     else errorArgs();
             }
         }
+        if (isPrintVersion) printVersion();
+        if (isPrintHelp) printHelp();
+        if (isPrintConfig) printConfig();
+
         InputStream inS;
         OutputStream outS;
         if (inFile == null) inS = System.in;
