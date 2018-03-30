@@ -1,7 +1,7 @@
-package com.evensgn.EMCompiler.FrontEnd;
+package com.evensgn.emcompiler.frontend;
 
-import com.evensgn.EMCompiler.Parser.EMxStarBaseListener;
-import com.evensgn.EMCompiler.Parser.EMxStarParser;
+import com.evensgn.emcompiler.parser.EMxStarBaseListener;
+import com.evensgn.emcompiler.parser.EMxStarParser;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;

@@ -1,0 +1,24 @@
+Node
+    DeclNode
+        FuncDeclNode
+        ClassDeclNode
+        VarDeclNode
+    StmtNode
+        BlockStmtNode
+        ExprStmtNode
+        CondStmtNode
+        LoopStmtNode
+            WhileStmtNode
+            ForStmtNode
+        JumpStmtNode
+        BlankStmtNode
+    ExprNode
+        SuffixExprNode
+        FuncCallExprNode
+        SubscriptExprNode
+        MemberAccessExprNode
+        UnaryExprNode
+        NewExprNode
+        BinaryExprNode
+        AssignExprNode
+        PrimaryExprNode

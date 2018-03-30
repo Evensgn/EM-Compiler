@@ -1,8 +1,8 @@
-package com.evensgn.EMCompiler.Compiler;
+package com.evensgn.emcompiler.compiler;
 
-import com.evensgn.EMCompiler.FrontEnd.ASTBuilder;
-import com.evensgn.EMCompiler.Parser.EMxStarLexer;
-import com.evensgn.EMCompiler.Parser.EMxStarParser;
+import com.evensgn.emcompiler.frontend.ASTBuilder;
+import com.evensgn.emcompiler.parser.EMxStarLexer;
+import com.evensgn.emcompiler.parser.EMxStarParser;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -32,7 +32,7 @@ public class Compiler {
     }
 
     public void run() throws Exception {
-        System.out.println("Compiler is running");
+        System.out.println("compiler is running");
         testTree();
     }
 }

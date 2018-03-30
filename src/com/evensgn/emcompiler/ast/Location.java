@@ -1,4 +1,4 @@
-package com.evensgn.EMCompiler.AST;
+package com.evensgn.emcompiler.ast;
 
 public class Location {
     private int line, column;

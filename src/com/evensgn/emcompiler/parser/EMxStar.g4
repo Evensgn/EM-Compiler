@@ -1,7 +1,7 @@
 grammar EMxStar; // Evensgn-Mx*
 
 @header {
-package com.evensgn.EMCompiler.Parser;
+package com.evensgn.emcompiler.parser;
 }
 
 program

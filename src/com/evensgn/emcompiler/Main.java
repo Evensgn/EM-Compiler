@@ -1,6 +1,6 @@
-package com.evensgn.EMCompiler;
+package com.evensgn.emcompiler;
 
-import com.evensgn.EMCompiler.Compiler.Compiler;
+import com.evensgn.emcompiler.compiler.Compiler;
 
 import java.io.*;
 
@@ -17,7 +17,7 @@ public class Main {
     }
 
     private static void printVersion() {
-        System.out.printf("EMCompiler (Evensgn Mx* Compiler) %s\n", VERSION);
+        System.out.printf("emcompiler (Evensgn Mx* compiler) %s\n", VERSION);
     }
 
     private static void printConfig() {
