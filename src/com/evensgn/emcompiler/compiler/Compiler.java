@@ -12,6 +12,10 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+/**
+ * @author Zhou Fan
+ * @since 2018/3/29
+ */
 public class Compiler {
     private InputStream inS;
     private OutputStream outS;
@@ -34,5 +38,6 @@ public class Compiler {
     public void run() throws Exception {
         System.out.println("compiler is running");
         testTree();
+        System.out.println("compiler finished.");
     }
 }

@@ -4,6 +4,10 @@ import com.evensgn.emcompiler.compiler.Compiler;
 
 import java.io.*;
 
+/**
+ * @author Zhou Fan
+ * @since 2018/3/29
+ */
 public class Main {
     private static final String VERSION = "0.0.0";
 

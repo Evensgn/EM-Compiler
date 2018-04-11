@@ -209,10 +209,10 @@ public class ASTBuilder extends EMxStarBaseListener {
     public void exitNewExpr(EMxStarParser.NewExprContext ctx) { }
     
     @Override 
-    public void enterUnaryExpr(EMxStarParser.UnaryExprContext ctx) { }
+    public void enterPrefixExpr(EMxStarParser.PrefixExprContext ctx) { }
     
     @Override 
-    public void exitUnaryExpr(EMxStarParser.UnaryExprContext ctx) { }
+    public void exitPrefixExpr(EMxStarParser.PrefixExprContext ctx) { }
     
     @Override 
     public void enterPrimaryExpr(EMxStarParser.PrimaryExprContext ctx) { }

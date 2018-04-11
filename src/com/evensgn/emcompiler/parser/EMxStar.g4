@@ -109,9 +109,9 @@ expression
     |   expression '(' parameterList? ')'               # funcCallExpr
     |   expression '[' expression ']'                   # subscriptExpr
     |   expression '.' Identifier                       # memberAccessExpr
-    |   <assoc=right> op=('++'|'--') expression         # unaryExpr
-    |   <assoc=right> op=('+' | '-') expression         # unaryExpr
-    |   <assoc=right> op=('!' | '~') expression         # unaryExpr
+    |   <assoc=right> op=('++'|'--') expression         # prefixExpr
+    |   <assoc=right> op=('+' | '-') expression         # prefixExpr
+    |   <assoc=right> op=('!' | '~') expression         # prefixExpr
     |   <assoc=right> New creator                       # newExpr
     |   expression op=('*' | '/' | '%') expression      # binaryExpr
     |   expression op=('+' | '-') expression            # binaryExpr

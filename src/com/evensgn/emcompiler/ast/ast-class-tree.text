@@ -11,14 +11,20 @@ Node
             WhileStmtNode
             ForStmtNode
         JumpStmtNode
+            ContinueStmtNode
+            BreakStmtNode
+            ReturnStmtNode
         BlankStmtNode
     ExprNode
         SuffixExprNode
         FuncCallExprNode
         SubscriptExprNode
         MemberAccessExprNode
-        UnaryExprNode
+        PrefixExprNode
         NewExprNode
         BinaryExprNode
         AssignExprNode
         PrimaryExprNode
+    TypeNode
+        arrayTypeNode
+        primitiveTypeNode
