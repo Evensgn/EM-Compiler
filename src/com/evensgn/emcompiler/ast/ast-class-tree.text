@@ -1,22 +1,22 @@
 Node
-    DeclNode
-        FuncDeclNode
-        ClassDeclNode
-        VarDeclNode
-    StmtNode
-        BlockStmtNode
-        ExprStmtNode
-        CondStmtNode
-        LoopStmtNode
-            WhileStmtNode
-            ForStmtNode
-        JumpStmtNode
-            ContinueStmtNode
-            BreakStmtNode
-            ReturnStmtNode
-        BlankStmtNode
-    ExprNode
-        SuffixExprNode
+    DeclNode                        [ok]
+        FuncDeclNode                [ok]
+        ClassDeclNode               [ok]
+        VarDeclNode                 [ok]
+    StmtNode                        [ok]
+        BlockStmtNode               [ok]
+        ExprStmtNode                [ok]
+        CondStmtNode                [ok]
+        LoopStmtNode                [ok]
+            WhileStmtNode           [ok]
+            ForStmtNode             [ok]
+        JumpStmtNode                [ok]
+            ContinueStmtNode        [ok]
+            BreakStmtNode           [ok]
+            ReturnStmtNode          [ok]
+        BlankStmtNode               [ok]
+    ExprNode                        [ok]
+        SuffixExprNode              [ok]
         FuncCallExprNode
         SubscriptExprNode
         MemberAccessExprNode
