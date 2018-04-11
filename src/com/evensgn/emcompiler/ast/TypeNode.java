@@ -5,4 +5,5 @@ package com.evensgn.emcompiler.ast;
  * @since 2018/4/1
  */
 abstract public class TypeNode extends Node {
+    
 }

@@ -1,24 +1,20 @@
 package com.evensgn.emcompiler.ast;
 
-public class SuffixExprNode extends ExprNode {
-    public enum SuffixOps {
-        SUFFIX_ADD, SUFFIX_DEC
-    }
-
-    private SuffixOps op;
+public class MemberAccessExprNode extends ExprNode {
     private ExprNode expr;
+    private String member;
 
-    public SuffixExprNode(SuffixOps op, ExprNode expr) {
-        this.op = op;
+    public MemberAccessExprNode(ExprNode expr, String member) {
         this.expr = expr;
-    }
-
-    public SuffixOps getOp() {
-        return op;
+        this.member = member;
     }
 
     public ExprNode getExpr() {
         return expr;
+    }
+
+    public String getMember() {
+        return member;
     }
 
     @Override

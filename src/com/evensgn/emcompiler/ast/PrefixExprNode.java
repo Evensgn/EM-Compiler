@@ -5,12 +5,10 @@ public class PrefixExprNode extends ExprNode {
         PREFIX_ADD, PREFIX_DEC, POS, NEG, LOGIC_NOT, BITWISE_NOT
     }
 
-    private Location location;
     private PrefixOps op;
     private ExprNode expr;
 
-    public PrefixExprNode(Location location, PrefixOps op, ExprNode expr) {
-        this.location = location;
+    public PrefixExprNode(PrefixOps op, ExprNode expr) {
         this.op = op;
         this.expr = expr;
     }
@@ -25,7 +23,7 @@ public class PrefixExprNode extends ExprNode {
 
     @Override
     public Location location() {
-        return location;
+        return expr.location();
     }
 
     @Override

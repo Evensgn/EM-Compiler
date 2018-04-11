@@ -17,10 +17,10 @@ Node
         BlankStmtNode               [ok]
     ExprNode                        [ok]
         SuffixExprNode              [ok]
-        FuncCallExprNode
-        SubscriptExprNode
-        MemberAccessExprNode
-        PrefixExprNode
+        FuncCallExprNode            [ok]
+        SubscriptExprNode           [ok]
+        MemberAccessExprNode        [ok]
+        PrefixExprNode              [ok]
         NewExprNode
         BinaryExprNode
         AssignExprNode
