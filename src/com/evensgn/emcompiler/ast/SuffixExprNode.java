@@ -2,7 +2,7 @@ package com.evensgn.emcompiler.ast;
 
 public class SuffixExprNode extends ExprNode {
     public enum SuffixOps {
-        SUFFIX_ADD, SUFFIX_DEC
+        SUFFIX_INC, SUFFIX_DEC
     }
 
     private SuffixOps op;

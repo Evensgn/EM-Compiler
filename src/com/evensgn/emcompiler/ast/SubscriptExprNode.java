@@ -2,19 +2,19 @@ package com.evensgn.emcompiler.ast;
 
 public class SubscriptExprNode extends ExprNode {
     private ExprNode expr;
-    private ExprNode idx;
+    private ExprNode subscript;
 
-    public SubscriptExprNode(ExprNode expr, ExprNode idx) {
+    public SubscriptExprNode(ExprNode expr, ExprNode subscript) {
         this.expr = expr;
-        this.idx = idx;
+        this.subscript = subscript;
     }
 
     public ExprNode getExpr() {
         return expr;
     }
 
-    public ExprNode getIdx() {
-        return idx;
+    public ExprNode getSubscript() {
+        return subscript;
     }
 
     @Override

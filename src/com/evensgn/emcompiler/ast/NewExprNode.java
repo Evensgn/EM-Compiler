@@ -1,12 +1,27 @@
 package com.evensgn.emcompiler.ast;
 
+import java.util.List;
+
 public class NewExprNode extends ExprNode {
-    private TypeNode type;
-    private
+    private TypeNode newType;
+    private List<ExprNode> dims;
+
+    public NewExprNode(TypeNode newType, List<ExprNode> dims) {
+        this.newType = newType;
+        this.dims = dims;
+    }
+
+    public TypeNode getNewType() {
+        return newType;
+    }
+
+    public List<ExprNode> getDims() {
+        return dims;
+    }
 
     @Override
     public Location location() {
-        return null;
+        return newType.location();
     }
 
     @Override

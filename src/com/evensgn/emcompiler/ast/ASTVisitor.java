@@ -21,7 +21,11 @@ public interface ASTVisitor {
     public void visit(NewExprNode node);
     public void visit(BinaryExprNode node);
     public void visit(AssignExprNode node);
-    public void visit(PrimaryExprNode node);
-    public void visit(arrayExprNode node);
-    public void visit(primitiveExprNode node);
+    public void visit(IdentifierExprNode node);
+    public void visit(IntConstExprNode node);
+    public void visit(StringConstExprNode node);
+    public void visit(BoolConstExprNode node);
+    public void visit(NullExprNode node);
+    public void visit(arrayTypeNode node);
+    public void visit(primitiveTypeNode node);
 }

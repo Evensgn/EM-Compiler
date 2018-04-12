@@ -2,7 +2,7 @@ package com.evensgn.emcompiler.ast;
 
 public class PrefixExprNode extends ExprNode {
     public enum PrefixOps {
-        PREFIX_ADD, PREFIX_DEC, POS, NEG, LOGIC_NOT, BITWISE_NOT
+        PREFIX_INC, PREFIX_DEC, POS, NEG, LOGIC_NOT, BITWISE_NOT
     }
 
     private PrefixOps op;
