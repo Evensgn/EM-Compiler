@@ -31,5 +31,7 @@ Node
             BoolConstExprNode           [ok]
         NullExprNode                    [ok]
     TypeNode                            [ok]
-        arrayTypeNode
-        primitiveTypeNode
+        PrimitiveTypeNode               [ok]
+        ClassTypeNode                   [ok]
+        ArrayTypeNode                   [ok]
+        FuncTypeNode                    [ok]
