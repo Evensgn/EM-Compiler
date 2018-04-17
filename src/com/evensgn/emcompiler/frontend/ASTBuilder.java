@@ -1,337 +1,278 @@
 package com.evensgn.emcompiler.frontend;
 
-import com.evensgn.emcompiler.parser.EMxStarBaseListener;
-import com.evensgn.emcompiler.parser.EMxStarParser;
+import com.evensgn.emcompiler.ast.*;
+import com.evensgn.emcompiler.parser.*;
+import com.evensgn.emcompiler.type.Type;
+import com.evensgn.emcompiler.utils.SemanticError;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.tree.ErrorNode;
-import org.antlr.v4.runtime.tree.TerminalNode;
+import org.antlr.v4.runtime.tree.ParseTree;
 
-public class ASTBuilder extends EMxStarBaseListener {
-    @Override 
-    public void exitProgram(EMxStarParser.ProgramContext ctx) { }
-    
-    @Override 
-    public void enterFuncDecl(EMxStarParser.FuncDeclContext ctx) {
-        System.out.print("enterFuncDecl: ");
-        System.out.println(ctx.getText());
-    }
-    
-    @Override 
-    public void exitFuncDecl(EMxStarParser.FuncDeclContext ctx) {
-        System.out.print("exitFuncDecl: ");
-        System.out.println(ctx.getText());
-    }
-    
-    @Override 
-    public void enterClassDecl(EMxStarParser.ClassDeclContext ctx) { }
-    
-    @Override 
-    public void exitClassDecl(EMxStarParser.ClassDeclContext ctx) { }
-    
-    @Override 
-    public void enterVarDecl(EMxStarParser.VarDeclContext ctx) { }
-    
-    @Override 
-    public void exitVarDecl(EMxStarParser.VarDeclContext ctx) { }
-    
-    @Override 
-    public void enterFunctionDeclaration(EMxStarParser.FunctionDeclarationContext ctx) {
-        System.out.print("enterFunctionDeclaration: ");
-        System.out.println(ctx.getText());
-    }
-    
-    @Override 
-    public void exitFunctionDeclaration(EMxStarParser.FunctionDeclarationContext ctx) {
-        System.out.print("exitFunctionDeclaration: ");
-        System.out.println(ctx.getText());
-    }
-    
-    @Override 
-    public void enterClassDeclaration(EMxStarParser.ClassDeclarationContext ctx) { }
-    
-    @Override 
-    public void exitClassDeclaration(EMxStarParser.ClassDeclarationContext ctx) { }
-    
-    @Override 
-    public void enterVariableDeclaration(EMxStarParser.VariableDeclarationContext ctx) { }
-    
-    @Override 
-    public void exitVariableDeclaration(EMxStarParser.VariableDeclarationContext ctx) { }
-    
-    @Override 
-    public void enterVariableDeclaratorList(EMxStarParser.VariableDeclaratorListContext ctx) { }
-    
-    @Override 
-    public void exitVariableDeclaratorList(EMxStarParser.VariableDeclaratorListContext ctx) { }
-    
-    @Override 
-    public void enterVariableDeclarator(EMxStarParser.VariableDeclaratorContext ctx) { }
-    
-    @Override 
-    public void exitVariableDeclarator(EMxStarParser.VariableDeclaratorContext ctx) { }
-    
-    @Override 
-    public void enterMemberDeclaration(EMxStarParser.MemberDeclarationContext ctx) { }
-    
-    @Override 
-    public void exitMemberDeclaration(EMxStarParser.MemberDeclarationContext ctx) { }
-    
-    @Override 
-    public void enterParameterDeclarationList(EMxStarParser.ParameterDeclarationListContext ctx) { }
-    
-    @Override 
-    public void exitParameterDeclarationList(EMxStarParser.ParameterDeclarationListContext ctx) { }
-    
-    @Override 
-    public void enterParameterDeclaration(EMxStarParser.ParameterDeclarationContext ctx) { }
-    
-    @Override 
-    public void exitParameterDeclaration(EMxStarParser.ParameterDeclarationContext ctx) { }
-    
-    @Override 
-    public void enterTypeTypeOrVoid(EMxStarParser.TypeTypeOrVoidContext ctx) { }
-    
-    @Override 
-    public void exitTypeTypeOrVoid(EMxStarParser.TypeTypeOrVoidContext ctx) { }
-    
-    @Override 
-    public void enterArrayType(EMxStarParser.ArrayTypeContext ctx) { }
-    
-    @Override 
-    public void exitArrayType(EMxStarParser.ArrayTypeContext ctx) { }
-    
-    @Override 
-    public void enterNonArrayType(EMxStarParser.NonArrayTypeContext ctx) { }
-    
-    @Override 
-    public void exitNonArrayType(EMxStarParser.NonArrayTypeContext ctx) { }
-    
-    @Override 
-    public void enterNonArrayTypeType(EMxStarParser.NonArrayTypeTypeContext ctx) { }
-    
-    @Override 
-    public void exitNonArrayTypeType(EMxStarParser.NonArrayTypeTypeContext ctx) { }
-    
-    @Override 
-    public void enterBlockStmt(EMxStarParser.BlockStmtContext ctx) { }
-    
-    @Override 
-    public void exitBlockStmt(EMxStarParser.BlockStmtContext ctx) { }
-    
-    @Override 
-    public void enterExprStmt(EMxStarParser.ExprStmtContext ctx) { }
-    
-    @Override 
-    public void exitExprStmt(EMxStarParser.ExprStmtContext ctx) { }
-    
-    @Override 
-    public void enterCondStmt(EMxStarParser.CondStmtContext ctx) { }
-    
-    @Override 
-    public void exitCondStmt(EMxStarParser.CondStmtContext ctx) { }
-    
-    @Override 
-    public void enterLoopStmt(EMxStarParser.LoopStmtContext ctx) { }
-    
-    @Override 
-    public void exitLoopStmt(EMxStarParser.LoopStmtContext ctx) { }
-    
-    @Override 
-    public void enterJumpStmt(EMxStarParser.JumpStmtContext ctx) { }
-    
-    @Override 
-    public void exitJumpStmt(EMxStarParser.JumpStmtContext ctx) { }
-    
-    @Override 
-    public void enterBlankStmt(EMxStarParser.BlankStmtContext ctx) { }
-    
-    @Override 
-    public void exitBlankStmt(EMxStarParser.BlankStmtContext ctx) { }
-    
-    @Override 
-    public void enterBlock(EMxStarParser.BlockContext ctx) { }
-    
-    @Override 
-    public void exitBlock(EMxStarParser.BlockContext ctx) { }
-    
-    @Override 
-    public void enterStmt(EMxStarParser.StmtContext ctx) { }
-    
-    @Override 
-    public void exitStmt(EMxStarParser.StmtContext ctx) { }
-    
-    @Override 
-    public void enterVarDeclStmt(EMxStarParser.VarDeclStmtContext ctx) { }
-    
-    @Override 
-    public void exitVarDeclStmt(EMxStarParser.VarDeclStmtContext ctx) { }
-    
-    @Override 
-    public void enterConditionStatement(EMxStarParser.ConditionStatementContext ctx) { }
-    
-    @Override 
-    public void exitConditionStatement(EMxStarParser.ConditionStatementContext ctx) { }
-    
-    @Override 
-    public void enterWhileStmt(EMxStarParser.WhileStmtContext ctx) { }
-    
-    @Override 
-    public void exitWhileStmt(EMxStarParser.WhileStmtContext ctx) { }
-    
-    @Override 
-    public void enterForStmt(EMxStarParser.ForStmtContext ctx) { }
-    
-    @Override 
-    public void exitForStmt(EMxStarParser.ForStmtContext ctx) { }
-    
-    @Override 
-    public void enterContinueStmt(EMxStarParser.ContinueStmtContext ctx) { }
-    
-    @Override 
-    public void exitContinueStmt(EMxStarParser.ContinueStmtContext ctx) { }
-    
-    @Override 
-    public void enterBreakStmt(EMxStarParser.BreakStmtContext ctx) { }
-    
-    @Override 
-    public void exitBreakStmt(EMxStarParser.BreakStmtContext ctx) { }
-    
-    @Override 
-    public void enterReturnStmt(EMxStarParser.ReturnStmtContext ctx) { }
-    
-    @Override 
-    public void exitReturnStmt(EMxStarParser.ReturnStmtContext ctx) { }
-    
-    @Override 
-    public void enterNewExpr(EMxStarParser.NewExprContext ctx) { }
-    
-    @Override 
-    public void exitNewExpr(EMxStarParser.NewExprContext ctx) { }
-    
-    @Override 
-    public void enterPrefixExpr(EMxStarParser.PrefixExprContext ctx) { }
-    
-    @Override 
-    public void exitPrefixExpr(EMxStarParser.PrefixExprContext ctx) { }
-    
-    @Override 
-    public void enterPrimaryExpr(EMxStarParser.PrimaryExprContext ctx) { }
-    
-    @Override 
-    public void exitPrimaryExpr(EMxStarParser.PrimaryExprContext ctx) { }
-    
-    @Override 
-    public void enterSubscriptExpr(EMxStarParser.SubscriptExprContext ctx) { }
-    
-    @Override 
-    public void exitSubscriptExpr(EMxStarParser.SubscriptExprContext ctx) { }
-    
-    @Override 
-    public void enterSuffixExpr(EMxStarParser.SuffixExprContext ctx) { }
-    
-    @Override 
-    public void exitSuffixExpr(EMxStarParser.SuffixExprContext ctx) { }
-    
-    @Override 
-    public void enterBinaryExpr(EMxStarParser.BinaryExprContext ctx) { }
-    
-    @Override 
-    public void exitBinaryExpr(EMxStarParser.BinaryExprContext ctx) { }
-    
-    @Override 
-    public void enterMemberAccessExpr(EMxStarParser.MemberAccessExprContext ctx) { }
-    
-    @Override 
-    public void exitMemberAccessExpr(EMxStarParser.MemberAccessExprContext ctx) { }
-    
-    @Override 
-    public void enterFuncCallExpr(EMxStarParser.FuncCallExprContext ctx) { }
-    
-    @Override 
-    public void exitFuncCallExpr(EMxStarParser.FuncCallExprContext ctx) { }
-    
-    @Override 
-    public void enterAssignExpr(EMxStarParser.AssignExprContext ctx) { }
-    
-    @Override 
-    public void exitAssignExpr(EMxStarParser.AssignExprContext ctx) { }
-    
-    @Override 
-    public void enterIdentifierExpr(EMxStarParser.IdentifierExprContext ctx) { }
-    
-    @Override 
-    public void exitIdentifierExpr(EMxStarParser.IdentifierExprContext ctx) { }
-    
-    @Override 
-    public void enterConstExpr(EMxStarParser.ConstExprContext ctx) { }
-    
-    @Override 
-    public void exitConstExpr(EMxStarParser.ConstExprContext ctx) { }
-    
-    @Override 
-    public void enterSubExpr(EMxStarParser.SubExprContext ctx) { }
-    
-    @Override 
-    public void exitSubExpr(EMxStarParser.SubExprContext ctx) { }
-    
-    @Override 
-    public void enterIntConst(EMxStarParser.IntConstContext ctx) { }
-    
-    @Override 
-    public void exitIntConst(EMxStarParser.IntConstContext ctx) { }
-    
-    @Override 
-    public void enterStringConst(EMxStarParser.StringConstContext ctx) { }
-    
-    @Override 
-    public void exitStringConst(EMxStarParser.StringConstContext ctx) { }
-    
-    @Override 
-    public void enterNullLiteral(EMxStarParser.NullLiteralContext ctx) { }
-    
-    @Override 
-    public void exitNullLiteral(EMxStarParser.NullLiteralContext ctx) { }
-    
-    @Override 
-    public void enterBoolConst(EMxStarParser.BoolConstContext ctx) { }
-    
-    @Override 
-    public void exitBoolConst(EMxStarParser.BoolConstContext ctx) { }
-    
-    @Override 
-    public void enterErrorCreator(EMxStarParser.ErrorCreatorContext ctx) { }
-    
-    @Override 
-    public void exitErrorCreator(EMxStarParser.ErrorCreatorContext ctx) { }
-    
-    @Override 
-    public void enterArrayCreator(EMxStarParser.ArrayCreatorContext ctx) { }
-    
-    @Override 
-    public void exitArrayCreator(EMxStarParser.ArrayCreatorContext ctx) { }
-    
-    @Override 
-    public void enterNonArrayCreator(EMxStarParser.NonArrayCreatorContext ctx) { }
-    
-    @Override 
-    public void exitNonArrayCreator(EMxStarParser.NonArrayCreatorContext ctx) { }
-    
-    @Override 
-    public void enterParameterList(EMxStarParser.ParameterListContext ctx) { }
-    
-    @Override 
-    public void exitParameterList(EMxStarParser.ParameterListContext ctx) { }
+import java.util.ArrayList;
+import java.util.List;
 
-    
-    @Override 
-    public void enterEveryRule(ParserRuleContext ctx) { }
-    
-    @Override 
-    public void exitEveryRule(ParserRuleContext ctx) { }
-    
-    @Override 
-    public void visitTerminal(TerminalNode node) { }
-    
-    @Override 
-    public void visitErrorNode(ErrorNode node) { }
+public class ASTBuilder extends EMxStarBaseVisitor<Node> {
+    @Override
+    public Node visitProgram(EMxStarParser.ProgramContext ctx) {
+        List<DeclNode> decls = new ArrayList<>();
+        for (ParserRuleContext programSection : ctx.programSection()) {
+            Node decl = visit(programSection);
+            decls.add((DeclNode) decl);
+        }
+        return new ProgramNode(decls, Location.fromCtx(ctx));
+    }
+
+    @Override
+    public Node visitFunctionDeclaration(EMxStarParser.FunctionDeclarationContext ctx) {
+        TypeNode returnType;
+        if (ctx.typeTypeOrVoid() != null) returnType = (TypeNode) visit(ctx.typeTypeOrVoid());
+        else returnType = null;
+        String name = ctx.Identifier().getText();
+        List<VarDeclNode> parameterList = new ArrayList<>();
+        Node paraDecl;
+        for (ParserRuleContext parameterDeclaration : ctx.parameterDeclarationList().parameterDeclaration()) {
+            paraDecl = visit(parameterDeclaration);
+            parameterList.add((VarDeclNode) paraDecl);
+        }
+        BlockStmtNode body = (BlockStmtNode) visit(ctx.block());
+        return new FuncDeclNode(returnType, name, parameterList, body, Location.fromCtx(ctx));
+    }
+
+    @Override
+    public Node visitClassDeclaration(EMxStarParser.ClassDeclarationContext ctx) {
+        String name = ctx.Identifier().getText();
+        List<VarDeclNode> varMember = new ArrayList<>();
+        List<FuncDeclNode> funcMember = new ArrayList<>();
+        Node memberDecl;
+        for (ParserRuleContext memberDeclaration : ctx.memberDeclaration()) {
+            memberDecl = visit(memberDeclaration);
+            if (memberDecl instanceof VarDeclNode) varMember.add((VarDeclNode) memberDecl);
+            else funcMember.add((FuncDeclNode) memberDecl);
+        }
+        return new ClassDeclNode(name, varMember, funcMember, Location.fromCtx(ctx));
+    }
+
+    @Override
+    public Node visitVariableDeclaration(EMxStarParser.VariableDeclarationContext ctx) {
+        return super.visitVariableDeclaration(ctx);
+    }
+
+    @Override
+    public Node visitVariableDeclaratorList(EMxStarParser.VariableDeclaratorListContext ctx) {
+        return super.visitVariableDeclaratorList(ctx);
+    }
+
+    @Override
+    public Node visitVariableDeclarator(EMxStarParser.VariableDeclaratorContext ctx) {
+        return super.visitVariableDeclarator(ctx);
+    }
+
+    @Override
+    public Node visitMemberDeclaration(EMxStarParser.MemberDeclarationContext ctx) {
+        return super.visitMemberDeclaration(ctx);
+    }
+
+    @Override
+    public Node visitParameterDeclarationList(EMxStarParser.ParameterDeclarationListContext ctx) {
+        return super.visitParameterDeclarationList(ctx);
+    }
+
+    @Override
+    public Node visitParameterDeclaration(EMxStarParser.ParameterDeclarationContext ctx) {
+        return super.visitParameterDeclaration(ctx);
+    }
+
+    @Override
+    public Node visitTypeTypeOrVoid(EMxStarParser.TypeTypeOrVoidContext ctx) {
+        return super.visitTypeTypeOrVoid(ctx);
+    }
+
+    @Override
+    public Node visitArrayType(EMxStarParser.ArrayTypeContext ctx) {
+        return super.visitArrayType(ctx);
+    }
+
+    @Override
+    public Node visitNonArrayType(EMxStarParser.NonArrayTypeContext ctx) {
+        return super.visitNonArrayType(ctx);
+    }
+
+    @Override
+    public Node visitNonArrayTypeType(EMxStarParser.NonArrayTypeTypeContext ctx) {
+        return super.visitNonArrayTypeType(ctx);
+    }
+
+    @Override
+    public Node visitBlockStmt(EMxStarParser.BlockStmtContext ctx) {
+        return super.visitBlockStmt(ctx);
+    }
+
+    @Override
+    public Node visitExprStmt(EMxStarParser.ExprStmtContext ctx) {
+        return super.visitExprStmt(ctx);
+    }
+
+    @Override
+    public Node visitCondStmt(EMxStarParser.CondStmtContext ctx) {
+        return super.visitCondStmt(ctx);
+    }
+
+    @Override
+    public Node visitLoopStmt(EMxStarParser.LoopStmtContext ctx) {
+        return super.visitLoopStmt(ctx);
+    }
+
+    @Override
+    public Node visitJumpStmt(EMxStarParser.JumpStmtContext ctx) {
+        return super.visitJumpStmt(ctx);
+    }
+
+    @Override
+    public Node visitBlankStmt(EMxStarParser.BlankStmtContext ctx) {
+        return super.visitBlankStmt(ctx);
+    }
+
+    @Override
+    public Node visitBlock(EMxStarParser.BlockContext ctx) {
+        return super.visitBlock(ctx);
+    }
+
+    @Override
+    public Node visitStmt(EMxStarParser.StmtContext ctx) {
+        return super.visitStmt(ctx);
+    }
+
+    @Override
+    public Node visitVarDeclStmt(EMxStarParser.VarDeclStmtContext ctx) {
+        return super.visitVarDeclStmt(ctx);
+    }
+
+    @Override
+    public Node visitConditionStatement(EMxStarParser.ConditionStatementContext ctx) {
+        return super.visitConditionStatement(ctx);
+    }
+
+    @Override
+    public Node visitWhileStmt(EMxStarParser.WhileStmtContext ctx) {
+        return super.visitWhileStmt(ctx);
+    }
+
+    @Override
+    public Node visitForStmt(EMxStarParser.ForStmtContext ctx) {
+        return super.visitForStmt(ctx);
+    }
+
+    @Override
+    public Node visitContinueStmt(EMxStarParser.ContinueStmtContext ctx) {
+        return super.visitContinueStmt(ctx);
+    }
+
+    @Override
+    public Node visitBreakStmt(EMxStarParser.BreakStmtContext ctx) {
+        return super.visitBreakStmt(ctx);
+    }
+
+    @Override
+    public Node visitReturnStmt(EMxStarParser.ReturnStmtContext ctx) {
+        return super.visitReturnStmt(ctx);
+    }
+
+    @Override
+    public Node visitNewExpr(EMxStarParser.NewExprContext ctx) {
+        return super.visitNewExpr(ctx);
+    }
+
+    @Override
+    public Node visitPrefixExpr(EMxStarParser.PrefixExprContext ctx) {
+        return super.visitPrefixExpr(ctx);
+    }
+
+    @Override
+    public Node visitPrimaryExpr(EMxStarParser.PrimaryExprContext ctx) {
+        return super.visitPrimaryExpr(ctx);
+    }
+
+    @Override
+    public Node visitSubscriptExpr(EMxStarParser.SubscriptExprContext ctx) {
+        return super.visitSubscriptExpr(ctx);
+    }
+
+    @Override
+    public Node visitSuffixExpr(EMxStarParser.SuffixExprContext ctx) {
+        return super.visitSuffixExpr(ctx);
+    }
+
+    @Override
+    public Node visitBinaryExpr(EMxStarParser.BinaryExprContext ctx) {
+        return super.visitBinaryExpr(ctx);
+    }
+
+    @Override
+    public Node visitMemberAccessExpr(EMxStarParser.MemberAccessExprContext ctx) {
+        return super.visitMemberAccessExpr(ctx);
+    }
+
+    @Override
+    public Node visitFuncCallExpr(EMxStarParser.FuncCallExprContext ctx) {
+        return super.visitFuncCallExpr(ctx);
+    }
+
+    @Override
+    public Node visitAssignExpr(EMxStarParser.AssignExprContext ctx) {
+        return super.visitAssignExpr(ctx);
+    }
+
+    @Override
+    public Node visitIdentifierExpr(EMxStarParser.IdentifierExprContext ctx) {
+        return super.visitIdentifierExpr(ctx);
+    }
+
+    @Override
+    public Node visitConstExpr(EMxStarParser.ConstExprContext ctx) {
+        return super.visitConstExpr(ctx);
+    }
+
+    @Override
+    public Node visitSubExpr(EMxStarParser.SubExprContext ctx) {
+        return super.visitSubExpr(ctx);
+    }
+
+    @Override
+    public Node visitIntConst(EMxStarParser.IntConstContext ctx) {
+        return super.visitIntConst(ctx);
+    }
+
+    @Override
+    public Node visitStringConst(EMxStarParser.StringConstContext ctx) {
+        return super.visitStringConst(ctx);
+    }
+
+    @Override
+    public Node visitNullLiteral(EMxStarParser.NullLiteralContext ctx) {
+        return super.visitNullLiteral(ctx);
+    }
+
+    @Override
+    public Node visitBoolConst(EMxStarParser.BoolConstContext ctx) {
+        return super.visitBoolConst(ctx);
+    }
+
+    @Override
+    public Node visitErrorCreator(EMxStarParser.ErrorCreatorContext ctx) {
+        return super.visitErrorCreator(ctx);
+    }
+
+    @Override
+    public Node visitArrayCreator(EMxStarParser.ArrayCreatorContext ctx) {
+        return super.visitArrayCreator(ctx);
+    }
+
+    @Override
+    public Node visitNonArrayCreator(EMxStarParser.NonArrayCreatorContext ctx) {
+        return super.visitNonArrayCreator(ctx);
+    }
+
+    @Override
+    public Node visitParameterList(EMxStarParser.ParameterListContext ctx) {
+        return super.visitParameterList(ctx);
+    }
 }

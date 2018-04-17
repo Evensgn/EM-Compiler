@@ -1,6 +1,7 @@
 package com.evensgn.emcompiler.ast;
 
 public interface ASTVisitor {
+    void visit(ProgramNode node);
     void visit(FuncDeclNode node);
     void visit(ClassDeclNode node);
     void visit(VarDeclNode node);

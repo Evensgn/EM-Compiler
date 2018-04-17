@@ -30,37 +30,13 @@ public class EMxStarBaseListener implements EMxStarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFuncDecl(EMxStarParser.FuncDeclContext ctx) { }
+	@Override public void enterProgramSection(EMxStarParser.ProgramSectionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFuncDecl(EMxStarParser.FuncDeclContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterClassDecl(EMxStarParser.ClassDeclContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitClassDecl(EMxStarParser.ClassDeclContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterVarDecl(EMxStarParser.VarDeclContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitVarDecl(EMxStarParser.VarDeclContext ctx) { }
+	@Override public void exitProgramSection(EMxStarParser.ProgramSectionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

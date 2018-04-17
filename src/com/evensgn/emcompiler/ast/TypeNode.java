@@ -7,7 +7,7 @@ import com.evensgn.emcompiler.type.Type;
  * @since 2018/4/1
  */
 abstract public class TypeNode extends Node {
-    private Type.Types type;
+    protected Type.Types type;
 
     public Type.Types getType() {
         return type;

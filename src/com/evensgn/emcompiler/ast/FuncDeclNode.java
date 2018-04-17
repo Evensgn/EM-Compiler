@@ -7,16 +7,30 @@ import java.util.List;
  * @since 2018/4/1
  */
 public class FuncDeclNode extends DeclNode {
+    private boolean isConstruct;
     private TypeNode returnType;
     private String name;
     private List<VarDeclNode> parameterList;
     private BlockStmtNode body;
+    private Location location;
 
-    public FuncDeclNode(TypeNode returnType, String name, List<VarDeclNode> parameterList, BlockStmtNode body) {
-        this.returnType = returnType;
+    public FuncDeclNode(TypeNode returnType, String name, List<VarDeclNode> parameterList, BlockStmtNode body, Location location) {
+        if (returnType == null) {
+            this.isConstruct = true;
+            this.returnType = null;
+        }
+        else {
+            this.isConstruct = false;
+            this.returnType = returnType;
+        }
         this.name = name;
         this.parameterList = parameterList;
         this.body = body;
+        this.location = location;
+    }
+
+    public boolean isConstruct() {
+        return isConstruct;
     }
 
     public TypeNode getReturnType() {
@@ -37,7 +51,7 @@ public class FuncDeclNode extends DeclNode {
 
     @Override
     public Location location() {
-        return returnType.location();
+        return location;
     }
 
     @Override

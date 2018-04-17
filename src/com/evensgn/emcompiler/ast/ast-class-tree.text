@@ -1,4 +1,5 @@
 Node                                    [ok]
+    ProgramNode                         [ok]
     DeclNode                            [ok]
         FuncDeclNode                    [ok]
         ClassDeclNode                   [ok]

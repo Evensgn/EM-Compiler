@@ -1,12 +1,13 @@
 package com.evensgn.emcompiler.ast;
 
-import com.evensgn.emcompiler.type.Type;
+import java.util.List;
 
-public class PrimitiveTypeNode extends TypeNode {
+public class ProgramNode extends Node {
+    private List<DeclNode> decls;
     private Location location;
 
-    public PrimitiveTypeNode(Type.Types type, Location location) {
-        this.type = type;
+    public ProgramNode(List<DeclNode> decls, Location location) {
+        this.decls = decls;
         this.location = location;
     }
 

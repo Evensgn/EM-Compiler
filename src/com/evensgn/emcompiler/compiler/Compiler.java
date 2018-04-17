@@ -1,5 +1,7 @@
 package com.evensgn.emcompiler.compiler;
 
+import com.evensgn.emcompiler.ast.Node;
+import com.evensgn.emcompiler.ast.ProgramNode;
 import com.evensgn.emcompiler.frontend.ASTBuilder;
 import com.evensgn.emcompiler.parser.EMxStarLexer;
 import com.evensgn.emcompiler.parser.EMxStarParser;
@@ -7,7 +9,6 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -32,7 +33,7 @@ public class Compiler {
         EMxStarParser parser = new EMxStarParser(tokens);
         ParseTree tree = parser.program();
         ASTBuilder astBuilder = new ASTBuilder();
-        new ParseTreeWalker().walk(astBuilder, tree);
+        ProgramNode ast = (ProgramNode) astBuilder.visit(tree);
     }
 
     public void run() throws Exception {

@@ -12,13 +12,10 @@ public class ClassDeclNode extends DeclNode {
     private List<FuncDeclNode> funcMember;
     private Location location;
 
-    public ClassDeclNode(String name, List<VarDeclNode> varMember, List<FuncDeclNode> funcMember) {
+    public ClassDeclNode(String name, List<VarDeclNode> varMember, List<FuncDeclNode> funcMember, Location location) {
         this.name = name;
         this.varMember = varMember;
         this.funcMember = funcMember;
-    }
-
-    public void setLocation(Location location) {
         this.location = location;
     }
 

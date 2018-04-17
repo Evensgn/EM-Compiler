@@ -20,41 +20,15 @@ public interface EMxStarListener extends ParseTreeListener {
 	 */
 	void exitProgram(EMxStarParser.ProgramContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code funcDecl}
-	 * labeled alternative in {@link EMxStarParser#programSection}.
+	 * Enter a parse tree produced by {@link EMxStarParser#programSection}.
 	 * @param ctx the parse tree
 	 */
-	void enterFuncDecl(EMxStarParser.FuncDeclContext ctx);
+	void enterProgramSection(EMxStarParser.ProgramSectionContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code funcDecl}
-	 * labeled alternative in {@link EMxStarParser#programSection}.
+	 * Exit a parse tree produced by {@link EMxStarParser#programSection}.
 	 * @param ctx the parse tree
 	 */
-	void exitFuncDecl(EMxStarParser.FuncDeclContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code classDecl}
-	 * labeled alternative in {@link EMxStarParser#programSection}.
-	 * @param ctx the parse tree
-	 */
-	void enterClassDecl(EMxStarParser.ClassDeclContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code classDecl}
-	 * labeled alternative in {@link EMxStarParser#programSection}.
-	 * @param ctx the parse tree
-	 */
-	void exitClassDecl(EMxStarParser.ClassDeclContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code varDecl}
-	 * labeled alternative in {@link EMxStarParser#programSection}.
-	 * @param ctx the parse tree
-	 */
-	void enterVarDecl(EMxStarParser.VarDeclContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code varDecl}
-	 * labeled alternative in {@link EMxStarParser#programSection}.
-	 * @param ctx the parse tree
-	 */
-	void exitVarDecl(EMxStarParser.VarDeclContext ctx);
+	void exitProgramSection(EMxStarParser.ProgramSectionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link EMxStarParser#functionDeclaration}.
 	 * @param ctx the parse tree

@@ -17,11 +17,10 @@ import java.io.OutputStream;
 * @since 03/31/2018 
 * @version 1.0 
 */ 
-public class CompilerTest { 
-
+public class CompilerTest {
     @Before
-    public void before() throws Exception { 
-    } 
+    public void before() throws Exception {
+    }
     
     @After
     public void after() throws Exception { 

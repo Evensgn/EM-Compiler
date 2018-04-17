@@ -9,9 +9,9 @@ program
     ;
 
 programSection
-    :   functionDeclaration     # funcDecl
-    |   classDeclaration        # classDecl
-    |   variableDeclaration     # varDecl
+    :   functionDeclaration
+    |   classDeclaration
+    |   variableDeclaration
     ;
 
 // ---- Declaration -----
