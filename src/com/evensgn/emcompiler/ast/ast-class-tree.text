@@ -1,5 +1,6 @@
 Node                                    [ok]
     ProgramNode                         [ok]
+    VarDeclListNode                     [ok]  [not in AST]
     DeclNode                            [ok]
         FuncDeclNode                    [ok]
         ClassDeclNode                   [ok]

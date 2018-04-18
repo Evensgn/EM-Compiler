@@ -11,12 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ASTBuilder extends EMxStarBaseVisitor<Node> {
+    private TypeNode typeForVarDecl;
+
     @Override
     public Node visitProgram(EMxStarParser.ProgramContext ctx) {
         List<DeclNode> decls = new ArrayList<>();
         for (ParserRuleContext programSection : ctx.programSection()) {
             Node decl = visit(programSection);
-            decls.add((DeclNode) decl);
+            if (decl instanceof VarDeclListNode) decls.addAll(((VarDeclListNode) decl).getDecls());
+            else decls.add((DeclNode) decl);
         }
         return new ProgramNode(decls, Location.fromCtx(ctx));
     }
@@ -45,7 +48,7 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
         Node memberDecl;
         for (ParserRuleContext memberDeclaration : ctx.memberDeclaration()) {
             memberDecl = visit(memberDeclaration);
-            if (memberDecl instanceof VarDeclNode) varMember.add((VarDeclNode) memberDecl);
+            if (memberDecl instanceof VarDeclListNode) varMember.addAll(((VarDeclListNode) memberDecl).getDecls());
             else funcMember.add((FuncDeclNode) memberDecl);
         }
         return new ClassDeclNode(name, varMember, funcMember, Location.fromCtx(ctx));
@@ -53,22 +56,32 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
 
     @Override
     public Node visitVariableDeclaration(EMxStarParser.VariableDeclarationContext ctx) {
-        return super.visitVariableDeclaration(ctx);
+        typeForVarDecl = (TypeNode) visit(ctx.typeType());
+        return visit(ctx.variableDeclaratorList());
     }
 
     @Override
     public Node visitVariableDeclaratorList(EMxStarParser.VariableDeclaratorListContext ctx) {
-        return super.visitVariableDeclaratorList(ctx);
+        List<VarDeclNode> decls = new ArrayList<>();
+        for (ParserRuleContext variableDeclarator : ctx.variableDeclarator()) {
+            decls.add((VarDeclNode) visit(variableDeclarator));
+        }
+        return new VarDeclListNode(decls);
     }
 
     @Override
     public Node visitVariableDeclarator(EMxStarParser.VariableDeclaratorContext ctx) {
-        return super.visitVariableDeclarator(ctx);
+        String name = ctx.Identifier().getText();
+        ExprNode init;
+        if (ctx.expression() != null) init = (ExprNode) visit(ctx.expression());
+        else init = null;
+        return new VarDeclNode(typeForVarDecl, name, init, Location.fromCtx(ctx));
     }
 
     @Override
     public Node visitMemberDeclaration(EMxStarParser.MemberDeclarationContext ctx) {
-        return super.visitMemberDeclaration(ctx);
+        if (ctx.functionDeclaration() != null) return visit(ctx.functionDeclaration());
+        else return visit(ctx.variableDeclaration());
     }
 
     @Override
@@ -78,17 +91,21 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
 
     @Override
     public Node visitParameterDeclaration(EMxStarParser.ParameterDeclarationContext ctx) {
-        return super.visitParameterDeclaration(ctx);
+        TypeNode type = (TypeNode) visit(ctx.typeType());
+        String name = ctx.Identifier().getText();
+        return new VarDeclNode(type, name, null, Location.fromCtx(ctx));
     }
 
     @Override
     public Node visitTypeTypeOrVoid(EMxStarParser.TypeTypeOrVoidContext ctx) {
-        return super.visitTypeTypeOrVoid(ctx);
+        if (ctx.typeType() != null) return visit(ctx.typeType());
+        else return new PrimitiveTypeNode(Type.Types.VOID, Location.fromCtx(ctx));
     }
 
     @Override
     public Node visitArrayType(EMxStarParser.ArrayTypeContext ctx) {
-        return super.visitArrayType(ctx);
+        TypeNode baseType = (TypeNode) visit(ctx.typeType());
+        return new ArrayTypeNode(baseType, Location.fromCtx(ctx));
     }
 
     @Override

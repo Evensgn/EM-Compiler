@@ -2,9 +2,11 @@ package com.evensgn.emcompiler.ast;
 
 public class ArrayTypeNode extends TypeNode {
     private TypeNode baseType;
+    private Location location;
 
-    public ArrayTypeNode(TypeNode baseType) {
+    public ArrayTypeNode(TypeNode baseType, Location location) {
         this.baseType = baseType;
+        this.location = location;
     }
 
     public TypeNode getBaseType() {
@@ -13,7 +15,7 @@ public class ArrayTypeNode extends TypeNode {
 
     @Override
     public Location location() {
-        return baseType.location();
+        return location;
     }
 
     @Override
