@@ -6,10 +6,20 @@ import com.evensgn.emcompiler.type.Type;
  * @author Zhou Fan
  * @since 2018/4/1
  */
-abstract public class TypeNode extends Node {
-    protected Type.Types type;
+public class TypeNode extends Node {
+    private Type type;
 
-    public Type.Types getType() {
+    public TypeNode(Type type, Location location) {
+        this.type = type;
+        this.location = location;
+    }
+
+    public Type getType() {
         return type;
+    }
+
+    @Override
+    public void accept(ASTVisitor visitor) {
+        visitor.visit(this);
     }
 }

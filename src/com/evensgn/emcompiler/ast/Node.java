@@ -5,7 +5,13 @@ package com.evensgn.emcompiler.ast;
  * @since 2018/3/29
  */
 abstract public class Node {
+    protected Location location;
+
     public Node() {}
-    abstract public Location location();
+
+    public Location location() {
+        return location;
+    }
+
     abstract public void accept(ASTVisitor visitor);
 }

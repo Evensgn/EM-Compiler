@@ -9,16 +9,10 @@ import java.util.List;
 public class BlockStmtNode extends StmtNode {
     private List<Node> stmtsAndVarDecls;
     private List<StmtNode> stmts;
-    private Location location;
 
     public BlockStmtNode(List<Node> stmtsAndVarDecls, Location location) {
         this.stmtsAndVarDecls = stmtsAndVarDecls;
         this.location = location;
-    }
-
-    @Override
-    public Location location() {
-        return location;
     }
 
     @Override

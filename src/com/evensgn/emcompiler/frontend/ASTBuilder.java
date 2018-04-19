@@ -2,6 +2,9 @@ package com.evensgn.emcompiler.frontend;
 
 import com.evensgn.emcompiler.ast.*;
 import com.evensgn.emcompiler.parser.*;
+import com.evensgn.emcompiler.type.ArrayType;
+import com.evensgn.emcompiler.type.ClassType;
+import com.evensgn.emcompiler.type.PrimitiveType;
 import com.evensgn.emcompiler.type.Type;
 import com.evensgn.emcompiler.utils.CompilerError;
 import com.evensgn.emcompiler.utils.SemanticError;
@@ -110,13 +113,13 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
     @Override
     public Node visitTypeTypeOrVoid(EMxStarParser.TypeTypeOrVoidContext ctx) {
         if (ctx.typeType() != null) return visit(ctx.typeType());
-        else return new PrimitiveTypeNode(Type.Types.VOID, Location.fromCtx(ctx));
+        else return new TypeNode(new PrimitiveType(Type.PrimitiveTypes.VOID), Location.fromCtx(ctx));
     }
 
     @Override
     public Node visitArrayType(EMxStarParser.ArrayTypeContext ctx) {
         TypeNode baseType = (TypeNode) visit(ctx.typeType());
-        return new ArrayTypeNode(baseType, Location.fromCtx(ctx));
+        return new TypeNode(new ArrayType(baseType.getType()), Location.fromCtx(ctx));
     }
 
     @Override
@@ -126,13 +129,13 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
 
     @Override
     public Node visitNonArrayTypeType(EMxStarParser.NonArrayTypeTypeContext ctx) {
-        if (ctx.Identifier() != null) return new ClassTypeNode(ctx.Identifier().getText(), Location.fromCtx(ctx));
-        Type.Types type;
-        if (ctx.Int() != null) type = Type.Types.INT;
-        else if (ctx.Bool() != null) type = Type.Types.BOOL;
-        else if (ctx.String() != null) type = Type.Types.STRING;
+        if (ctx.Identifier() != null) return new TypeNode(new ClassType(ctx.Identifier().getText()), Location.fromCtx(ctx));
+        Type.PrimitiveTypes type;
+        if (ctx.Int() != null) type = Type.PrimitiveTypes.INT;
+        else if (ctx.Bool() != null) type = Type.PrimitiveTypes.BOOL;
+        else if (ctx.String() != null) type = Type.PrimitiveTypes.STRING;
         else throw new CompilerError(Location.fromCtx(ctx), "Unknown primitive type");
-        return new PrimitiveTypeNode(type, Location.fromCtx(ctx));
+        return new TypeNode(new PrimitiveType(type), Location.fromCtx(ctx));
     }
 
     @Override
@@ -380,12 +383,19 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
 
     @Override
     public Node visitArrayCreator(EMxStarParser.ArrayCreatorContext ctx) {
-        return super.visitArrayCreator(ctx);
+        TypeNode newType = (TypeNode) visit(ctx.nonArrayTypeType());
+        List<ExprNode> dims = new ArrayList<>();
+        for (ParserRuleContext dim : ctx.expression()) {
+            dims.add((ExprNode) visit(dim));
+        }
+        int numDim = (ctx.getChildCount() - 1 - dims.size()) / 2;
+        return new NewExprNode(newType, dims, numDim, Location.fromCtx(ctx));
     }
 
     @Override
     public Node visitNonArrayCreator(EMxStarParser.NonArrayCreatorContext ctx) {
-        return super.visitNonArrayCreator(ctx);
+        TypeNode newType = (TypeNode) visit(ctx.nonArrayTypeType());
+        return new NewExprNode(newType, null, 0, Location.fromCtx(ctx));
     }
 
     // no use

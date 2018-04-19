@@ -10,7 +10,6 @@ public class BinaryExprNode extends ExprNode {
 
     private BinaryOps op;
     private ExprNode lhs, rhs;
-    private Location location;
 
     public BinaryExprNode(BinaryOps op, ExprNode lhs, ExprNode rhs, Location location) {
         this.op = op;
@@ -29,11 +28,6 @@ public class BinaryExprNode extends ExprNode {
 
     public BinaryOps getOp() {
         return op;
-    }
-
-    @Override
-    public Location location() {
-        return location;
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.evensgn.emcompiler.ast;
 public class WhileStmtNode extends LoopStmtNode {
     private ExprNode cond;
     private StmtNode stmt;
-    private Location location;
 
     public WhileStmtNode(ExprNode cond, StmtNode stmt, Location location) {
         this.cond = cond;
@@ -17,11 +16,6 @@ public class WhileStmtNode extends LoopStmtNode {
 
     public StmtNode getStmt() {
         return stmt;
-    }
-
-    @Override
-    public Location location() {
-        return location;
     }
 
     @Override

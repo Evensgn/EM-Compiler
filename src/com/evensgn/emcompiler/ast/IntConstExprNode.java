@@ -2,7 +2,6 @@ package com.evensgn.emcompiler.ast;
 
 public class IntConstExprNode extends ConstExprNode {
     private int value;
-    private Location location;
 
     public IntConstExprNode(int value, Location location) {
         this.value = value;
@@ -11,11 +10,6 @@ public class IntConstExprNode extends ConstExprNode {
 
     public int getValue() {
         return value;
-    }
-
-    @Override
-    public Location location() {
-        return location;
     }
 
     @Override

@@ -8,7 +8,6 @@ public class VarDeclNode extends DeclNode {
     private TypeNode type;
     private String name;
     private ExprNode init;
-    private Location location;
 
     public VarDeclNode(TypeNode type, String name, ExprNode init, Location location) {
         this.type = type;
@@ -27,11 +26,6 @@ public class VarDeclNode extends DeclNode {
 
     public ExprNode getInit() {
         return init;
-    }
-
-    @Override
-    public Location location() {
-        return location;
     }
 
     @Override

@@ -7,7 +7,6 @@ package com.evensgn.emcompiler.ast;
 public class CondStmtNode extends StmtNode {
     private ExprNode cond;
     private StmtNode thenStmt, elseStmt;
-    private Location location;
 
     public CondStmtNode(ExprNode cond, StmtNode thenStmt, StmtNode elseStmt, Location location) {
         this.cond = cond;
@@ -26,11 +25,6 @@ public class CondStmtNode extends StmtNode {
 
     public StmtNode getElseStmt() {
         return elseStmt;
-    }
-
-    @Override
-    public Location location() {
-        return location;
     }
 
     @Override

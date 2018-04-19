@@ -5,10 +5,13 @@ import java.util.List;
 public class NewExprNode extends ExprNode {
     private TypeNode newType;
     private List<ExprNode> dims;
+    private int numDim;
 
-    public NewExprNode(TypeNode newType, List<ExprNode> dims) {
+    public NewExprNode(TypeNode newType, List<ExprNode> dims, int numDim, Location location) {
         this.newType = newType;
         this.dims = dims;
+        this.numDim = numDim;
+        this.location = location;
     }
 
     public TypeNode getNewType() {
@@ -19,9 +22,8 @@ public class NewExprNode extends ExprNode {
         return dims;
     }
 
-    @Override
-    public Location location() {
-        return newType.location();
+    public int getNumDim() {
+        return numDim;
     }
 
     @Override

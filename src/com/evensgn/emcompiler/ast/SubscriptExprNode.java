@@ -2,7 +2,6 @@ package com.evensgn.emcompiler.ast;
 
 public class SubscriptExprNode extends ExprNode {
     private ExprNode arr, sub;
-    private Location location;
 
     public SubscriptExprNode(ExprNode arr, ExprNode sub, Location location) {
         this.arr = arr;
@@ -16,11 +15,6 @@ public class SubscriptExprNode extends ExprNode {
 
     public ExprNode getSub() {
         return sub;
-    }
-
-    @Override
-    public Location location() {
-        return location;
     }
 
     @Override

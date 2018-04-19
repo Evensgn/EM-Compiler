@@ -10,7 +10,6 @@ public class ClassDeclNode extends DeclNode {
     private String name;
     private List<VarDeclNode> varMember;
     private List<FuncDeclNode> funcMember;
-    private Location location;
 
     public ClassDeclNode(String name, List<VarDeclNode> varMember, List<FuncDeclNode> funcMember, Location location) {
         this.name = name;
@@ -29,11 +28,6 @@ public class ClassDeclNode extends DeclNode {
 
     public List<FuncDeclNode> getFuncMember() {
         return funcMember;
-    }
-
-    @Override
-    public Location location() {
-        return location;
     }
 
     @Override

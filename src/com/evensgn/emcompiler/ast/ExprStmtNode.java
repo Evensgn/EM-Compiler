@@ -16,11 +16,6 @@ public class ExprStmtNode extends StmtNode {
     }
 
     @Override
-    public Location location() {
-        return expr.location();
-    }
-
-    @Override
     public void accept(ASTVisitor visitor) {
         visitor.visit(this);
     }

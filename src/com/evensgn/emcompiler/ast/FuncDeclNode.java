@@ -12,7 +12,6 @@ public class FuncDeclNode extends DeclNode {
     private String name;
     private List<VarDeclNode> parameterList;
     private BlockStmtNode body;
-    private Location location;
 
     public FuncDeclNode(TypeNode returnType, String name, List<VarDeclNode> parameterList, BlockStmtNode body, Location location) {
         if (returnType == null) {
@@ -47,11 +46,6 @@ public class FuncDeclNode extends DeclNode {
 
     public BlockStmtNode getBody() {
         return body;
-    }
-
-    @Override
-    public Location location() {
-        return location;
     }
 
     @Override

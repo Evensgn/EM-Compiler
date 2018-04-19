@@ -7,15 +7,11 @@ public class VarDeclListNode extends Node {
 
     public VarDeclListNode(List<VarDeclNode> decls) {
         this.decls = decls;
+        this.location = null;
     }
 
     public List<VarDeclNode> getDecls() {
         return decls;
-    }
-
-    @Override
-    public Location location() {
-        return null;
     }
 
     @Override

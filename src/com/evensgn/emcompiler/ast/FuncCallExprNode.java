@@ -5,7 +5,6 @@ import java.util.List;
 public class FuncCallExprNode extends ExprNode {
     private ExprNode func;
     private List<ExprNode> args;
-    private Location location;
 
     public FuncCallExprNode(ExprNode func, List<ExprNode> args, Location location) {
         this.func = func;
@@ -19,11 +18,6 @@ public class FuncCallExprNode extends ExprNode {
 
     public List<ExprNode> getArgs() {
         return args;
-    }
-
-    @Override
-    public Location location() {
-        return location;
     }
 
     @Override

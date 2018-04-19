@@ -1,15 +1,8 @@
 package com.evensgn.emcompiler.ast;
 
 public class ContinueStmtNode extends JumpStmtNode {
-    private Location location;
-
     public ContinueStmtNode(Location location) {
         this.location = location;
-    }
-
-    @Override
-    public Location location() {
-        return location;
     }
 
     @Override

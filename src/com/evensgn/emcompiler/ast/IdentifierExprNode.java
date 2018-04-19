@@ -2,7 +2,6 @@ package com.evensgn.emcompiler.ast;
 
 public class IdentifierExprNode extends ExprNode {
     private String identifier;
-    private Location location;
 
     public IdentifierExprNode(String identifier, Location location) {
         this.identifier = identifier;
@@ -11,11 +10,6 @@ public class IdentifierExprNode extends ExprNode {
 
     public String getIdentifier() {
         return identifier;
-    }
-
-    @Override
-    public Location location() {
-        return location;
     }
 
     @Override
