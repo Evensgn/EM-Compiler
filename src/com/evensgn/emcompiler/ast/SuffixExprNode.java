@@ -7,10 +7,12 @@ public class SuffixExprNode extends ExprNode {
 
     private SuffixOps op;
     private ExprNode expr;
+    private Location location;
 
-    public SuffixExprNode(SuffixOps op, ExprNode expr) {
+    public SuffixExprNode(SuffixOps op, ExprNode expr, Location location) {
         this.op = op;
         this.expr = expr;
+        this.location = location;
     }
 
     public SuffixOps getOp() {
@@ -23,7 +25,7 @@ public class SuffixExprNode extends ExprNode {
 
     @Override
     public Location location() {
-        return expr.location();
+        return location;
     }
 
     @Override

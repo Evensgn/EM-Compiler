@@ -7,11 +7,18 @@ import java.util.List;
  * @since 4/2/2018
  */
 public class BlockStmtNode extends StmtNode {
-    private List<StmtNode> stmtList;
+    private List<Node> stmtsAndVarDecls;
+    private List<StmtNode> stmts;
+    private Location location;
+
+    public BlockStmtNode(List<Node> stmtsAndVarDecls, Location location) {
+        this.stmtsAndVarDecls = stmtsAndVarDecls;
+        this.location = location;
+    }
 
     @Override
     public Location location() {
-        return stmtList.get(0).location();
+        return location;
     }
 
     @Override

@@ -3,9 +3,9 @@ package com.evensgn.emcompiler.frontend;
 import com.evensgn.emcompiler.ast.*;
 import com.evensgn.emcompiler.parser.*;
 import com.evensgn.emcompiler.type.Type;
+import com.evensgn.emcompiler.utils.CompilerError;
 import com.evensgn.emcompiler.utils.SemanticError;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +22,14 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
             else decls.add((DeclNode) decl);
         }
         return new ProgramNode(decls, Location.fromCtx(ctx));
+    }
+
+    @Override
+    public Node visitProgramSection(EMxStarParser.ProgramSectionContext ctx) {
+        if (ctx.functionDeclaration() != null) return visit(ctx.functionDeclaration());
+        else if (ctx.classDeclaration() != null) return visit(ctx.classDeclaration());
+        else if (ctx.variableDeclaration() != null) return visit(ctx.variableDeclaration());
+        else throw new CompilerError(Location.fromCtx(ctx), "Unknown program section");
     }
 
     @Override
@@ -49,7 +57,8 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
         for (ParserRuleContext memberDeclaration : ctx.memberDeclaration()) {
             memberDecl = visit(memberDeclaration);
             if (memberDecl instanceof VarDeclListNode) varMember.addAll(((VarDeclListNode) memberDecl).getDecls());
-            else funcMember.add((FuncDeclNode) memberDecl);
+            else if (memberDecl instanceof FuncDeclNode) funcMember.add((FuncDeclNode) memberDecl);
+            else throw new CompilerError(Location.fromCtx(ctx), "Unknown member declaration");
         }
         return new ClassDeclNode(name, varMember, funcMember, Location.fromCtx(ctx));
     }
@@ -81,9 +90,11 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
     @Override
     public Node visitMemberDeclaration(EMxStarParser.MemberDeclarationContext ctx) {
         if (ctx.functionDeclaration() != null) return visit(ctx.functionDeclaration());
-        else return visit(ctx.variableDeclaration());
+        else if (ctx.variableDeclaration() != null) return visit(ctx.variableDeclaration());
+        else throw new CompilerError(Location.fromCtx(ctx), "Unknown member declaration");
     }
 
+    // no use
     @Override
     public Node visitParameterDeclarationList(EMxStarParser.ParameterDeclarationListContext ctx) {
         return super.visitParameterDeclarationList(ctx);
@@ -110,172 +121,261 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
 
     @Override
     public Node visitNonArrayType(EMxStarParser.NonArrayTypeContext ctx) {
-        return super.visitNonArrayType(ctx);
+        return visit(ctx.nonArrayTypeType());
     }
 
     @Override
     public Node visitNonArrayTypeType(EMxStarParser.NonArrayTypeTypeContext ctx) {
-        return super.visitNonArrayTypeType(ctx);
+        if (ctx.Identifier() != null) return new ClassTypeNode(ctx.Identifier().getText(), Location.fromCtx(ctx));
+        Type.Types type;
+        if (ctx.Int() != null) type = Type.Types.INT;
+        else if (ctx.Bool() != null) type = Type.Types.BOOL;
+        else if (ctx.String() != null) type = Type.Types.STRING;
+        else throw new CompilerError(Location.fromCtx(ctx), "Unknown primitive type");
+        return new PrimitiveTypeNode(type, Location.fromCtx(ctx));
     }
 
     @Override
     public Node visitBlockStmt(EMxStarParser.BlockStmtContext ctx) {
-        return super.visitBlockStmt(ctx);
+        return visit(ctx.block());
     }
 
     @Override
     public Node visitExprStmt(EMxStarParser.ExprStmtContext ctx) {
-        return super.visitExprStmt(ctx);
+        return visit(ctx.expression());
     }
 
     @Override
     public Node visitCondStmt(EMxStarParser.CondStmtContext ctx) {
-        return super.visitCondStmt(ctx);
+        return visit(ctx.conditionStatement());
     }
 
     @Override
     public Node visitLoopStmt(EMxStarParser.LoopStmtContext ctx) {
-        return super.visitLoopStmt(ctx);
+        return visit(ctx.loopStatement());
     }
 
     @Override
     public Node visitJumpStmt(EMxStarParser.JumpStmtContext ctx) {
-        return super.visitJumpStmt(ctx);
+        return visit(ctx.jumpStatement());
     }
 
     @Override
     public Node visitBlankStmt(EMxStarParser.BlankStmtContext ctx) {
-        return super.visitBlankStmt(ctx);
+        return null;
     }
 
     @Override
     public Node visitBlock(EMxStarParser.BlockContext ctx) {
-        return super.visitBlock(ctx);
+        List<Node> stmtsAndVarDecls = new ArrayList<>();
+        for (ParserRuleContext blockStatement : ctx.blockStatement()) {
+            Node node = visit(blockStatement);
+            if (node != null) stmtsAndVarDecls.add(node);
+        }
+        return new BlockStmtNode(stmtsAndVarDecls, Location.fromCtx(ctx));
     }
 
     @Override
     public Node visitStmt(EMxStarParser.StmtContext ctx) {
-        return super.visitStmt(ctx);
+        return visit(ctx.statement());
     }
 
     @Override
     public Node visitVarDeclStmt(EMxStarParser.VarDeclStmtContext ctx) {
-        return super.visitVarDeclStmt(ctx);
+        return visit(ctx.variableDeclaration());
     }
 
     @Override
     public Node visitConditionStatement(EMxStarParser.ConditionStatementContext ctx) {
-        return super.visitConditionStatement(ctx);
+        ExprNode cond = (ExprNode) visit(ctx.expression());
+        StmtNode thenStmt = (StmtNode) visit(ctx.thenStmt);
+        StmtNode elseStmt = (StmtNode) visit(ctx.elseStmt);
+        return new CondStmtNode(cond, thenStmt, elseStmt, Location.fromCtx(ctx));
     }
 
     @Override
     public Node visitWhileStmt(EMxStarParser.WhileStmtContext ctx) {
-        return super.visitWhileStmt(ctx);
+        ExprNode cond = (ExprNode) visit(ctx.expression());
+        StmtNode stmt = (StmtNode) visit(ctx.statement());
+        return new WhileStmtNode(cond, stmt, Location.fromCtx(ctx));
     }
 
     @Override
     public Node visitForStmt(EMxStarParser.ForStmtContext ctx) {
-        return super.visitForStmt(ctx);
+        ExprNode init = (ExprNode) visit(ctx.init);
+        ExprNode cond = (ExprNode) visit(ctx.cond);
+        ExprNode step = (ExprNode) visit(ctx.step);
+        StmtNode stmt = (StmtNode) visit(ctx.statement());
+        return new ForStmtNode(init, cond, step, stmt, Location.fromCtx(ctx));
     }
 
     @Override
     public Node visitContinueStmt(EMxStarParser.ContinueStmtContext ctx) {
-        return super.visitContinueStmt(ctx);
+        return new ContinueStmtNode(Location.fromCtx(ctx));
     }
 
     @Override
     public Node visitBreakStmt(EMxStarParser.BreakStmtContext ctx) {
-        return super.visitBreakStmt(ctx);
+        return new BreakStmtNode(Location.fromCtx(ctx));
     }
 
     @Override
     public Node visitReturnStmt(EMxStarParser.ReturnStmtContext ctx) {
-        return super.visitReturnStmt(ctx);
+        ExprNode expr;
+        if (ctx.expression() != null) expr = (ExprNode) visit(ctx.expression());
+        else expr = null;
+        return new ReturnStmtNode(expr, Location.fromCtx(ctx));
     }
 
     @Override
     public Node visitNewExpr(EMxStarParser.NewExprContext ctx) {
-        return super.visitNewExpr(ctx);
+        return visit(ctx.creator());
     }
 
     @Override
     public Node visitPrefixExpr(EMxStarParser.PrefixExprContext ctx) {
-        return super.visitPrefixExpr(ctx);
+        PrefixExprNode.PrefixOps op;
+        switch (ctx.op.getText()) {
+            case "++" : op = PrefixExprNode.PrefixOps.PREFIX_INC; break;
+            case "--" : op = PrefixExprNode.PrefixOps.PREFIX_DEC; break;
+            case "+"  : op = PrefixExprNode.PrefixOps.POS; break;
+            case "-"  : op = PrefixExprNode.PrefixOps.NEG; break;
+            case "!"  : op = PrefixExprNode.PrefixOps.LOGIC_NOT; break;
+            case "~"  : op = PrefixExprNode.PrefixOps.BITWISE_NOT; break;
+            default   : throw new CompilerError(Location.fromCtx(ctx), "Unknown prefix operator");
+        }
+        ExprNode expr = (ExprNode) visit(ctx.expression());
+        return new PrefixExprNode(op, expr, Location.fromCtx(ctx));
     }
 
     @Override
     public Node visitPrimaryExpr(EMxStarParser.PrimaryExprContext ctx) {
-        return super.visitPrimaryExpr(ctx);
+        return visit(ctx.primaryExpression());
     }
 
     @Override
     public Node visitSubscriptExpr(EMxStarParser.SubscriptExprContext ctx) {
-        return super.visitSubscriptExpr(ctx);
+        ExprNode arr = (ExprNode) visit(ctx.arr);
+        ExprNode sub = (ExprNode) visit(ctx.sub);
+        return new SubscriptExprNode(arr, sub, Location.fromCtx(ctx));
     }
 
     @Override
     public Node visitSuffixExpr(EMxStarParser.SuffixExprContext ctx) {
-        return super.visitSuffixExpr(ctx);
+        SuffixExprNode.SuffixOps op;
+        switch (ctx.op.getText()) {
+            case "++" : op = SuffixExprNode.SuffixOps.SUFFIX_INC; break;
+            case "--" : op = SuffixExprNode.SuffixOps.SUFFIX_DEC; break;
+            default   : throw new CompilerError(Location.fromCtx(ctx), "Unknown suffix operator");
+        }
+        ExprNode expr = (ExprNode) visit(ctx.expression());
+        return new SuffixExprNode(op, expr, Location.fromCtx(ctx));
     }
 
     @Override
     public Node visitBinaryExpr(EMxStarParser.BinaryExprContext ctx) {
-        return super.visitBinaryExpr(ctx);
+        BinaryExprNode.BinaryOps op;
+        switch (ctx.op.getText()) {
+            case "*"  : op = BinaryExprNode.BinaryOps.MUL; break;
+            case "/"  : op = BinaryExprNode.BinaryOps.DIV; break;
+            case "%"  : op = BinaryExprNode.BinaryOps.MOD; break;
+            case "+"  : op = BinaryExprNode.BinaryOps.ADD; break;
+            case "-"  : op = BinaryExprNode.BinaryOps.SUB; break;
+            case "<<" : op = BinaryExprNode.BinaryOps.SHL; break;
+            case ">>" : op = BinaryExprNode.BinaryOps.SHR; break;
+            case "<"  : op = BinaryExprNode.BinaryOps.LESS; break;
+            case ">"  : op = BinaryExprNode.BinaryOps.GREATER; break;
+            case "<=" : op = BinaryExprNode.BinaryOps.LESS_EQUAL; break;
+            case ">=" : op = BinaryExprNode.BinaryOps.GREATER_EQUAL; break;
+            case "==" : op = BinaryExprNode.BinaryOps.EQUAL; break;
+            case "!=" : op = BinaryExprNode.BinaryOps.INEQUAL; break;
+            case "&"  : op = BinaryExprNode.BinaryOps.BITWISE_AND; break;
+            case "^"  : op = BinaryExprNode.BinaryOps.BITWISE_XOR; break;
+            case "|"  : op = BinaryExprNode.BinaryOps.BITWISE_OR; break;
+            case "&&" : op = BinaryExprNode.BinaryOps.LOGIC_AND; break;
+            case "||" : op = BinaryExprNode.BinaryOps.LOGIC_OR; break;
+            default   : throw new CompilerError(Location.fromCtx(ctx), "Unknown binary operator");
+        }
+        ExprNode lhs = (ExprNode) visit(ctx.lhs);
+        ExprNode rhs = (ExprNode) visit(ctx.rhs);
+        return new BinaryExprNode(op, lhs, rhs, Location.fromCtx(ctx));
     }
 
     @Override
     public Node visitMemberAccessExpr(EMxStarParser.MemberAccessExprContext ctx) {
-        return super.visitMemberAccessExpr(ctx);
+        ExprNode expr = (ExprNode) visit(ctx.expression());
+        String member = ctx.Identifier().getText();
+        return new MemberAccessExprNode(expr, member, Location.fromCtx(ctx));
     }
 
     @Override
     public Node visitFuncCallExpr(EMxStarParser.FuncCallExprContext ctx) {
-        return super.visitFuncCallExpr(ctx);
+        ExprNode func = (ExprNode) visit(ctx.expression());
+        List<ExprNode> args = new ArrayList<>();
+        for (ParserRuleContext parameter : ctx.parameterList().expression()) {
+            args.add((ExprNode) visit(parameter));
+        }
+        return new FuncCallExprNode(func, args, Location.fromCtx(ctx));
     }
 
     @Override
     public Node visitAssignExpr(EMxStarParser.AssignExprContext ctx) {
-        return super.visitAssignExpr(ctx);
+        ExprNode lhs = (ExprNode) visit(ctx.lhs);
+        ExprNode rhs = (ExprNode) visit(ctx.rhs);
+        return new AssignExprNode(lhs, rhs, Location.fromCtx(ctx));
     }
 
     @Override
     public Node visitIdentifierExpr(EMxStarParser.IdentifierExprContext ctx) {
-        return super.visitIdentifierExpr(ctx);
+        return new IdentifierExprNode(ctx.Identifier().getText(), Location.fromCtx(ctx));
     }
 
     @Override
     public Node visitConstExpr(EMxStarParser.ConstExprContext ctx) {
-        return super.visitConstExpr(ctx);
+        return visit(ctx.constant());
     }
 
     @Override
     public Node visitSubExpr(EMxStarParser.SubExprContext ctx) {
-        return super.visitSubExpr(ctx);
+        return visit(ctx.expression());
     }
 
     @Override
     public Node visitIntConst(EMxStarParser.IntConstContext ctx) {
-        return super.visitIntConst(ctx);
+        int value;
+        try {
+            value = Integer.parseInt(ctx.getText());
+        }
+        catch (Exception e) {
+            throw new SemanticError(Location.fromCtx(ctx), "Invalid integer constant: " + e);
+        }
+        return new IntConstExprNode(value, Location.fromCtx(ctx));
     }
 
     @Override
     public Node visitStringConst(EMxStarParser.StringConstContext ctx) {
-        return super.visitStringConst(ctx);
+        return new StringConstExprNode(ctx.getText(), Location.fromCtx(ctx));
     }
 
     @Override
     public Node visitNullLiteral(EMxStarParser.NullLiteralContext ctx) {
-        return super.visitNullLiteral(ctx);
+        return new NullExprNode(Location.fromCtx(ctx));
     }
 
     @Override
     public Node visitBoolConst(EMxStarParser.BoolConstContext ctx) {
-        return super.visitBoolConst(ctx);
+        boolean value;
+        switch (ctx.getText()) {
+            case "True"  : value = true; break;
+            case "False" : value = false; break;
+            default      : throw new CompilerError(Location.fromCtx(ctx), "Unknown boolean constant");
+        }
+        return new BoolConstExprNode(value, Location.fromCtx(ctx));
     }
 
     @Override
     public Node visitErrorCreator(EMxStarParser.ErrorCreatorContext ctx) {
-        return super.visitErrorCreator(ctx);
+        throw new SemanticError(Location.fromCtx(ctx), "Invalid creator for new expression");
     }
 
     @Override
@@ -288,6 +388,7 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
         return super.visitNonArrayCreator(ctx);
     }
 
+    // no use
     @Override
     public Node visitParameterList(EMxStarParser.ParameterListContext ctx) {
         return super.visitParameterList(ctx);

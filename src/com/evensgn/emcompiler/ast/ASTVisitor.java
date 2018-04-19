@@ -14,7 +14,6 @@ public interface ASTVisitor {
     void visit(ContinueStmtNode node);
     void visit(BreakStmtNode node);
     void visit(ReturnStmtNode node);
-    void visit(BlankStmtNode node);
     void visit(SuffixExprNode node);
     void visit(FuncCallExprNode node);
     void visit(SubscriptExprNode node);

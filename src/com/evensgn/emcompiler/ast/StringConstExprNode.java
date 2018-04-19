@@ -1,12 +1,12 @@
 package com.evensgn.emcompiler.ast;
 
 public class StringConstExprNode extends ConstExprNode {
-    private Location location;
     private String value;
+    private Location location;
 
-    public StringConstExprNode(Location location, String value) {
-        this.location = location;
+    public StringConstExprNode(String value, Location location) {
         this.value = value;
+        this.location = location;
     }
 
     public String getValue() {

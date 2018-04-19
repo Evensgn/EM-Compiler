@@ -1,12 +1,12 @@
 package com.evensgn.emcompiler.ast;
 
 public class ClassTypeNode extends TypeNode {
-    private Location location;
     private String name;
+    private Location location;
 
-    public ClassTypeNode(Location location, String name) {
-        this.location = location;
+    public ClassTypeNode(String name, Location location) {
         this.name = name;
+        this.location = location;
     }
 
     public String getName() {

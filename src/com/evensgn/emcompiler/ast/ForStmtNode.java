@@ -3,12 +3,14 @@ package com.evensgn.emcompiler.ast;
 public class ForStmtNode extends LoopStmtNode {
     private ExprNode init, cond, step;
     private StmtNode stmt;
+    private Location location;
 
-    public ForStmtNode(ExprNode init, ExprNode cond, ExprNode step, StmtNode stmt) {
+    public ForStmtNode(ExprNode init, ExprNode cond, ExprNode step, StmtNode stmt, Location location) {
         this.init = init;
         this.cond = cond;
         this.step = step;
         this.stmt = stmt;
+        this.location = location;
     }
 
     public ExprNode getInit() {
@@ -29,7 +31,7 @@ public class ForStmtNode extends LoopStmtNode {
 
     @Override
     public Location location() {
-        return init.location();
+        return location;
     }
 
     @Override

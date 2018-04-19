@@ -1,12 +1,12 @@
 package com.evensgn.emcompiler.ast;
 
 public class BoolConstExprNode extends ConstExprNode {
-    private Location location;
     private boolean value;
+    private Location location;
 
-    public BoolConstExprNode(Location location, boolean value) {
-        this.location = location;
+    public BoolConstExprNode(boolean value, Location location) {
         this.value = value;
+        this.location = location;
     }
 
     public boolean getValue() {

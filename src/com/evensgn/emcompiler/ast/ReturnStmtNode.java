@@ -1,12 +1,12 @@
 package com.evensgn.emcompiler.ast;
 
 public class ReturnStmtNode extends JumpStmtNode {
-    private Location location;
     private ExprNode expr;
+    private Location location;
 
-    public ReturnStmtNode(Location location, ExprNode expr) {
-        this.location = location;
+    public ReturnStmtNode(ExprNode expr, Location location) {
         this.expr = expr;
+        this.location = location;
     }
 
     public ExprNode getExpr() {

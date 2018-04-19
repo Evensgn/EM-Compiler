@@ -5,16 +5,18 @@ public class BinaryExprNode extends ExprNode {
         MUL, DIV, MOD,
         ADD, SUB, SHL, SHR,
         GREATER, LESS, GREATER_EQUAL, LESS_EQUAL, EQUAL, INEQUAL,
-        LOGIC_AND, LOGIC_XOR, LOGIC_OR, BOOL_AND, BOOL_OR
+        BITWISE_AND, BITWISE_OR, BITWISE_XOR, LOGIC_AND, LOGIC_OR
     }
 
-    private ExprNode lhs, rhs;
     private BinaryOps op;
+    private ExprNode lhs, rhs;
+    private Location location;
 
-    public BinaryExprNode(ExprNode lhs, ExprNode rhs, BinaryOps op) {
+    public BinaryExprNode(BinaryOps op, ExprNode lhs, ExprNode rhs, Location location) {
+        this.op = op;
         this.lhs = lhs;
         this.rhs = rhs;
-        this.op = op;
+        this.location = location;
     }
 
     public ExprNode getLhs() {
@@ -31,7 +33,7 @@ public class BinaryExprNode extends ExprNode {
 
     @Override
     public Location location() {
-        return lhs.location();
+        return location;
     }
 
     @Override

@@ -84,14 +84,11 @@ blockStatement
     ;
 
 conditionStatement
-    :   If '(' expression ')' statement (Else statement)?
+    :   If '(' expression ')' thenStmt=statement (Else elseStmt=statement)?
     ;
 
 loopStatement
-    :   While '(' expression ')' statement statement    # whileStmt
-    |   For '(' declinit=variableDeclaration ';'
-                cond=expression? ';'
-                step=expression? ')' statement          # forStmt
+    :   While '(' expression ')' statement              # whileStmt
     |   For '(' init=expression? ';'
                 cond=expression? ';'
                 step=expression? ')' statement          # forStmt
@@ -105,27 +102,27 @@ jumpStatement
 
 // ---- Expression ----
 expression
-    :   expression op=('++' | '--')                     # suffixExpr
-    |   expression '(' parameterList? ')'               # funcCallExpr
-    |   expression '[' expression ']'                   # subscriptExpr
-    |   expression '.' Identifier                       # memberAccessExpr
-    |   <assoc=right> op=('++'|'--') expression         # prefixExpr
-    |   <assoc=right> op=('+' | '-') expression         # prefixExpr
-    |   <assoc=right> op=('!' | '~') expression         # prefixExpr
-    |   <assoc=right> New creator                       # newExpr
-    |   expression op=('*' | '/' | '%') expression      # binaryExpr
-    |   expression op=('+' | '-') expression            # binaryExpr
-    |   expression op=('<<'|'>>') expression            # binaryExpr
-    |   expression op=('<' | '>') expression            # binaryExpr
-    |   expression op=('<='|'>=') expression            # binaryExpr
-    |   expression op=('=='|'!=') expression            # binaryExpr
-    |   expression op='&' expression                    # binaryExpr
-    |   expression op='^' expression                    # binaryExpr
-    |   expression op='|' expression                    # binaryExpr
-    |   expression op='&&' expression                   # binaryExpr
-    |   expression op='||' expression                   # binaryExpr
-    |   <assoc=right> expression op='=' expression      # assignExpr
-    |   primaryExpression                               # primaryExpr
+    :   expression op=('++' | '--')                             # suffixExpr
+    |   expression '(' parameterList? ')'                       # funcCallExpr
+    |   arr=expression '[' sub=expression ']'                   # subscriptExpr
+    |   expression '.' Identifier                               # memberAccessExpr
+    |   <assoc=right> op=('++'|'--') expression                 # prefixExpr
+    |   <assoc=right> op=('+' | '-') expression                 # prefixExpr
+    |   <assoc=right> op=('!' | '~') expression                 # prefixExpr
+    |   <assoc=right> New creator                               # newExpr
+    |   lhs=expression op=('*' | '/' | '%') rhs=expression      # binaryExpr
+    |   lhs=expression op=('+' | '-') rhs=expression            # binaryExpr
+    |   lhs=expression op=('<<'|'>>') rhs=expression            # binaryExpr
+    |   lhs=expression op=('<' | '>') rhs=expression            # binaryExpr
+    |   lhs=expression op=('<='|'>=') rhs=expression            # binaryExpr
+    |   lhs=expression op=('=='|'!=') rhs=expression            # binaryExpr
+    |   lhs=expression op='&' rhs=expression                    # binaryExpr
+    |   lhs=expression op='^' rhs=expression                    # binaryExpr
+    |   lhs=expression op='|' rhs=expression                    # binaryExpr
+    |   lhs=expression op='&&' rhs=expression                   # binaryExpr
+    |   lhs=expression op='||' rhs=expression                   # binaryExpr
+    |   <assoc=right> lhs=expression op='=' rhs=expression      # assignExpr
+    |   primaryExpression                                       # primaryExpr
     ;
 
 primaryExpression

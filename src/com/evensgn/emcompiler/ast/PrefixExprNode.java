@@ -7,10 +7,12 @@ public class PrefixExprNode extends ExprNode {
 
     private PrefixOps op;
     private ExprNode expr;
+    private Location location;
 
-    public PrefixExprNode(PrefixOps op, ExprNode expr) {
+    public PrefixExprNode(PrefixOps op, ExprNode expr, Location location) {
         this.op = op;
         this.expr = expr;
+        this.location = location;
     }
 
     public PrefixOps getOp() {
@@ -23,7 +25,7 @@ public class PrefixExprNode extends ExprNode {
 
     @Override
     public Location location() {
-        return expr.location();
+        return location;
     }
 
     @Override

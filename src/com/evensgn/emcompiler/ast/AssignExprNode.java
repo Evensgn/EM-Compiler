@@ -2,10 +2,12 @@ package com.evensgn.emcompiler.ast;
 
 public class AssignExprNode extends ExprNode {
     private ExprNode lhs, rhs;
+    private Location location;
 
-    public AssignExprNode(ExprNode lhs, ExprNode rhs) {
+    public AssignExprNode(ExprNode lhs, ExprNode rhs, Location location) {
         this.lhs = lhs;
         this.rhs = rhs;
+        this.location = location;
     }
 
     public ExprNode getLhs() {
@@ -18,7 +20,7 @@ public class AssignExprNode extends ExprNode {
 
     @Override
     public Location location() {
-        return lhs.location();
+        return location;
     }
 
     @Override

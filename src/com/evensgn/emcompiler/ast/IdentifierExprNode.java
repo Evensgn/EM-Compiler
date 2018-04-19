@@ -1,16 +1,12 @@
 package com.evensgn.emcompiler.ast;
 
 public class IdentifierExprNode extends ExprNode {
-    private Location location;
     private String identifier;
+    private Location location;
 
-    public IdentifierExprNode(Location location, String identifier) {
-        this.location = location;
+    public IdentifierExprNode(String identifier, Location location) {
         this.identifier = identifier;
-    }
-
-    public Location getLocation() {
-        return location;
+        this.location = location;
     }
 
     public String getIdentifier() {
