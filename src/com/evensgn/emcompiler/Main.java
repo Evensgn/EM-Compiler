@@ -70,11 +70,11 @@ public class Main {
         if (isPrintConfig) printConfig();
 
         InputStream inS;
-        OutputStream outS;
+        PrintStream outS;
         if (inFile == null) inS = System.in;
         else inS = new FileInputStream(inFile);
         if (outFile == null) outS = System.out;
-        else outS = new FileOutputStream(outFile);
+        else outS = new PrintStream(new FileOutputStream(outFile));
 
         Compiler compiler = new Compiler(inS, outS);
         compiler.run();

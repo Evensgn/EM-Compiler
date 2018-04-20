@@ -7,8 +7,9 @@ package com.evensgn.emcompiler.ast;
 public class ExprStmtNode extends StmtNode {
     private ExprNode expr;
 
-    public ExprStmtNode(ExprNode expr) {
+    public ExprStmtNode(ExprNode expr, Location location) {
         this.expr = expr;
+        this.location = location;
     }
 
     public ExprNode getExpr() {

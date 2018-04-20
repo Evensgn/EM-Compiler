@@ -1,7 +1,7 @@
 package com.evensgn.emcompiler.compiler; 
 
 import static org.junit.Assert.*;
-import org.junit.Test; 
+import org.junit.Test;
 import org.junit.Before; 
 import org.junit.After;
 
@@ -28,15 +28,6 @@ public class CompilerTest {
 
     @Test
     public void test0() throws Exception {
-        assertEquals(1, 1);
-    }
 
-    @Test
-    public void test1() throws Exception {
-        InputStream inS = new FileInputStream("testcase/test.mx");
-        OutputStream outS = System.out;
-        Compiler compiler = new Compiler(inS, outS);
-        compiler.run();
     }
-
 }

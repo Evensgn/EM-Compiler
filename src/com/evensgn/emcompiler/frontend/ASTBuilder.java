@@ -43,9 +43,11 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
         String name = ctx.Identifier().getText();
         List<VarDeclNode> parameterList = new ArrayList<>();
         Node paraDecl;
-        for (ParserRuleContext parameterDeclaration : ctx.parameterDeclarationList().parameterDeclaration()) {
-            paraDecl = visit(parameterDeclaration);
-            parameterList.add((VarDeclNode) paraDecl);
+        if (ctx.parameterDeclarationList() != null) {
+            for (ParserRuleContext parameterDeclaration : ctx.parameterDeclarationList().parameterDeclaration()) {
+                paraDecl = visit(parameterDeclaration);
+                parameterList.add((VarDeclNode) paraDecl);
+            }
         }
         BlockStmtNode body = (BlockStmtNode) visit(ctx.block());
         return new FuncDeclNode(returnType, name, parameterList, body, Location.fromCtx(ctx));
@@ -145,7 +147,8 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
 
     @Override
     public Node visitExprStmt(EMxStarParser.ExprStmtContext ctx) {
-        return visit(ctx.expression());
+        ExprNode expr = (ExprNode) visit(ctx.expression());
+        return new ExprStmtNode(expr, Location.fromCtx(ctx));
     }
 
     @Override
@@ -192,7 +195,9 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
     public Node visitConditionStatement(EMxStarParser.ConditionStatementContext ctx) {
         ExprNode cond = (ExprNode) visit(ctx.expression());
         StmtNode thenStmt = (StmtNode) visit(ctx.thenStmt);
-        StmtNode elseStmt = (StmtNode) visit(ctx.elseStmt);
+        StmtNode elseStmt;
+        if (ctx.elseStmt != null) elseStmt = (StmtNode) visit(ctx.elseStmt);
+        else elseStmt = null;
         return new CondStmtNode(cond, thenStmt, elseStmt, Location.fromCtx(ctx));
     }
 
@@ -205,9 +210,13 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
 
     @Override
     public Node visitForStmt(EMxStarParser.ForStmtContext ctx) {
-        ExprNode init = (ExprNode) visit(ctx.init);
-        ExprNode cond = (ExprNode) visit(ctx.cond);
-        ExprNode step = (ExprNode) visit(ctx.step);
+        ExprNode init, cond, step;
+        if (ctx.init != null) init = (ExprNode) visit(ctx.init);
+        else init = null;
+        if (ctx.cond != null) cond = (ExprNode) visit(ctx.cond);
+        else cond = null;
+        if (ctx.step != null) step = (ExprNode) visit(ctx.step);
+        else step = null;
         StmtNode stmt = (StmtNode) visit(ctx.statement());
         return new ForStmtNode(init, cond, step, stmt, Location.fromCtx(ctx));
     }
@@ -315,8 +324,10 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
     public Node visitFuncCallExpr(EMxStarParser.FuncCallExprContext ctx) {
         ExprNode func = (ExprNode) visit(ctx.expression());
         List<ExprNode> args = new ArrayList<>();
-        for (ParserRuleContext parameter : ctx.parameterList().expression()) {
-            args.add((ExprNode) visit(parameter));
+        if (ctx.parameterList() != null) {
+            for (ParserRuleContext parameter : ctx.parameterList().expression()) {
+                args.add((ExprNode) visit(parameter));
+            }
         }
         return new FuncCallExprNode(func, args, Location.fromCtx(ctx));
     }

@@ -130,8 +130,13 @@ public class ASTPrinter implements ASTVisitor {
         node.getCond().accept(this);
         println(">>> thenStmt:");
         node.getThenStmt().accept(this);
-        println(">>> elseStmt:");
-        node.getElseStmt().accept(this);
+        if (node.getElseStmt() != null) {
+            println(">>> elseStmt:");
+            node.getElseStmt().accept(this);
+        }
+        else {
+            println(">>> elseStmt: null");
+        }
         unindent();
     }
 
@@ -150,12 +155,27 @@ public class ASTPrinter implements ASTVisitor {
     public void visit(ForStmtNode node) {
         indent();
         printf("@ ForStmtNode %s:\n", node.location().toString());
-        println(">>> init:");
-        node.getInit().accept(this);
-        println(">>> cond:");
-        node.getCond().accept(this);
-        println(">>> step:");
-        node.getStep().accept(this);
+        if (node.getInit() != null) {
+            println(">>> init:");
+            node.getInit().accept(this);
+        }
+        else {
+            println(">>> init: null");
+        }
+        if (node.getCond() != null) {
+            println(">>> cond:");
+            node.getCond().accept(this);
+        }
+        else {
+            println(">>> cond: null");
+        }
+        if (node.getStep() != null) {
+            println(">>> step:");
+            node.getStep().accept(this);
+        }
+        else {
+            println(">>> step: null");
+        }
         println(">>> stmt:");
         node.getStmt().accept(this);
         unindent();
