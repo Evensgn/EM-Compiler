@@ -153,8 +153,13 @@ public class ASTPrinter implements ASTVisitor {
         printf("@ CondStmtNode %s:\n", node.location().toString());
         println(">>> cond:");
         node.getCond().accept(this);
-        println(">>> thenStmt:");
-        node.getThenStmt().accept(this);
+        if (node.getThenStmt() != null) {
+            println(">>> thenStmt:");
+            node.getThenStmt().accept(this);
+        }
+        else {
+            println(">>> thenStmt: null");
+        }
         if (node.getElseStmt() != null) {
             println(">>> elseStmt:");
             node.getElseStmt().accept(this);
@@ -171,8 +176,13 @@ public class ASTPrinter implements ASTVisitor {
         printf("@ WhileStmtNode %s:\n", node.location().toString());
         println(">>> cond:");
         node.getCond().accept(this);
-        println(">>> stmt:");
-        node.getStmt().accept(this);
+        if (node.getStmt() != null) {
+            println(">>> stmt:");
+            node.getStmt().accept(this);
+        }
+        else {
+            println(">>> stmt: null");
+        }
         unindent();
     }
 
@@ -201,8 +211,13 @@ public class ASTPrinter implements ASTVisitor {
         else {
             println(">>> step: null");
         }
-        println(">>> stmt:");
-        node.getStmt().accept(this);
+        if (node.getStmt() != null) {
+            println(">>> stmt:");
+            node.getStmt().accept(this);
+        }
+        else {
+            println(">>> stmt: null");
+        }
         unindent();
     }
 
