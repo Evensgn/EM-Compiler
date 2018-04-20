@@ -15,7 +15,7 @@ public class CondStmtNode extends StmtNode {
         this.location = location;
     }
 
-    public ExprNode getcond() {
+    public ExprNode getCond() {
         return cond;
     }
 

@@ -11,4 +11,9 @@ public class ArrayType extends Type {
     public Type getBaseType() {
         return baseType;
     }
+
+    @Override
+    public String toString() {
+        return String.format("FunctionType(%s)", baseType.toString());
+    }
 }

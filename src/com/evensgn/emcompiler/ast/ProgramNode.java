@@ -10,6 +10,10 @@ public class ProgramNode extends Node {
         this.location = location;
     }
 
+    public List<DeclNode> getDecls() {
+        return decls;
+    }
+
     @Override
     public void accept(ASTVisitor visitor) {
         visitor.visit(this);

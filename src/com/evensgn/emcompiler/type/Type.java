@@ -9,7 +9,7 @@ abstract public class Type {
         VOID, INT, BOOL, STRING
     }
 
-    protected HyperTypes hyperType;
+    HyperTypes hyperType;
 
     public HyperTypes getHyperType() {
         return hyperType;

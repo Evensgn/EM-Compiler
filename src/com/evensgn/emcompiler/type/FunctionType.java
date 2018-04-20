@@ -11,4 +11,9 @@ public class FunctionType extends Type {
     public String getName() {
         return name;
     }
+
+    @Override
+    public String toString() {
+        return String.format("FunctionType(%s)", name);
+    }
 }

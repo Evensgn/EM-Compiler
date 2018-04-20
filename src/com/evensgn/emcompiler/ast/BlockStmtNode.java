@@ -15,6 +15,14 @@ public class BlockStmtNode extends StmtNode {
         this.location = location;
     }
 
+    public List<Node> getStmtsAndVarDecls() {
+        return stmtsAndVarDecls;
+    }
+
+    public List<StmtNode> getStmts() {
+        return stmts;
+    }
+
     @Override
     public void accept(ASTVisitor visitor) {
         visitor.visit(this);

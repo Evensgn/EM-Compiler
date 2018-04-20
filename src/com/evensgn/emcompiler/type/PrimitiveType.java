@@ -11,4 +11,9 @@ public class PrimitiveType extends Type {
     public PrimitiveTypes getType() {
         return type;
     }
+
+    @Override
+    public String toString() {
+        return String.format("PrimitiveType(%s)", type.toString());
+    }
 }
