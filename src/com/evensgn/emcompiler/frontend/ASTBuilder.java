@@ -386,8 +386,8 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
     public Node visitBoolConst(EMxStarParser.BoolConstContext ctx) {
         boolean value;
         switch (ctx.getText()) {
-            case "True"  : value = true; break;
-            case "False" : value = false; break;
+            case "true"  : value = true; break;
+            case "false" : value = false; break;
             default      : throw new CompilerError(Location.fromCtx(ctx), "Unknown boolean constant");
         }
         return new BoolConstExprNode(value, Location.fromCtx(ctx));
