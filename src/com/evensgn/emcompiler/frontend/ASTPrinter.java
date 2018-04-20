@@ -299,11 +299,16 @@ public class ASTPrinter implements ASTVisitor {
         printf("@ NewExprNode %s:\n", node.location().toString());
         println(">>> newType:");
         node.getNewType().accept(this);
-        println(">>> dims:");
-        for (ExprNode dim : node.getDims()) {
-            dim.accept(this);
+        if (node.getNumDim() != 0) {
+            println(">>> dims:");
+            for (ExprNode dim : node.getDims()) {
+                dim.accept(this);
+            }
+            printf(">>> numDim: %d\n", node.getNumDim());
         }
-        printf(">>> numDim: %d\n", node.getNumDim());
+        else {
+            println(">>> numDim: 0");
+        }
         unindent();
     }
 
