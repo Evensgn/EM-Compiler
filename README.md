@@ -17,6 +17,4 @@ Options:
   -v, --version                 Display compiler version information
   -c, --config                  Display compiler configurations
   -o <file>                     Place the output into <file>
-compiler is running
-compiler finished.
 ```
