@@ -57,12 +57,22 @@ public class ASTPrinter implements ASTVisitor {
         indent();
         printf("@ FuncDeclNode %s:\n", node.location().toString());
         printf(">>> isContruct: %b\n", node.isConstruct());
-        println(">>> returnType:");
-        node.getReturnType().accept(this);
+        if (node.getReturnType() != null) {
+            println(">>> returnType:");
+            node.getReturnType().accept(this);
+        }
+        else {
+            println(">>> returnType: null");
+        }
         printf(">>> name: %s\n", node.getName());
-        println(">>> parameterList:");
-        for (VarDeclNode parameter : node.getParameterList()) {
-            parameter.accept(this);
+        if (!(node.getParameterList().isEmpty())) {
+            println(">>> parameterList:");
+            for (VarDeclNode parameter : node.getParameterList()) {
+                parameter.accept(this);
+            }
+        }
+        else {
+            println(">>> parameterList: null");
         }
         println(">>> body:");
         node.getBody().accept(this);
@@ -74,13 +84,23 @@ public class ASTPrinter implements ASTVisitor {
         indent();
         printf("@ ClassDeclNode %s:\n", node.location().toString());
         printf(">>> name: %s\n", node.getName());
-        println(">>> varMember:");
-        for (VarDeclNode varMem : node.getVarMember()) {
-            varMem.accept(this);
+        if (!(node.getVarMember().isEmpty())) {
+            println(">>> varMember:");
+            for (VarDeclNode varMem : node.getVarMember()) {
+                varMem.accept(this);
+            }
         }
-        println(">>> funcMember:");
-        for (FuncDeclNode funcMem : node.getFuncMember()) {
-            funcMem.accept(this);
+        else {
+            println(">>> varMember: null");
+        }
+        if (!(node.getFuncMember().isEmpty())) {
+            println(">>> funcMember:");
+            for (FuncDeclNode funcMem : node.getFuncMember()) {
+                funcMem.accept(this);
+            }
+        }
+        else {
+            println(">>> funcMember: null");
         }
         unindent();
     }
@@ -106,9 +126,14 @@ public class ASTPrinter implements ASTVisitor {
     public void visit(BlockStmtNode node) {
         indent();
         printf("@ BlockStmtNode %s:\n", node.location().toString());
-        println(">>> stmtsAndVarDecls:");
-        for (Node item : node.getStmtsAndVarDecls()) {
-            item.accept(this);
+        if (!(node.getStmtsAndVarDecls().isEmpty())) {
+            println(">>> stmtsAndVarDecls:");
+            for (Node item : node.getStmtsAndVarDecls()) {
+                item.accept(this);
+            }
+        }
+        else {
+            println(">>> stmtsAndVarDecls: null");
         }
         unindent();
     }
@@ -225,9 +250,14 @@ public class ASTPrinter implements ASTVisitor {
         printf("@ FuncCallExprNode %s:\n", node.location().toString());
         println(">>> func:");
         node.getFunc().accept(this);
-        println(">>> args:");
-        for (ExprNode arg : node.getArgs()) {
-            arg.accept(this);
+        if (!(node.getArgs().isEmpty())) {
+            println(">>> args:");
+            for (ExprNode arg : node.getArgs()) {
+                arg.accept(this);
+            }
+        }
+        else {
+            println(">>> args: null");
         }
         unindent();
     }

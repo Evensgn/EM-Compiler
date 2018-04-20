@@ -19,10 +19,12 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
     @Override
     public Node visitProgram(EMxStarParser.ProgramContext ctx) {
         List<DeclNode> decls = new ArrayList<>();
-        for (ParserRuleContext programSection : ctx.programSection()) {
-            Node decl = visit(programSection);
-            if (decl instanceof VarDeclListNode) decls.addAll(((VarDeclListNode) decl).getDecls());
-            else decls.add((DeclNode) decl);
+        if (ctx.programSection() != null) {
+            for (ParserRuleContext programSection : ctx.programSection()) {
+                Node decl = visit(programSection);
+                if (decl instanceof VarDeclListNode) decls.addAll(((VarDeclListNode) decl).getDecls());
+                else decls.add((DeclNode) decl);
+            }
         }
         return new ProgramNode(decls, Location.fromCtx(ctx));
     }
@@ -59,11 +61,13 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
         List<VarDeclNode> varMember = new ArrayList<>();
         List<FuncDeclNode> funcMember = new ArrayList<>();
         Node memberDecl;
-        for (ParserRuleContext memberDeclaration : ctx.memberDeclaration()) {
-            memberDecl = visit(memberDeclaration);
-            if (memberDecl instanceof VarDeclListNode) varMember.addAll(((VarDeclListNode) memberDecl).getDecls());
-            else if (memberDecl instanceof FuncDeclNode) funcMember.add((FuncDeclNode) memberDecl);
-            else throw new CompilerError(Location.fromCtx(ctx), "Unknown member declaration");
+        if (ctx.memberDeclaration() != null) {
+            for (ParserRuleContext memberDeclaration : ctx.memberDeclaration()) {
+                memberDecl = visit(memberDeclaration);
+                if (memberDecl instanceof VarDeclListNode) varMember.addAll(((VarDeclListNode) memberDecl).getDecls());
+                else if (memberDecl instanceof FuncDeclNode) funcMember.add((FuncDeclNode) memberDecl);
+                else throw new CompilerError(Location.fromCtx(ctx), "Unknown member declaration");
+            }
         }
         return new ClassDeclNode(name, varMember, funcMember, Location.fromCtx(ctx));
     }
@@ -174,9 +178,11 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
     @Override
     public Node visitBlock(EMxStarParser.BlockContext ctx) {
         List<Node> stmtsAndVarDecls = new ArrayList<>();
-        for (ParserRuleContext blockStatement : ctx.blockStatement()) {
-            Node node = visit(blockStatement);
-            if (node != null) stmtsAndVarDecls.add(node);
+        if (ctx.blockStatement() != null) {
+            for (ParserRuleContext blockStatement : ctx.blockStatement()) {
+                Node node = visit(blockStatement);
+                if (node != null) stmtsAndVarDecls.add(node);
+            }
         }
         return new BlockStmtNode(stmtsAndVarDecls, Location.fromCtx(ctx));
     }
