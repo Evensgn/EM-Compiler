@@ -5,6 +5,7 @@ import com.evensgn.emcompiler.frontend.ASTBuilder;
 import com.evensgn.emcompiler.frontend.ASTPrinter;
 import com.evensgn.emcompiler.parser.EMxStarLexer;
 import com.evensgn.emcompiler.parser.EMxStarParser;
+import com.evensgn.emcompiler.parser.SyntaxErrorListener;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -32,6 +33,8 @@ public class Compiler {
         EMxStarLexer lexer = new EMxStarLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         EMxStarParser parser = new EMxStarParser(tokens);
+        parser.removeErrorListeners();
+        parser.addErrorListener(new SyntaxErrorListener());
         ParseTree tree = parser.program();
         ASTBuilder astBuilder = new ASTBuilder();
         ast = (ProgramNode) astBuilder.visit(tree);

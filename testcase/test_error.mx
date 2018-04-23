@@ -1,0 +1,26 @@
+//class delc
+class Mo{
+	int ang;
+	int sec;
+	string world;
+}
+
+class RedBoy{
+	int num;
+}
+
+//global delc
+int age = 1000000;
+string eng = "Four score and seven years ago";
+
+
+//function delc
+int travel(){
+	int a = 10000000;
+	return a;
+}
+
+void journalists(string location){
+	if (location == "HongKong"){
+		print("naive!\n");
+		print("fast!\n");
