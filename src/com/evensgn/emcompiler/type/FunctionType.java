@@ -4,7 +4,7 @@ public class FunctionType extends Type {
     private String name;
 
     public FunctionType(String name) {
-        this.hyperType = HyperTypes.FUNCTION;
+        hyperType = HyperTypes.FUNCTION;
         this.name = name;
     }
 

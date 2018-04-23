@@ -2,10 +2,7 @@ package com.evensgn.emcompiler.frontend;
 
 import com.evensgn.emcompiler.ast.*;
 import com.evensgn.emcompiler.parser.*;
-import com.evensgn.emcompiler.type.ArrayType;
-import com.evensgn.emcompiler.type.ClassType;
-import com.evensgn.emcompiler.type.PrimitiveType;
-import com.evensgn.emcompiler.type.Type;
+import com.evensgn.emcompiler.type.*;
 import com.evensgn.emcompiler.utils.CompilerError;
 import com.evensgn.emcompiler.utils.SemanticError;
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -119,7 +116,7 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
     @Override
     public Node visitTypeTypeOrVoid(EMxStarParser.TypeTypeOrVoidContext ctx) {
         if (ctx.typeType() != null) return visit(ctx.typeType());
-        else return new TypeNode(new PrimitiveType(Type.PrimitiveTypes.VOID), Location.fromCtx(ctx));
+        else return new TypeNode(VoidType.getInstance(), Location.fromCtx(ctx));
     }
 
     @Override
@@ -136,12 +133,13 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
     @Override
     public Node visitNonArrayTypeType(EMxStarParser.NonArrayTypeTypeContext ctx) {
         if (ctx.Identifier() != null) return new TypeNode(new ClassType(ctx.Identifier().getText()), Location.fromCtx(ctx));
-        Type.PrimitiveTypes type;
-        if (ctx.Int() != null) type = Type.PrimitiveTypes.INT;
-        else if (ctx.Bool() != null) type = Type.PrimitiveTypes.BOOL;
-        else if (ctx.String() != null) type = Type.PrimitiveTypes.STRING;
+        Type type;
+        if (ctx.Int() != null) type = IntType.getInstance();
+        else if (ctx.Bool() != null) type = BoolType.getInstance();
+        else if (ctx.String() != null) type = VoidType.getInstance();
+        else if (ctx.Identifier() != null) type = new ClassType(ctx.Identifier().getText());
         else throw new CompilerError(Location.fromCtx(ctx), "Unknown primitive type");
-        return new TypeNode(new PrimitiveType(type), Location.fromCtx(ctx));
+        return new TypeNode(type, Location.fromCtx(ctx));
     }
 
     @Override

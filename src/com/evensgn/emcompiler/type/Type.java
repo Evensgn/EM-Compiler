@@ -2,11 +2,7 @@ package com.evensgn.emcompiler.type;
 
 abstract public class Type {
     public enum HyperTypes {
-        PRIMITIVE, CLASS, ARRAY, FUNCTION
-    }
-
-    public enum PrimitiveTypes {
-        VOID, INT, BOOL, STRING
+        VOID, INT, BOOL, STRING, CLASS, ARRAY, FUNCTION
     }
 
     HyperTypes hyperType;
