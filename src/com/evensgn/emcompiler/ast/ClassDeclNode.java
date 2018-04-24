@@ -7,7 +7,6 @@ import java.util.List;
  * @since 4/6/2018
  */
 public class ClassDeclNode extends DeclNode {
-    private String name;
     private List<VarDeclNode> varMember;
     private List<FuncDeclNode> funcMember;
 
@@ -16,10 +15,6 @@ public class ClassDeclNode extends DeclNode {
         this.varMember = varMember;
         this.funcMember = funcMember;
         this.location = location;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public List<VarDeclNode> getVarMember() {

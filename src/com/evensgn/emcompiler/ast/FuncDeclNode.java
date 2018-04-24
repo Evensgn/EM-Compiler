@@ -9,7 +9,6 @@ import java.util.List;
 public class FuncDeclNode extends DeclNode {
     private boolean isConstruct;
     private TypeNode returnType;
-    private String name;
     private List<VarDeclNode> parameterList;
     private BlockStmtNode body;
 
@@ -34,10 +33,6 @@ public class FuncDeclNode extends DeclNode {
 
     public TypeNode getReturnType() {
         return returnType;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public List<VarDeclNode> getParameterList() {

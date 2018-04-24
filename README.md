@@ -4,7 +4,7 @@
 
 | Source Language | Target Language |
 |:---------------:|:---------------:|
-| [Mx\*](https://acm.sjtu.edu.cn/w/images/9/93/Mx_language_manual.pdf) (a C-and-Java-like language) | Linux x86-64 Assembly in NASM |
+| [Mx\*](https://acm.sjtu.edu.cn/w/images/3/30/M_language_manual.pdf) (a C-and-Java-like language) | Linux x86-64 Assembly in NASM |
 
 ## Usage
 

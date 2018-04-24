@@ -77,6 +77,12 @@ public class Main {
         else outS = new PrintStream(new FileOutputStream(outFile));
 
         Compiler compiler = new Compiler(inS, outS);
-        compiler.run();
+        try {
+            compiler.run();
+        }
+        catch (Error e) {
+            System.err.println(e.getMessage());
+            System.exit(1);
+        }
     }
 }

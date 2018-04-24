@@ -41,9 +41,14 @@ public class ASTPrinter implements ASTVisitor {
     @Override
     public void visit(ProgramNode node) {
         printf("@ ProgramNode %s:\n", node.location().toString());
-        println(">>> decls:");
-        for (DeclNode decl : node.getDecls()) {
-            decl.accept(this);
+        if (!(node.getDecls().isEmpty())) {
+            println(">>> decls:");
+            for (DeclNode decl : node.getDecls()) {
+                decl.accept(this);
+            }
+        }
+        else {
+            println(">>> decls: null");
         }
     }
 

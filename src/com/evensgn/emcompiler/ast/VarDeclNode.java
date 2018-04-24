@@ -6,7 +6,6 @@ package com.evensgn.emcompiler.ast;
  */
 public class VarDeclNode extends DeclNode {
     private TypeNode type;
-    private String name;
     private ExprNode init;
 
     public VarDeclNode(TypeNode type, String name, ExprNode init, Location location) {
@@ -18,10 +17,6 @@ public class VarDeclNode extends DeclNode {
 
     public TypeNode getType() {
         return type;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public ExprNode getInit() {
