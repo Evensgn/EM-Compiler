@@ -11,6 +11,7 @@ import java.util.List;
 public class FuncEntity extends Entity {
     private List<VarEntity> parameters;
     private Type returnType;
+    private boolean isConstruct;
 
     public FuncEntity(String name, Type type) {
         super(name, type);
@@ -23,6 +24,7 @@ public class FuncEntity extends Entity {
             parameters.add(new VarEntity(paraDecl));
         }
         returnType = node.getReturnType().getType();
+        isConstruct = node.isConstruct();
     }
 
     public void setParameters(List<VarEntity> parameters) {
@@ -39,5 +41,9 @@ public class FuncEntity extends Entity {
 
     public Type getReturnType() {
         return returnType;
+    }
+
+    public boolean isConstruct() {
+        return isConstruct;
     }
 }

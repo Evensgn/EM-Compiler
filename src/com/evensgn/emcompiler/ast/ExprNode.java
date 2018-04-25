@@ -10,6 +10,14 @@ abstract public class ExprNode extends Node {
     private Type type;
     private boolean isLeftValue;
 
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    public void setLeftValue(boolean leftValue) {
+        isLeftValue = leftValue;
+    }
+
     public Type getType() {
         return type;
     }

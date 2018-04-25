@@ -1,6 +1,6 @@
 package com.evensgn.emcompiler.ast;
 
-import com.evensgn.emcompiler.scope.Entity;
+import com.evensgn.emcompiler.scope.Scope;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import java.util.List;
 public class BlockStmtNode extends StmtNode {
     private List<Node> stmtsAndVarDecls;
     private List<StmtNode> stmts;
-    private Entity scope;
+    private Scope scope;
 
     public BlockStmtNode(List<Node> stmtsAndVarDecls, Location location) {
         this.stmtsAndVarDecls = stmtsAndVarDecls;
@@ -22,11 +22,15 @@ public class BlockStmtNode extends StmtNode {
         return stmtsAndVarDecls;
     }
 
+    public void initScope(Scope parentScope) {
+        scope = new Scope(parentScope);
+    }
+
     public List<StmtNode> getStmts() {
         return stmts;
     }
 
-    public Entity getScope() {
+    public Scope getScope() {
         return scope;
     }
 

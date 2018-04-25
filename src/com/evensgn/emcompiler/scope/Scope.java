@@ -1,6 +1,8 @@
 package com.evensgn.emcompiler.scope;
 
+import com.evensgn.emcompiler.ast.Location;
 import com.evensgn.emcompiler.utils.CompilerError;
+import com.evensgn.emcompiler.utils.SemanticError;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,6 +51,26 @@ public class Scope {
         return true;
     }
 
+    public void putCheck(String name, String key, Entity entity) {
+        if (!put(key, entity)) throw new SemanticError(String.format("Symbol name \"%s\" is already defined", name));
+    }
+
+    public void putCheck(Location location, String name, String key, Entity entity) {
+        if (!put(key, entity)) throw new SemanticError(location, String.format("Symbol name \"%s\" is already defined", name));
+    }
+
+    public Entity getCheck(String name, String key) {
+        Entity entity = get(key);
+        if (entity == null) throw new CompilerError(String.format("Entity \"%s\" with key \"%s\" not found in scope", name, key));
+        return entity;
+    }
+
+    public Entity getCheck(Location location, String name, String key) {
+        Entity entity = get(key);
+        if (entity == null) throw new CompilerError(location, String.format("Entity \"%s\" with key \"%s\" not found in scope", name, key));
+        return entity;
+    }
+
     public void update(String key, Entity entity) {
         if (!key.startsWith(KEY_PREFIX)) throw new CompilerError(String.format("Scope entity key should start with \'$\', but get %s", key));
         if (!entityMap.containsKey(key)) throw new CompilerError(String.format("Cannot update the key \"%s\" which the scope does not contain", key));
@@ -74,5 +96,9 @@ public class Scope {
         else return false;
         if (!isTop && !found) return parent.containsKey(key);
         return found;
+    }
+
+    public Scope getParent() {
+        return parent;
     }
 }

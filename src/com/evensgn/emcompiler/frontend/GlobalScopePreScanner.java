@@ -7,6 +7,7 @@ import com.evensgn.emcompiler.utils.SemanticError;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class GlobalScopePreScanner implements ASTVisitor {
@@ -21,21 +22,26 @@ public class GlobalScopePreScanner implements ASTVisitor {
         FuncEntity entity = new FuncEntity(name, new FunctionType(name));
         entity.setParameters(parameters);
         entity.setReturnType(returnType);
-        if (!thisScope.put(key, entity)) throw new SemanticError(String.format("Symbol name \"%s\" already defined", name));
+        thisScope.putCheck(name, key, entity);
     }
 
     private void putBuiltInFuncs() {
-        putBuiltInFunc(scope,"print", Arrays.asList(new VarEntity("str", StringType.getInstance())), VoidType.getInstance());
-        putBuiltInFunc(scope,"println", Arrays.asList(new VarEntity("str", StringType.getInstance())), VoidType.getInstance());
+        putBuiltInFunc(scope,"print", Collections.singletonList(new VarEntity("str", StringType.getInstance())), VoidType.getInstance());
+        putBuiltInFunc(scope,"println", Collections.singletonList(new VarEntity("str", StringType.getInstance())), VoidType.getInstance());
         putBuiltInFunc(scope,"getString", new ArrayList<>(), StringType.getInstance());
         putBuiltInFunc(scope,"getInt", new ArrayList<>(), IntType.getInstance());
-        putBuiltInFunc(scope,"toString", Arrays.asList(new VarEntity("i", IntType.getInstance())), StringType.getInstance());
-        String stringKey = Scope.classKey("string");
-        ClassEntity stringEntity = new ClassEntity("string", new ClassType("string"));
+        putBuiltInFunc(scope,"toString", Collections.singletonList(new VarEntity("i", IntType.getInstance())), StringType.getInstance());
+        String stringKey = Scope.classKey("#string");
+        ClassEntity stringEntity = new ClassEntity("string", new ClassType("#string"), scope);
         putBuiltInFunc(stringEntity.getScope(), "length", new ArrayList<>(), IntType.getInstance());
         putBuiltInFunc(stringEntity.getScope(), "substring", Arrays.asList(new VarEntity("left", IntType.getInstance()), new VarEntity("right", IntType.getInstance())), StringType.getInstance());
         putBuiltInFunc(stringEntity.getScope(), "parseInt", new ArrayList<>(), IntType.getInstance());
-        putBuiltInFunc(stringEntity.getScope(), "ord", Arrays.asList(new VarEntity("pos", IntType.getInstance())), IntType.getInstance());
+        putBuiltInFunc(stringEntity.getScope(), "ord", Collections.singletonList(new VarEntity("pos", IntType.getInstance())), IntType.getInstance());
+        scope.putCheck("#string", stringKey, stringEntity);
+        String arrayKey = Scope.classKey("#array");
+        ClassEntity arrayEntity = new ClassEntity("string", new ClassType("#array"), scope);
+        putBuiltInFunc(arrayEntity.getScope(), "size", new ArrayList<>(), IntType.getInstance());
+        scope.putCheck("#array", arrayKey, arrayEntity);
     }
 
     private void checkMainFunc(FuncEntity mainFunc) {
@@ -58,14 +64,14 @@ public class GlobalScopePreScanner implements ASTVisitor {
     public void visit(FuncDeclNode node) {
         String key = Scope.funcKey(node.getName());
         Entity entity = new FuncEntity(node);
-        if (!scope.put(key, entity)) throw new SemanticError(node.location(), String.format("Symbol name \"%s\" already defined", node.getName()));
+        scope.putCheck(node.location(), node.getName(), key, entity);
     }
 
     @Override
     public void visit(ClassDeclNode node) {
         String key = Scope.classKey(node.getName());
-        Entity entity = new ClassEntity(node);
-        if (!scope.put(key, entity)) throw new SemanticError(node.location(), String.format("Symbol name \"%s\" already defined", node.getName()));
+        Entity entity = new ClassEntity(node, scope);
+        scope.putCheck(node.location(), node.getName(), key, entity);
     }
 
     @Override
