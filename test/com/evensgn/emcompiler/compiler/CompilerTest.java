@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 /** 
 * Compiler Tester. 
@@ -28,6 +30,5 @@ public class CompilerTest {
 
     @Test
     public void test0() throws Exception {
-
     }
 }

@@ -4,9 +4,9 @@ import com.evensgn.emcompiler.type.Type;
 
 abstract public class Entity {
     private String name;
-    private Type.HyperTypes type;
+    private Type type;
 
-    public Entity(String name, Type.HyperTypes type) {
+    public Entity(String name, Type type) {
         this.name = name;
         this.type = type;
     }
@@ -15,7 +15,7 @@ abstract public class Entity {
         return name;
     }
 
-    public Type.HyperTypes getType() {
+    public Type getType() {
         return type;
     }
 }

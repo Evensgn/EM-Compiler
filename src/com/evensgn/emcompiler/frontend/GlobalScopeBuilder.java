@@ -1,14 +1,9 @@
 package com.evensgn.emcompiler.frontend;
 
 import com.evensgn.emcompiler.ast.*;
-import com.evensgn.emcompiler.scope.ClassEntity;
-import com.evensgn.emcompiler.scope.Entity;
-import com.evensgn.emcompiler.scope.FuncEntity;
-import com.evensgn.emcompiler.scope.Scope;
-import com.evensgn.emcompiler.type.FunctionType;
-import com.evensgn.emcompiler.utils.CompilerError;
+import com.evensgn.emcompiler.scope.*;
+import com.evensgn.emcompiler.type.IntType;
 import com.evensgn.emcompiler.utils.SemanticError;
-import com.evensgn.emcompiler.utils.SyntaxError;
 
 public class GlobalScopeBuilder implements ASTVisitor {
     private Scope scope = new Scope();
@@ -17,38 +12,43 @@ public class GlobalScopeBuilder implements ASTVisitor {
         return scope;
     }
 
-    private Entity newEntity;
+    private void addBuiltInFuncs() {
+
+    }
+
+    private void checkMainFunc(FuncEntity mainFunc) {
+        if (mainFunc == null) throw new SemanticError("\"main\" function not found");
+        if (!(mainFunc.getReturnType() instanceof IntType)) throw new SemanticError("\"main\" function's return type should be \"int\"");
+        if (!mainFunc.getParameters().isEmpty()) throw new SemanticError("\"main\" function should have no parameter");
+    }
 
     @Override
     public void visit(ProgramNode node) {
-        if (node.getDecls().isEmpty()) return;
-        String name, key;
-        Entity entity;
+        addBuiltInFuncs();
         for (DeclNode decl : node.getDecls()) {
-            name = decl.getName();
-            if (decl instanceof VarDeclNode) key = Scope.varKey(name);
-            else if (decl instanceof ClassDeclNode) key = Scope.classKey(name);
-            else if (decl instanceof FuncDeclNode) key = Scope.funcKey(name);
-            else throw new CompilerError(decl.location(), "Unknown DeclNode class");
+            if (decl instanceof VarDeclNode) continue;
             decl.accept(this);
-            entity = newEntity;
-            if (!scope.put(key, entity)) throw new SemanticError(decl.location(), String.format("Symbol name \"%s\" already defined", name));
         }
-    }
-
-    // no use
-    @Override
-    public void visit(VarDeclListNode node) {
+        checkMainFunc((FuncEntity) scope.get(Scope.funcKey("main")));
     }
 
     @Override
     public void visit(FuncDeclNode node) {
-        newEntity = new FuncEntity(node);
+        String key = Scope.funcKey(node.getName());
+        Entity entity = new FuncEntity(node);
+        if (!scope.put(key, entity)) throw new SemanticError(node.location(), String.format("Symbol name \"%s\" already defined", node.getName()));
     }
 
     @Override
     public void visit(ClassDeclNode node) {
-        newEntity = new ClassEntity(node);
+        String key = Scope.classKey(node.getName());
+        Entity entity = new ClassEntity(node);
+        if (!scope.put(key, entity)) throw new SemanticError(node.location(), String.format("Symbol name \"%s\" already defined", node.getName()));
+    }
+
+    @Override
+    public void visit(VarDeclListNode node) {
+
     }
 
     @Override

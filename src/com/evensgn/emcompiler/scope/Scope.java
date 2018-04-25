@@ -49,6 +49,13 @@ public class Scope {
         return true;
     }
 
+    public void update(String key, Entity entity) {
+        if (!key.startsWith(KEY_PREFIX)) throw new CompilerError(String.format("Scope entity key should start with \'$\', but get %s", key));
+        if (!entityMap.containsKey(key)) throw new CompilerError(String.format("Cannot update the key \"%s\" which the scope does not contain", key));
+        entityMap.remove(key);
+        entityMap.put(key, entity);
+    }
+
     public boolean containsKey(String key) {
         String name;
         boolean found;
