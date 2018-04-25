@@ -40,6 +40,10 @@ public class FunctionScopeScanner implements ASTVisitor {
 
     @Override
     public void visit(VarDeclNode node) {
+        if (node.getType().getType() instanceof ClassType) {
+            String className = ((ClassType) node.getType().getType()).getName();
+            currentScope.assertContainsKey(node.location(), className, Scope.classKey(className));
+        }
         VarEntity entity = new VarEntity(node.getName(), node.getType().getType());
         currentScope.putCheck(node.location(), node.getName(), Scope.varKey(node.getName()), entity);
     }
@@ -219,12 +223,32 @@ public class FunctionScopeScanner implements ASTVisitor {
         node.getArr().accept(this);
         if (!(node.getArr().getType() instanceof ArrayType))
             throw new SemanticError(node.getArr().location(), String.format("Type \"%s\" is not subscriptable", node.getArr().getType().toString()));
-
+        node.getSub().accept(this);
+        if (!(node.getSub().getType() instanceof IntType))
+            throw new SemanticError(node.getSub().location(), String.format("Subscript expression in subscription expression should have type \"int\", but got %s", node.getSub().getType().toString()));
+        node.setType(((ArrayType) node.getArr().getType()).getBaseType());
+        node.setLeftValue(true);
     }
 
     @Override
     public void visit(MemberAccessExprNode node) {
-
+        node.getExpr().accept(this);
+        String className;
+        Entity memberEntity;
+        if (node.getExpr().getType() instanceof ClassType)
+            className = ((ClassType) node.getExpr().getType()).getName();
+        else if (node.getExpr().getType() instanceof StringType)
+            className = Scope.ARRAY_CLASS_NAME;
+        else if (node.getExpr().getType() instanceof ArrayType)
+            className = Scope.STRING_CLASS_NAME;
+        else throw new SemanticError(node.location(), String.format("Type \"%s\" cannot be used in member access expression", node.getExpr().getType().toString()));
+        ClassEntity classEntity = (ClassEntity) currentScope.getCheck(className, Scope.classKey(className));
+        if (classEntity.getScope().containsKey(Scope.varKey(node.getMember())))
+            memberEntity = classEntity.getScope().get(Scope.varKey(node.getMember()));
+        else
+            memberEntity = classEntity.getScope().getCheck(node.getMember(), Scope.funcKey(node.getMember()));
+        node.setType(memberEntity.getType());
+        node.setLeftValue(true);
     }
 
     @Override

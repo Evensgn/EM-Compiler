@@ -1,0 +1,8 @@
+int[][][][] a;
+
+int main() {
+    a = new int[3][4][][];
+    int x = a.size();
+    println("size of a: " + toString(x));
+    return 0;
+}

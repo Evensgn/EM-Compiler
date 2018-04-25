@@ -12,6 +12,8 @@ public class Scope {
     static private final String VAR_PREFIX = "$VAR$";
     static private final String CLASS_PREFIX = "$CLASS$";
     static private final String FUNC_PREFIX = "$FUNC$";
+    static public final String ARRAY_CLASS_NAME = "#ARRAY";
+    static public final String STRING_CLASS_NAME = "#STRING";
 
     private Map<String, Entity> entityMap = new HashMap<>();
     private Scope parent;
@@ -61,13 +63,13 @@ public class Scope {
 
     public Entity getCheck(String name, String key) {
         Entity entity = get(key);
-        if (entity == null) throw new CompilerError(String.format("Entity \"%s\" with key \"%s\" not found in scope", name, key));
+        if (entity == null) throw new SemanticError(String.format("Entity \"%s\" with key \"%s\" not found in scope", name, key));
         return entity;
     }
 
     public Entity getCheck(Location location, String name, String key) {
         Entity entity = get(key);
-        if (entity == null) throw new CompilerError(location, String.format("Entity \"%s\" with key \"%s\" not found in scope", name, key));
+        if (entity == null) throw new SemanticError(location, String.format("Entity \"%s\" with key \"%s\" not found in scope", name, key));
         return entity;
     }
 
@@ -76,6 +78,10 @@ public class Scope {
         if (!entityMap.containsKey(key)) throw new CompilerError(String.format("Cannot update the key \"%s\" which the scope does not contain", key));
         entityMap.remove(key);
         entityMap.put(key, entity);
+    }
+
+    public void assertContainsKey(Location location, String name, String key) {
+        if (!containsKey(key)) throw new SemanticError(location, String.format("Entity \"%s\" with key \"%s\" not found in scope", name, key));
     }
 
     public boolean containsKey(String key) {

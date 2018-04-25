@@ -31,7 +31,7 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
         if (ctx.functionDeclaration() != null) return visit(ctx.functionDeclaration());
         else if (ctx.classDeclaration() != null) return visit(ctx.classDeclaration());
         else if (ctx.variableDeclaration() != null) return visit(ctx.variableDeclaration());
-        else throw new CompilerError(Location.fromCtx(ctx), "Unknown program section");
+        else throw new CompilerError(Location.fromCtx(ctx), "Invalid program section");
     }
 
     @Override
@@ -63,7 +63,7 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
                 memberDecl = visit(memberDeclaration);
                 if (memberDecl instanceof VarDeclListNode) varMember.addAll(((VarDeclListNode) memberDecl).getDecls());
                 else if (memberDecl instanceof FuncDeclNode) funcMember.add((FuncDeclNode) memberDecl);
-                else throw new CompilerError(Location.fromCtx(ctx), "Unknown member declaration");
+                else throw new CompilerError(Location.fromCtx(ctx), "Invalid member declaration");
             }
         }
         return new ClassDeclNode(name, varMember, funcMember, Location.fromCtx(ctx));
@@ -97,7 +97,7 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
     public Node visitMemberDeclaration(EMxStarParser.MemberDeclarationContext ctx) {
         if (ctx.functionDeclaration() != null) return visit(ctx.functionDeclaration());
         else if (ctx.variableDeclaration() != null) return visit(ctx.variableDeclaration());
-        else throw new CompilerError(Location.fromCtx(ctx), "Unknown member declaration");
+        else throw new CompilerError(Location.fromCtx(ctx), "Invalid member declaration");
     }
 
     // no use
@@ -138,7 +138,7 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
         else if (ctx.Bool() != null) type = BoolType.getInstance();
         else if (ctx.String() != null) type = VoidType.getInstance();
         else if (ctx.Identifier() != null) type = new ClassType(ctx.Identifier().getText());
-        else throw new CompilerError(Location.fromCtx(ctx), "Unknown primitive type");
+        else throw new CompilerError(Location.fromCtx(ctx), "Invalid primitive type");
         return new TypeNode(type, Location.fromCtx(ctx));
     }
 
@@ -258,7 +258,7 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
             case "-"  : op = PrefixExprNode.PrefixOps.NEG; break;
             case "!"  : op = PrefixExprNode.PrefixOps.LOGIC_NOT; break;
             case "~"  : op = PrefixExprNode.PrefixOps.BITWISE_NOT; break;
-            default   : throw new CompilerError(Location.fromCtx(ctx), "Unknown prefix operator");
+            default   : throw new CompilerError(Location.fromCtx(ctx), "Invalid prefix operator");
         }
         ExprNode expr = (ExprNode) visit(ctx.expression());
         return new PrefixExprNode(op, expr, Location.fromCtx(ctx));
@@ -282,7 +282,7 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
         switch (ctx.op.getText()) {
             case "++" : op = SuffixExprNode.SuffixOps.SUFFIX_INC; break;
             case "--" : op = SuffixExprNode.SuffixOps.SUFFIX_DEC; break;
-            default   : throw new CompilerError(Location.fromCtx(ctx), "Unknown suffix operator");
+            default   : throw new CompilerError(Location.fromCtx(ctx), "Invalid suffix operator");
         }
         ExprNode expr = (ExprNode) visit(ctx.expression());
         return new SuffixExprNode(op, expr, Location.fromCtx(ctx));
@@ -310,7 +310,7 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
             case "|"  : op = BinaryExprNode.BinaryOps.BITWISE_OR; break;
             case "&&" : op = BinaryExprNode.BinaryOps.LOGIC_AND; break;
             case "||" : op = BinaryExprNode.BinaryOps.LOGIC_OR; break;
-            default   : throw new CompilerError(Location.fromCtx(ctx), "Unknown binary operator");
+            default   : throw new CompilerError(Location.fromCtx(ctx), "Invalid binary operator");
         }
         ExprNode lhs = (ExprNode) visit(ctx.lhs);
         ExprNode rhs = (ExprNode) visit(ctx.rhs);
@@ -386,7 +386,7 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
         switch (ctx.getText()) {
             case "true"  : value = true; break;
             case "false" : value = false; break;
-            default      : throw new CompilerError(Location.fromCtx(ctx), "Unknown boolean constant");
+            default      : throw new CompilerError(Location.fromCtx(ctx), "Invalid boolean constant");
         }
         return new BoolConstExprNode(value, Location.fromCtx(ctx));
     }

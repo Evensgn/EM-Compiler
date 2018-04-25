@@ -31,17 +31,17 @@ public class GlobalScopePreScanner implements ASTVisitor {
         putBuiltInFunc(scope,"getString", new ArrayList<>(), StringType.getInstance());
         putBuiltInFunc(scope,"getInt", new ArrayList<>(), IntType.getInstance());
         putBuiltInFunc(scope,"toString", Collections.singletonList(new VarEntity("i", IntType.getInstance())), StringType.getInstance());
-        String stringKey = Scope.classKey("#string");
-        ClassEntity stringEntity = new ClassEntity("string", new ClassType("#string"), scope);
+        String stringKey = Scope.classKey(Scope.STRING_CLASS_NAME);
+        ClassEntity stringEntity = new ClassEntity("string", new ClassType(Scope.STRING_CLASS_NAME), scope);
         putBuiltInFunc(stringEntity.getScope(), "length", new ArrayList<>(), IntType.getInstance());
         putBuiltInFunc(stringEntity.getScope(), "substring", Arrays.asList(new VarEntity("left", IntType.getInstance()), new VarEntity("right", IntType.getInstance())), StringType.getInstance());
         putBuiltInFunc(stringEntity.getScope(), "parseInt", new ArrayList<>(), IntType.getInstance());
         putBuiltInFunc(stringEntity.getScope(), "ord", Collections.singletonList(new VarEntity("pos", IntType.getInstance())), IntType.getInstance());
-        scope.putCheck("#string", stringKey, stringEntity);
-        String arrayKey = Scope.classKey("#array");
-        ClassEntity arrayEntity = new ClassEntity("string", new ClassType("#array"), scope);
+        scope.putCheck(Scope.STRING_CLASS_NAME, stringKey, stringEntity);
+        String arrayKey = Scope.classKey(Scope.ARRAY_CLASS_NAME);
+        ClassEntity arrayEntity = new ClassEntity("string", new ClassType(Scope.ARRAY_CLASS_NAME), scope);
         putBuiltInFunc(arrayEntity.getScope(), "size", new ArrayList<>(), IntType.getInstance());
-        scope.putCheck("#array", arrayKey, arrayEntity);
+        scope.putCheck(Scope.ARRAY_CLASS_NAME, arrayKey, arrayEntity);
     }
 
     private void checkMainFunc(FuncEntity mainFunc) {
