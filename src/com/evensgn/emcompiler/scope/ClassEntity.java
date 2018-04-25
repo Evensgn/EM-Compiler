@@ -2,33 +2,29 @@ package com.evensgn.emcompiler.scope;
 
 import com.evensgn.emcompiler.ast.ClassDeclNode;
 import com.evensgn.emcompiler.ast.FuncDeclNode;
-import com.evensgn.emcompiler.ast.VarDeclNode;
 import com.evensgn.emcompiler.type.ClassType;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.evensgn.emcompiler.type.Type;
+import com.evensgn.emcompiler.utils.SemanticError;
 
 public class ClassEntity extends Entity {
-    private List<VarEntity> varMembers;
-    private List<FuncEntity> funcMembers;
+    Scope scope;
+
+    public ClassEntity(String name, Type type) {
+        super(name, type);
+    }
 
     public ClassEntity(ClassDeclNode node) {
         super(node.getName(), new ClassType(node.getName()));
-        varMembers = new ArrayList<>();
-        for (VarDeclNode varMemDecl : node.getVarMember()) {
-            varMembers.add(new VarEntity(varMemDecl));
-        }
-        funcMembers = new ArrayList<>();
+        String key;
+        FuncEntity entity;
         for (FuncDeclNode funcMemDecl : node.getFuncMember()) {
-            funcMembers.add(new FuncEntity(funcMemDecl));
+            key = Scope.funcKey(funcMemDecl.getName());
+            entity = new FuncEntity(funcMemDecl);
+            if (!scope.put(key, entity)) throw new SemanticError(funcMemDecl.location(), String.format("Symbol name \"%s\" already defined", funcMemDecl.getName()));
         }
     }
 
-    public List<VarEntity> getVarMembers() {
-        return varMembers;
-    }
-
-    public List<FuncEntity> getFuncMembers() {
-        return funcMembers;
+    public Scope getScope() {
+        return scope;
     }
 }
