@@ -404,6 +404,7 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
             dims.add((ExprNode) visit(dim));
         }
         int numDim = (ctx.getChildCount() - 1 - dims.size()) / 2;
+        for (int i = 0; i < numDim; ++i) newType.setType(new ArrayType(newType.getType()));
         return new NewExprNode(newType, dims, numDim, Location.fromCtx(ctx));
     }
 
