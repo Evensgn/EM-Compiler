@@ -46,6 +46,18 @@ public class FunctionScopeScanner implements ASTVisitor {
             String className = ((ClassType) node.getType().getType()).getName();
             currentScope.assertContainsExactKey(node.location(), className, Scope.classKey(className));
         }
+        node.getInit().accept(this);
+        boolean invalidInitType;
+        if (node.getType().getType() instanceof VoidType || node.getInit().getType() instanceof VoidType)
+            invalidInitType = true;
+        else if (node.getType().getType().equals(node.getInit().getType()))
+            invalidInitType = false;
+        else if (node.getInit().getType() instanceof NullType)
+            invalidInitType = !(node.getType().getType() instanceof ClassType || node.getType().getType() instanceof ArrayType);
+        else
+            invalidInitType = true;
+        if (invalidInitType)
+            throw new SemanticError(node.location(), String.format("Invalid initialization value, expected \"%s\" but got \"%s\"", node.getType().getType().toString(), node.getInit().getType().toString()));
         VarEntity entity = new VarEntity(node.getName(), node.getType().getType());
         currentScope.putCheck(node.location(), node.getName(), Scope.varKey(node.getName()), entity);
     }
@@ -200,9 +212,16 @@ public class FunctionScopeScanner implements ASTVisitor {
         int paraNum = funcEntity.getParameters().size();
         if (paraNum != node.getArgs().size())
             throw new SemanticError(node.location(), String.format("Function call has inconsistent number of arguments, expected %d but got %d", paraNum, node.getArgs().size()));
+        boolean invalidArgType;
         for (int i = 0; i < paraNum; ++i) {
             node.getArgs().get(i).accept(this);
-            if (!(funcEntity.getParameters().get(i).getType().equals(node.getArgs().get(i).getType()))) {
+            if (node.getArgs().get(i).getType() instanceof VoidType)
+                invalidArgType = true;
+            else if (node.getArgs().get(i).getType() instanceof NullType)
+                invalidArgType = funcEntity.getParameters().get(i).getType() instanceof ClassType || funcEntity.getParameters().get(i).getType() instanceof ArrayType;
+            else
+                invalidArgType = !(funcEntity.getParameters().get(i).getType().equals(node.getArgs().get(i).getType()));
+            if (invalidArgType) {
                 throw new SemanticError(
                     node.getArgs().get(i).location(),
                     String.format(
