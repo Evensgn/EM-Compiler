@@ -1,10 +1,7 @@
 package com.evensgn.emcompiler.compiler;
 
 import com.evensgn.emcompiler.ast.ProgramNode;
-import com.evensgn.emcompiler.frontend.ASTBuilder;
-import com.evensgn.emcompiler.frontend.ASTPrinter;
-import com.evensgn.emcompiler.frontend.FunctionScopeScanner;
-import com.evensgn.emcompiler.frontend.GlobalScopePreScanner;
+import com.evensgn.emcompiler.frontend.*;
 import com.evensgn.emcompiler.parser.EMxStarLexer;
 import com.evensgn.emcompiler.parser.EMxStarParser;
 import com.evensgn.emcompiler.parser.SyntaxErrorListener;
@@ -49,7 +46,9 @@ public class Compiler {
         astPrinter.visit(ast);
         GlobalScopePreScanner globalScopePreScanner = new GlobalScopePreScanner();
         globalScopePreScanner.visit(ast);
-        FunctionScopeScanner functionScopeScanner = new FunctionScopeScanner(globalScopePreScanner.getScope());
+        ClassVarMemberScanner classVarMemberScanner = new ClassVarMemberScanner(globalScopePreScanner.getScope());
+        classVarMemberScanner.visit(ast);
+        FunctionScopeScanner functionScopeScanner = new FunctionScopeScanner(classVarMemberScanner.getGlobalScope());
         functionScopeScanner.visit(ast);
         System.out.println("compiler finished.");
     }

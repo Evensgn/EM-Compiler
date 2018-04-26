@@ -6,7 +6,7 @@ import com.evensgn.emcompiler.type.*;
 import com.evensgn.emcompiler.utils.CompilerError;
 import com.evensgn.emcompiler.utils.SemanticError;
 
-public class FunctionScopeScanner implements ASTVisitor {
+public class FunctionScopeScanner extends BaseScopeScanner {
     private Scope globalScope, currentScope;
     private int inLoop;
     private Type currentReturnType, currentClassType;
@@ -35,30 +35,12 @@ public class FunctionScopeScanner implements ASTVisitor {
     }
 
     @Override
-    public void visit(VarDeclListNode node) {
-
-    }
-
-    @Override
     public void visit(VarDeclNode node) {
         if (node.getType().getType() instanceof ClassType) {
             String className = ((ClassType) node.getType().getType()).getName();
             currentScope.assertContainsExactKey(node.location(), className, Scope.classKey(className));
         }
-        if (node.getInit() != null) {
-            node.getInit().accept(this);
-            boolean invalidInitType;
-            if (node.getType().getType() instanceof VoidType || node.getInit().getType() instanceof VoidType)
-                invalidInitType = true;
-            else if (node.getType().getType().equals(node.getInit().getType()))
-                invalidInitType = false;
-            else if (node.getInit().getType() instanceof NullType)
-                invalidInitType = !(node.getType().getType() instanceof ClassType || node.getType().getType() instanceof ArrayType);
-            else
-                invalidInitType = true;
-            if (invalidInitType)
-                throw new SemanticError(node.location(), String.format("Invalid initialization value, expected \"%s\" but got \"%s\"", node.getType().getType().toString(), node.getInit().getType().toString()));
-        }
+        checkVarDeclInit(node);
         VarEntity entity = new VarEntity(node.getName(), node.getType().getType());
         currentScope.putCheck(node.location(), node.getName(), Scope.varKey(node.getName()), entity);
     }
@@ -86,9 +68,6 @@ public class FunctionScopeScanner implements ASTVisitor {
     public void visit(ClassDeclNode node) {
         ClassEntity entity = (ClassEntity) currentScope.getCheck(node.location(), node.getName(), Scope.classKey(node.getName()));
         currentScope = entity.getScope();
-        for (VarDeclNode varMemDecl : node.getVarMember()) {
-            varMemDecl.accept(this);
-        }
         currentClassType = entity.getType();
         for (FuncDeclNode funcDecl : node.getFuncMember()) {
             funcDecl.accept(this);
@@ -449,10 +428,5 @@ public class FunctionScopeScanner implements ASTVisitor {
     public void visit(NullExprNode node) {
         node.setType(NullType.getInstance());
         node.setLeftValue(false);
-    }
-
-    @Override
-    public void visit(TypeNode node) {
-
     }
 }

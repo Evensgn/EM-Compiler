@@ -4,7 +4,6 @@ import com.evensgn.emcompiler.ast.ClassDeclNode;
 import com.evensgn.emcompiler.ast.FuncDeclNode;
 import com.evensgn.emcompiler.type.ClassType;
 import com.evensgn.emcompiler.type.Type;
-import com.evensgn.emcompiler.utils.SemanticError;
 
 public class ClassEntity extends Entity {
     private Scope scope;

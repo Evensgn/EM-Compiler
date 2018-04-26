@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class GlobalScopePreScanner implements ASTVisitor {
+public class GlobalScopePreScanner extends BaseScopeScanner {
     private Scope scope = new Scope();
 
     public Scope getScope() {
@@ -72,125 +72,5 @@ public class GlobalScopePreScanner implements ASTVisitor {
         String key = Scope.classKey(node.getName());
         Entity entity = new ClassEntity(node, scope);
         scope.putCheck(node.location(), node.getName(), key, entity);
-    }
-
-    @Override
-    public void visit(VarDeclListNode node) {
-
-    }
-
-    @Override
-    public void visit(VarDeclNode node) {
-
-    }
-
-    @Override
-    public void visit(BlockStmtNode node) {
-
-    }
-
-    @Override
-    public void visit(ExprStmtNode node) {
-
-    }
-
-    @Override
-    public void visit(CondStmtNode node) {
-
-    }
-
-    @Override
-    public void visit(WhileStmtNode node) {
-
-    }
-
-    @Override
-    public void visit(ForStmtNode node) {
-
-    }
-
-    @Override
-    public void visit(ContinueStmtNode node) {
-
-    }
-
-    @Override
-    public void visit(BreakStmtNode node) {
-
-    }
-
-    @Override
-    public void visit(ReturnStmtNode node) {
-
-    }
-
-    @Override
-    public void visit(SuffixExprNode node) {
-
-    }
-
-    @Override
-    public void visit(FuncCallExprNode node) {
-
-    }
-
-    @Override
-    public void visit(SubscriptExprNode node) {
-
-    }
-
-    @Override
-    public void visit(MemberAccessExprNode node) {
-
-    }
-
-    @Override
-    public void visit(PrefixExprNode node) {
-
-    }
-
-    @Override
-    public void visit(NewExprNode node) {
-
-    }
-
-    @Override
-    public void visit(BinaryExprNode node) {
-
-    }
-
-    @Override
-    public void visit(AssignExprNode node) {
-
-    }
-
-    @Override
-    public void visit(IdentifierExprNode node) {
-
-    }
-
-    @Override
-    public void visit(IntConstExprNode node) {
-
-    }
-
-    @Override
-    public void visit(StringConstExprNode node) {
-
-    }
-
-    @Override
-    public void visit(BoolConstExprNode node) {
-
-    }
-
-    @Override
-    public void visit(NullExprNode node) {
-
-    }
-
-    @Override
-    public void visit(TypeNode node) {
-
     }
 }
