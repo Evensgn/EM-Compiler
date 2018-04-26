@@ -69,11 +69,11 @@ public class FunctionScopeScanner implements ASTVisitor {
         FuncEntity entity = (FuncEntity) currentScope.getCheck(node.location(), node.getName(), Scope.funcKey(node.getName()));
         currentReturnType = entity.getReturnType();
         node.getBody().initScope(currentScope);
-        String paraName;
-        for (VarEntity paraEntity : entity.getParameters()) {
-            paraName = paraEntity.getName();
-            node.getBody().getScope().putCheck(paraName, Scope.varKey(paraName), paraEntity);
+        currentScope = node.getBody().getScope();
+        for (VarDeclNode pareDecl : node.getParameterList()) {
+            pareDecl.accept(this);
         }
+        currentScope = currentScope.getParent();
         node.getBody().accept(this);
     }
 
@@ -220,7 +220,7 @@ public class FunctionScopeScanner implements ASTVisitor {
             if (node.getArgs().get(i).getType() instanceof VoidType)
                 invalidArgType = true;
             else if (node.getArgs().get(i).getType() instanceof NullType)
-                invalidArgType = funcEntity.getParameters().get(i).getType() instanceof ClassType || funcEntity.getParameters().get(i).getType() instanceof ArrayType;
+                invalidArgType = !(funcEntity.getParameters().get(i).getType() instanceof ClassType || funcEntity.getParameters().get(i).getType() instanceof ArrayType);
             else
                 invalidArgType = !(funcEntity.getParameters().get(i).getType().equals(node.getArgs().get(i).getType()));
             if (invalidArgType) {

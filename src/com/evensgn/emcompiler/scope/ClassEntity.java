@@ -18,12 +18,12 @@ public class ClassEntity extends Entity {
         super(node.getName(), new ClassType(node.getName()));
         String key;
         Entity entity;
+        scope = new Scope(parentScope);
         for (FuncDeclNode funcMemDecl : node.getFuncMember()) {
             key = Scope.funcKey(funcMemDecl.getName());
             entity = new FuncEntity(funcMemDecl);
             scope.putCheck(funcMemDecl.location(), funcMemDecl.getName(), key, entity);
         }
-        scope = new Scope(parentScope);
     }
 
     public Scope getScope() {
