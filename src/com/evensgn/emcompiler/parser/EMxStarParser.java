@@ -24,9 +24,9 @@ public class EMxStarParser extends Parser {
 		T__17=18, T__18=19, T__19=20, T__20=21, T__21=22, T__22=23, T__23=24, 
 		T__24=25, T__25=26, T__26=27, T__27=28, T__28=29, T__29=30, T__30=31, 
 		T__31=32, Bool=33, Int=34, String=35, Void=36, If=37, Else=38, For=39, 
-		While=40, Break=41, Continue=42, Return=43, New=44, Class=45, IntegerConstant=46, 
-		StringConst=47, NullLiteral=48, BoolConstant=49, Identifier=50, WhiteSpace=51, 
-		NewLine=52, LineComment=53, BlockComment=54;
+		While=40, Break=41, Continue=42, Return=43, New=44, Class=45, This=46, 
+		IntegerConstant=47, StringConst=48, NullLiteral=49, BoolConstant=50, Identifier=51, 
+		WhiteSpace=52, NewLine=53, LineComment=54, BlockComment=55;
 	public static final int
 		RULE_program = 0, RULE_programSection = 1, RULE_functionDeclaration = 2, 
 		RULE_classDeclaration = 3, RULE_variableDeclaration = 4, RULE_variableDeclaratorList = 5, 
@@ -50,14 +50,15 @@ public class EMxStarParser extends Parser {
 		"'--'", "'.'", "'+'", "'-'", "'!'", "'~'", "'*'", "'/'", "'%'", "'<<'", 
 		"'>>'", "'<'", "'>'", "'<='", "'>='", "'=='", "'!='", "'&'", "'^'", "'|'", 
 		"'&&'", "'||'", "'bool'", "'int'", "'string'", "'void'", "'if'", "'else'", 
-		"'for'", "'while'", "'break'", "'continue'", "'return'", "'new'", "'class'"
+		"'for'", "'while'", "'break'", "'continue'", "'return'", "'new'", "'class'", 
+		"'this'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
 		null, null, null, null, null, null, null, null, null, null, null, null, 
 		null, null, null, null, null, null, null, null, null, null, null, null, 
 		null, null, null, null, null, null, null, null, null, "Bool", "Int", "String", 
 		"Void", "If", "Else", "For", "While", "Break", "Continue", "Return", "New", 
-		"Class", "IntegerConstant", "StringConst", "NullLiteral", "BoolConstant", 
+		"Class", "This", "IntegerConstant", "StringConst", "NullLiteral", "BoolConstant", 
 		"Identifier", "WhiteSpace", "NewLine", "LineComment", "BlockComment"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
@@ -1108,6 +1109,7 @@ public class EMxStarParser extends Parser {
 			case T__14:
 			case T__15:
 			case New:
+			case This:
 			case IntegerConstant:
 			case StringConst:
 			case NullLiteral:
@@ -1210,7 +1212,7 @@ public class EMxStarParser extends Parser {
 			setState(146);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__2) | (1L << T__4) | (1L << T__9) | (1L << T__10) | (1L << T__12) | (1L << T__13) | (1L << T__14) | (1L << T__15) | (1L << Bool) | (1L << Int) | (1L << String) | (1L << If) | (1L << For) | (1L << While) | (1L << Break) | (1L << Continue) | (1L << Return) | (1L << New) | (1L << IntegerConstant) | (1L << StringConst) | (1L << NullLiteral) | (1L << BoolConstant) | (1L << Identifier))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__2) | (1L << T__4) | (1L << T__9) | (1L << T__10) | (1L << T__12) | (1L << T__13) | (1L << T__14) | (1L << T__15) | (1L << Bool) | (1L << Int) | (1L << String) | (1L << If) | (1L << For) | (1L << While) | (1L << Break) | (1L << Continue) | (1L << Return) | (1L << New) | (1L << This) | (1L << IntegerConstant) | (1L << StringConst) | (1L << NullLiteral) | (1L << BoolConstant) | (1L << Identifier))) != 0)) {
 				{
 				{
 				setState(143);
@@ -1495,7 +1497,7 @@ public class EMxStarParser extends Parser {
 				setState(173);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__9) | (1L << T__10) | (1L << T__12) | (1L << T__13) | (1L << T__14) | (1L << T__15) | (1L << New) | (1L << IntegerConstant) | (1L << StringConst) | (1L << NullLiteral) | (1L << BoolConstant) | (1L << Identifier))) != 0)) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__9) | (1L << T__10) | (1L << T__12) | (1L << T__13) | (1L << T__14) | (1L << T__15) | (1L << New) | (1L << This) | (1L << IntegerConstant) | (1L << StringConst) | (1L << NullLiteral) | (1L << BoolConstant) | (1L << Identifier))) != 0)) {
 					{
 					setState(172);
 					((ForStmtContext)_localctx).init = expression(0);
@@ -1507,7 +1509,7 @@ public class EMxStarParser extends Parser {
 				setState(177);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__9) | (1L << T__10) | (1L << T__12) | (1L << T__13) | (1L << T__14) | (1L << T__15) | (1L << New) | (1L << IntegerConstant) | (1L << StringConst) | (1L << NullLiteral) | (1L << BoolConstant) | (1L << Identifier))) != 0)) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__9) | (1L << T__10) | (1L << T__12) | (1L << T__13) | (1L << T__14) | (1L << T__15) | (1L << New) | (1L << This) | (1L << IntegerConstant) | (1L << StringConst) | (1L << NullLiteral) | (1L << BoolConstant) | (1L << Identifier))) != 0)) {
 					{
 					setState(176);
 					((ForStmtContext)_localctx).cond = expression(0);
@@ -1519,7 +1521,7 @@ public class EMxStarParser extends Parser {
 				setState(181);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__9) | (1L << T__10) | (1L << T__12) | (1L << T__13) | (1L << T__14) | (1L << T__15) | (1L << New) | (1L << IntegerConstant) | (1L << StringConst) | (1L << NullLiteral) | (1L << BoolConstant) | (1L << Identifier))) != 0)) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__9) | (1L << T__10) | (1L << T__12) | (1L << T__13) | (1L << T__14) | (1L << T__15) | (1L << New) | (1L << This) | (1L << IntegerConstant) | (1L << StringConst) | (1L << NullLiteral) | (1L << BoolConstant) | (1L << Identifier))) != 0)) {
 					{
 					setState(180);
 					((ForStmtContext)_localctx).step = expression(0);
@@ -1650,7 +1652,7 @@ public class EMxStarParser extends Parser {
 				setState(193);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__9) | (1L << T__10) | (1L << T__12) | (1L << T__13) | (1L << T__14) | (1L << T__15) | (1L << New) | (1L << IntegerConstant) | (1L << StringConst) | (1L << NullLiteral) | (1L << BoolConstant) | (1L << Identifier))) != 0)) {
+				if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__9) | (1L << T__10) | (1L << T__12) | (1L << T__13) | (1L << T__14) | (1L << T__15) | (1L << New) | (1L << This) | (1L << IntegerConstant) | (1L << StringConst) | (1L << NullLiteral) | (1L << BoolConstant) | (1L << Identifier))) != 0)) {
 					{
 					setState(192);
 					expression(0);
@@ -1978,6 +1980,7 @@ public class EMxStarParser extends Parser {
 				}
 				break;
 			case T__0:
+			case This:
 			case IntegerConstant:
 			case StringConst:
 			case NullLiteral:
@@ -2273,7 +2276,7 @@ public class EMxStarParser extends Parser {
 						setState(259);
 						_errHandler.sync(this);
 						_la = _input.LA(1);
-						if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__9) | (1L << T__10) | (1L << T__12) | (1L << T__13) | (1L << T__14) | (1L << T__15) | (1L << New) | (1L << IntegerConstant) | (1L << StringConst) | (1L << NullLiteral) | (1L << BoolConstant) | (1L << Identifier))) != 0)) {
+						if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__9) | (1L << T__10) | (1L << T__12) | (1L << T__13) | (1L << T__14) | (1L << T__15) | (1L << New) | (1L << This) | (1L << IntegerConstant) | (1L << StringConst) | (1L << NullLiteral) | (1L << BoolConstant) | (1L << Identifier))) != 0)) {
 							{
 							setState(258);
 							parameterList();
@@ -2313,6 +2316,23 @@ public class EMxStarParser extends Parser {
 		public PrimaryExpressionContext() { }
 		public void copyFrom(PrimaryExpressionContext ctx) {
 			super.copyFrom(ctx);
+		}
+	}
+	public static class ThisExprContext extends PrimaryExpressionContext {
+		public TerminalNode This() { return getToken(EMxStarParser.This, 0); }
+		public ThisExprContext(PrimaryExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof EMxStarListener ) ((EMxStarListener)listener).enterThisExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof EMxStarListener ) ((EMxStarListener)listener).exitThisExpr(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof EMxStarVisitor ) return ((EMxStarVisitor<? extends T>)visitor).visitThisExpr(this);
+			else return visitor.visitChildren(this);
 		}
 	}
 	public static class SubExprContext extends PrimaryExpressionContext {
@@ -2375,7 +2395,7 @@ public class EMxStarParser extends Parser {
 		PrimaryExpressionContext _localctx = new PrimaryExpressionContext(_ctx, getState());
 		enterRule(_localctx, 40, RULE_primaryExpression);
 		try {
-			setState(273);
+			setState(274);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case Identifier:
@@ -2386,26 +2406,34 @@ public class EMxStarParser extends Parser {
 				match(Identifier);
 				}
 				break;
+			case This:
+				_localctx = new ThisExprContext(_localctx);
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(268);
+				match(This);
+				}
+				break;
 			case IntegerConstant:
 			case StringConst:
 			case NullLiteral:
 			case BoolConstant:
 				_localctx = new ConstExprContext(_localctx);
-				enterOuterAlt(_localctx, 2);
+				enterOuterAlt(_localctx, 3);
 				{
-				setState(268);
+				setState(269);
 				constant();
 				}
 				break;
 			case T__0:
 				_localctx = new SubExprContext(_localctx);
-				enterOuterAlt(_localctx, 3);
+				enterOuterAlt(_localctx, 4);
 				{
-				setState(269);
-				match(T__0);
 				setState(270);
-				expression(0);
+				match(T__0);
 				setState(271);
+				expression(0);
+				setState(272);
 				match(T__1);
 				}
 				break;
@@ -2508,14 +2536,14 @@ public class EMxStarParser extends Parser {
 		ConstantContext _localctx = new ConstantContext(_ctx, getState());
 		enterRule(_localctx, 42, RULE_constant);
 		try {
-			setState(279);
+			setState(280);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case IntegerConstant:
 				_localctx = new IntConstContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(275);
+				setState(276);
 				match(IntegerConstant);
 				}
 				break;
@@ -2523,7 +2551,7 @@ public class EMxStarParser extends Parser {
 				_localctx = new StringConstContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(276);
+				setState(277);
 				match(StringConst);
 				}
 				break;
@@ -2531,7 +2559,7 @@ public class EMxStarParser extends Parser {
 				_localctx = new NullLiteralContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(277);
+				setState(278);
 				match(NullLiteral);
 				}
 				break;
@@ -2539,7 +2567,7 @@ public class EMxStarParser extends Parser {
 				_localctx = new BoolConstContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(278);
+				setState(279);
 				match(BoolConstant);
 				}
 				break;
@@ -2644,16 +2672,16 @@ public class EMxStarParser extends Parser {
 		enterRule(_localctx, 44, RULE_creator);
 		try {
 			int _alt;
-			setState(321);
+			setState(322);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,32,_ctx) ) {
 			case 1:
 				_localctx = new ErrorCreatorContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(281);
+				setState(282);
 				nonArrayTypeType();
-				setState(286); 
+				setState(287); 
 				_errHandler.sync(this);
 				_alt = 1;
 				do {
@@ -2661,11 +2689,11 @@ public class EMxStarParser extends Parser {
 					case 1:
 						{
 						{
-						setState(282);
-						match(T__7);
 						setState(283);
-						expression(0);
+						match(T__7);
 						setState(284);
+						expression(0);
+						setState(285);
 						match(T__8);
 						}
 						}
@@ -2673,11 +2701,11 @@ public class EMxStarParser extends Parser {
 					default:
 						throw new NoViableAltException(this);
 					}
-					setState(288); 
+					setState(289); 
 					_errHandler.sync(this);
 					_alt = getInterpreter().adaptivePredict(_input,27,_ctx);
 				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
-				setState(292); 
+				setState(293); 
 				_errHandler.sync(this);
 				_alt = 1;
 				do {
@@ -2685,9 +2713,9 @@ public class EMxStarParser extends Parser {
 					case 1:
 						{
 						{
-						setState(290);
-						match(T__7);
 						setState(291);
+						match(T__7);
+						setState(292);
 						match(T__8);
 						}
 						}
@@ -2695,11 +2723,11 @@ public class EMxStarParser extends Parser {
 					default:
 						throw new NoViableAltException(this);
 					}
-					setState(294); 
+					setState(295); 
 					_errHandler.sync(this);
 					_alt = getInterpreter().adaptivePredict(_input,28,_ctx);
 				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
-				setState(300); 
+				setState(301); 
 				_errHandler.sync(this);
 				_alt = 1;
 				do {
@@ -2707,11 +2735,11 @@ public class EMxStarParser extends Parser {
 					case 1:
 						{
 						{
-						setState(296);
-						match(T__7);
 						setState(297);
-						expression(0);
+						match(T__7);
 						setState(298);
+						expression(0);
+						setState(299);
 						match(T__8);
 						}
 						}
@@ -2719,7 +2747,7 @@ public class EMxStarParser extends Parser {
 					default:
 						throw new NoViableAltException(this);
 					}
-					setState(302); 
+					setState(303); 
 					_errHandler.sync(this);
 					_alt = getInterpreter().adaptivePredict(_input,29,_ctx);
 				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
@@ -2729,9 +2757,9 @@ public class EMxStarParser extends Parser {
 				_localctx = new ArrayCreatorContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(304);
+				setState(305);
 				nonArrayTypeType();
-				setState(309); 
+				setState(310); 
 				_errHandler.sync(this);
 				_alt = 1;
 				do {
@@ -2739,11 +2767,11 @@ public class EMxStarParser extends Parser {
 					case 1:
 						{
 						{
-						setState(305);
-						match(T__7);
 						setState(306);
-						expression(0);
+						match(T__7);
 						setState(307);
+						expression(0);
+						setState(308);
 						match(T__8);
 						}
 						}
@@ -2751,25 +2779,25 @@ public class EMxStarParser extends Parser {
 					default:
 						throw new NoViableAltException(this);
 					}
-					setState(311); 
+					setState(312); 
 					_errHandler.sync(this);
 					_alt = getInterpreter().adaptivePredict(_input,30,_ctx);
 				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
-				setState(317);
+				setState(318);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,31,_ctx);
 				while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 					if ( _alt==1 ) {
 						{
 						{
-						setState(313);
-						match(T__7);
 						setState(314);
+						match(T__7);
+						setState(315);
 						match(T__8);
 						}
 						} 
 					}
-					setState(319);
+					setState(320);
 					_errHandler.sync(this);
 					_alt = getInterpreter().adaptivePredict(_input,31,_ctx);
 				}
@@ -2779,7 +2807,7 @@ public class EMxStarParser extends Parser {
 				_localctx = new NonArrayCreatorContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(320);
+				setState(321);
 				nonArrayTypeType();
 				}
 				break;
@@ -2829,21 +2857,21 @@ public class EMxStarParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(323);
+			setState(324);
 			expression(0);
-			setState(328);
+			setState(329);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==T__5) {
 				{
 				{
-				setState(324);
-				match(T__5);
 				setState(325);
+				match(T__5);
+				setState(326);
 				expression(0);
 				}
 				}
-				setState(330);
+				setState(331);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -2915,7 +2943,7 @@ public class EMxStarParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\38\u014e\4\2\t\2\4"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\39\u014f\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
@@ -2935,32 +2963,32 @@ public class EMxStarParser extends Parser {
 		"\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25"+
 		"\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25"+
 		"\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\5\25\u0106\n\25\3\25\7\25\u0109"+
-		"\n\25\f\25\16\25\u010c\13\25\3\26\3\26\3\26\3\26\3\26\3\26\5\26\u0114"+
-		"\n\26\3\27\3\27\3\27\3\27\5\27\u011a\n\27\3\30\3\30\3\30\3\30\3\30\6\30"+
-		"\u0121\n\30\r\30\16\30\u0122\3\30\3\30\6\30\u0127\n\30\r\30\16\30\u0128"+
-		"\3\30\3\30\3\30\3\30\6\30\u012f\n\30\r\30\16\30\u0130\3\30\3\30\3\30\3"+
-		"\30\3\30\6\30\u0138\n\30\r\30\16\30\u0139\3\30\3\30\7\30\u013e\n\30\f"+
-		"\30\16\30\u0141\13\30\3\30\5\30\u0144\n\30\3\31\3\31\3\31\7\31\u0149\n"+
-		"\31\f\31\16\31\u014c\13\31\3\31\2\4\30(\32\2\4\6\b\n\f\16\20\22\24\26"+
-		"\30\32\34\36 \"$&(*,.\60\2\13\4\2#%\64\64\3\2\f\r\3\2\17\20\3\2\21\22"+
-		"\3\2\23\25\3\2\26\27\3\2\30\31\3\2\32\33\3\2\34\35\2\u0172\2\65\3\2\2"+
+		"\n\25\f\25\16\25\u010c\13\25\3\26\3\26\3\26\3\26\3\26\3\26\3\26\5\26\u0115"+
+		"\n\26\3\27\3\27\3\27\3\27\5\27\u011b\n\27\3\30\3\30\3\30\3\30\3\30\6\30"+
+		"\u0122\n\30\r\30\16\30\u0123\3\30\3\30\6\30\u0128\n\30\r\30\16\30\u0129"+
+		"\3\30\3\30\3\30\3\30\6\30\u0130\n\30\r\30\16\30\u0131\3\30\3\30\3\30\3"+
+		"\30\3\30\6\30\u0139\n\30\r\30\16\30\u013a\3\30\3\30\7\30\u013f\n\30\f"+
+		"\30\16\30\u0142\13\30\3\30\5\30\u0145\n\30\3\31\3\31\3\31\7\31\u014a\n"+
+		"\31\f\31\16\31\u014d\13\31\3\31\2\4\30(\32\2\4\6\b\n\f\16\20\22\24\26"+
+		"\30\32\34\36 \"$&(*,.\60\2\13\4\2#%\65\65\3\2\f\r\3\2\17\20\3\2\21\22"+
+		"\3\2\23\25\3\2\26\27\3\2\30\31\3\2\32\33\3\2\34\35\2\u0174\2\65\3\2\2"+
 		"\2\4=\3\2\2\2\6@\3\2\2\2\bJ\3\2\2\2\nU\3\2\2\2\fY\3\2\2\2\16a\3\2\2\2"+
 		"\20h\3\2\2\2\22j\3\2\2\2\24r\3\2\2\2\26w\3\2\2\2\30y\3\2\2\2\32\u0084"+
 		"\3\2\2\2\34\u008e\3\2\2\2\36\u0090\3\2\2\2 \u009b\3\2\2\2\"\u009d\3\2"+
-		"\2\2$\u00bb\3\2\2\2&\u00c6\3\2\2\2(\u00d2\3\2\2\2*\u0113\3\2\2\2,\u0119"+
-		"\3\2\2\2.\u0143\3\2\2\2\60\u0145\3\2\2\2\62\64\5\4\3\2\63\62\3\2\2\2\64"+
+		"\2\2$\u00bb\3\2\2\2&\u00c6\3\2\2\2(\u00d2\3\2\2\2*\u0114\3\2\2\2,\u011a"+
+		"\3\2\2\2.\u0144\3\2\2\2\60\u0146\3\2\2\2\62\64\5\4\3\2\63\62\3\2\2\2\64"+
 		"\67\3\2\2\2\65\63\3\2\2\2\65\66\3\2\2\2\668\3\2\2\2\67\65\3\2\2\289\7"+
 		"\2\2\39\3\3\2\2\2:>\5\6\4\2;>\5\b\5\2<>\5\n\6\2=:\3\2\2\2=;\3\2\2\2=<"+
-		"\3\2\2\2>\5\3\2\2\2?A\5\26\f\2@?\3\2\2\2@A\3\2\2\2AB\3\2\2\2BC\7\64\2"+
+		"\3\2\2\2>\5\3\2\2\2?A\5\26\f\2@?\3\2\2\2@A\3\2\2\2AB\3\2\2\2BC\7\65\2"+
 		"\2CE\7\3\2\2DF\5\22\n\2ED\3\2\2\2EF\3\2\2\2FG\3\2\2\2GH\7\4\2\2HI\5\36"+
-		"\20\2I\7\3\2\2\2JK\7/\2\2KL\7\64\2\2LP\7\5\2\2MO\5\20\t\2NM\3\2\2\2OR"+
+		"\20\2I\7\3\2\2\2JK\7/\2\2KL\7\65\2\2LP\7\5\2\2MO\5\20\t\2NM\3\2\2\2OR"+
 		"\3\2\2\2PN\3\2\2\2PQ\3\2\2\2QS\3\2\2\2RP\3\2\2\2ST\7\6\2\2T\t\3\2\2\2"+
 		"UV\5\30\r\2VW\5\f\7\2WX\7\7\2\2X\13\3\2\2\2Y^\5\16\b\2Z[\7\b\2\2[]\5\16"+
 		"\b\2\\Z\3\2\2\2]`\3\2\2\2^\\\3\2\2\2^_\3\2\2\2_\r\3\2\2\2`^\3\2\2\2ad"+
-		"\7\64\2\2bc\7\t\2\2ce\5(\25\2db\3\2\2\2de\3\2\2\2e\17\3\2\2\2fi\5\6\4"+
+		"\7\65\2\2bc\7\t\2\2ce\5(\25\2db\3\2\2\2de\3\2\2\2e\17\3\2\2\2fi\5\6\4"+
 		"\2gi\5\n\6\2hf\3\2\2\2hg\3\2\2\2i\21\3\2\2\2jo\5\24\13\2kl\7\b\2\2ln\5"+
 		"\24\13\2mk\3\2\2\2nq\3\2\2\2om\3\2\2\2op\3\2\2\2p\23\3\2\2\2qo\3\2\2\2"+
-		"rs\5\30\r\2st\7\64\2\2t\25\3\2\2\2ux\5\30\r\2vx\7&\2\2wu\3\2\2\2wv\3\2"+
+		"rs\5\30\r\2st\7\65\2\2t\25\3\2\2\2ux\5\30\r\2vx\7&\2\2wu\3\2\2\2wv\3\2"+
 		"\2\2x\27\3\2\2\2yz\b\r\1\2z{\5\32\16\2{\u0081\3\2\2\2|}\f\4\2\2}~\7\n"+
 		"\2\2~\u0080\7\13\2\2\177|\3\2\2\2\u0080\u0083\3\2\2\2\u0081\177\3\2\2"+
 		"\2\u0081\u0082\3\2\2\2\u0082\31\3\2\2\2\u0083\u0081\3\2\2\2\u0084\u0085"+
@@ -3002,7 +3030,7 @@ public class EMxStarParser extends Parser {
 		"\b\u00ef\u00f0\f\6\2\2\u00f0\u00f1\7!\2\2\u00f1\u0109\5(\25\7\u00f2\u00f3"+
 		"\f\5\2\2\u00f3\u00f4\7\"\2\2\u00f4\u0109\5(\25\6\u00f5\u00f6\f\4\2\2\u00f6"+
 		"\u00f7\7\t\2\2\u00f7\u0109\5(\25\4\u00f8\u00f9\f\27\2\2\u00f9\u0109\t"+
-		"\3\2\2\u00fa\u00fb\f\26\2\2\u00fb\u00fc\7\16\2\2\u00fc\u0109\7\64\2\2"+
+		"\3\2\2\u00fa\u00fb\f\26\2\2\u00fb\u00fc\7\16\2\2\u00fc\u0109\7\65\2\2"+
 		"\u00fd\u00fe\f\25\2\2\u00fe\u00ff\7\n\2\2\u00ff\u0100\5(\25\2\u0100\u0101"+
 		"\7\13\2\2\u0101\u0109\3\2\2\2\u0102\u0103\f\24\2\2\u0103\u0105\7\3\2\2"+
 		"\u0104\u0106\5\60\31\2\u0105\u0104\3\2\2\2\u0105\u0106\3\2\2\2\u0106\u0107"+
@@ -3012,31 +3040,31 @@ public class EMxStarParser extends Parser {
 		"\u00ef\3\2\2\2\u0108\u00f2\3\2\2\2\u0108\u00f5\3\2\2\2\u0108\u00f8\3\2"+
 		"\2\2\u0108\u00fa\3\2\2\2\u0108\u00fd\3\2\2\2\u0108\u0102\3\2\2\2\u0109"+
 		"\u010c\3\2\2\2\u010a\u0108\3\2\2\2\u010a\u010b\3\2\2\2\u010b)\3\2\2\2"+
-		"\u010c\u010a\3\2\2\2\u010d\u0114\7\64\2\2\u010e\u0114\5,\27\2\u010f\u0110"+
-		"\7\3\2\2\u0110\u0111\5(\25\2\u0111\u0112\7\4\2\2\u0112\u0114\3\2\2\2\u0113"+
-		"\u010d\3\2\2\2\u0113\u010e\3\2\2\2\u0113\u010f\3\2\2\2\u0114+\3\2\2\2"+
-		"\u0115\u011a\7\60\2\2\u0116\u011a\7\61\2\2\u0117\u011a\7\62\2\2\u0118"+
-		"\u011a\7\63\2\2\u0119\u0115\3\2\2\2\u0119\u0116\3\2\2\2\u0119\u0117\3"+
-		"\2\2\2\u0119\u0118\3\2\2\2\u011a-\3\2\2\2\u011b\u0120\5\32\16\2\u011c"+
-		"\u011d\7\n\2\2\u011d\u011e\5(\25\2\u011e\u011f\7\13\2\2\u011f\u0121\3"+
-		"\2\2\2\u0120\u011c\3\2\2\2\u0121\u0122\3\2\2\2\u0122\u0120\3\2\2\2\u0122"+
-		"\u0123\3\2\2\2\u0123\u0126\3\2\2\2\u0124\u0125\7\n\2\2\u0125\u0127\7\13"+
-		"\2\2\u0126\u0124\3\2\2\2\u0127\u0128\3\2\2\2\u0128\u0126\3\2\2\2\u0128"+
-		"\u0129\3\2\2\2\u0129\u012e\3\2\2\2\u012a\u012b\7\n\2\2\u012b\u012c\5("+
-		"\25\2\u012c\u012d\7\13\2\2\u012d\u012f\3\2\2\2\u012e\u012a\3\2\2\2\u012f"+
-		"\u0130\3\2\2\2\u0130\u012e\3\2\2\2\u0130\u0131\3\2\2\2\u0131\u0144\3\2"+
-		"\2\2\u0132\u0137\5\32\16\2\u0133\u0134\7\n\2\2\u0134\u0135\5(\25\2\u0135"+
-		"\u0136\7\13\2\2\u0136\u0138\3\2\2\2\u0137\u0133\3\2\2\2\u0138\u0139\3"+
-		"\2\2\2\u0139\u0137\3\2\2\2\u0139\u013a\3\2\2\2\u013a\u013f\3\2\2\2\u013b"+
-		"\u013c\7\n\2\2\u013c\u013e\7\13\2\2\u013d\u013b\3\2\2\2\u013e\u0141\3"+
-		"\2\2\2\u013f\u013d\3\2\2\2\u013f\u0140\3\2\2\2\u0140\u0144\3\2\2\2\u0141"+
-		"\u013f\3\2\2\2\u0142\u0144\5\32\16\2\u0143\u011b\3\2\2\2\u0143\u0132\3"+
-		"\2\2\2\u0143\u0142\3\2\2\2\u0144/\3\2\2\2\u0145\u014a\5(\25\2\u0146\u0147"+
-		"\7\b\2\2\u0147\u0149\5(\25\2\u0148\u0146\3\2\2\2\u0149\u014c\3\2\2\2\u014a"+
-		"\u0148\3\2\2\2\u014a\u014b\3\2\2\2\u014b\61\3\2\2\2\u014c\u014a\3\2\2"+
-		"\2$\65=@EP^dhow\u0081\u008e\u0094\u009b\u00a4\u00af\u00b3\u00b7\u00bb"+
-		"\u00c3\u00c6\u00d2\u0105\u0108\u010a\u0113\u0119\u0122\u0128\u0130\u0139"+
-		"\u013f\u0143\u014a";
+		"\u010c\u010a\3\2\2\2\u010d\u0115\7\65\2\2\u010e\u0115\7\60\2\2\u010f\u0115"+
+		"\5,\27\2\u0110\u0111\7\3\2\2\u0111\u0112\5(\25\2\u0112\u0113\7\4\2\2\u0113"+
+		"\u0115\3\2\2\2\u0114\u010d\3\2\2\2\u0114\u010e\3\2\2\2\u0114\u010f\3\2"+
+		"\2\2\u0114\u0110\3\2\2\2\u0115+\3\2\2\2\u0116\u011b\7\61\2\2\u0117\u011b"+
+		"\7\62\2\2\u0118\u011b\7\63\2\2\u0119\u011b\7\64\2\2\u011a\u0116\3\2\2"+
+		"\2\u011a\u0117\3\2\2\2\u011a\u0118\3\2\2\2\u011a\u0119\3\2\2\2\u011b-"+
+		"\3\2\2\2\u011c\u0121\5\32\16\2\u011d\u011e\7\n\2\2\u011e\u011f\5(\25\2"+
+		"\u011f\u0120\7\13\2\2\u0120\u0122\3\2\2\2\u0121\u011d\3\2\2\2\u0122\u0123"+
+		"\3\2\2\2\u0123\u0121\3\2\2\2\u0123\u0124\3\2\2\2\u0124\u0127\3\2\2\2\u0125"+
+		"\u0126\7\n\2\2\u0126\u0128\7\13\2\2\u0127\u0125\3\2\2\2\u0128\u0129\3"+
+		"\2\2\2\u0129\u0127\3\2\2\2\u0129\u012a\3\2\2\2\u012a\u012f\3\2\2\2\u012b"+
+		"\u012c\7\n\2\2\u012c\u012d\5(\25\2\u012d\u012e\7\13\2\2\u012e\u0130\3"+
+		"\2\2\2\u012f\u012b\3\2\2\2\u0130\u0131\3\2\2\2\u0131\u012f\3\2\2\2\u0131"+
+		"\u0132\3\2\2\2\u0132\u0145\3\2\2\2\u0133\u0138\5\32\16\2\u0134\u0135\7"+
+		"\n\2\2\u0135\u0136\5(\25\2\u0136\u0137\7\13\2\2\u0137\u0139\3\2\2\2\u0138"+
+		"\u0134\3\2\2\2\u0139\u013a\3\2\2\2\u013a\u0138\3\2\2\2\u013a\u013b\3\2"+
+		"\2\2\u013b\u0140\3\2\2\2\u013c\u013d\7\n\2\2\u013d\u013f\7\13\2\2\u013e"+
+		"\u013c\3\2\2\2\u013f\u0142\3\2\2\2\u0140\u013e\3\2\2\2\u0140\u0141\3\2"+
+		"\2\2\u0141\u0145\3\2\2\2\u0142\u0140\3\2\2\2\u0143\u0145\5\32\16\2\u0144"+
+		"\u011c\3\2\2\2\u0144\u0133\3\2\2\2\u0144\u0143\3\2\2\2\u0145/\3\2\2\2"+
+		"\u0146\u014b\5(\25\2\u0147\u0148\7\b\2\2\u0148\u014a\5(\25\2\u0149\u0147"+
+		"\3\2\2\2\u014a\u014d\3\2\2\2\u014b\u0149\3\2\2\2\u014b\u014c\3\2\2\2\u014c"+
+		"\61\3\2\2\2\u014d\u014b\3\2\2\2$\65=@EP^dhow\u0081\u008e\u0094\u009b\u00a4"+
+		"\u00af\u00b3\u00b7\u00bb\u00c3\u00c6\u00d2\u0105\u0108\u010a\u0114\u011a"+
+		"\u0123\u0129\u0131\u013a\u0140\u0144\u014b";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

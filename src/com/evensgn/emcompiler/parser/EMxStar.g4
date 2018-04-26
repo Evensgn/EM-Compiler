@@ -127,6 +127,7 @@ expression
 
 primaryExpression
     :   Identifier                                      # identifierExpr
+    |   This                                            # thisExpr
     |   constant                                        # constExpr
     |   '(' expression ')'                              # subExpr
     ;
@@ -165,6 +166,7 @@ Continue            : 'continue';
 Return              : 'return';
 New                 : 'new';
 Class               : 'class';
+This                : 'this';
 
 // ---- Constant ----
 IntegerConstant

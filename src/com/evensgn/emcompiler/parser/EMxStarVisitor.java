@@ -272,6 +272,13 @@ public interface EMxStarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitIdentifierExpr(EMxStarParser.IdentifierExprContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code thisExpr}
+	 * labeled alternative in {@link EMxStarParser#primaryExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitThisExpr(EMxStarParser.ThisExprContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code constExpr}
 	 * labeled alternative in {@link EMxStarParser#primaryExpression}.
 	 * @param ctx the parse tree

@@ -56,6 +56,8 @@ public class FunctionScopeScanner extends BaseScopeScanner {
         if (currentClassType != null) {
             String key = Scope.varKey(Scope.THIS_PARA_NAME);
             currentScope.putCheck(node.location(), Scope.THIS_PARA_NAME, key, new VarEntity(Scope.THIS_PARA_NAME, currentClassType));
+            if (node.isConstruct() && !(node.getName().equals(((ClassType) currentClassType).getName())))
+                throw new SemanticError(node.location(), String.format("Function \"%s\" should have a return type", node.getName()));
         }
         for (VarDeclNode pareDecl : node.getParameterList()) {
             pareDecl.accept(this);
@@ -395,25 +397,23 @@ public class FunctionScopeScanner extends BaseScopeScanner {
     @Override
     public void visit(IdentifierExprNode node) {
         String name = node.getIdentifier();
-        Entity entity;
-        if (currentScope.selfContainsExactKey(Scope.varKey(name))) {
-            entity = currentScope.selfGet(Scope.varKey(name));
+        Entity entity = currentScope.getVarFuncCheck(node.location(), name);
+        if (entity instanceof VarEntity) {
             node.setLeftValue(true);
         }
-        else if (currentScope.selfContainsExactKey(Scope.funcKey(name))) {
-            entity = currentScope.selfGet(Scope.funcKey(name));
+        else if (entity instanceof FuncEntity) {
             currentFuncEntity = (FuncEntity) entity;
             node.setLeftValue(false);
         }
-        else if (currentScope.containsExactKey(Scope.varKey(name))) {
-            entity = currentScope.get(Scope.varKey(name));
-            node.setLeftValue(true);
-        }
-        else {
-            entity = currentScope.getCheck(node.location(), name, Scope.funcKey(name));
-            currentFuncEntity = (FuncEntity) entity;
-            node.setLeftValue(false);
-        }
+        else throw new CompilerError(node.location(), "Invalid entity type for identifier");
+        node.setType(entity.getType());
+    }
+
+    @Override
+    public void visit(ThisExprNode node) {
+        Entity entity = currentScope.getVarFuncCheck(node.location(), Scope.THIS_PARA_NAME);
+        if (!(entity instanceof VarEntity)) throw new CompilerError(node.location(), "Invalid entity type for \"this\"");
+        node.setLeftValue(true);
         node.setType(entity.getType());
     }
 

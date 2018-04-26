@@ -353,6 +353,11 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
     }
 
     @Override
+    public Node visitThisExpr(EMxStarParser.ThisExprContext ctx) {
+        return new ThisExprNode(Location.fromCtx(ctx));
+    }
+
+    @Override
     public Node visitConstExpr(EMxStarParser.ConstExprContext ctx) {
         return visit(ctx.constant());
     }

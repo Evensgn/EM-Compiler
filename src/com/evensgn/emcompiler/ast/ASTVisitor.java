@@ -23,6 +23,7 @@ public interface ASTVisitor {
     void visit(BinaryExprNode node);
     void visit(AssignExprNode node);
     void visit(IdentifierExprNode node);
+    void visit(ThisExprNode node);
     void visit(IntConstExprNode node);
     void visit(StringConstExprNode node);
     void visit(BoolConstExprNode node);

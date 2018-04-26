@@ -364,6 +364,13 @@ public class ASTPrinter implements ASTVisitor {
     }
 
     @Override
+    public void visit(ThisExprNode node) {
+        indent();
+        printf("@ ThisExprNode %s:\n", node.location().toString());
+        unindent();
+    }
+
+    @Override
     public void visit(IntConstExprNode node) {
         indent();
         printf("@ IntConstExprNode %s:\n", node.location().toString());

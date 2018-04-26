@@ -136,6 +136,11 @@ abstract public class BaseScopeScanner implements ASTVisitor {
     }
 
     @Override
+    public void visit(ThisExprNode node) {
+
+    }
+
+    @Override
     public void visit(IntConstExprNode node) {
 
     }

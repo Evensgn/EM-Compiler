@@ -450,6 +450,18 @@ public interface EMxStarListener extends ParseTreeListener {
 	 */
 	void exitIdentifierExpr(EMxStarParser.IdentifierExprContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code thisExpr}
+	 * labeled alternative in {@link EMxStarParser#primaryExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterThisExpr(EMxStarParser.ThisExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code thisExpr}
+	 * labeled alternative in {@link EMxStarParser#primaryExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitThisExpr(EMxStarParser.ThisExprContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code constExpr}
 	 * labeled alternative in {@link EMxStarParser#primaryExpression}.
 	 * @param ctx the parse tree

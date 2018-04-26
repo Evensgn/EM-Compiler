@@ -14,7 +14,7 @@ public class Scope {
     static private final String FUNC_PREFIX = "$FUNC$";
     static public final String ARRAY_CLASS_NAME = "#ARRAY";
     static public final String STRING_CLASS_NAME = "#STRING";
-    static public final String THIS_PARA_NAME = "this";
+    static public final String THIS_PARA_NAME = "#THIS";
 
     private Map<String, Entity> entityMap = new HashMap<>();
     private Scope parent;
@@ -87,6 +87,15 @@ public class Scope {
     public Entity selfGetCheck(Location location, String name, String key) {
         Entity entity = selfGet(key);
         if (entity == null) throw new SemanticError(location, String.format("Entity \"%s\" with key \"%s\" not found in scope itself", name, key));
+        return entity;
+    }
+
+    public Entity getVarFuncCheck(Location location, String name) {
+        Entity entity;
+        if (selfContainsExactKey(varKey(name))) entity = selfGet(varKey(name));
+        else if (selfContainsExactKey(funcKey(name))) entity = selfGet(funcKey(name));
+        else entity = parent.getVarFuncCheck(location, name);
+        if (entity == null) throw new SemanticError(location, String.format("Entity \"%s\" not found in scope", name));
         return entity;
     }
 
