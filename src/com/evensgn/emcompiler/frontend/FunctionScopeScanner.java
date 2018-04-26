@@ -253,47 +253,159 @@ public class FunctionScopeScanner implements ASTVisitor {
 
     @Override
     public void visit(PrefixExprNode node) {
-
+        node.getExpr().accept(this);
+        switch (node.getOp()) {
+            case PREFIX_INC:
+            case PREFIX_DEC:
+                if (!(node.getExpr().getType() instanceof IntType))
+                    throw new SemanticError(node.location(), String.format("Operator \"%s\" cannot be applied to type \"%s\"", node.getOp().toString(), node.getExpr().getType().toString()));
+                if (!(node.getExpr().isLeftValue()))
+                    throw new SemanticError(node.location(), String.format("Operator \"%s\" cannot be applied to right value", node.getOp().toString()));
+                node.setType(IntType.getInstance());
+                node.setLeftValue(true);
+                break;
+            case POS:
+            case NEG:
+            case BITWISE_NOT:
+                if (!(node.getExpr().getType() instanceof IntType))
+                    throw new SemanticError(node.location(), String.format("Operator \"%s\" cannot be applied to type \"%s\"", node.getOp().toString(), node.getExpr().getType().toString()));
+                node.setType(IntType.getInstance());
+                node.setLeftValue(false);
+                break;
+            case LOGIC_NOT:
+                if (!(node.getExpr().getType() instanceof BoolType))
+                    throw new SemanticError(node.location(), String.format("Operator \"%s\" cannot be applied to type \"%s\"", node.getOp().toString(), node.getExpr().getType().toString()));
+                node.setType(BoolType.getInstance());
+                node.setLeftValue(false);
+                break;
+            default:
+                throw new CompilerError(node.location(), "Invalid prefix operator");
+        }
     }
 
     @Override
     public void visit(NewExprNode node) {
-
+        node.setType(node.getNewType().getType());
+        node.setLeftValue(false);
     }
 
     @Override
     public void visit(BinaryExprNode node) {
-
+        node.getLhs().accept(this);
+        node.getRhs().accept(this);
+        switch (node.getOp()) {
+            case MUL:
+            case DIV:
+            case MOD:
+            case ADD:
+            case SUB:
+            case SHL:
+            case SHR:
+            case BITWISE_OR:
+            case BITWISE_AND:
+            case BITWISE_XOR:
+                if (!(node.getLhs().getType() instanceof IntType))
+                    throw new SemanticError(node.location(), String.format("Operator \"%s\" cannot be applied to type \"%s\"", node.getOp().toString(), node.getLhs().getType().toString()));
+                if (!(node.getRhs().getType() instanceof IntType))
+                    throw new SemanticError(node.location(), String.format("Operator \"%s\" cannot be applied to type \"%s\"", node.getOp().toString(), node.getRhs().getType().toString()));
+                node.setType(IntType.getInstance());
+                node.setLeftValue(false);
+                break;
+            case GREATER:
+            case LESS:
+            case GREATER_EQUAL:
+            case LESS_EQUAL:
+                if (!(node.getLhs().getType() instanceof IntType))
+                    throw new SemanticError(node.location(), String.format("Operator \"%s\" cannot be applied to type \"%s\"", node.getOp().toString(), node.getLhs().getType().toString()));
+                if (!(node.getRhs().getType() instanceof IntType))
+                    throw new SemanticError(node.location(), String.format("Operator \"%s\" cannot be applied to type \"%s\"", node.getOp().toString(), node.getRhs().getType().toString()));
+                node.setType(BoolType.getInstance());
+                node.setLeftValue(false);
+                break;
+            case EQUAL:
+            case INEQUAL:
+                boolean invalidCompareType;
+                if (node.getLhs().getType() instanceof VoidType || node.getRhs().getType() instanceof VoidType)
+                    invalidCompareType = true;
+                else if (node.getLhs().getType().equals(node.getRhs().getType()))
+                    invalidCompareType = false;
+                else if (node.getLhs().getType() instanceof NullType)
+                    invalidCompareType = !(node.getRhs().getType() instanceof ClassType || node.getRhs().getType() instanceof ArrayType);
+                else if (node.getRhs().getType() instanceof NullType)
+                    invalidCompareType = !(node.getLhs().getType() instanceof ClassType || node.getLhs().getType() instanceof ArrayType);
+                else
+                    invalidCompareType = true;
+                if (invalidCompareType)
+                    throw new SemanticError(node.location(), String.format("Operator \"%s\" cannot be applied to different type \"%s\" and \"%s\"", node.getOp().toString(), node.getLhs().getType().toString(), node.getRhs().getType().toString()));
+                node.setType(BoolType.getInstance());
+                node.setLeftValue(false);
+                break;
+            case LOGIC_OR:
+            case LOGIC_AND:
+                if (!(node.getLhs().getType() instanceof BoolType))
+                    throw new SemanticError(node.location(), String.format("Operator \"%s\" cannot be applied to type \"%s\"", node.getOp().toString(), node.getLhs().getType().toString()));
+                if (!(node.getRhs().getType() instanceof BoolType))
+                    throw new SemanticError(node.location(), String.format("Operator \"%s\" cannot be applied to type \"%s\"", node.getOp().toString(), node.getRhs().getType().toString()));
+                node.setType(BoolType.getInstance());
+                node.setLeftValue(false);
+                break;
+            default:
+                throw new CompilerError(node.location(), "Invalid binary operator");
+        }
     }
 
     @Override
     public void visit(AssignExprNode node) {
-
+        node.getLhs().accept(this);
+        node.getRhs().accept(this);
+        if (!(node.getLhs().isLeftValue()))
+            throw new SemanticError(node.location(), "Lhs of assignment statement should be left value");
+        boolean invalidAssignType;
+        if (node.getLhs().getType() instanceof VoidType || node.getRhs().getType() instanceof VoidType)
+            invalidAssignType = true;
+        else if (node.getLhs().getType().equals(node.getRhs().getType()))
+            invalidAssignType = false;
+        else if (node.getRhs().getType() instanceof NullType)
+            invalidAssignType = !(node.getLhs().getType() instanceof ClassType || node.getLhs().getType() instanceof ArrayType);
+        else
+            invalidAssignType = true;
+        if (invalidAssignType)
+            throw new SemanticError(node.location(), String.format("Assignment operator cannot be applied to different type \"%s\" and \"%s\"", node.getLhs().getType().toString(), node.getRhs().getType().toString()));
+        node.setType(VoidType.getInstance());
+        node.setLeftValue(false);
     }
 
     @Override
     public void visit(IdentifierExprNode node) {
-
+        String name = node.getIdentifier(), key;
+        key = Scope.varKey(name);
+        VarEntity entity = (VarEntity) currentScope.getCheck(node.location(), name, key);
+        node.setType(entity.getType());
+        node.setLeftValue(true);
     }
 
     @Override
     public void visit(IntConstExprNode node) {
-
+        node.setType(IntType.getInstance());
+        node.setLeftValue(false);
     }
 
     @Override
     public void visit(StringConstExprNode node) {
-
+        node.setType(StringType.getInstance());
+        node.setLeftValue(false);
     }
 
     @Override
     public void visit(BoolConstExprNode node) {
-
+        node.setType(BoolType.getInstance());
+        node.setLeftValue(false);
     }
 
     @Override
     public void visit(NullExprNode node) {
-
+        node.setType(NullType.getInstance());
+        node.setLeftValue(false);
     }
 
     @Override
