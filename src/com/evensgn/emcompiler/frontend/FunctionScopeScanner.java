@@ -1,6 +1,7 @@
 package com.evensgn.emcompiler.frontend;
 
 import com.evensgn.emcompiler.ast.*;
+import com.evensgn.emcompiler.compiler.Compiler;
 import com.evensgn.emcompiler.scope.*;
 import com.evensgn.emcompiler.type.*;
 import com.evensgn.emcompiler.utils.CompilerError;
@@ -10,6 +11,7 @@ public class FunctionScopeScanner implements ASTVisitor {
     private Scope globalScope, currentScope;
     private int inLoop;
     private Type currentReturnType;
+    private FuncEntity currentFuncEntity;
 
     public FunctionScopeScanner(Scope globalScope) {
         this.globalScope = globalScope;
@@ -42,7 +44,7 @@ public class FunctionScopeScanner implements ASTVisitor {
     public void visit(VarDeclNode node) {
         if (node.getType().getType() instanceof ClassType) {
             String className = ((ClassType) node.getType().getType()).getName();
-            currentScope.assertContainsKey(node.location(), className, Scope.classKey(className));
+            currentScope.assertContainsExactKey(node.location(), className, Scope.classKey(className));
         }
         VarEntity entity = new VarEntity(node.getName(), node.getType().getType());
         currentScope.putCheck(node.location(), node.getName(), Scope.varKey(node.getName()), entity);
@@ -194,16 +196,13 @@ public class FunctionScopeScanner implements ASTVisitor {
         node.getFunc().accept(this);
         if (!(node.getFunc().getType() instanceof FunctionType))
             throw new SemanticError(node.getFunc().location(), String.format("Type \"%s\" is not callable", node.getFunc().getType().toString()));
-        String funcName, funcKey;
-        funcName = ((FunctionType) node.getFunc().getType()).getName();
-        funcKey = Scope.funcKey(funcName);
-        FuncEntity funcEntity = (FuncEntity) currentScope.getCheck(node.getFunc().location(), funcName, funcKey);
+        FuncEntity funcEntity = currentFuncEntity;
         int paraNum = funcEntity.getParameters().size();
         if (paraNum != node.getArgs().size())
             throw new SemanticError(node.location(), String.format("Function call has inconsistent number of arguments, expected %d but got %d", paraNum, node.getArgs().size()));
         for (int i = 0; i < paraNum; ++i) {
             node.getArgs().get(i).accept(this);
-            if (!funcEntity.getParameters().get(i).getType().equals(node.getArgs().get(i).getType())) {
+            if (!(funcEntity.getParameters().get(i).getType().equals(node.getArgs().get(i).getType()))) {
                 throw new SemanticError(
                     node.getArgs().get(i).location(),
                     String.format(
@@ -238,15 +237,17 @@ public class FunctionScopeScanner implements ASTVisitor {
         if (node.getExpr().getType() instanceof ClassType)
             className = ((ClassType) node.getExpr().getType()).getName();
         else if (node.getExpr().getType() instanceof StringType)
-            className = Scope.ARRAY_CLASS_NAME;
-        else if (node.getExpr().getType() instanceof ArrayType)
             className = Scope.STRING_CLASS_NAME;
+        else if (node.getExpr().getType() instanceof ArrayType)
+            className = Scope.ARRAY_CLASS_NAME;
         else throw new SemanticError(node.location(), String.format("Type \"%s\" cannot be used in member access expression", node.getExpr().getType().toString()));
         ClassEntity classEntity = (ClassEntity) currentScope.getCheck(className, Scope.classKey(className));
-        if (classEntity.getScope().containsKey(Scope.varKey(node.getMember())))
+        if (classEntity.getScope().containsExactKey(Scope.varKey(node.getMember())))
             memberEntity = classEntity.getScope().get(Scope.varKey(node.getMember()));
-        else
+        else {
             memberEntity = classEntity.getScope().getCheck(node.getMember(), Scope.funcKey(node.getMember()));
+            currentFuncEntity = (FuncEntity) memberEntity;
+        }
         node.setType(memberEntity.getType());
         node.setLeftValue(true);
     }
@@ -298,6 +299,11 @@ public class FunctionScopeScanner implements ASTVisitor {
             case DIV:
             case MOD:
             case ADD:
+                if (node.getLhs().getType() instanceof StringType && node.getRhs().getType() instanceof StringType) {
+                    node.setType(StringType.getInstance());
+                    node.setLeftValue(false);
+                    break;
+                }
             case SUB:
             case SHL:
             case SHR:
@@ -377,11 +383,18 @@ public class FunctionScopeScanner implements ASTVisitor {
 
     @Override
     public void visit(IdentifierExprNode node) {
-        String name = node.getIdentifier(), key;
-        key = Scope.varKey(name);
-        VarEntity entity = (VarEntity) currentScope.getCheck(node.location(), name, key);
+        String name = node.getIdentifier();
+        Entity entity;
+        if (currentScope.containsExactKey(Scope.varKey(name))) {
+            entity = currentScope.get(Scope.varKey(name));
+            node.setLeftValue(true);
+        }
+        else {
+            entity = currentScope.getCheck(node.location(), name, Scope.funcKey(name));
+            currentFuncEntity = (FuncEntity) entity;
+            node.setLeftValue(false);
+        }
         node.setType(entity.getType());
-        node.setLeftValue(true);
     }
 
     @Override

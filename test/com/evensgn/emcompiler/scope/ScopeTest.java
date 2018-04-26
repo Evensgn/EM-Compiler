@@ -2,6 +2,7 @@ package com.evensgn.emcompiler.scope;
 
 import static org.junit.Assert.*;
 
+import com.evensgn.emcompiler.type.IntType;
 import com.evensgn.emcompiler.type.Type;
 import org.junit.Test;
 import org.junit.Before; 
@@ -29,11 +30,11 @@ public class ScopeTest {
         String key, name;
         name = "aName";
         key = Scope.classKey(name);
-        assertTrue(scope.put(key, new VarEntity("test", Type.HyperTypes.INT)));
+        assertTrue(scope.put(key, new VarEntity("test", IntType.getInstance())));
         key = Scope.varKey(name);
-        assertTrue(scope.put(key, new VarEntity("test", Type.HyperTypes.INT)));
+        assertTrue(scope.put(key, new VarEntity("test", IntType.getInstance())));
         key = Scope.funcKey(name);
-        assertFalse(scope.put(key, new VarEntity("test", Type.HyperTypes.INT)));
+        assertFalse(scope.put(key, new VarEntity("test", IntType.getInstance())));
         Entity entity;
         entity = scope.get(key);
         assertNull(entity);
@@ -51,7 +52,7 @@ public class ScopeTest {
         String key, name;
         name = "jedi";
         key = Scope.classKey(name);
-        parentScope.put(key, new VarEntity("test", Type.HyperTypes.INT));
+        parentScope.put(key, new VarEntity("test", IntType.getInstance()));
         Scope childScope = new Scope(parentScope);
         assertNotNull(childScope.get(key));
         assertTrue(childScope.containsKey(key));

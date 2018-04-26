@@ -48,7 +48,7 @@ public class Scope {
 
     public boolean put(String key, Entity entity) {
         if (!key.startsWith(KEY_PREFIX)) throw new CompilerError(String.format("Scope entity key should start with \'$\', but get %s", key));
-        if (containsKey(key)) return false;
+        if (selfContainsKey(key)) return false;
         entityMap.put(key, entity);
         return true;
     }
@@ -80,27 +80,40 @@ public class Scope {
         entityMap.put(key, entity);
     }
 
-    public void assertContainsKey(Location location, String name, String key) {
-        if (!containsKey(key)) throw new SemanticError(location, String.format("Entity \"%s\" with key \"%s\" not found in scope", name, key));
+    public void assertContainsExactKey(Location location, String name, String key) {
+        if (!containsExactKey(key)) throw new SemanticError(location, String.format("Entity \"%s\" with key \"%s\" not found in scope", name, key));
     }
 
-    public boolean containsKey(String key) {
+    private boolean selfContainsKey(String key) {
         String name;
-        boolean found;
         if (key.startsWith(VAR_PREFIX)) {
             name = key.substring(5);
-            found = entityMap.containsKey(VAR_PREFIX + name) || entityMap.containsKey(FUNC_PREFIX + name);
+            return entityMap.containsKey(VAR_PREFIX + name) || entityMap.containsKey(FUNC_PREFIX + name);
         }
         else if (key.startsWith(CLASS_PREFIX)) {
             name = key.substring(7);
-            found = entityMap.containsKey(CLASS_PREFIX + name) || entityMap.containsKey(FUNC_PREFIX + name);
+            return entityMap.containsKey(CLASS_PREFIX + name) || entityMap.containsKey(FUNC_PREFIX + name);
         }
         else if (key.startsWith(FUNC_PREFIX)) {
             name = key.substring(6);
-            found = entityMap.containsKey(FUNC_PREFIX + name) || entityMap.containsKey(VAR_PREFIX + name) || entityMap.containsKey(CLASS_PREFIX + name);
+            return entityMap.containsKey(FUNC_PREFIX + name) || entityMap.containsKey(VAR_PREFIX + name) || entityMap.containsKey(CLASS_PREFIX + name);
         }
         else return false;
+    }
+
+    public boolean containsKey(String key) {
+        Boolean found = selfContainsKey(key);
         if (!isTop && !found) return parent.containsKey(key);
+        return found;
+    }
+
+    private boolean selfContainsExactKey(String key) {
+        return entityMap.containsKey(key);
+    }
+
+    public boolean containsExactKey(String key) {
+        Boolean found = selfContainsExactKey(key);
+        if (!isTop && !found) return parent.containsExactKey(key);
         return found;
     }
 

@@ -3,6 +3,8 @@ package com.evensgn.emcompiler.compiler;
 import com.evensgn.emcompiler.ast.ProgramNode;
 import com.evensgn.emcompiler.frontend.ASTBuilder;
 import com.evensgn.emcompiler.frontend.ASTPrinter;
+import com.evensgn.emcompiler.frontend.FunctionScopeScanner;
+import com.evensgn.emcompiler.frontend.GlobalScopePreScanner;
 import com.evensgn.emcompiler.parser.EMxStarLexer;
 import com.evensgn.emcompiler.parser.EMxStarParser;
 import com.evensgn.emcompiler.parser.SyntaxErrorListener;
@@ -40,11 +42,15 @@ public class Compiler {
         ast = (ProgramNode) astBuilder.visit(tree);
     }
 
-    public void run() throws Exception {
+    public void compile() throws Exception {
         System.out.println("compiler is running");
         buildAST();
-        ASTPrinter astPrinter = new ASTPrinter(outS);
-        astPrinter.visit(ast);
+        // ASTPrinter astPrinter = new ASTPrinter(outS);
+        // astPrinter.visit(ast);
+        GlobalScopePreScanner globalScopePreScanner = new GlobalScopePreScanner();
+        globalScopePreScanner.visit(ast);
+        FunctionScopeScanner functionScopeScanner = new FunctionScopeScanner(globalScopePreScanner.getScope());
+        functionScopeScanner.visit(ast);
         System.out.println("compiler finished.");
     }
 }

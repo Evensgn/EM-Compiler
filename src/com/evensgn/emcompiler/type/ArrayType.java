@@ -13,6 +13,12 @@ public class ArrayType extends Type {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ArrayType)) return false;
+        return baseType.equals(((ArrayType) obj).baseType);
+    }
+
+    @Override
     public String toString() {
         return String.format("ArrayType(%s)", baseType.toString());
     }

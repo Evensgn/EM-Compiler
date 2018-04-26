@@ -78,7 +78,7 @@ public class Main {
 
         Compiler compiler = new Compiler(inS, outS);
         try {
-            compiler.run();
+            compiler.compile();
         }
         catch (Error e) {
             System.err.println(e.getMessage());

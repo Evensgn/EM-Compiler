@@ -2237,24 +2237,14 @@ public class EMxStarParser extends Parser {
 						break;
 					case 14:
 						{
-						_localctx = new FuncCallExprContext(new ExpressionContext(_parentctx, _parentState));
+						_localctx = new MemberAccessExprContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
 						setState(248);
 						if (!(precpred(_ctx, 20))) throw new FailedPredicateException(this, "precpred(_ctx, 20)");
 						setState(249);
-						match(T__0);
-						setState(251);
-						_errHandler.sync(this);
-						_la = _input.LA(1);
-						if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__9) | (1L << T__10) | (1L << T__12) | (1L << T__13) | (1L << T__14) | (1L << T__15) | (1L << New) | (1L << IntegerConstant) | (1L << StringConst) | (1L << NullLiteral) | (1L << BoolConstant) | (1L << Identifier))) != 0)) {
-							{
-							setState(250);
-							parameterList();
-							}
-						}
-
-						setState(253);
-						match(T__1);
+						match(T__11);
+						setState(250);
+						match(Identifier);
 						}
 						break;
 					case 15:
@@ -2262,26 +2252,36 @@ public class EMxStarParser extends Parser {
 						_localctx = new SubscriptExprContext(new ExpressionContext(_parentctx, _parentState));
 						((SubscriptExprContext)_localctx).arr = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(254);
+						setState(251);
 						if (!(precpred(_ctx, 19))) throw new FailedPredicateException(this, "precpred(_ctx, 19)");
-						setState(255);
+						setState(252);
 						match(T__7);
-						setState(256);
+						setState(253);
 						((SubscriptExprContext)_localctx).sub = expression(0);
-						setState(257);
+						setState(254);
 						match(T__8);
 						}
 						break;
 					case 16:
 						{
-						_localctx = new MemberAccessExprContext(new ExpressionContext(_parentctx, _parentState));
+						_localctx = new FuncCallExprContext(new ExpressionContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expression);
-						setState(259);
+						setState(256);
 						if (!(precpred(_ctx, 18))) throw new FailedPredicateException(this, "precpred(_ctx, 18)");
-						setState(260);
-						match(T__11);
+						setState(257);
+						match(T__0);
+						setState(259);
+						_errHandler.sync(this);
+						_la = _input.LA(1);
+						if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__9) | (1L << T__10) | (1L << T__12) | (1L << T__13) | (1L << T__14) | (1L << T__15) | (1L << New) | (1L << IntegerConstant) | (1L << StringConst) | (1L << NullLiteral) | (1L << BoolConstant) | (1L << Identifier))) != 0)) {
+							{
+							setState(258);
+							parameterList();
+							}
+						}
+
 						setState(261);
-						match(Identifier);
+						match(T__1);
 						}
 						break;
 					}
@@ -2934,7 +2934,7 @@ public class EMxStarParser extends Parser {
 		"\n\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25"+
 		"\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25"+
 		"\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25"+
-		"\5\25\u00fe\n\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\7\25\u0109"+
+		"\3\25\3\25\3\25\3\25\3\25\3\25\3\25\3\25\5\25\u0106\n\25\3\25\7\25\u0109"+
 		"\n\25\f\25\16\25\u010c\13\25\3\26\3\26\3\26\3\26\3\26\3\26\5\26\u0114"+
 		"\n\26\3\27\3\27\3\27\3\27\5\27\u011a\n\27\3\30\3\30\3\30\3\30\3\30\6\30"+
 		"\u0121\n\30\r\30\16\30\u0122\3\30\3\30\6\30\u0127\n\30\r\30\16\30\u0128"+
@@ -3002,15 +3002,15 @@ public class EMxStarParser extends Parser {
 		"\b\u00ef\u00f0\f\6\2\2\u00f0\u00f1\7!\2\2\u00f1\u0109\5(\25\7\u00f2\u00f3"+
 		"\f\5\2\2\u00f3\u00f4\7\"\2\2\u00f4\u0109\5(\25\6\u00f5\u00f6\f\4\2\2\u00f6"+
 		"\u00f7\7\t\2\2\u00f7\u0109\5(\25\4\u00f8\u00f9\f\27\2\2\u00f9\u0109\t"+
-		"\3\2\2\u00fa\u00fb\f\26\2\2\u00fb\u00fd\7\3\2\2\u00fc\u00fe\5\60\31\2"+
-		"\u00fd\u00fc\3\2\2\2\u00fd\u00fe\3\2\2\2\u00fe\u00ff\3\2\2\2\u00ff\u0109"+
-		"\7\4\2\2\u0100\u0101\f\25\2\2\u0101\u0102\7\n\2\2\u0102\u0103\5(\25\2"+
-		"\u0103\u0104\7\13\2\2\u0104\u0109\3\2\2\2\u0105\u0106\f\24\2\2\u0106\u0107"+
-		"\7\16\2\2\u0107\u0109\7\64\2\2\u0108\u00d4\3\2\2\2\u0108\u00d7\3\2\2\2"+
-		"\u0108\u00da\3\2\2\2\u0108\u00dd\3\2\2\2\u0108\u00e0\3\2\2\2\u0108\u00e3"+
-		"\3\2\2\2\u0108\u00e6\3\2\2\2\u0108\u00e9\3\2\2\2\u0108\u00ec\3\2\2\2\u0108"+
+		"\3\2\2\u00fa\u00fb\f\26\2\2\u00fb\u00fc\7\16\2\2\u00fc\u0109\7\64\2\2"+
+		"\u00fd\u00fe\f\25\2\2\u00fe\u00ff\7\n\2\2\u00ff\u0100\5(\25\2\u0100\u0101"+
+		"\7\13\2\2\u0101\u0109\3\2\2\2\u0102\u0103\f\24\2\2\u0103\u0105\7\3\2\2"+
+		"\u0104\u0106\5\60\31\2\u0105\u0104\3\2\2\2\u0105\u0106\3\2\2\2\u0106\u0107"+
+		"\3\2\2\2\u0107\u0109\7\4\2\2\u0108\u00d4\3\2\2\2\u0108\u00d7\3\2\2\2\u0108"+
+		"\u00da\3\2\2\2\u0108\u00dd\3\2\2\2\u0108\u00e0\3\2\2\2\u0108\u00e3\3\2"+
+		"\2\2\u0108\u00e6\3\2\2\2\u0108\u00e9\3\2\2\2\u0108\u00ec\3\2\2\2\u0108"+
 		"\u00ef\3\2\2\2\u0108\u00f2\3\2\2\2\u0108\u00f5\3\2\2\2\u0108\u00f8\3\2"+
-		"\2\2\u0108\u00fa\3\2\2\2\u0108\u0100\3\2\2\2\u0108\u0105\3\2\2\2\u0109"+
+		"\2\2\u0108\u00fa\3\2\2\2\u0108\u00fd\3\2\2\2\u0108\u0102\3\2\2\2\u0109"+
 		"\u010c\3\2\2\2\u010a\u0108\3\2\2\2\u010a\u010b\3\2\2\2\u010b)\3\2\2\2"+
 		"\u010c\u010a\3\2\2\2\u010d\u0114\7\64\2\2\u010e\u0114\5,\27\2\u010f\u0110"+
 		"\7\3\2\2\u0110\u0111\5(\25\2\u0111\u0112\7\4\2\2\u0112\u0114\3\2\2\2\u0113"+
@@ -3035,7 +3035,7 @@ public class EMxStarParser extends Parser {
 		"\7\b\2\2\u0147\u0149\5(\25\2\u0148\u0146\3\2\2\2\u0149\u014c\3\2\2\2\u014a"+
 		"\u0148\3\2\2\2\u014a\u014b\3\2\2\2\u014b\61\3\2\2\2\u014c\u014a\3\2\2"+
 		"\2$\65=@EP^dhow\u0081\u008e\u0094\u009b\u00a4\u00af\u00b3\u00b7\u00bb"+
-		"\u00c3\u00c6\u00d2\u00fd\u0108\u010a\u0113\u0119\u0122\u0128\u0130\u0139"+
+		"\u00c3\u00c6\u00d2\u0105\u0108\u010a\u0113\u0119\u0122\u0128\u0130\u0139"+
 		"\u013f\u0143\u014a";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());

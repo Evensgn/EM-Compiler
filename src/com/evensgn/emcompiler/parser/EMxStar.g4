@@ -103,9 +103,9 @@ jumpStatement
 // ---- Expression ----
 expression
     :   expression op=('++' | '--')                             # suffixExpr
-    |   expression '(' parameterList? ')'                       # funcCallExpr
-    |   arr=expression '[' sub=expression ']'                   # subscriptExpr
     |   expression '.' Identifier                               # memberAccessExpr
+    |   arr=expression '[' sub=expression ']'                   # subscriptExpr
+    |   expression '(' parameterList? ')'                       # funcCallExpr
     |   <assoc=right> op=('++'|'--') expression                 # prefixExpr
     |   <assoc=right> op=('+' | '-') expression                 # prefixExpr
     |   <assoc=right> op=('!' | '~') expression                 # prefixExpr

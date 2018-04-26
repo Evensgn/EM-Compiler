@@ -136,7 +136,7 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
         Type type;
         if (ctx.Int() != null) type = IntType.getInstance();
         else if (ctx.Bool() != null) type = BoolType.getInstance();
-        else if (ctx.String() != null) type = VoidType.getInstance();
+        else if (ctx.String() != null) type = StringType.getInstance();
         else if (ctx.Identifier() != null) type = new ClassType(ctx.Identifier().getText());
         else throw new CompilerError(Location.fromCtx(ctx), "Invalid primitive type");
         return new TypeNode(type, Location.fromCtx(ctx));
@@ -179,7 +179,11 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
         if (ctx.blockStatement() != null) {
             for (ParserRuleContext blockStatement : ctx.blockStatement()) {
                 Node node = visit(blockStatement);
-                if (node != null) stmtsAndVarDecls.add(node);
+                if (node != null) {
+                    if (node instanceof VarDeclListNode)
+                        stmtsAndVarDecls.addAll(((VarDeclListNode) node).getDecls());
+                    else stmtsAndVarDecls.add(node);
+                }
             }
         }
         return new BlockStmtNode(stmtsAndVarDecls, Location.fromCtx(ctx));
