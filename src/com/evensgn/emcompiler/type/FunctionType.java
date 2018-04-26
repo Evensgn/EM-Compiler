@@ -13,6 +13,12 @@ public class FunctionType extends Type {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof FunctionType)) return false;
+        return name.equals(((FunctionType) obj).name);
+    }
+
+    @Override
     public String toString() {
         return String.format("FunctionType(%s)", name);
     }
