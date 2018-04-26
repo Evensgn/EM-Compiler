@@ -47,6 +47,10 @@ public class Scope {
         else return parent.get(key);
     }
 
+    public Entity selfGet(String key) {
+        return entityMap.get(key);
+    }
+
     public boolean put(String key, Entity entity) {
         if (!key.startsWith(KEY_PREFIX)) throw new CompilerError(String.format("Scope entity key should start with \'$\', but get %s", key));
         if (selfContainsKey(key)) return false;
@@ -71,6 +75,18 @@ public class Scope {
     public Entity getCheck(Location location, String name, String key) {
         Entity entity = get(key);
         if (entity == null) throw new SemanticError(location, String.format("Entity \"%s\" with key \"%s\" not found in scope", name, key));
+        return entity;
+    }
+
+    public Entity selfGetCheck(String name, String key) {
+        Entity entity = selfGet(key);
+        if (entity == null) throw new SemanticError(String.format("Entity \"%s\" with key \"%s\" not found in scope itself", name, key));
+        return entity;
+    }
+
+    public Entity selfGetCheck(Location location, String name, String key) {
+        Entity entity = selfGet(key);
+        if (entity == null) throw new SemanticError(location, String.format("Entity \"%s\" with key \"%s\" not found in scope itself", name, key));
         return entity;
     }
 
@@ -108,7 +124,7 @@ public class Scope {
         return found;
     }
 
-    private boolean selfContainsExactKey(String key) {
+    public boolean selfContainsExactKey(String key) {
         return entityMap.containsKey(key);
     }
 

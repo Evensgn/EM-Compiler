@@ -251,10 +251,10 @@ public class FunctionScopeScanner extends BaseScopeScanner {
             className = Scope.ARRAY_CLASS_NAME;
         else throw new SemanticError(node.location(), String.format("Type \"%s\" cannot be used in member access expression", node.getExpr().getType().toString()));
         ClassEntity classEntity = (ClassEntity) currentScope.getCheck(className, Scope.classKey(className));
-        if (classEntity.getScope().containsExactKey(Scope.varKey(node.getMember())))
-            memberEntity = classEntity.getScope().get(Scope.varKey(node.getMember()));
+        if (classEntity.getScope().selfContainsExactKey(Scope.varKey(node.getMember())))
+            memberEntity = classEntity.getScope().selfGet(Scope.varKey(node.getMember()));
         else {
-            memberEntity = classEntity.getScope().getCheck(node.getMember(), Scope.funcKey(node.getMember()));
+            memberEntity = classEntity.getScope().selfGetCheck(node.getMember(), Scope.funcKey(node.getMember()));
             currentFuncEntity = (FuncEntity) memberEntity;
         }
         node.setType(memberEntity.getType());
@@ -330,10 +330,12 @@ public class FunctionScopeScanner extends BaseScopeScanner {
             case LESS:
             case GREATER_EQUAL:
             case LESS_EQUAL:
-                if (!(node.getLhs().getType() instanceof IntType))
+                if (!(node.getLhs().getType() instanceof IntType || node.getLhs().getType() instanceof StringType))
                     throw new SemanticError(node.location(), String.format("Operator \"%s\" cannot be applied to type \"%s\"", node.getOp().toString(), node.getLhs().getType().toString()));
-                if (!(node.getRhs().getType() instanceof IntType))
+                if (!(node.getRhs().getType() instanceof IntType || node.getRhs().getType() instanceof StringType))
                     throw new SemanticError(node.location(), String.format("Operator \"%s\" cannot be applied to type \"%s\"", node.getOp().toString(), node.getRhs().getType().toString()));
+                if (!(node.getLhs().getType().equals(node.getRhs().getType())))
+                    throw new SemanticError(node.location(), String.format("Operator \"%s\" cannot be applied to different types \"%s\" and \"%s\"", node.getOp().toString(), node.getLhs().getType().toString(), node.getRhs().getType().toString()));
                 node.setType(BoolType.getInstance());
                 node.setLeftValue(false);
                 break;
@@ -351,7 +353,7 @@ public class FunctionScopeScanner extends BaseScopeScanner {
                 else
                     invalidCompareType = true;
                 if (invalidCompareType)
-                    throw new SemanticError(node.location(), String.format("Operator \"%s\" cannot be applied to different type \"%s\" and \"%s\"", node.getOp().toString(), node.getLhs().getType().toString(), node.getRhs().getType().toString()));
+                    throw new SemanticError(node.location(), String.format("Operator \"%s\" cannot be applied to different types \"%s\" and \"%s\"", node.getOp().toString(), node.getLhs().getType().toString(), node.getRhs().getType().toString()));
                 node.setType(BoolType.getInstance());
                 node.setLeftValue(false);
                 break;
@@ -385,7 +387,7 @@ public class FunctionScopeScanner extends BaseScopeScanner {
         else
             invalidAssignType = true;
         if (invalidAssignType)
-            throw new SemanticError(node.location(), String.format("Assignment operator cannot be applied to different type \"%s\" and \"%s\"", node.getLhs().getType().toString(), node.getRhs().getType().toString()));
+            throw new SemanticError(node.location(), String.format("Assignment operator cannot be applied to different types \"%s\" and \"%s\"", node.getLhs().getType().toString(), node.getRhs().getType().toString()));
         node.setType(VoidType.getInstance());
         node.setLeftValue(false);
     }
@@ -394,7 +396,16 @@ public class FunctionScopeScanner extends BaseScopeScanner {
     public void visit(IdentifierExprNode node) {
         String name = node.getIdentifier();
         Entity entity;
-        if (currentScope.containsExactKey(Scope.varKey(name))) {
+        if (currentScope.selfContainsExactKey(Scope.varKey(name))) {
+            entity = currentScope.selfGet(Scope.varKey(name));
+            node.setLeftValue(true);
+        }
+        else if (currentScope.selfContainsExactKey(Scope.funcKey(name))) {
+            entity = currentScope.selfGet(Scope.funcKey(name));
+            currentFuncEntity = (FuncEntity) entity;
+            node.setLeftValue(false);
+        }
+        else if (currentScope.containsExactKey(Scope.varKey(name))) {
             entity = currentScope.get(Scope.varKey(name));
             node.setLeftValue(true);
         }
