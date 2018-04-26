@@ -10,7 +10,7 @@ import com.evensgn.emcompiler.utils.SemanticError;
 public class FunctionScopeScanner implements ASTVisitor {
     private Scope globalScope, currentScope;
     private int inLoop;
-    private Type currentReturnType;
+    private Type currentReturnType, currentClassType;
     private FuncEntity currentFuncEntity;
 
     public FunctionScopeScanner(Scope globalScope) {
@@ -67,9 +67,15 @@ public class FunctionScopeScanner implements ASTVisitor {
     @Override
     public void visit(FuncDeclNode node) {
         FuncEntity entity = (FuncEntity) currentScope.getCheck(node.location(), node.getName(), Scope.funcKey(node.getName()));
+        if (entity.getReturnType() instanceof ClassType)
+            currentScope.assertContainsExactKey(node.getReturnType().location(), ((ClassType) entity.getReturnType()).getName(), Scope.classKey(((ClassType) entity.getReturnType()).getName()));
         currentReturnType = entity.getReturnType();
         node.getBody().initScope(currentScope);
         currentScope = node.getBody().getScope();
+        if (node.isConstruct()) {
+            String key = Scope.varKey(Scope.THIS_PARA_NAME);
+            currentScope.putCheck(node.location(), Scope.THIS_PARA_NAME, key, new VarEntity(Scope.THIS_PARA_NAME, currentClassType));
+        }
         for (VarDeclNode pareDecl : node.getParameterList()) {
             pareDecl.accept(this);
         }
@@ -84,6 +90,7 @@ public class FunctionScopeScanner implements ASTVisitor {
         for (VarDeclNode varMemDecl : node.getVarMember()) {
             varMemDecl.accept(this);
         }
+        currentClassType = entity.getType();
         for (FuncDeclNode funcDecl : node.getFuncMember()) {
             funcDecl.accept(this);
         }
@@ -183,6 +190,8 @@ public class FunctionScopeScanner implements ASTVisitor {
         }
         else {
             node.getExpr().accept(this);
+            if (node.getExpr().getType() instanceof NullType)
+                invalidReturnValueType = !(currentReturnType instanceof ClassType || currentReturnType instanceof ArrayType);
             if (!(node.getExpr().getType().equals(currentReturnType)))
                 invalidReturnValueType = true;
         }

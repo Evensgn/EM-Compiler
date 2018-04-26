@@ -3,6 +3,7 @@ package com.evensgn.emcompiler.scope;
 import com.evensgn.emcompiler.ast.FuncDeclNode;
 import com.evensgn.emcompiler.ast.VarDeclNode;
 import com.evensgn.emcompiler.type.FunctionType;
+import com.evensgn.emcompiler.type.NullType;
 import com.evensgn.emcompiler.type.Type;
 
 import java.util.ArrayList;
@@ -23,7 +24,8 @@ public class FuncEntity extends Entity {
         for (VarDeclNode paraDecl : node.getParameterList()) {
             parameters.add(new VarEntity(paraDecl));
         }
-        returnType = node.getReturnType().getType();
+        if (node.getReturnType() == null) returnType = null;
+        else returnType = node.getReturnType().getType();
         isConstruct = node.isConstruct();
     }
 
