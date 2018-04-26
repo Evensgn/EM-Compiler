@@ -46,18 +46,20 @@ public class FunctionScopeScanner implements ASTVisitor {
             String className = ((ClassType) node.getType().getType()).getName();
             currentScope.assertContainsExactKey(node.location(), className, Scope.classKey(className));
         }
-        node.getInit().accept(this);
-        boolean invalidInitType;
-        if (node.getType().getType() instanceof VoidType || node.getInit().getType() instanceof VoidType)
-            invalidInitType = true;
-        else if (node.getType().getType().equals(node.getInit().getType()))
-            invalidInitType = false;
-        else if (node.getInit().getType() instanceof NullType)
-            invalidInitType = !(node.getType().getType() instanceof ClassType || node.getType().getType() instanceof ArrayType);
-        else
-            invalidInitType = true;
-        if (invalidInitType)
-            throw new SemanticError(node.location(), String.format("Invalid initialization value, expected \"%s\" but got \"%s\"", node.getType().getType().toString(), node.getInit().getType().toString()));
+        if (node.getInit() != null) {
+            node.getInit().accept(this);
+            boolean invalidInitType;
+            if (node.getType().getType() instanceof VoidType || node.getInit().getType() instanceof VoidType)
+                invalidInitType = true;
+            else if (node.getType().getType().equals(node.getInit().getType()))
+                invalidInitType = false;
+            else if (node.getInit().getType() instanceof NullType)
+                invalidInitType = !(node.getType().getType() instanceof ClassType || node.getType().getType() instanceof ArrayType);
+            else
+                invalidInitType = true;
+            if (invalidInitType)
+                throw new SemanticError(node.location(), String.format("Invalid initialization value, expected \"%s\" but got \"%s\"", node.getType().getType().toString(), node.getInit().getType().toString()));
+        }
         VarEntity entity = new VarEntity(node.getName(), node.getType().getType());
         currentScope.putCheck(node.location(), node.getName(), Scope.varKey(node.getName()), entity);
     }
