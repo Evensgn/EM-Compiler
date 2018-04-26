@@ -67,6 +67,9 @@ public class FunctionScopeScanner implements ASTVisitor {
     public void visit(ClassDeclNode node) {
         ClassEntity entity = (ClassEntity) currentScope.getCheck(node.location(), node.getName(), Scope.classKey(node.getName()));
         currentScope = entity.getScope();
+        for (VarDeclNode varMemDecl : node.getVarMember()) {
+            varMemDecl.accept(this);
+        }
         for (FuncDeclNode funcDecl : node.getFuncMember()) {
             funcDecl.accept(this);
         }
@@ -86,10 +89,7 @@ public class FunctionScopeScanner implements ASTVisitor {
                 stmtOrVarDecl.accept(this);
             }
             else if (stmtOrVarDecl instanceof VarDeclNode) {
-                name = ((VarDeclNode) stmtOrVarDecl).getName();
-                key = Scope.varKey(name);
-                varEntity = new VarEntity((VarDeclNode) stmtOrVarDecl);
-                currentScope.putCheck(stmtOrVarDecl.location(), name, key, varEntity);
+                stmtOrVarDecl.accept(this);
             }
             else throw new CompilerError(stmtOrVarDecl.location(), "Invalid node type in block statement node");
         }

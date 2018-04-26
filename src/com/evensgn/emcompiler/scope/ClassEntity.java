@@ -7,7 +7,7 @@ import com.evensgn.emcompiler.type.Type;
 import com.evensgn.emcompiler.utils.SemanticError;
 
 public class ClassEntity extends Entity {
-    Scope scope;
+    private Scope scope;
 
     public ClassEntity(String name, Type type, Scope parentScope) {
         super(name, type);
@@ -17,11 +17,11 @@ public class ClassEntity extends Entity {
     public ClassEntity(ClassDeclNode node, Scope parentScope) {
         super(node.getName(), new ClassType(node.getName()));
         String key;
-        FuncEntity entity;
+        Entity entity;
         for (FuncDeclNode funcMemDecl : node.getFuncMember()) {
             key = Scope.funcKey(funcMemDecl.getName());
             entity = new FuncEntity(funcMemDecl);
-            if (!scope.put(key, entity)) throw new SemanticError(funcMemDecl.location(), String.format("Symbol name \"%s\" already defined", funcMemDecl.getName()));
+            scope.putCheck(funcMemDecl.location(), funcMemDecl.getName(), key, entity);
         }
         scope = new Scope(parentScope);
     }

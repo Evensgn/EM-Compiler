@@ -45,8 +45,8 @@ public class Compiler {
     public void compile() throws Exception {
         System.out.println("compiler is running");
         buildAST();
-        // ASTPrinter astPrinter = new ASTPrinter(outS);
-        // astPrinter.visit(ast);
+        ASTPrinter astPrinter = new ASTPrinter(outS);
+        astPrinter.visit(ast);
         GlobalScopePreScanner globalScopePreScanner = new GlobalScopePreScanner();
         globalScopePreScanner.visit(ast);
         FunctionScopeScanner functionScopeScanner = new FunctionScopeScanner(globalScopePreScanner.getScope());

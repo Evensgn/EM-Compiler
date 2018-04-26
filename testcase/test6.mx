@@ -1,0 +1,22 @@
+class A {
+    int f;
+    bool f;
+}
+
+int main() {
+    return 0;
+}
+
+
+
+/*!! metadata:
+=== comment ===
+class-1-5100379071-puyouer.mx
+=== assert ===
+failure_compile
+=== phase ===
+semantic pretest
+=== is_public ===
+True
+
+!!*/
