@@ -1,7 +1,6 @@
 package com.evensgn.emcompiler.frontend;
 
 import com.evensgn.emcompiler.ast.*;
-import com.evensgn.emcompiler.compiler.Compiler;
 import com.evensgn.emcompiler.scope.*;
 import com.evensgn.emcompiler.type.*;
 import com.evensgn.emcompiler.utils.CompilerError;
@@ -72,7 +71,7 @@ public class FunctionScopeScanner implements ASTVisitor {
         currentReturnType = entity.getReturnType();
         node.getBody().initScope(currentScope);
         currentScope = node.getBody().getScope();
-        if (node.isConstruct()) {
+        if (currentClassType != null) {
             String key = Scope.varKey(Scope.THIS_PARA_NAME);
             currentScope.putCheck(node.location(), Scope.THIS_PARA_NAME, key, new VarEntity(Scope.THIS_PARA_NAME, currentClassType));
         }
@@ -94,6 +93,7 @@ public class FunctionScopeScanner implements ASTVisitor {
         for (FuncDeclNode funcDecl : node.getFuncMember()) {
             funcDecl.accept(this);
         }
+        currentClassType = null;
         currentScope = currentScope.getParent(); // should be globalScope
     }
 
@@ -192,7 +192,7 @@ public class FunctionScopeScanner implements ASTVisitor {
             node.getExpr().accept(this);
             if (node.getExpr().getType() instanceof NullType)
                 invalidReturnValueType = !(currentReturnType instanceof ClassType || currentReturnType instanceof ArrayType);
-            if (!(node.getExpr().getType().equals(currentReturnType)))
+            else if (!(node.getExpr().getType().equals(currentReturnType)))
                 invalidReturnValueType = true;
         }
         if (invalidReturnValueType) {

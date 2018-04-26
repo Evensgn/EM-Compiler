@@ -1,23 +1,1119 @@
-@ ProgramNode (1:0):
+@ ProgramNode (5:0):
 >>> decls:
-    @ FuncDeclNode (1:0):
+    @ ClassDeclNode (5:0):
+    >>> name: vector
+    >>> varMember:
+        @ VaeDeclNode (6:7):
+        >>> type:
+            @ TypeNode (6:1):
+            >>> type: ArrayType(PrimitiveType(INT))
+        >>> name: data
+        >>> init: null
+    >>> funcMember:
+        @ FuncDeclNode (7:1):
+        >>> isContruct: false
+        >>> returnType:
+            @ TypeNode (7:1):
+            >>> type: PrimitiveType(VOID)
+        >>> name: init
+        >>> parameterList:
+            @ VaeDeclNode (7:11):
+            >>> type:
+                @ TypeNode (7:11):
+                >>> type: ArrayType(PrimitiveType(INT))
+            >>> name: vec
+            >>> init: null
+        >>> body:
+            @ BlockStmtNode (7:21):
+            >>> stmtsAndVarDecls:
+                @ CondStmtNode (9:2):
+                >>> cond:
+                    @ BinaryExprNode (9:6):
+                    >>> op: EQUAL
+                    >>> lhs:
+                        @ IdentifierExprNode (9:6):
+                        >>> identifier: vec
+                    >>> rhs:
+                        @ NullExprNode (9:13):
+                >>> thenStmt:
+                    @ ReturnStmtNode (9:19):
+                    >>> expr: null
+                >>> elseStmt: null
+                @ ExprStmtNode (10:2):
+                >>> expr:
+                    @ AssignExprNode (10:2):
+                    >>> lhs:
+                        @ IdentifierExprNode (10:2):
+                        >>> identifier: data
+                    >>> rhs:
+                        @ NewExprNode (10:13):
+                        >>> newType:
+                            @ TypeNode (10:13):
+                            >>> type: ArrayType(PrimitiveType(INT))
+                        >>> dims:
+                            @ FuncCallExprNode (10:17):
+                            >>> func:
+                                @ MemberAccessExprNode (10:17):
+                                >>> expr:
+                                    @ IdentifierExprNode (10:17):
+                                    >>> identifier: vec
+                                >>> member: size
+                            >>> args: null
+                        >>> numDim: 1
+                @ VaeDeclNode (11:6):
+                >>> type:
+                    @ TypeNode (11:2):
+                    >>> type: PrimitiveType(INT)
+                >>> name: i
+                >>> init: null
+                @ ForStmtNode (12:2):
+                >>> init:
+                    @ AssignExprNode (12:7):
+                    >>> lhs:
+                        @ IdentifierExprNode (12:7):
+                        >>> identifier: i
+                    >>> rhs:
+                        @ IntConstExprNode (12:11):
+                        >>> value: 0
+                >>> cond:
+                    @ BinaryExprNode (12:14):
+                    >>> op: LESS
+                    >>> lhs:
+                        @ IdentifierExprNode (12:14):
+                        >>> identifier: i
+                    >>> rhs:
+                        @ FuncCallExprNode (12:18):
+                        >>> func:
+                            @ MemberAccessExprNode (12:18):
+                            >>> expr:
+                                @ IdentifierExprNode (12:18):
+                                >>> identifier: vec
+                            >>> member: size
+                        >>> args: null
+                >>> step:
+                    @ PrefixExprNode (12:30):
+                    >>> op: PREFIX_INC
+                    >>> expr:
+                        @ IdentifierExprNode (12:32):
+                        >>> identifier: i
+                >>> stmt:
+                    @ BlockStmtNode (13:2):
+                    >>> stmtsAndVarDecls:
+                        @ ExprStmtNode (14:3):
+                        >>> expr:
+                            @ AssignExprNode (14:3):
+                            >>> lhs:
+                                @ SubscriptExprNode (14:3):
+                                >>> arr:
+                                    @ IdentifierExprNode (14:3):
+                                    >>> identifier: data
+                                >>> sub:
+                                    @ IdentifierExprNode (14:8):
+                                    >>> identifier: i
+                            >>> rhs:
+                                @ SubscriptExprNode (14:13):
+                                >>> arr:
+                                    @ IdentifierExprNode (14:13):
+                                    >>> identifier: vec
+                                >>> sub:
+                                    @ IdentifierExprNode (14:17):
+                                    >>> identifier: i
+        @ FuncDeclNode (18:1):
+        >>> isContruct: false
+        >>> returnType:
+            @ TypeNode (18:1):
+            >>> type: PrimitiveType(INT)
+        >>> name: getDim
+        >>> parameterList: null
+        >>> body:
+            @ BlockStmtNode (18:13):
+            >>> stmtsAndVarDecls:
+                @ CondStmtNode (19:2):
+                >>> cond:
+                    @ BinaryExprNode (19:6):
+                    >>> op: EQUAL
+                    >>> lhs:
+                        @ IdentifierExprNode (19:6):
+                        >>> identifier: data
+                    >>> rhs:
+                        @ NullExprNode (19:14):
+                >>> thenStmt:
+                    @ ReturnStmtNode (19:20):
+                    >>> expr:
+                        @ IntConstExprNode (19:27):
+                        >>> value: 0
+                >>> elseStmt: null
+                @ ReturnStmtNode (20:2):
+                >>> expr:
+                    @ FuncCallExprNode (20:9):
+                    >>> func:
+                        @ MemberAccessExprNode (20:9):
+                        >>> expr:
+                            @ IdentifierExprNode (20:9):
+                            >>> identifier: data
+                        >>> member: size
+                    >>> args: null
+        @ FuncDeclNode (23:1):
+        >>> isContruct: false
+        >>> returnType:
+            @ TypeNode (23:1):
+            >>> type: PrimitiveType(INT)
+        >>> name: dot
+        >>> parameterList:
+            @ VaeDeclNode (23:9):
+            >>> type:
+                @ TypeNode (23:9):
+                >>> type: ClassType(vector)
+            >>> name: rhs
+            >>> init: null
+        >>> body:
+            @ BlockStmtNode (23:20):
+            >>> stmtsAndVarDecls:
+                @ VaeDeclNode (24:6):
+                >>> type:
+                    @ TypeNode (24:2):
+                    >>> type: PrimitiveType(INT)
+                >>> name: i
+                >>> init:
+                    @ IntConstExprNode (24:10):
+                    >>> value: 0
+                @ VaeDeclNode (25:6):
+                >>> type:
+                    @ TypeNode (25:2):
+                    >>> type: PrimitiveType(INT)
+                >>> name: result
+                >>> init:
+                    @ IntConstExprNode (25:15):
+                    >>> value: 0
+                @ WhileStmtNode (26:2):
+                >>> cond:
+                    @ BinaryExprNode (26:8):
+                    >>> op: LESS
+                    >>> lhs:
+                        @ IdentifierExprNode (26:8):
+                        >>> identifier: i
+                    >>> rhs:
+                        @ FuncCallExprNode (26:12):
+                        >>> func:
+                            @ IdentifierExprNode (26:12):
+                            >>> identifier: getDim
+                        >>> args: null
+                >>> stmt:
+                    @ BlockStmtNode (26:21):
+                    >>> stmtsAndVarDecls:
+                        @ ExprStmtNode (28:3):
+                        >>> expr:
+                            @ AssignExprNode (28:3):
+                            >>> lhs:
+                                @ IdentifierExprNode (28:3):
+                                >>> identifier: result
+                            >>> rhs:
+                                @ BinaryExprNode (28:12):
+                                >>> op: MUL
+                                >>> lhs:
+                                    @ SubscriptExprNode (28:12):
+                                    >>> arr:
+                                        @ IdentifierExprNode (28:12):
+                                        >>> identifier: data
+                                    >>> sub:
+                                        @ IdentifierExprNode (28:17):
+                                        >>> identifier: i
+                                >>> rhs:
+                                    @ SubscriptExprNode (28:22):
+                                    >>> arr:
+                                        @ MemberAccessExprNode (28:22):
+                                        >>> expr:
+                                            @ IdentifierExprNode (28:22):
+                                            >>> identifier: rhs
+                                        >>> member: data
+                                    >>> sub:
+                                        @ IdentifierExprNode (28:31):
+                                        >>> identifier: i
+                        @ ExprStmtNode (29:3):
+                        >>> expr:
+                            @ PrefixExprNode (29:3):
+                            >>> op: PREFIX_INC
+                            >>> expr:
+                                @ IdentifierExprNode (29:5):
+                                >>> identifier: i
+                @ ReturnStmtNode (31:2):
+                >>> expr:
+                    @ IdentifierExprNode (31:9):
+                    >>> identifier: result
+        @ FuncDeclNode (34:1):
+        >>> isContruct: false
+        >>> returnType:
+            @ TypeNode (34:1):
+            >>> type: ClassType(vector)
+        >>> name: scalarInPlaceMultiply
+        >>> parameterList:
+            @ VaeDeclNode (34:30):
+            >>> type:
+                @ TypeNode (34:30):
+                >>> type: PrimitiveType(INT)
+            >>> name: c
+            >>> init: null
+        >>> body:
+            @ BlockStmtNode (34:36):
+            >>> stmtsAndVarDecls:
+                @ CondStmtNode (35:2):
+                >>> cond:
+                    @ BinaryExprNode (35:6):
+                    >>> op: EQUAL
+                    >>> lhs:
+                        @ IdentifierExprNode (35:6):
+                        >>> identifier: data
+                    >>> rhs:
+                        @ NullExprNode (35:14):
+                >>> thenStmt:
+                    @ ReturnStmtNode (35:20):
+                    >>> expr:
+                        @ NullExprNode (35:27):
+                >>> elseStmt: null
+                @ VaeDeclNode (36:6):
+                >>> type:
+                    @ TypeNode (36:2):
+                    >>> type: PrimitiveType(INT)
+                >>> name: i
+                >>> init: null
+                @ ForStmtNode (37:2):
+                >>> init:
+                    @ AssignExprNode (37:7):
+                    >>> lhs:
+                        @ IdentifierExprNode (37:7):
+                        >>> identifier: i
+                    >>> rhs:
+                        @ IntConstExprNode (37:11):
+                        >>> value: 0
+                >>> cond:
+                    @ BinaryExprNode (37:14):
+                    >>> op: LESS
+                    >>> lhs:
+                        @ IdentifierExprNode (37:14):
+                        >>> identifier: i
+                    >>> rhs:
+                        @ FuncCallExprNode (37:18):
+                        >>> func:
+                            @ IdentifierExprNode (37:18):
+                            >>> identifier: getDim
+                        >>> args: null
+                >>> step:
+                    @ PrefixExprNode (37:28):
+                    >>> op: PREFIX_INC
+                    >>> expr:
+                        @ IdentifierExprNode (37:30):
+                        >>> identifier: i
+                >>> stmt:
+                    @ BlockStmtNode (37:33):
+                    >>> stmtsAndVarDecls:
+                        @ ExprStmtNode (38:3):
+                        >>> expr:
+                            @ AssignExprNode (38:3):
+                            >>> lhs:
+                                @ SubscriptExprNode (38:3):
+                                >>> arr:
+                                    @ MemberAccessExprNode (38:3):
+                                    >>> expr:
+                                        @ IdentifierExprNode (38:3):
+                                        >>> identifier: this
+                                    >>> member: data
+                                >>> sub:
+                                    @ IdentifierExprNode (38:13):
+                                    >>> identifier: i
+                            >>> rhs:
+                                @ BinaryExprNode (38:18):
+                                >>> op: MUL
+                                >>> lhs:
+                                    @ IdentifierExprNode (38:18):
+                                    >>> identifier: c
+                                >>> rhs:
+                                    @ SubscriptExprNode (38:22):
+                                    >>> arr:
+                                        @ MemberAccessExprNode (38:22):
+                                        >>> expr:
+                                            @ IdentifierExprNode (38:22):
+                                            >>> identifier: this
+                                        >>> member: data
+                                    >>> sub:
+                                        @ IdentifierExprNode (38:32):
+                                        >>> identifier: i
+                @ ReturnStmtNode (40:2):
+                >>> expr:
+                    @ IdentifierExprNode (40:9):
+                    >>> identifier: this
+        @ FuncDeclNode (43:1):
+        >>> isContruct: false
+        >>> returnType:
+            @ TypeNode (43:1):
+            >>> type: ClassType(vector)
+        >>> name: add
+        >>> parameterList:
+            @ VaeDeclNode (43:12):
+            >>> type:
+                @ TypeNode (43:12):
+                >>> type: ClassType(vector)
+            >>> name: rhs
+            >>> init: null
+        >>> body:
+            @ BlockStmtNode (43:23):
+            >>> stmtsAndVarDecls:
+                @ CondStmtNode (44:2):
+                >>> cond:
+                    @ BinaryExprNode (44:6):
+                    >>> op: LOGIC_OR
+                    >>> lhs:
+                        @ BinaryExprNode (44:6):
+                        >>> op: INEQUAL
+                        >>> lhs:
+                            @ FuncCallExprNode (44:6):
+                            >>> func:
+                                @ IdentifierExprNode (44:6):
+                                >>> identifier: getDim
+                            >>> args: null
+                        >>> rhs:
+                            @ FuncCallExprNode (44:18):
+                            >>> func:
+                                @ MemberAccessExprNode (44:18):
+                                >>> expr:
+                                    @ IdentifierExprNode (44:18):
+                                    >>> identifier: rhs
+                                >>> member: getDim
+                            >>> args: null
+                    >>> rhs:
+                        @ BinaryExprNode (44:34):
+                        >>> op: EQUAL
+                        >>> lhs:
+                            @ FuncCallExprNode (44:34):
+                            >>> func:
+                                @ IdentifierExprNode (44:34):
+                                >>> identifier: getDim
+                            >>> args: null
+                        >>> rhs:
+                            @ IntConstExprNode (44:46):
+                            >>> value: 0
+                >>> thenStmt:
+                    @ ReturnStmtNode (45:3):
+                    >>> expr:
+                        @ NullExprNode (45:10):
+                >>> elseStmt: null
+                @ VaeDeclNode (47:9):
+                >>> type:
+                    @ TypeNode (47:2):
+                    >>> type: ClassType(vector)
+                >>> name: temp
+                >>> init:
+                    @ NewExprNode (47:20):
+                    >>> newType:
+                        @ TypeNode (47:20):
+                        >>> type: ClassType(vector)
+                    >>> numDim: 0
+                @ VaeDeclNode (48:6):
+                >>> type:
+                    @ TypeNode (48:2):
+                    >>> type: PrimitiveType(INT)
+                >>> name: i
+                >>> init: null
+                @ ForStmtNode (49:2):
+                >>> init:
+                    @ AssignExprNode (49:7):
+                    >>> lhs:
+                        @ IdentifierExprNode (49:7):
+                        >>> identifier: i
+                    >>> rhs:
+                        @ IntConstExprNode (49:11):
+                        >>> value: 0
+                >>> cond:
+                    @ BinaryExprNode (49:14):
+                    >>> op: LESS
+                    >>> lhs:
+                        @ IdentifierExprNode (49:14):
+                        >>> identifier: i
+                    >>> rhs:
+                        @ FuncCallExprNode (49:18):
+                        >>> func:
+                            @ IdentifierExprNode (49:18):
+                            >>> identifier: getDim
+                        >>> args: null
+                >>> step:
+                    @ PrefixExprNode (49:28):
+                    >>> op: PREFIX_INC
+                    >>> expr:
+                        @ IdentifierExprNode (49:30):
+                        >>> identifier: i
+                >>> stmt:
+                    @ BlockStmtNode (49:32):
+                    >>> stmtsAndVarDecls:
+                        @ ExprStmtNode (50:3):
+                        >>> expr:
+                            @ AssignExprNode (50:3):
+                            >>> lhs:
+                                @ SubscriptExprNode (50:3):
+                                >>> arr:
+                                    @ MemberAccessExprNode (50:3):
+                                    >>> expr:
+                                        @ IdentifierExprNode (50:3):
+                                        >>> identifier: temp
+                                    >>> member: data
+                                >>> sub:
+                                    @ IdentifierExprNode (50:13):
+                                    >>> identifier: i
+                            >>> rhs:
+                                @ BinaryExprNode (50:18):
+                                >>> op: ADD
+                                >>> lhs:
+                                    @ SubscriptExprNode (50:18):
+                                    >>> arr:
+                                        @ IdentifierExprNode (50:18):
+                                        >>> identifier: data
+                                    >>> sub:
+                                        @ IdentifierExprNode (50:23):
+                                        >>> identifier: i
+                                >>> rhs:
+                                    @ SubscriptExprNode (50:28):
+                                    >>> arr:
+                                        @ MemberAccessExprNode (50:28):
+                                        >>> expr:
+                                            @ IdentifierExprNode (50:28):
+                                            >>> identifier: rhs
+                                        >>> member: data
+                                    >>> sub:
+                                        @ IdentifierExprNode (50:37):
+                                        >>> identifier: i
+                @ ReturnStmtNode (52:2):
+                >>> expr:
+                    @ IdentifierExprNode (52:9):
+                    >>> identifier: temp
+        @ FuncDeclNode (55:1):
+        >>> isContruct: false
+        >>> returnType:
+            @ TypeNode (55:1):
+            >>> type: PrimitiveType(BOOL)
+        >>> name: set
+        >>> parameterList:
+            @ VaeDeclNode (55:10):
+            >>> type:
+                @ TypeNode (55:10):
+                >>> type: PrimitiveType(INT)
+            >>> name: idx
+            >>> init: null
+            @ VaeDeclNode (55:19):
+            >>> type:
+                @ TypeNode (55:19):
+                >>> type: PrimitiveType(INT)
+            >>> name: value
+            >>> init: null
+        >>> body:
+            @ BlockStmtNode (55:29):
+            >>> stmtsAndVarDecls:
+                @ CondStmtNode (56:2):
+                >>> cond:
+                    @ BinaryExprNode (56:6):
+                    >>> op: LESS
+                    >>> lhs:
+                        @ FuncCallExprNode (56:6):
+                        >>> func:
+                            @ IdentifierExprNode (56:6):
+                            >>> identifier: getDim
+                        >>> args: null
+                    >>> rhs:
+                        @ IdentifierExprNode (56:17):
+                        >>> identifier: idx
+                >>> thenStmt:
+                    @ ReturnStmtNode (56:22):
+                    >>> expr:
+                        @ BoolConstExprNode (56:29):
+                        >>> value: false
+                >>> elseStmt: null
+                @ ExprStmtNode (57:2):
+                >>> expr:
+                    @ AssignExprNode (57:2):
+                    >>> lhs:
+                        @ SubscriptExprNode (57:2):
+                        >>> arr:
+                            @ IdentifierExprNode (57:2):
+                            >>> identifier: data
+                        >>> sub:
+                            @ IdentifierExprNode (57:7):
+                            >>> identifier: idx
+                    >>> rhs:
+                        @ IdentifierExprNode (57:14):
+                        >>> identifier: value
+                @ ReturnStmtNode (58:2):
+                >>> expr:
+                    @ BoolConstExprNode (58:9):
+                    >>> value: true
+        @ FuncDeclNode (61:1):
+        >>> isContruct: false
+        >>> returnType:
+            @ TypeNode (61:1):
+            >>> type: PrimitiveType(STRING)
+        >>> name: toString
+        >>> parameterList: null
+        >>> body:
+            @ BlockStmtNode (61:18):
+            >>> stmtsAndVarDecls:
+                @ VaeDeclNode (62:9):
+                >>> type:
+                    @ TypeNode (62:2):
+                    >>> type: PrimitiveType(STRING)
+                >>> name: temp
+                >>> init:
+                    @ StringConstExprNode (62:16):
+                    >>> value: "( "
+                @ CondStmtNode (63:2):
+                >>> cond:
+                    @ BinaryExprNode (63:6):
+                    >>> op: GREATER
+                    >>> lhs:
+                        @ FuncCallExprNode (63:6):
+                        >>> func:
+                            @ IdentifierExprNode (63:6):
+                            >>> identifier: getDim
+                        >>> args: null
+                    >>> rhs:
+                        @ IntConstExprNode (63:17):
+                        >>> value: 0
+                >>> thenStmt:
+                    @ BlockStmtNode (63:20):
+                    >>> stmtsAndVarDecls:
+                        @ ExprStmtNode (64:3):
+                        >>> expr:
+                            @ AssignExprNode (64:3):
+                            >>> lhs:
+                                @ IdentifierExprNode (64:3):
+                                >>> identifier: temp
+                            >>> rhs:
+                                @ BinaryExprNode (64:10):
+                                >>> op: ADD
+                                >>> lhs:
+                                    @ IdentifierExprNode (64:10):
+                                    >>> identifier: temp
+                                >>> rhs:
+                                    @ FuncCallExprNode (64:17):
+                                    >>> func:
+                                        @ IdentifierExprNode (64:17):
+                                        >>> identifier: toString
+                                    >>> args: null
+                >>> elseStmt: null
+                @ VaeDeclNode (66:6):
+                >>> type:
+                    @ TypeNode (66:2):
+                    >>> type: PrimitiveType(INT)
+                >>> name: i
+                >>> init: null
+                @ ForStmtNode (67:2):
+                >>> init:
+                    @ AssignExprNode (67:7):
+                    >>> lhs:
+                        @ IdentifierExprNode (67:7):
+                        >>> identifier: i
+                    >>> rhs:
+                        @ IntConstExprNode (67:11):
+                        >>> value: 1
+                >>> cond:
+                    @ BinaryExprNode (67:14):
+                    >>> op: LESS
+                    >>> lhs:
+                        @ IdentifierExprNode (67:14):
+                        >>> identifier: i
+                    >>> rhs:
+                        @ FuncCallExprNode (67:18):
+                        >>> func:
+                            @ IdentifierExprNode (67:18):
+                            >>> identifier: getDim
+                        >>> args: null
+                >>> step:
+                    @ PrefixExprNode (67:28):
+                    >>> op: PREFIX_INC
+                    >>> expr:
+                        @ IdentifierExprNode (67:30):
+                        >>> identifier: i
+                >>> stmt:
+                    @ BlockStmtNode (67:33):
+                    >>> stmtsAndVarDecls:
+                        @ ExprStmtNode (68:3):
+                        >>> expr:
+                            @ AssignExprNode (68:3):
+                            >>> lhs:
+                                @ IdentifierExprNode (68:3):
+                                >>> identifier: temp
+                            >>> rhs:
+                                @ BinaryExprNode (68:10):
+                                >>> op: ADD
+                                >>> lhs:
+                                    @ BinaryExprNode (68:10):
+                                    >>> op: ADD
+                                    >>> lhs:
+                                        @ IdentifierExprNode (68:10):
+                                        >>> identifier: temp
+                                    >>> rhs:
+                                        @ StringConstExprNode (68:17):
+                                        >>> value: ", "
+                                >>> rhs:
+                                    @ FuncCallExprNode (68:24):
+                                    >>> func:
+                                        @ IdentifierExprNode (68:24):
+                                        >>> identifier: toString
+                                    >>> args: null
+                @ ExprStmtNode (70:2):
+                >>> expr:
+                    @ AssignExprNode (70:2):
+                    >>> lhs:
+                        @ IdentifierExprNode (70:2):
+                        >>> identifier: temp
+                    >>> rhs:
+                        @ BinaryExprNode (70:9):
+                        >>> op: ADD
+                        >>> lhs:
+                            @ IdentifierExprNode (70:9):
+                            >>> identifier: temp
+                        >>> rhs:
+                            @ StringConstExprNode (70:16):
+                            >>> value: " )"
+                @ ReturnStmtNode (71:2):
+                >>> expr:
+                    @ IdentifierExprNode (71:9):
+                    >>> identifier: temp
+        @ FuncDeclNode (74:1):
+        >>> isContruct: false
+        >>> returnType:
+            @ TypeNode (74:1):
+            >>> type: PrimitiveType(BOOL)
+        >>> name: copy
+        >>> parameterList:
+            @ VaeDeclNode (74:11):
+            >>> type:
+                @ TypeNode (74:11):
+                >>> type: ClassType(vector)
+            >>> name: rhs
+            >>> init: null
+        >>> body:
+            @ BlockStmtNode (74:22):
+            >>> stmtsAndVarDecls:
+                @ CondStmtNode (75:2):
+                >>> cond:
+                    @ BinaryExprNode (75:6):
+                    >>> op: EQUAL
+                    >>> lhs:
+                        @ IdentifierExprNode (75:6):
+                        >>> identifier: rhs
+                    >>> rhs:
+                        @ NullExprNode (75:13):
+                >>> thenStmt:
+                    @ ReturnStmtNode (75:19):
+                    >>> expr:
+                        @ BoolConstExprNode (75:26):
+                        >>> value: false
+                >>> elseStmt: null
+                @ CondStmtNode (76:2):
+                >>> cond:
+                    @ BinaryExprNode (76:6):
+                    >>> op: EQUAL
+                    >>> lhs:
+                        @ FuncCallExprNode (76:6):
+                        >>> func:
+                            @ MemberAccessExprNode (76:6):
+                            >>> expr:
+                                @ IdentifierExprNode (76:6):
+                                >>> identifier: rhs
+                            >>> member: getDim
+                        >>> args: null
+                    >>> rhs:
+                        @ IntConstExprNode (76:22):
+                        >>> value: 0
+                >>> thenStmt:
+                    @ BlockStmtNode (76:25):
+                    >>> stmtsAndVarDecls:
+                        @ ExprStmtNode (77:3):
+                        >>> expr:
+                            @ AssignExprNode (77:3):
+                            >>> lhs:
+                                @ IdentifierExprNode (77:3):
+                                >>> identifier: data
+                            >>> rhs:
+                                @ NullExprNode (77:10):
+                >>> elseStmt:
+                    @ BlockStmtNode (78:9):
+                    >>> stmtsAndVarDecls:
+                        @ ExprStmtNode (79:3):
+                        >>> expr:
+                            @ AssignExprNode (79:3):
+                            >>> lhs:
+                                @ IdentifierExprNode (79:3):
+                                >>> identifier: data
+                            >>> rhs:
+                                @ NewExprNode (79:14):
+                                >>> newType:
+                                    @ TypeNode (79:14):
+                                    >>> type: ArrayType(PrimitiveType(INT))
+                                >>> dims:
+                                    @ FuncCallExprNode (79:18):
+                                    >>> func:
+                                        @ MemberAccessExprNode (79:18):
+                                        >>> expr:
+                                            @ IdentifierExprNode (79:18):
+                                            >>> identifier: rhs
+                                        >>> member: getDim
+                                    >>> args: null
+                                >>> numDim: 1
+                        @ VaeDeclNode (80:7):
+                        >>> type:
+                            @ TypeNode (80:3):
+                            >>> type: PrimitiveType(INT)
+                        >>> name: i
+                        >>> init: null
+                        @ ForStmtNode (81:3):
+                        >>> init:
+                            @ AssignExprNode (81:8):
+                            >>> lhs:
+                                @ IdentifierExprNode (81:8):
+                                >>> identifier: i
+                            >>> rhs:
+                                @ IntConstExprNode (81:12):
+                                >>> value: 0
+                        >>> cond:
+                            @ BinaryExprNode (81:15):
+                            >>> op: LESS
+                            >>> lhs:
+                                @ IdentifierExprNode (81:15):
+                                >>> identifier: i
+                            >>> rhs:
+                                @ FuncCallExprNode (81:19):
+                                >>> func:
+                                    @ IdentifierExprNode (81:19):
+                                    >>> identifier: getDim
+                                >>> args: null
+                        >>> step:
+                            @ PrefixExprNode (81:29):
+                            >>> op: PREFIX_INC
+                            >>> expr:
+                                @ IdentifierExprNode (81:31):
+                                >>> identifier: i
+                        >>> stmt:
+                            @ BlockStmtNode (81:34):
+                            >>> stmtsAndVarDecls:
+                                @ ExprStmtNode (82:4):
+                                >>> expr:
+                                    @ AssignExprNode (82:4):
+                                    >>> lhs:
+                                        @ SubscriptExprNode (82:4):
+                                        >>> arr:
+                                            @ IdentifierExprNode (82:4):
+                                            >>> identifier: data
+                                        >>> sub:
+                                            @ IdentifierExprNode (82:9):
+                                            >>> identifier: i
+                                    >>> rhs:
+                                        @ SubscriptExprNode (82:14):
+                                        >>> arr:
+                                            @ MemberAccessExprNode (82:14):
+                                            >>> expr:
+                                                @ IdentifierExprNode (82:14):
+                                                >>> identifier: rhs
+                                            >>> member: data
+                                        >>> sub:
+                                            @ IdentifierExprNode (82:23):
+                                            >>> identifier: i
+                @ ReturnStmtNode (85:2):
+                >>> expr:
+                    @ BoolConstExprNode (85:9):
+                    >>> value: true
+    @ FuncDeclNode (89:0):
     >>> isContruct: false
     >>> returnType:
-        @ TypeNode (1:0):
+        @ TypeNode (89:0):
         >>> type: PrimitiveType(INT)
     >>> name: main
     >>> parameterList: null
     >>> body:
-        @ BlockStmtNode (1:11):
+        @ BlockStmtNode (89:10):
         >>> stmtsAndVarDecls:
-            @ VaeDeclNode (2:6):
+            @ VaeDeclNode (90:8):
             >>> type:
-                @ TypeNode (2:4):
-                >>> type: ClassType(A)
+                @ TypeNode (90:1):
+                >>> type: ClassType(vector)
             >>> name: x
             >>> init:
-                @ NewExprNode (2:14):
+                @ NewExprNode (90:16):
                 >>> newType:
-                    @ TypeNode (2:14):
-                    >>> type: ClassType(A)
+                    @ TypeNode (90:16):
+                    >>> type: ClassType(vector)
                 >>> numDim: 0
+            @ VaeDeclNode (91:7):
+            >>> type:
+                @ TypeNode (91:1):
+                >>> type: ArrayType(PrimitiveType(INT))
+            >>> name: a
+            >>> init:
+                @ NewExprNode (91:15):
+                >>> newType:
+                    @ TypeNode (91:15):
+                    >>> type: ArrayType(PrimitiveType(INT))
+                >>> dims:
+                    @ IntConstExprNode (91:19):
+                    >>> value: 10
+                >>> numDim: 1
+            @ VaeDeclNode (92:5):
+            >>> type:
+                @ TypeNode (92:1):
+                >>> type: PrimitiveType(INT)
+            >>> name: i
+            >>> init: null
+            @ ForStmtNode (93:1):
+            >>> init:
+                @ AssignExprNode (93:6):
+                >>> lhs:
+                    @ IdentifierExprNode (93:6):
+                    >>> identifier: i
+                >>> rhs:
+                    @ IntConstExprNode (93:10):
+                    >>> value: 0
+            >>> cond:
+                @ BinaryExprNode (93:13):
+                >>> op: LESS
+                >>> lhs:
+                    @ IdentifierExprNode (93:13):
+                    >>> identifier: i
+                >>> rhs:
+                    @ IntConstExprNode (93:17):
+                    >>> value: 10
+            >>> step:
+                @ PrefixExprNode (93:21):
+                >>> op: PREFIX_INC
+                >>> expr:
+                    @ IdentifierExprNode (93:23):
+                    >>> identifier: i
+            >>> stmt:
+                @ BlockStmtNode (93:25):
+                >>> stmtsAndVarDecls:
+                    @ ExprStmtNode (94:2):
+                    >>> expr:
+                        @ AssignExprNode (94:2):
+                        >>> lhs:
+                            @ SubscriptExprNode (94:2):
+                            >>> arr:
+                                @ IdentifierExprNode (94:2):
+                                >>> identifier: a
+                            >>> sub:
+                                @ IdentifierExprNode (94:4):
+                                >>> identifier: i
+                        >>> rhs:
+                            @ BinaryExprNode (94:9):
+                            >>> op: SUB
+                            >>> lhs:
+                                @ IntConstExprNode (94:9):
+                                >>> value: 9
+                            >>> rhs:
+                                @ IdentifierExprNode (94:13):
+                                >>> identifier: i
+            @ ExprStmtNode (96:1):
+            >>> expr:
+                @ FuncCallExprNode (96:1):
+                >>> func:
+                    @ MemberAccessExprNode (96:1):
+                    >>> expr:
+                        @ IdentifierExprNode (96:1):
+                        >>> identifier: x
+                    >>> member: init
+                >>> args:
+                    @ IdentifierExprNode (96:8):
+                    >>> identifier: a
+            @ ExprStmtNode (97:1):
+            >>> expr:
+                @ FuncCallExprNode (97:1):
+                >>> func:
+                    @ IdentifierExprNode (97:1):
+                    >>> identifier: print
+                >>> args:
+                    @ StringConstExprNode (97:7):
+                    >>> value: "vector x: "
+            @ ExprStmtNode (98:1):
+            >>> expr:
+                @ FuncCallExprNode (98:1):
+                >>> func:
+                    @ IdentifierExprNode (98:1):
+                    >>> identifier: println
+                >>> args:
+                    @ FuncCallExprNode (98:9):
+                    >>> func:
+                        @ MemberAccessExprNode (98:9):
+                        >>> expr:
+                            @ IdentifierExprNode (98:9):
+                            >>> identifier: x
+                        >>> member: toString
+                    >>> args: null
+            @ VaeDeclNode (99:8):
+            >>> type:
+                @ TypeNode (99:1):
+                >>> type: ClassType(vector)
+            >>> name: y
+            >>> init:
+                @ NewExprNode (99:16):
+                >>> newType:
+                    @ TypeNode (99:16):
+                    >>> type: ClassType(vector)
+                >>> numDim: 0
+            @ ExprStmtNode (100:1):
+            >>> expr:
+                @ FuncCallExprNode (100:1):
+                >>> func:
+                    @ MemberAccessExprNode (100:1):
+                    >>> expr:
+                        @ IdentifierExprNode (100:1):
+                        >>> identifier: y
+                    >>> member: copy
+                >>> args:
+                    @ IdentifierExprNode (100:8):
+                    >>> identifier: x
+            @ CondStmtNode (101:1):
+            >>> cond:
+                @ FuncCallExprNode (101:5):
+                >>> func:
+                    @ MemberAccessExprNode (101:5):
+                    >>> expr:
+                        @ IdentifierExprNode (101:5):
+                        >>> identifier: y
+                    >>> member: set
+                >>> args:
+                    @ IntConstExprNode (101:11):
+                    >>> value: 3
+                    @ IntConstExprNode (101:14):
+                    >>> value: 817
+            >>> thenStmt:
+                @ BlockStmtNode (101:19):
+                >>> stmtsAndVarDecls:
+                    @ ExprStmtNode (102:2):
+                    >>> expr:
+                        @ FuncCallExprNode (102:2):
+                        >>> func:
+                            @ IdentifierExprNode (102:2):
+                            >>> identifier: println
+                        >>> args:
+                            @ StringConstExprNode (102:10):
+                            >>> value: "excited!"
+            >>> elseStmt: null
+            @ ExprStmtNode (104:1):
+            >>> expr:
+                @ FuncCallExprNode (104:1):
+                >>> func:
+                    @ IdentifierExprNode (104:1):
+                    >>> identifier: print
+                >>> args:
+                    @ StringConstExprNode (104:7):
+                    >>> value: "vector y: "
+            @ ExprStmtNode (105:1):
+            >>> expr:
+                @ FuncCallExprNode (105:1):
+                >>> func:
+                    @ IdentifierExprNode (105:1):
+                    >>> identifier: println
+                >>> args:
+                    @ FuncCallExprNode (105:9):
+                    >>> func:
+                        @ MemberAccessExprNode (105:9):
+                        >>> expr:
+                            @ IdentifierExprNode (105:9):
+                            >>> identifier: y
+                        >>> member: toString
+                    >>> args: null
+            @ ExprStmtNode (106:1):
+            >>> expr:
+                @ FuncCallExprNode (106:1):
+                >>> func:
+                    @ IdentifierExprNode (106:1):
+                    >>> identifier: print
+                >>> args:
+                    @ StringConstExprNode (106:7):
+                    >>> value: "x + y: "
+            @ ExprStmtNode (107:1):
+            >>> expr:
+                @ FuncCallExprNode (107:1):
+                >>> func:
+                    @ IdentifierExprNode (107:1):
+                    >>> identifier: println
+                >>> args:
+                    @ FuncCallExprNode (107:9):
+                    >>> func:
+                        @ MemberAccessExprNode (107:9):
+                        >>> expr:
+                            @ FuncCallExprNode (107:10):
+                            >>> func:
+                                @ MemberAccessExprNode (107:10):
+                                >>> expr:
+                                    @ IdentifierExprNode (107:10):
+                                    >>> identifier: x
+                                >>> member: add
+                            >>> args:
+                                @ IdentifierExprNode (107:16):
+                                >>> identifier: y
+                        >>> member: toString
+                    >>> args: null
+            @ ExprStmtNode (108:1):
+            >>> expr:
+                @ FuncCallExprNode (108:1):
+                >>> func:
+                    @ IdentifierExprNode (108:1):
+                    >>> identifier: print
+                >>> args:
+                    @ StringConstExprNode (108:7):
+                    >>> value: "x * y: "
+            @ ExprStmtNode (109:1):
+            >>> expr:
+                @ FuncCallExprNode (109:1):
+                >>> func:
+                    @ IdentifierExprNode (109:1):
+                    >>> identifier: println
+                >>> args:
+                    @ FuncCallExprNode (109:9):
+                    >>> func:
+                        @ IdentifierExprNode (109:9):
+                        >>> identifier: toString
+                    >>> args:
+                        @ FuncCallExprNode (109:18):
+                        >>> func:
+                            @ MemberAccessExprNode (109:18):
+                            >>> expr:
+                                @ IdentifierExprNode (109:18):
+                                >>> identifier: x
+                            >>> member: dot
+                        >>> args:
+                            @ IdentifierExprNode (109:24):
+                            >>> identifier: y
+            @ ExprStmtNode (110:1):
+            >>> expr:
+                @ FuncCallExprNode (110:1):
+                >>> func:
+                    @ IdentifierExprNode (110:1):
+                    >>> identifier: print
+                >>> args:
+                    @ StringConstExprNode (110:7):
+                    >>> value: "(1 << 3) * y: "
+            @ ExprStmtNode (111:1):
+            >>> expr:
+                @ FuncCallExprNode (111:1):
+                >>> func:
+                    @ IdentifierExprNode (111:1):
+                    >>> identifier: println
+                >>> args:
+                    @ FuncCallExprNode (111:9):
+                    >>> func:
+                        @ MemberAccessExprNode (111:9):
+                        >>> expr:
+                            @ FuncCallExprNode (111:9):
+                            >>> func:
+                                @ MemberAccessExprNode (111:9):
+                                >>> expr:
+                                    @ IdentifierExprNode (111:9):
+                                    >>> identifier: x
+                                >>> member: scalarInPlaceMultiply
+                            >>> args:
+                                @ BinaryExprNode (111:33):
+                                >>> op: SHL
+                                >>> lhs:
+                                    @ IntConstExprNode (111:33):
+                                    >>> value: 1
+                                >>> rhs:
+                                    @ IntConstExprNode (111:38):
+                                    >>> value: 3
+                        >>> member: toString
+                    >>> args: null
