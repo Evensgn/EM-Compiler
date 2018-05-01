@@ -1,145 +1,67 @@
 @ ProgramNode (1:0):
 >>> decls:
-    @ VaeDeclNode (1:4):
-    >>> type:
+    @ FuncDeclNode (1:0):
+    >>> isContruct: false
+    >>> returnType:
         @ TypeNode (1:0):
-        >>> type: PrimitiveType(INT)
-    >>> name: x
-    >>> init:
-        @ IntConstExprNode (1:8):
-        >>> value: 1
-    @ FuncDeclNode (2:1):
-    >>> isContruct: false
-    >>> returnType:
-        @ TypeNode (2:1):
-        >>> type: PrimitiveType(BOOL)
-    >>> name: b
-    >>> parameterList:
-        @ VaeDeclNode (2:8):
-        >>> type:
-            @ TypeNode (2:8):
-            >>> type: PrimitiveType(BOOL)
-        >>> name: x
-        >>> init: null
-    >>> body:
-        @ BlockStmtNode (2:15):
-        >>> stmtsAndVarDecls:
-            @ ReturnStmtNode (3:5):
-            >>> expr:
-                @ IdentifierExprNode (3:12):
-                >>> identifier: x
-    @ ClassDeclNode (5:1):
-    >>> name: C
-    >>> varMember: null
-    >>> funcMember:
-        @ FuncDeclNode (6:5):
-        >>> isContruct: true
-        >>> returnType: null
-        >>> name: C
-        >>> parameterList: null
-        >>> body:
-            @ BlockStmtNode (6:8):
-            >>> stmtsAndVarDecls:
-                @ ExprStmtNode (7:9):
-                >>> expr:
-                    @ FuncCallExprNode (7:9):
-                    >>> func:
-                        @ IdentifierExprNode (7:9):
-                        >>> identifier: x
-                    >>> args: null
-                @ BlockStmtNode (8:9):
-                >>> stmtsAndVarDecls:
-                    @ VaeDeclNode (8:14):
-                    >>> type:
-                        @ TypeNode (8:10):
-                        >>> type: PrimitiveType(INT)
-                    >>> name: x
-                    >>> init: null
-        @ FuncDeclNode (10:5):
-        >>> isContruct: false
-        >>> returnType:
-            @ TypeNode (10:5):
-            >>> type: PrimitiveType(VOID)
-        >>> name: x
-        >>> parameterList: null
-        >>> body:
-            @ BlockStmtNode (10:13):
-            >>> stmtsAndVarDecls: null
-    @ FuncDeclNode (12:1):
-    >>> isContruct: false
-    >>> returnType:
-        @ TypeNode (12:1):
         >>> type: PrimitiveType(INT)
     >>> name: main
     >>> parameterList: null
     >>> body:
-        @ BlockStmtNode (12:11):
+        @ BlockStmtNode (1:11):
         >>> stmtsAndVarDecls:
-            @ VaeDeclNode (13:12):
+            @ VaeDeclNode (2:8):
             >>> type:
-                @ TypeNode (13:5):
-                >>> type: PrimitiveType(STRING)
-            >>> name: x
-            >>> init:
-                @ StringConstExprNode (13:16):
-                >>> value: "789dcbadcba\n"
-            @ VaeDeclNode (14:9):
-            >>> type:
-                @ TypeNode (14:5):
+                @ TypeNode (2:4):
                 >>> type: PrimitiveType(INT)
-            >>> name: y
+            >>> name: a
             >>> init: null
-            @ VaeDeclNode (15:7):
+            @ VaeDeclNode (3:8):
             >>> type:
-                @ TypeNode (15:5):
-                >>> type: ClassType(C)
-            >>> name: c
+                @ TypeNode (3:4):
+                >>> type: PrimitiveType(INT)
+            >>> name: b
             >>> init: null
-            @ ExprStmtNode (16:5):
+            @ ExprStmtNode (4:4):
             >>> expr:
-                @ FuncCallExprNode (16:5):
-                >>> func:
-                    @ MemberAccessExprNode (16:5):
-                    >>> expr:
-                        @ IdentifierExprNode (16:5):
-                        >>> identifier: c
-                    >>> member: x
-                >>> args: null
-            @ ExprStmtNode (17:5):
-            >>> expr:
-                @ FuncCallExprNode (17:5):
-                >>> func:
-                    @ IdentifierExprNode (17:5):
-                    >>> identifier: b
-                >>> args:
-                    @ BoolConstExprNode (17:7):
-                    >>> value: true
-            @ BlockStmtNode (18:5):
-            >>> stmtsAndVarDecls:
-                @ ExprStmtNode (18:6):
-                >>> expr:
-                    @ AssignExprNode (18:6):
+                @ AssignExprNode (4:4):
+                >>> lhs:
+                    @ IdentifierExprNode (4:4):
+                    >>> identifier: a
+                >>> rhs:
+                    @ BinaryExprNode (4:8):
+                    >>> op: ADD
                     >>> lhs:
-                        @ IdentifierExprNode (18:6):
-                        >>> identifier: y
+                        @ IdentifierExprNode (4:8):
+                        >>> identifier: a
                     >>> rhs:
-                        @ FuncCallExprNode (18:10):
-                        >>> func:
-                            @ MemberAccessExprNode (18:10):
-                            >>> expr:
-                                @ IdentifierExprNode (18:10):
-                                >>> identifier: x
-                            >>> member: parseInt
-                        >>> args: null
-                @ VaeDeclNode (19:9):
-                >>> type:
-                    @ TypeNode (19:5):
-                    >>> type: PrimitiveType(INT)
-                >>> name: x
-                >>> init:
-                    @ IdentifierExprNode (19:13):
-                    >>> identifier: y
-            @ ReturnStmtNode (20:5):
+                        @ IdentifierExprNode (4:12):
+                        >>> identifier: b
+            @ ExprStmtNode (5:4):
             >>> expr:
-                @ IdentifierExprNode (20:12):
-                >>> identifier: y
+                @ FuncCallExprNode (5:4):
+                >>> func:
+                    @ IdentifierExprNode (5:4):
+                    >>> identifier: foo
+                >>> args: null
+            @ ReturnStmtNode (6:4):
+            >>> expr:
+                @ IntConstExprNode (6:11):
+                >>> value: 0
+    @ FuncDeclNode (9:0):
+    >>> isContruct: false
+    >>> returnType:
+        @ TypeNode (9:0):
+        >>> type: PrimitiveType(VOID)
+    >>> name: foo
+    >>> parameterList: null
+    >>> body:
+        @ BlockStmtNode (9:10):
+        >>> stmtsAndVarDecls:
+            @ ReturnStmtNode (10:4):
+            >>> expr:
+                @ FuncCallExprNode (10:11):
+                >>> func:
+                    @ IdentifierExprNode (10:11):
+                    >>> identifier: foo
+                >>> args: null

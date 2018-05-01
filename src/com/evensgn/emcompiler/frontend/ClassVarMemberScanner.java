@@ -4,11 +4,7 @@ import com.evensgn.emcompiler.ast.*;
 import com.evensgn.emcompiler.scope.ClassEntity;
 import com.evensgn.emcompiler.scope.Scope;
 import com.evensgn.emcompiler.scope.VarEntity;
-import com.evensgn.emcompiler.type.ArrayType;
 import com.evensgn.emcompiler.type.ClassType;
-import com.evensgn.emcompiler.type.NullType;
-import com.evensgn.emcompiler.type.VoidType;
-import com.evensgn.emcompiler.utils.SemanticError;
 
 public class ClassVarMemberScanner extends BaseScopeScanner {
     private Scope globalScope, currentClassScope;

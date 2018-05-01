@@ -171,13 +171,15 @@ public class FunctionScopeScanner extends BaseScopeScanner {
         }
         else {
             node.getExpr().accept(this);
-            if (node.getExpr().getType() instanceof NullType)
+            if (node.getExpr().getType() == null || node.getExpr().getType() instanceof VoidType)
+                invalidReturnValueType = true;
+            else if (node.getExpr().getType() instanceof NullType)
                 invalidReturnValueType = !(currentReturnType instanceof ClassType || currentReturnType instanceof ArrayType);
             else if (!(node.getExpr().getType().equals(currentReturnType)))
                 invalidReturnValueType = true;
         }
         if (invalidReturnValueType) {
-            if (currentReturnType == null)
+            if (currentReturnType == null || currentReturnType instanceof VoidType)
                 throw new SemanticError(node.location(), "Return statement should have no return value");
             else
                 throw new SemanticError(node.location(), String.format("Return statement should have return value of type \"%s\"", currentReturnType.toString()));
