@@ -142,7 +142,7 @@ constant
 creator
     :   nonArrayTypeType ('[' expression ']')+ ('[' ']')+ ('[' expression ']')+     # errorCreator
     |   nonArrayTypeType ('[' expression ']')+ ('[' ']')*                           # arrayCreator
-    |   nonArrayTypeType                                                            # nonArrayCreator
+    |   nonArrayTypeType ('(' ')')?                                                 # nonArrayCreator
     ;
 
 parameterList

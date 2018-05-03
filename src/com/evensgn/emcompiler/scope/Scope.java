@@ -94,7 +94,8 @@ public class Scope {
         Entity entity;
         if (selfContainsExactKey(varKey(name))) entity = selfGet(varKey(name));
         else if (selfContainsExactKey(funcKey(name))) entity = selfGet(funcKey(name));
-        else entity = parent.getVarFuncCheck(location, name);
+        else if (!isTop) entity = parent.getVarFuncCheck(location, name);
+        else entity = null;
         if (entity == null) throw new SemanticError(location, String.format("Entity \"%s\" not found in scope", name));
         return entity;
     }
