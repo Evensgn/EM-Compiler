@@ -40,6 +40,7 @@ public class ASTPrinter implements ASTVisitor {
 
     @Override
     public void visit(ProgramNode node) {
+        if (node.location() == null) System.err.println("???");
         printf("@ ProgramNode %s:\n", node.location().toString());
         if (!(node.getDecls().isEmpty())) {
             println(">>> decls:");

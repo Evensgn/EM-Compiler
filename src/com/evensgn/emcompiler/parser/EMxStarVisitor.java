@@ -321,6 +321,12 @@ public interface EMxStarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBoolConst(EMxStarParser.BoolConstContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link EMxStarParser#nonArrayTypeCreator}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNonArrayTypeCreator(EMxStarParser.NonArrayTypeCreatorContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code errorCreator}
 	 * labeled alternative in {@link EMxStarParser#creator}.
 	 * @param ctx the parse tree

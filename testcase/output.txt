@@ -1,146 +1,76 @@
 @ ProgramNode (1:0):
 >>> decls:
-    @ VaeDeclNode (1:7):
-    >>> type:
-        @ TypeNode (1:0):
-        >>> type: PrimitiveType(STRING)
-    >>> name: a
-    >>> init:
-        @ StringConstExprNode (1:11):
-        >>> value: "\n\n\n\"\\\""
-    @ ClassDeclNode (3:0):
-    >>> name: A
-    >>> varMember:
-        @ VaeDeclNode (4:9):
-        >>> type:
-            @ TypeNode (4:4):
-            >>> type: PrimitiveType(BOOL)
-        >>> name: b
-        >>> init: null
-    >>> funcMember: null
-    @ FuncDeclNode (7:0):
+    @ ClassDeclNode (1:0):
+    >>> name: Array
+    >>> varMember: null
+    >>> funcMember:
+        @ FuncDeclNode (2:4):
+        >>> isContruct: false
+        >>> returnType:
+            @ TypeNode (2:4):
+            >>> type: PrimitiveType(INT)
+        >>> name: size
+        >>> parameterList: null
+        >>> body:
+            @ BlockStmtNode (2:14):
+            >>> stmtsAndVarDecls: null
+    @ FuncDeclNode (6:0):
     >>> isContruct: false
     >>> returnType:
-        @ TypeNode (7:0):
+        @ TypeNode (6:0):
         >>> type: PrimitiveType(INT)
     >>> name: main
     >>> parameterList: null
     >>> body:
-        @ BlockStmtNode (7:11):
+        @ BlockStmtNode (6:10):
         >>> stmtsAndVarDecls:
-            @ ExprStmtNode (8:4):
-            >>> expr:
-                @ FuncCallExprNode (8:4):
-                >>> func:
-                    @ IdentifierExprNode (8:4):
-                    >>> identifier: println
-                >>> args:
-                    @ BinaryExprNode (8:12):
-                    >>> op: ADD
-                    >>> lhs:
-                        @ BinaryExprNode (8:12):
-                        >>> op: ADD
-                        >>> lhs:
-                            @ IdentifierExprNode (8:12):
-                            >>> identifier: a
-                        >>> rhs:
-                            @ StringConstExprNode (8:16):
-                            >>> value: " "
-                    >>> rhs:
-                        @ IdentifierExprNode (8:22):
-                        >>> identifier: a
-            @ VaeDeclNode (10:17):
+            @ VaeDeclNode (7:10):
             >>> type:
-                @ TypeNode (10:4):
-                >>> type: ArrayType(ArrayType(ArrayType(PrimitiveType(INT))))
+                @ TypeNode (7:4):
+                >>> type: ClassType(Array)
             >>> name: a
-            >>> init: null
-            @ ExprStmtNode (11:4):
+            >>> init:
+                @ NullExprNode (7:14):
+            @ VaeDeclNode (8:8):
+            >>> type:
+                @ TypeNode (8:4):
+                >>> type: PrimitiveType(INT)
+            >>> name: a1
+            >>> init:
+                @ NewExprNode (8:17):
+                >>> newType:
+                    @ TypeNode (8:17):
+                    >>> type: PrimitiveType(INT)
+                >>> numDim: 0
+            @ VaeDeclNode (9:10):
+            >>> type:
+                @ TypeNode (9:4):
+                >>> type: ClassType(Array)
+            >>> name: b
+            >>> init:
+                @ NewExprNode (9:18):
+                >>> newType:
+                    @ TypeNode (9:18):
+                    >>> type: ClassType(Array)
+                >>> numDim: 0
+            @ VaeDeclNode (9:25):
+            >>> type:
+                @ TypeNode (9:4):
+                >>> type: ClassType(Array)
+            >>> name: c
+            >>> init:
+                @ NewExprNode (9:33):
+                >>> newType:
+                    @ TypeNode (9:33):
+                    >>> type: ClassType(Array)
+                >>> numDim: 0
+            @ ExprStmtNode (10:4):
             >>> expr:
-                @ AssignExprNode (11:4):
-                >>> lhs:
-                    @ IdentifierExprNode (11:4):
-                    >>> identifier: a
-                >>> rhs:
-                    @ NewExprNode (11:12):
-                    >>> newType:
-                        @ TypeNode (11:12):
-                        >>> type: ArrayType(ArrayType(ArrayType(PrimitiveType(INT))))
-                    >>> dims:
-                        @ IntConstExprNode (11:17):
-                        >>> value: 2
-                    >>> numDim: 3
-            @ CondStmtNode (12:4):
-            >>> cond:
-                @ BoolConstExprNode (12:8):
-                >>> value: true
-            >>> thenStmt:
-                @ BlockStmtNode (12:14):
-                >>> stmtsAndVarDecls:
-                    @ VaeDeclNode (13:14):
-                    >>> type:
-                        @ TypeNode (13:8):
-                        >>> type: ArrayType(PrimitiveType(INT))
-                    >>> name: b
-                    >>> init:
-                        @ SubscriptExprNode (13:18):
-                        >>> arr:
-                            @ SubscriptExprNode (13:18):
-                            >>> arr:
-                                @ IdentifierExprNode (13:18):
-                                >>> identifier: a
-                            >>> sub:
-                                @ IntConstExprNode (13:21):
-                                >>> value: 1
-                        >>> sub:
-                            @ IntConstExprNode (13:25):
-                            >>> value: 1
-                    @ VaeDeclNode (14:17):
-                    >>> type:
-                        @ TypeNode (14:8):
-                        >>> type: ArrayType(ArrayType(PrimitiveType(INT)))
-                    >>> name: c
-                    >>> init:
-                        @ SubscriptExprNode (14:21):
-                        >>> arr:
-                            @ IdentifierExprNode (14:21):
-                            >>> identifier: a
-                        >>> sub:
-                            @ IntConstExprNode (14:24):
-                            >>> value: 1
-                    @ VaeDeclNode (15:14):
-                    >>> type:
-                        @ TypeNode (15:8):
-                        >>> type: ArrayType(ArrayType(ClassType(A)))
-                    >>> name: a
-                    >>> init:
-                        @ NewExprNode (15:22):
-                        >>> newType:
-                            @ TypeNode (15:22):
-                            >>> type: ArrayType(ArrayType(ClassType(A)))
-                        >>> dims:
-                            @ IntConstExprNode (15:24):
-                            >>> value: 2
-                        >>> numDim: 2
-                    @ CondStmtNode (16:8):
-                    >>> cond:
-                        @ MemberAccessExprNode (16:12):
-                        >>> expr:
-                            @ SubscriptExprNode (16:12):
-                            >>> arr:
-                                @ SubscriptExprNode (16:12):
-                                >>> arr:
-                                    @ IdentifierExprNode (16:12):
-                                    >>> identifier: a
-                                >>> sub:
-                                    @ IntConstExprNode (16:14):
-                                    >>> value: 1
-                            >>> sub:
-                                @ IntConstExprNode (16:17):
-                                >>> value: 1
-                        >>> member: b
-                    >>> thenStmt:
-                        @ BlockStmtNode (16:23):
-                        >>> stmtsAndVarDecls: null
-                    >>> elseStmt: null
-            >>> elseStmt: null
+                @ FuncCallExprNode (10:4):
+                >>> func:
+                    @ MemberAccessExprNode (10:4):
+                    >>> expr:
+                        @ IdentifierExprNode (10:4):
+                        >>> identifier: a
+                    >>> member: size
+                >>> args: null

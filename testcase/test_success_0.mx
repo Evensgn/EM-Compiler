@@ -1,8 +1,11 @@
-int[][][][] a;
+class Array{
+    int size(){
+    }
+}
 
-int main() {
-    a = new int[3][4][][];
-    int x = a.size();
-    println("size of a: " + toString(x));
-    return 0;
+int main(){
+    Array a = null;
+    int a1 = new int;
+    Array b = new Array, c = new Array();
+    a.size();
 }

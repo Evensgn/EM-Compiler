@@ -570,6 +570,18 @@ public class EMxStarBaseListener implements EMxStarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterNonArrayTypeCreator(EMxStarParser.NonArrayTypeCreatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNonArrayTypeCreator(EMxStarParser.NonArrayTypeCreatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterErrorCreator(EMxStarParser.ErrorCreatorContext ctx) { }
 	/**
 	 * {@inheritDoc}

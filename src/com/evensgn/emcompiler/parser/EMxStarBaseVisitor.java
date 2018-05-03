@@ -341,6 +341,13 @@ public class EMxStarBaseVisitor<T> extends AbstractParseTreeVisitor<T> implement
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitNonArrayTypeCreator(EMxStarParser.NonArrayTypeCreatorContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitErrorCreator(EMxStarParser.ErrorCreatorContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}

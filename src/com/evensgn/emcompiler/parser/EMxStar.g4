@@ -139,10 +139,17 @@ constant
     |   BoolConstant                # boolConst
     ;
 
+nonArrayTypeCreator
+    :   Int
+    |   Bool
+    |   String
+    |   Identifier ('(' ')')?
+    ;
+
 creator
     :   nonArrayTypeType ('[' expression ']')+ ('[' ']')+ ('[' expression ']')+     # errorCreator
     |   nonArrayTypeType ('[' expression ']')+ ('[' ']')*                           # arrayCreator
-    |   nonArrayTypeType ('(' ')')?                                                 # nonArrayCreator
+    |   nonArrayTypeCreator                                                         # nonArrayCreator
     ;
 
 parameterList

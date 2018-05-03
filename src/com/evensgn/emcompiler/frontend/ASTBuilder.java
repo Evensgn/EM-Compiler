@@ -6,6 +6,7 @@ import com.evensgn.emcompiler.type.*;
 import com.evensgn.emcompiler.utils.CompilerError;
 import com.evensgn.emcompiler.utils.SemanticError;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,15 +131,29 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
         return visit(ctx.nonArrayTypeType());
     }
 
+    private Type getTypeFromNonArrayType(TerminalNode anInt, TerminalNode bool, TerminalNode string, TerminalNode identifier, Location location) {
+        Type type;
+        if (anInt != null) type = IntType.getInstance();
+        else if (bool != null) type = BoolType.getInstance();
+        else if (string != null) type = StringType.getInstance();
+        else if (identifier != null) type = new ClassType(identifier.getText());
+        else throw new CompilerError(location, "Invalid primitive type");
+        return type;
+    }
+
     @Override
     public Node visitNonArrayTypeType(EMxStarParser.NonArrayTypeTypeContext ctx) {
         if (ctx.Identifier() != null) return new TypeNode(new ClassType(ctx.Identifier().getText()), Location.fromCtx(ctx));
         Type type;
-        if (ctx.Int() != null) type = IntType.getInstance();
-        else if (ctx.Bool() != null) type = BoolType.getInstance();
-        else if (ctx.String() != null) type = StringType.getInstance();
-        else if (ctx.Identifier() != null) type = new ClassType(ctx.Identifier().getText());
-        else throw new CompilerError(Location.fromCtx(ctx), "Invalid primitive type");
+        type = getTypeFromNonArrayType(ctx.Int(), ctx.Bool(), ctx.String(), ctx.Identifier(), Location.fromCtx(ctx));
+        return new TypeNode(type, Location.fromCtx(ctx));
+    }
+
+    @Override
+    public Node visitNonArrayTypeCreator(EMxStarParser.NonArrayTypeCreatorContext ctx) {
+        if (ctx.Identifier() != null) return new TypeNode(new ClassType(ctx.Identifier().getText()), Location.fromCtx(ctx));
+        Type type;
+        type = getTypeFromNonArrayType(ctx.Int(), ctx.Bool(), ctx.String(), ctx.Identifier(), Location.fromCtx(ctx));
         return new TypeNode(type, Location.fromCtx(ctx));
     }
 
@@ -419,7 +434,7 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
 
     @Override
     public Node visitNonArrayCreator(EMxStarParser.NonArrayCreatorContext ctx) {
-        TypeNode newType = (TypeNode) visit(ctx.nonArrayTypeType());
+        TypeNode newType = (TypeNode) visit(ctx.nonArrayTypeCreator());
         return new NewExprNode(newType, null, 0, Location.fromCtx(ctx));
     }
 

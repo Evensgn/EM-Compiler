@@ -534,6 +534,16 @@ public interface EMxStarListener extends ParseTreeListener {
 	 */
 	void exitBoolConst(EMxStarParser.BoolConstContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link EMxStarParser#nonArrayTypeCreator}.
+	 * @param ctx the parse tree
+	 */
+	void enterNonArrayTypeCreator(EMxStarParser.NonArrayTypeCreatorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link EMxStarParser#nonArrayTypeCreator}.
+	 * @param ctx the parse tree
+	 */
+	void exitNonArrayTypeCreator(EMxStarParser.NonArrayTypeCreatorContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code errorCreator}
 	 * labeled alternative in {@link EMxStarParser#creator}.
 	 * @param ctx the parse tree
