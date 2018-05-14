@@ -201,7 +201,11 @@ BoolConstant
 
 // ---- Identifier ----
 Identifier
-    :   IdentifierNonDigit (IdentifierNonDigit | Digit)*
+    :   IdentifierNonDigitUnderline (IdentifierNonDigit | Digit)*
+    ;
+
+fragment IdentifierNonDigitUnderline
+    :   [a-zA-Z]
     ;
 
 fragment IdentifierNonDigit

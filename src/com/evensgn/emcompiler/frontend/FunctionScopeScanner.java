@@ -415,7 +415,7 @@ public class FunctionScopeScanner extends BaseScopeScanner {
     public void visit(ThisExprNode node) {
         Entity entity = currentScope.getVarFuncCheck(node.location(), Scope.THIS_PARA_NAME);
         if (!(entity instanceof VarEntity)) throw new CompilerError(node.location(), "Invalid entity type for \"this\"");
-        node.setLeftValue(true);
+        node.setLeftValue(false);
         node.setType(entity.getType());
     }
 
