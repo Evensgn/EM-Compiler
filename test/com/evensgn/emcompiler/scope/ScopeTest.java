@@ -53,7 +53,7 @@ public class ScopeTest {
         name = "jedi";
         key = Scope.classKey(name);
         parentScope.put(key, new VarEntity("test", IntType.getInstance()));
-        Scope childScope = new Scope(parentScope);
+        Scope childScope = new Scope(parentScope, false);
         assertNotNull(childScope.get(key));
         assertTrue(childScope.containsKey(key));
     }

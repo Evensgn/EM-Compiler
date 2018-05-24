@@ -2,6 +2,7 @@ package com.evensgn.emcompiler.scope;
 
 import com.evensgn.emcompiler.ast.FuncDeclNode;
 import com.evensgn.emcompiler.ast.VarDeclNode;
+import com.evensgn.emcompiler.type.ClassType;
 import com.evensgn.emcompiler.type.FunctionType;
 import com.evensgn.emcompiler.type.NullType;
 import com.evensgn.emcompiler.type.Type;
@@ -12,7 +13,8 @@ import java.util.List;
 public class FuncEntity extends Entity {
     private List<VarEntity> parameters;
     private Type returnType;
-    private boolean isConstruct;
+    private String className;
+    private boolean isConstruct, isMember;
 
     public FuncEntity(String name, Type type) {
         super(name, type);
@@ -27,6 +29,22 @@ public class FuncEntity extends Entity {
         if (node.getReturnType() == null) returnType = null;
         else returnType = node.getReturnType().getType();
         isConstruct = node.isConstruct();
+        isMember = false;
+        className = null;
+    }
+
+    public FuncEntity(FuncDeclNode node, String className) {
+        super(node.getName(), new FunctionType(node.getName()));
+        parameters = new ArrayList<>();
+        for (VarDeclNode paraDecl : node.getParameterList()) {
+            parameters.add(new VarEntity(paraDecl));
+        }
+        if (node.getReturnType() == null) returnType = null;
+        else returnType = node.getReturnType().getType();
+        isConstruct = node.isConstruct();
+        isMember = false;
+        isMember = true;
+        this.className = className;
     }
 
     public void setParameters(List<VarEntity> parameters) {
@@ -47,5 +65,13 @@ public class FuncEntity extends Entity {
 
     public boolean isConstruct() {
         return isConstruct;
+    }
+
+    public boolean isMember() {
+        return isMember;
+    }
+
+    public String getClassName() {
+        return className;
     }
 }

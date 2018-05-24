@@ -1,0 +1,2874 @@
+@ ProgramNode (1:0):
+>>> decls:
+    @ VaeDeclNode (1:6):
+    >>> type:
+        @ TypeNode (1:0):
+        >>> type: ArrayType(PrimitiveType(INT))
+    >>> name: b
+    >>> init:
+        @ NewExprNode (1:14):
+        >>> newType:
+            @ TypeNode (1:14):
+            >>> type: ArrayType(PrimitiveType(INT))
+        >>> dims:
+            @ IntConstExprNode (1:18):
+            >>> value: 500005
+        >>> numDim: 1
+    @ VaeDeclNode (2:6):
+    >>> type:
+        @ TypeNode (2:0):
+        >>> type: ArrayType(PrimitiveType(INT))
+    >>> name: now
+    >>> init:
+        @ NewExprNode (2:16):
+        >>> newType:
+            @ TypeNode (2:16):
+            >>> type: ArrayType(PrimitiveType(INT))
+        >>> dims:
+            @ IntConstExprNode (2:20):
+            >>> value: 500005
+        >>> numDim: 1
+    @ VaeDeclNode (3:6):
+    >>> type:
+        @ TypeNode (3:0):
+        >>> type: ArrayType(PrimitiveType(INT))
+    >>> name: t
+    >>> init:
+        @ NewExprNode (3:14):
+        >>> newType:
+            @ TypeNode (3:14):
+            >>> type: ArrayType(PrimitiveType(INT))
+        >>> dims:
+            @ IntConstExprNode (3:18):
+            >>> value: 500005
+        >>> numDim: 1
+    @ VaeDeclNode (4:6):
+    >>> type:
+        @ TypeNode (4:0):
+        >>> type: ArrayType(PrimitiveType(INT))
+    >>> name: a
+    >>> init:
+        @ NewExprNode (4:14):
+        >>> newType:
+            @ TypeNode (4:14):
+            >>> type: ArrayType(PrimitiveType(INT))
+        >>> dims:
+            @ IntConstExprNode (4:18):
+            >>> value: 200005
+        >>> numDim: 1
+    @ VaeDeclNode (5:4):
+    >>> type:
+        @ TypeNode (5:0):
+        >>> type: PrimitiveType(INT)
+    >>> name: n
+    >>> init: null
+    @ VaeDeclNode (6:4):
+    >>> type:
+        @ TypeNode (6:0):
+        >>> type: PrimitiveType(INT)
+    >>> name: m
+    >>> init: null
+    @ VaeDeclNode (7:4):
+    >>> type:
+        @ TypeNode (7:0):
+        >>> type: PrimitiveType(INT)
+    >>> name: p
+    >>> init: null
+    @ VaeDeclNode (8:4):
+    >>> type:
+        @ TypeNode (8:0):
+        >>> type: PrimitiveType(INT)
+    >>> name: op
+    >>> init: null
+    @ VaeDeclNode (9:4):
+    >>> type:
+        @ TypeNode (9:0):
+        >>> type: PrimitiveType(INT)
+    >>> name: L
+    >>> init:
+        @ IntConstExprNode (9:8):
+        >>> value: 1
+    @ VaeDeclNode (10:6):
+    >>> type:
+        @ TypeNode (10:0):
+        >>> type: ArrayType(PrimitiveType(INT))
+    >>> name: flag
+    >>> init:
+        @ NewExprNode (10:17):
+        >>> newType:
+            @ TypeNode (10:17):
+            >>> type: ArrayType(PrimitiveType(INT))
+        >>> dims:
+            @ IntConstExprNode (10:21):
+            >>> value: 500005
+        >>> numDim: 1
+    @ VaeDeclNode (11:8):
+    >>> type:
+        @ TypeNode (11:0):
+        >>> type: ArrayType(ArrayType(PrimitiveType(INT)))
+    >>> name: s
+    >>> init:
+        @ NewExprNode (11:16):
+        >>> newType:
+            @ TypeNode (11:16):
+            >>> type: ArrayType(ArrayType(PrimitiveType(INT)))
+        >>> dims:
+            @ IntConstExprNode (11:20):
+            >>> value: 500005
+            @ IntConstExprNode (11:28):
+            >>> value: 80
+        >>> numDim: 2
+    @ VaeDeclNode (12:6):
+    >>> type:
+        @ TypeNode (12:0):
+        >>> type: ArrayType(PrimitiveType(INT))
+    >>> name: sum
+    >>> init:
+        @ NewExprNode (12:16):
+        >>> newType:
+            @ TypeNode (12:16):
+            >>> type: ArrayType(PrimitiveType(INT))
+        >>> dims:
+            @ IntConstExprNode (12:20):
+            >>> value: 500005
+        >>> numDim: 1
+    @ VaeDeclNode (13:4):
+    >>> type:
+        @ TypeNode (13:0):
+        >>> type: PrimitiveType(INT)
+    >>> name: ans
+    >>> init:
+        @ IntConstExprNode (13:10):
+        >>> value: 0
+    @ FuncDeclNode (15:0):
+    >>> isContruct: false
+    >>> returnType:
+        @ TypeNode (15:0):
+        >>> type: PrimitiveType(INT)
+    >>> name: square
+    >>> parameterList:
+        @ VaeDeclNode (15:11):
+        >>> type:
+            @ TypeNode (15:11):
+            >>> type: PrimitiveType(INT)
+        >>> name: x
+        >>> init: null
+    >>> body:
+        @ BlockStmtNode (15:18):
+        >>> stmtsAndVarDecls:
+            @ ReturnStmtNode (16:4):
+            >>> expr:
+                @ BinaryExprNode (16:11):
+                >>> op: MUL
+                >>> lhs:
+                    @ BinaryExprNode (16:12):
+                    >>> op: MOD
+                    >>> lhs:
+                        @ IdentifierExprNode (16:12):
+                        >>> identifier: x
+                    >>> rhs:
+                        @ IdentifierExprNode (16:16):
+                        >>> identifier: p
+                >>> rhs:
+                    @ BinaryExprNode (16:22):
+                    >>> op: MOD
+                    >>> lhs:
+                        @ IdentifierExprNode (16:22):
+                        >>> identifier: x
+                    >>> rhs:
+                        @ IdentifierExprNode (16:26):
+                        >>> identifier: p
+    @ FuncDeclNode (19:0):
+    >>> isContruct: false
+    >>> returnType:
+        @ TypeNode (19:0):
+        >>> type: PrimitiveType(INT)
+    >>> name: gcd
+    >>> parameterList:
+        @ VaeDeclNode (19:8):
+        >>> type:
+            @ TypeNode (19:8):
+            >>> type: PrimitiveType(INT)
+        >>> name: x
+        >>> init: null
+        @ VaeDeclNode (19:15):
+        >>> type:
+            @ TypeNode (19:15):
+            >>> type: PrimitiveType(INT)
+        >>> name: y
+        >>> init: null
+    >>> body:
+        @ BlockStmtNode (20:0):
+        >>> stmtsAndVarDecls:
+            @ CondStmtNode (21:4):
+            >>> cond:
+                @ BinaryExprNode (21:7):
+                >>> op: EQUAL
+                >>> lhs:
+                    @ IdentifierExprNode (21:7):
+                    >>> identifier: y
+                >>> rhs:
+                    @ IntConstExprNode (21:12):
+                    >>> value: 0
+            >>> thenStmt:
+                @ ReturnStmtNode (21:15):
+                >>> expr:
+                    @ IdentifierExprNode (21:22):
+                    >>> identifier: x
+            >>> elseStmt: null
+            @ CondStmtNode (22:4):
+            >>> cond:
+                @ BinaryExprNode (22:7):
+                >>> op: LESS
+                >>> lhs:
+                    @ IdentifierExprNode (22:7):
+                    >>> identifier: x
+                >>> rhs:
+                    @ IdentifierExprNode (22:11):
+                    >>> identifier: y
+            >>> thenStmt:
+                @ ReturnStmtNode (23:8):
+                >>> expr:
+                    @ FuncCallExprNode (23:15):
+                    >>> func:
+                        @ IdentifierExprNode (23:15):
+                        >>> identifier: gcd
+                    >>> args:
+                        @ IdentifierExprNode (23:19):
+                        >>> identifier: y
+                        @ IdentifierExprNode (23:21):
+                        >>> identifier: x
+            >>> elseStmt:
+                @ ReturnStmtNode (25:8):
+                >>> expr:
+                    @ FuncCallExprNode (25:15):
+                    >>> func:
+                        @ IdentifierExprNode (25:15):
+                        >>> identifier: gcd
+                    >>> args:
+                        @ IdentifierExprNode (25:19):
+                        >>> identifier: y
+                        @ BinaryExprNode (25:22):
+                        >>> op: MOD
+                        >>> lhs:
+                            @ IdentifierExprNode (25:22):
+                            >>> identifier: x
+                        >>> rhs:
+                            @ IdentifierExprNode (25:26):
+                            >>> identifier: y
+    @ FuncDeclNode (28:0):
+    >>> isContruct: false
+    >>> returnType:
+        @ TypeNode (28:0):
+        >>> type: PrimitiveType(INT)
+    >>> name: lcm
+    >>> parameterList:
+        @ VaeDeclNode (28:8):
+        >>> type:
+            @ TypeNode (28:8):
+            >>> type: PrimitiveType(INT)
+        >>> name: a
+        >>> init: null
+        @ VaeDeclNode (28:15):
+        >>> type:
+            @ TypeNode (28:15):
+            >>> type: PrimitiveType(INT)
+        >>> name: b
+        >>> init: null
+    >>> body:
+        @ BlockStmtNode (28:22):
+        >>> stmtsAndVarDecls:
+            @ ReturnStmtNode (29:4):
+            >>> expr:
+                @ BinaryExprNode (29:11):
+                >>> op: MUL
+                >>> lhs:
+                    @ BinaryExprNode (29:11):
+                    >>> op: DIV
+                    >>> lhs:
+                        @ IdentifierExprNode (29:11):
+                        >>> identifier: a
+                    >>> rhs:
+                        @ FuncCallExprNode (29:15):
+                        >>> func:
+                            @ IdentifierExprNode (29:15):
+                            >>> identifier: gcd
+                        >>> args:
+                            @ IdentifierExprNode (29:19):
+                            >>> identifier: a
+                            @ IdentifierExprNode (29:22):
+                            >>> identifier: b
+                >>> rhs:
+                    @ IdentifierExprNode (29:27):
+                    >>> identifier: b
+    @ VaeDeclNode (32:4):
+    >>> type:
+        @ TypeNode (32:0):
+        >>> type: PrimitiveType(INT)
+    >>> name: aa
+    >>> init:
+        @ IntConstExprNode (32:7):
+        >>> value: 13131
+    @ VaeDeclNode (33:4):
+    >>> type:
+        @ TypeNode (33:0):
+        >>> type: PrimitiveType(INT)
+    >>> name: bb
+    >>> init:
+        @ IntConstExprNode (33:7):
+        >>> value: 5353
+    @ VaeDeclNode (34:4):
+    >>> type:
+        @ TypeNode (34:0):
+        >>> type: PrimitiveType(INT)
+    >>> name: MOD
+    >>> init:
+        @ BinaryExprNode (34:8):
+        >>> op: SUB
+        >>> lhs:
+            @ BinaryExprNode (34:9):
+            >>> op: SHL
+            >>> lhs:
+                @ IntConstExprNode (34:9):
+                >>> value: 2
+            >>> rhs:
+                @ IntConstExprNode (34:12):
+                >>> value: 14
+        >>> rhs:
+            @ IntConstExprNode (34:18):
+            >>> value: 7
+    @ VaeDeclNode (35:4):
+    >>> type:
+        @ TypeNode (35:0):
+        >>> type: PrimitiveType(INT)
+    >>> name: no
+    >>> init:
+        @ IntConstExprNode (35:7):
+        >>> value: 1
+    @ FuncDeclNode (37:0):
+    >>> isContruct: false
+    >>> returnType:
+        @ TypeNode (37:0):
+        >>> type: PrimitiveType(INT)
+    >>> name: Rand
+    >>> parameterList: null
+    >>> body:
+        @ BlockStmtNode (38:0):
+        >>> stmtsAndVarDecls:
+            @ VaeDeclNode (39:8):
+            >>> type:
+                @ TypeNode (39:4):
+                >>> type: PrimitiveType(INT)
+            >>> name: i
+            >>> init:
+                @ IntConstExprNode (39:12):
+                >>> value: 1
+            @ ForStmtNode (40:4):
+            >>> init:
+                @ AssignExprNode (40:8):
+                >>> lhs:
+                    @ IdentifierExprNode (40:8):
+                    >>> identifier: i
+                >>> rhs:
+                    @ IntConstExprNode (40:10):
+                    >>> value: 1
+            >>> cond:
+                @ BinaryExprNode (40:12):
+                >>> op: LESS
+                >>> lhs:
+                    @ IdentifierExprNode (40:12):
+                    >>> identifier: i
+                >>> rhs:
+                    @ IntConstExprNode (40:14):
+                    >>> value: 3
+            >>> step:
+                @ SuffixExprNode (40:16):
+                >>> op: SUFFIX_INC
+                >>> expr:
+                    @ IdentifierExprNode (40:16):
+                    >>> identifier: i
+            >>> stmt:
+                @ ExprStmtNode (41:8):
+                >>> expr:
+                    @ AssignExprNode (41:8):
+                    >>> lhs:
+                        @ IdentifierExprNode (41:8):
+                        >>> identifier: no
+                    >>> rhs:
+                        @ BinaryExprNode (41:11):
+                        >>> op: MOD
+                        >>> lhs:
+                            @ BinaryExprNode (41:12):
+                            >>> op: ADD
+                            >>> lhs:
+                                @ BinaryExprNode (41:12):
+                                >>> op: MUL
+                                >>> lhs:
+                                    @ IdentifierExprNode (41:12):
+                                    >>> identifier: no
+                                >>> rhs:
+                                    @ IdentifierExprNode (41:17):
+                                    >>> identifier: aa
+                            >>> rhs:
+                                @ IdentifierExprNode (41:22):
+                                >>> identifier: bb
+                        >>> rhs:
+                            @ IdentifierExprNode (41:28):
+                            >>> identifier: MOD
+            @ CondStmtNode (42:4):
+            >>> cond:
+                @ BinaryExprNode (42:7):
+                >>> op: LESS
+                >>> lhs:
+                    @ IdentifierExprNode (42:7):
+                    >>> identifier: no
+                >>> rhs:
+                    @ IntConstExprNode (42:12):
+                    >>> value: 0
+            >>> thenStmt:
+                @ BlockStmtNode (42:14):
+                >>> stmtsAndVarDecls:
+                    @ ExprStmtNode (43:8):
+                    >>> expr:
+                        @ AssignExprNode (43:8):
+                        >>> lhs:
+                            @ IdentifierExprNode (43:8):
+                            >>> identifier: no
+                        >>> rhs:
+                            @ PrefixExprNode (43:13):
+                            >>> op: NEG
+                            >>> expr:
+                                @ IdentifierExprNode (43:14):
+                                >>> identifier: no
+            >>> elseStmt: null
+            @ ReturnStmtNode (45:4):
+            >>> expr:
+                @ IdentifierExprNode (45:11):
+                >>> identifier: no
+    @ FuncDeclNode (48:0):
+    >>> isContruct: false
+    >>> returnType:
+        @ TypeNode (48:0):
+        >>> type: PrimitiveType(INT)
+    >>> name: RandRange
+    >>> parameterList:
+        @ VaeDeclNode (48:14):
+        >>> type:
+            @ TypeNode (48:14):
+            >>> type: PrimitiveType(INT)
+        >>> name: low
+        >>> init: null
+        @ VaeDeclNode (48:23):
+        >>> type:
+            @ TypeNode (48:23):
+            >>> type: PrimitiveType(INT)
+        >>> name: high
+        >>> init: null
+    >>> body:
+        @ BlockStmtNode (49:0):
+        >>> stmtsAndVarDecls:
+            @ ReturnStmtNode (50:4):
+            >>> expr:
+                @ BinaryExprNode (50:11):
+                >>> op: ADD
+                >>> lhs:
+                    @ BinaryExprNode (50:11):
+                    >>> op: ADD
+                    >>> lhs:
+                        @ IdentifierExprNode (50:11):
+                        >>> identifier: low
+                    >>> rhs:
+                        @ BinaryExprNode (50:17):
+                        >>> op: MOD
+                        >>> lhs:
+                            @ FuncCallExprNode (50:17):
+                            >>> func:
+                                @ IdentifierExprNode (50:17):
+                                >>> identifier: Rand
+                            >>> args: null
+                        >>> rhs:
+                            @ BinaryExprNode (50:27):
+                            >>> op: ADD
+                            >>> lhs:
+                                @ BinaryExprNode (50:27):
+                                >>> op: SUB
+                                >>> lhs:
+                                    @ IdentifierExprNode (50:27):
+                                    >>> identifier: high
+                                >>> rhs:
+                                    @ IdentifierExprNode (50:34):
+                                    >>> identifier: low
+                            >>> rhs:
+                                @ IntConstExprNode (50:40):
+                                >>> value: 1
+                >>> rhs:
+                    @ IntConstExprNode (50:45):
+                    >>> value: 1
+    @ FuncDeclNode (54:0):
+    >>> isContruct: false
+    >>> returnType:
+        @ TypeNode (54:0):
+        >>> type: PrimitiveType(VOID)
+    >>> name: init
+    >>> parameterList: null
+    >>> body:
+        @ BlockStmtNode (54:12):
+        >>> stmtsAndVarDecls:
+            @ VaeDeclNode (55:10):
+            >>> type:
+                @ TypeNode (55:4):
+                >>> type: ArrayType(PrimitiveType(INT))
+            >>> name: c
+            >>> init:
+                @ NewExprNode (55:18):
+                >>> newType:
+                    @ TypeNode (55:18):
+                    >>> type: ArrayType(PrimitiveType(INT))
+                >>> dims:
+                    @ IntConstExprNode (55:22):
+                    >>> value: 140005
+                >>> numDim: 1
+            @ VaeDeclNode (56:8):
+            >>> type:
+                @ TypeNode (56:4):
+                >>> type: PrimitiveType(INT)
+            >>> name: i
+            >>> init:
+                @ IntConstExprNode (56:12):
+                >>> value: 0
+            @ VaeDeclNode (57:8):
+            >>> type:
+                @ TypeNode (57:4):
+                >>> type: PrimitiveType(INT)
+            >>> name: j
+            >>> init:
+                @ IntConstExprNode (57:12):
+                >>> value: 0
+            @ ForStmtNode (58:4):
+            >>> init:
+                @ AssignExprNode (58:8):
+                >>> lhs:
+                    @ IdentifierExprNode (58:8):
+                    >>> identifier: i
+                >>> rhs:
+                    @ IntConstExprNode (58:12):
+                    >>> value: 2
+            >>> cond:
+                @ BinaryExprNode (58:15):
+                >>> op: LESS
+                >>> lhs:
+                    @ IdentifierExprNode (58:15):
+                    >>> identifier: i
+                >>> rhs:
+                    @ IdentifierExprNode (58:19):
+                    >>> identifier: p
+            >>> step:
+                @ PrefixExprNode (58:22):
+                >>> op: PREFIX_INC
+                >>> expr:
+                    @ IdentifierExprNode (58:24):
+                    >>> identifier: i
+            >>> stmt:
+                @ ExprStmtNode (58:27):
+                >>> expr:
+                    @ AssignExprNode (58:27):
+                    >>> lhs:
+                        @ SubscriptExprNode (58:27):
+                        >>> arr:
+                            @ IdentifierExprNode (58:27):
+                            >>> identifier: c
+                        >>> sub:
+                            @ IdentifierExprNode (58:29):
+                            >>> identifier: i
+                    >>> rhs:
+                        @ IdentifierExprNode (58:34):
+                        >>> identifier: i
+            @ ForStmtNode (59:4):
+            >>> init:
+                @ AssignExprNode (59:8):
+                >>> lhs:
+                    @ IdentifierExprNode (59:8):
+                    >>> identifier: i
+                >>> rhs:
+                    @ IntConstExprNode (59:12):
+                    >>> value: 2
+            >>> cond:
+                @ BinaryExprNode (59:15):
+                >>> op: LESS
+                >>> lhs:
+                    @ IdentifierExprNode (59:15):
+                    >>> identifier: i
+                >>> rhs:
+                    @ IdentifierExprNode (59:19):
+                    >>> identifier: p
+            >>> step:
+                @ PrefixExprNode (59:22):
+                >>> op: PREFIX_INC
+                >>> expr:
+                    @ IdentifierExprNode (59:24):
+                    >>> identifier: i
+            >>> stmt:
+                @ ForStmtNode (60:8):
+                >>> init:
+                    @ AssignExprNode (60:12):
+                    >>> lhs:
+                        @ IdentifierExprNode (60:12):
+                        >>> identifier: j
+                    >>> rhs:
+                        @ IntConstExprNode (60:16):
+                        >>> value: 1
+                >>> cond:
+                    @ BinaryExprNode (60:19):
+                    >>> op: LESS_EQUAL
+                    >>> lhs:
+                        @ IdentifierExprNode (60:19):
+                        >>> identifier: j
+                    >>> rhs:
+                        @ IntConstExprNode (60:24):
+                        >>> value: 15
+                >>> step:
+                    @ PrefixExprNode (60:28):
+                    >>> op: PREFIX_INC
+                    >>> expr:
+                        @ IdentifierExprNode (60:30):
+                        >>> identifier: j
+                >>> stmt:
+                    @ ExprStmtNode (61:12):
+                    >>> expr:
+                        @ AssignExprNode (61:12):
+                        >>> lhs:
+                            @ SubscriptExprNode (61:12):
+                            >>> arr:
+                                @ IdentifierExprNode (61:12):
+                                >>> identifier: c
+                            >>> sub:
+                                @ IdentifierExprNode (61:14):
+                                >>> identifier: i
+                        >>> rhs:
+                            @ BinaryExprNode (61:19):
+                            >>> op: MOD
+                            >>> lhs:
+                                @ FuncCallExprNode (61:19):
+                                >>> func:
+                                    @ IdentifierExprNode (61:19):
+                                    >>> identifier: square
+                                >>> args:
+                                    @ SubscriptExprNode (61:26):
+                                    >>> arr:
+                                        @ IdentifierExprNode (61:26):
+                                        >>> identifier: c
+                                    >>> sub:
+                                        @ IdentifierExprNode (61:28):
+                                        >>> identifier: i
+                            >>> rhs:
+                                @ IdentifierExprNode (61:34):
+                                >>> identifier: p
+            @ ForStmtNode (62:4):
+            >>> init:
+                @ AssignExprNode (62:8):
+                >>> lhs:
+                    @ IdentifierExprNode (62:8):
+                    >>> identifier: i
+                >>> rhs:
+                    @ IntConstExprNode (62:12):
+                    >>> value: 2
+            >>> cond:
+                @ BinaryExprNode (62:15):
+                >>> op: LESS
+                >>> lhs:
+                    @ IdentifierExprNode (62:15):
+                    >>> identifier: i
+                >>> rhs:
+                    @ IdentifierExprNode (62:19):
+                    >>> identifier: p
+            >>> step:
+                @ PrefixExprNode (62:22):
+                >>> op: PREFIX_INC
+                >>> expr:
+                    @ IdentifierExprNode (62:24):
+                    >>> identifier: i
+            >>> stmt:
+                @ BlockStmtNode (62:27):
+                >>> stmtsAndVarDecls:
+                    @ VaeDeclNode (63:12):
+                    >>> type:
+                        @ TypeNode (63:8):
+                        >>> type: PrimitiveType(INT)
+                    >>> name: j
+                    >>> init: null
+                    @ VaeDeclNode (64:12):
+                    >>> type:
+                        @ TypeNode (64:8):
+                        >>> type: PrimitiveType(INT)
+                    >>> name: x
+                    >>> init:
+                        @ SubscriptExprNode (64:16):
+                        >>> arr:
+                            @ IdentifierExprNode (64:16):
+                            >>> identifier: c
+                        >>> sub:
+                            @ IdentifierExprNode (64:18):
+                            >>> identifier: i
+                    @ ForStmtNode (65:8):
+                    >>> init:
+                        @ AssignExprNode (65:12):
+                        >>> lhs:
+                            @ IdentifierExprNode (65:12):
+                            >>> identifier: j
+                        >>> rhs:
+                            @ IntConstExprNode (65:16):
+                            >>> value: 1
+                    >>> cond: null
+                    >>> step:
+                        @ PrefixExprNode (65:20):
+                        >>> op: PREFIX_INC
+                        >>> expr:
+                            @ IdentifierExprNode (65:22):
+                            >>> identifier: j
+                    >>> stmt:
+                        @ BlockStmtNode (65:25):
+                        >>> stmtsAndVarDecls:
+                            @ ExprStmtNode (66:12):
+                            >>> expr:
+                                @ AssignExprNode (66:12):
+                                >>> lhs:
+                                    @ IdentifierExprNode (66:12):
+                                    >>> identifier: x
+                                >>> rhs:
+                                    @ BinaryExprNode (66:16):
+                                    >>> op: MOD
+                                    >>> lhs:
+                                        @ FuncCallExprNode (66:16):
+                                        >>> func:
+                                            @ IdentifierExprNode (66:16):
+                                            >>> identifier: square
+                                        >>> args:
+                                            @ IdentifierExprNode (66:23):
+                                            >>> identifier: x
+                                    >>> rhs:
+                                        @ IdentifierExprNode (66:28):
+                                        >>> identifier: p
+                            @ ExprStmtNode (67:12):
+                            >>> expr:
+                                @ AssignExprNode (67:12):
+                                >>> lhs:
+                                    @ SubscriptExprNode (67:12):
+                                    >>> arr:
+                                        @ IdentifierExprNode (67:12):
+                                        >>> identifier: b
+                                    >>> sub:
+                                        @ IdentifierExprNode (67:14):
+                                        >>> identifier: x
+                                >>> rhs:
+                                    @ IntConstExprNode (67:19):
+                                    >>> value: 1
+                            @ CondStmtNode (68:12):
+                            >>> cond:
+                                @ BinaryExprNode (68:15):
+                                >>> op: EQUAL
+                                >>> lhs:
+                                    @ IdentifierExprNode (68:15):
+                                    >>> identifier: x
+                                >>> rhs:
+                                    @ SubscriptExprNode (68:20):
+                                    >>> arr:
+                                        @ IdentifierExprNode (68:20):
+                                        >>> identifier: c
+                                    >>> sub:
+                                        @ IdentifierExprNode (68:22):
+                                        >>> identifier: i
+                            >>> thenStmt:
+                                @ BreakStmtNode (68:26):
+                            >>> elseStmt: null
+                    @ ExprStmtNode (70:8):
+                    >>> expr:
+                        @ AssignExprNode (70:8):
+                        >>> lhs:
+                            @ IdentifierExprNode (70:8):
+                            >>> identifier: L
+                        >>> rhs:
+                            @ FuncCallExprNode (70:12):
+                            >>> func:
+                                @ IdentifierExprNode (70:12):
+                                >>> identifier: lcm
+                            >>> args:
+                                @ IdentifierExprNode (70:16):
+                                >>> identifier: L
+                                @ IdentifierExprNode (70:19):
+                                >>> identifier: j
+            @ ExprStmtNode (72:4):
+            >>> expr:
+                @ AssignExprNode (72:4):
+                >>> lhs:
+                    @ SubscriptExprNode (72:4):
+                    >>> arr:
+                        @ IdentifierExprNode (72:4):
+                        >>> identifier: b
+                    >>> sub:
+                        @ IntConstExprNode (72:6):
+                        >>> value: 0
+                >>> rhs:
+                    @ IntConstExprNode (72:11):
+                    >>> value: 1
+            @ ExprStmtNode (73:1):
+            >>> expr:
+                @ AssignExprNode (73:1):
+                >>> lhs:
+                    @ SubscriptExprNode (73:1):
+                    >>> arr:
+                        @ IdentifierExprNode (73:1):
+                        >>> identifier: b
+                    >>> sub:
+                        @ IntConstExprNode (73:3):
+                        >>> value: 1
+                >>> rhs:
+                    @ IntConstExprNode (73:8):
+                    >>> value: 1
+    @ FuncDeclNode (76:0):
+    >>> isContruct: false
+    >>> returnType:
+        @ TypeNode (76:0):
+        >>> type: PrimitiveType(VOID)
+    >>> name: build
+    >>> parameterList:
+        @ VaeDeclNode (76:11):
+        >>> type:
+            @ TypeNode (76:11):
+            >>> type: PrimitiveType(INT)
+        >>> name: o
+        >>> init: null
+        @ VaeDeclNode (76:18):
+        >>> type:
+            @ TypeNode (76:18):
+            >>> type: PrimitiveType(INT)
+        >>> name: l
+        >>> init: null
+        @ VaeDeclNode (76:25):
+        >>> type:
+            @ TypeNode (76:25):
+            >>> type: PrimitiveType(INT)
+        >>> name: r
+        >>> init: null
+    >>> body:
+        @ BlockStmtNode (76:32):
+        >>> stmtsAndVarDecls:
+            @ VaeDeclNode (77:8):
+            >>> type:
+                @ TypeNode (77:4):
+                >>> type: PrimitiveType(INT)
+            >>> name: i
+            >>> init:
+                @ IntConstExprNode (77:12):
+                >>> value: 0
+            @ CondStmtNode (78:4):
+            >>> cond:
+                @ BinaryExprNode (78:7):
+                >>> op: EQUAL
+                >>> lhs:
+                    @ IdentifierExprNode (78:7):
+                    >>> identifier: l
+                >>> rhs:
+                    @ IdentifierExprNode (78:12):
+                    >>> identifier: r
+            >>> thenStmt:
+                @ BlockStmtNode (78:15):
+                >>> stmtsAndVarDecls:
+                    @ ExprStmtNode (79:8):
+                    >>> expr:
+                        @ AssignExprNode (79:8):
+                        >>> lhs:
+                            @ SubscriptExprNode (79:8):
+                            >>> arr:
+                                @ IdentifierExprNode (79:8):
+                                >>> identifier: sum
+                            >>> sub:
+                                @ IdentifierExprNode (79:12):
+                                >>> identifier: o
+                        >>> rhs:
+                            @ SubscriptExprNode (79:17):
+                            >>> arr:
+                                @ IdentifierExprNode (79:17):
+                                >>> identifier: a
+                            >>> sub:
+                                @ IdentifierExprNode (79:19):
+                                >>> identifier: l
+                    @ CondStmtNode (80:8):
+                    >>> cond:
+                        @ BinaryExprNode (80:11):
+                        >>> op: LOGIC_AND
+                        >>> lhs:
+                            @ BinaryExprNode (80:11):
+                            >>> op: LOGIC_AND
+                            >>> lhs:
+                                @ BinaryExprNode (80:11):
+                                >>> op: LESS
+                                >>> lhs:
+                                    @ SubscriptExprNode (80:11):
+                                    >>> arr:
+                                        @ IdentifierExprNode (80:11):
+                                        >>> identifier: a
+                                    >>> sub:
+                                        @ IdentifierExprNode (80:13):
+                                        >>> identifier: l
+                                >>> rhs:
+                                    @ IdentifierExprNode (80:18):
+                                    >>> identifier: p
+                            >>> rhs:
+                                @ BinaryExprNode (80:23):
+                                >>> op: GREATER_EQUAL
+                                >>> lhs:
+                                    @ SubscriptExprNode (80:23):
+                                    >>> arr:
+                                        @ IdentifierExprNode (80:23):
+                                        >>> identifier: a
+                                    >>> sub:
+                                        @ IdentifierExprNode (80:25):
+                                        >>> identifier: l
+                                >>> rhs:
+                                    @ IntConstExprNode (80:31):
+                                    >>> value: 0
+                        >>> rhs:
+                            @ BinaryExprNode (80:37):
+                            >>> op: GREATER
+                            >>> lhs:
+                                @ SubscriptExprNode (80:37):
+                                >>> arr:
+                                    @ IdentifierExprNode (80:37):
+                                    >>> identifier: b
+                                >>> sub:
+                                    @ BinaryExprNode (80:39):
+                                    >>> op: MOD
+                                    >>> lhs:
+                                        @ SubscriptExprNode (80:39):
+                                        >>> arr:
+                                            @ IdentifierExprNode (80:39):
+                                            >>> identifier: a
+                                        >>> sub:
+                                            @ IdentifierExprNode (80:41):
+                                            >>> identifier: l
+                                    >>> rhs:
+                                        @ IdentifierExprNode (80:46):
+                                        >>> identifier: p
+                            >>> rhs:
+                                @ IntConstExprNode (80:51):
+                                >>> value: 0
+                    >>> thenStmt:
+                        @ BlockStmtNode (80:54):
+                        >>> stmtsAndVarDecls:
+                            @ ExprStmtNode (81:12):
+                            >>> expr:
+                                @ AssignExprNode (81:12):
+                                >>> lhs:
+                                    @ SubscriptExprNode (81:12):
+                                    >>> arr:
+                                        @ IdentifierExprNode (81:12):
+                                        >>> identifier: flag
+                                    >>> sub:
+                                        @ IdentifierExprNode (81:17):
+                                        >>> identifier: o
+                                >>> rhs:
+                                    @ IntConstExprNode (81:22):
+                                    >>> value: 1
+                            @ ExprStmtNode (82:12):
+                            >>> expr:
+                                @ AssignExprNode (82:12):
+                                >>> lhs:
+                                    @ SubscriptExprNode (82:12):
+                                    >>> arr:
+                                        @ SubscriptExprNode (82:12):
+                                        >>> arr:
+                                            @ IdentifierExprNode (82:12):
+                                            >>> identifier: s
+                                        >>> sub:
+                                            @ IdentifierExprNode (82:14):
+                                            >>> identifier: o
+                                    >>> sub:
+                                        @ IntConstExprNode (82:17):
+                                        >>> value: 0
+                                >>> rhs:
+                                    @ SubscriptExprNode (82:22):
+                                    >>> arr:
+                                        @ IdentifierExprNode (82:22):
+                                        >>> identifier: a
+                                    >>> sub:
+                                        @ IdentifierExprNode (82:24):
+                                        >>> identifier: l
+                            @ ForStmtNode (83:12):
+                            >>> init:
+                                @ AssignExprNode (83:16):
+                                >>> lhs:
+                                    @ IdentifierExprNode (83:16):
+                                    >>> identifier: i
+                                >>> rhs:
+                                    @ IntConstExprNode (83:20):
+                                    >>> value: 1
+                            >>> cond:
+                                @ BinaryExprNode (83:23):
+                                >>> op: LESS
+                                >>> lhs:
+                                    @ IdentifierExprNode (83:23):
+                                    >>> identifier: i
+                                >>> rhs:
+                                    @ IdentifierExprNode (83:27):
+                                    >>> identifier: L
+                            >>> step:
+                                @ PrefixExprNode (83:30):
+                                >>> op: PREFIX_INC
+                                >>> expr:
+                                    @ IdentifierExprNode (83:32):
+                                    >>> identifier: i
+                            >>> stmt:
+                                @ ExprStmtNode (84:16):
+                                >>> expr:
+                                    @ AssignExprNode (84:16):
+                                    >>> lhs:
+                                        @ SubscriptExprNode (84:16):
+                                        >>> arr:
+                                            @ SubscriptExprNode (84:16):
+                                            >>> arr:
+                                                @ IdentifierExprNode (84:16):
+                                                >>> identifier: s
+                                            >>> sub:
+                                                @ IdentifierExprNode (84:18):
+                                                >>> identifier: o
+                                        >>> sub:
+                                            @ IdentifierExprNode (84:21):
+                                            >>> identifier: i
+                                    >>> rhs:
+                                        @ BinaryExprNode (84:26):
+                                        >>> op: MOD
+                                        >>> lhs:
+                                            @ FuncCallExprNode (84:26):
+                                            >>> func:
+                                                @ IdentifierExprNode (84:26):
+                                                >>> identifier: square
+                                            >>> args:
+                                                @ SubscriptExprNode (84:33):
+                                                >>> arr:
+                                                    @ SubscriptExprNode (84:33):
+                                                    >>> arr:
+                                                        @ IdentifierExprNode (84:33):
+                                                        >>> identifier: s
+                                                    >>> sub:
+                                                        @ IdentifierExprNode (84:35):
+                                                        >>> identifier: o
+                                                >>> sub:
+                                                    @ BinaryExprNode (84:38):
+                                                    >>> op: SUB
+                                                    >>> lhs:
+                                                        @ IdentifierExprNode (84:38):
+                                                        >>> identifier: i
+                                                    >>> rhs:
+                                                        @ IntConstExprNode (84:42):
+                                                        >>> value: 1
+                                        >>> rhs:
+                                            @ IdentifierExprNode (84:48):
+                                            >>> identifier: p
+                    >>> elseStmt: null
+                    @ ExprStmtNode (86:8):
+                    >>> expr:
+                        @ AssignExprNode (86:8):
+                        >>> lhs:
+                            @ SubscriptExprNode (86:8):
+                            >>> arr:
+                                @ IdentifierExprNode (86:8):
+                                >>> identifier: now
+                            >>> sub:
+                                @ IdentifierExprNode (86:12):
+                                >>> identifier: o
+                        >>> rhs:
+                            @ IntConstExprNode (86:17):
+                            >>> value: 0
+            >>> elseStmt:
+                @ BlockStmtNode (87:11):
+                >>> stmtsAndVarDecls:
+                    @ VaeDeclNode (88:12):
+                    >>> type:
+                        @ TypeNode (88:8):
+                        >>> type: PrimitiveType(INT)
+                    >>> name: lc
+                    >>> init:
+                        @ BinaryExprNode (88:17):
+                        >>> op: MUL
+                        >>> lhs:
+                            @ IdentifierExprNode (88:17):
+                            >>> identifier: o
+                        >>> rhs:
+                            @ IntConstExprNode (88:21):
+                            >>> value: 2
+                    @ VaeDeclNode (89:12):
+                    >>> type:
+                        @ TypeNode (89:8):
+                        >>> type: PrimitiveType(INT)
+                    >>> name: rc
+                    >>> init:
+                        @ BinaryExprNode (89:17):
+                        >>> op: ADD
+                        >>> lhs:
+                            @ BinaryExprNode (89:17):
+                            >>> op: MUL
+                            >>> lhs:
+                                @ IdentifierExprNode (89:17):
+                                >>> identifier: o
+                            >>> rhs:
+                                @ IntConstExprNode (89:21):
+                                >>> value: 2
+                        >>> rhs:
+                            @ IntConstExprNode (89:25):
+                            >>> value: 1
+                    @ VaeDeclNode (90:12):
+                    >>> type:
+                        @ TypeNode (90:8):
+                        >>> type: PrimitiveType(INT)
+                    >>> name: mid
+                    >>> init:
+                        @ BinaryExprNode (90:18):
+                        >>> op: DIV
+                        >>> lhs:
+                            @ BinaryExprNode (90:19):
+                            >>> op: ADD
+                            >>> lhs:
+                                @ IdentifierExprNode (90:19):
+                                >>> identifier: l
+                            >>> rhs:
+                                @ IdentifierExprNode (90:23):
+                                >>> identifier: r
+                        >>> rhs:
+                            @ IntConstExprNode (90:28):
+                            >>> value: 2
+                    @ ExprStmtNode (91:8):
+                    >>> expr:
+                        @ FuncCallExprNode (91:8):
+                        >>> func:
+                            @ IdentifierExprNode (91:8):
+                            >>> identifier: build
+                        >>> args:
+                            @ IdentifierExprNode (91:14):
+                            >>> identifier: lc
+                            @ IdentifierExprNode (91:18):
+                            >>> identifier: l
+                            @ IdentifierExprNode (91:21):
+                            >>> identifier: mid
+                    @ ExprStmtNode (92:8):
+                    >>> expr:
+                        @ FuncCallExprNode (92:8):
+                        >>> func:
+                            @ IdentifierExprNode (92:8):
+                            >>> identifier: build
+                        >>> args:
+                            @ IdentifierExprNode (92:14):
+                            >>> identifier: rc
+                            @ BinaryExprNode (92:18):
+                            >>> op: ADD
+                            >>> lhs:
+                                @ IdentifierExprNode (92:18):
+                                >>> identifier: mid
+                            >>> rhs:
+                                @ IntConstExprNode (92:24):
+                                >>> value: 1
+                            @ IdentifierExprNode (92:27):
+                            >>> identifier: r
+                    @ ExprStmtNode (93:8):
+                    >>> expr:
+                        @ AssignExprNode (93:8):
+                        >>> lhs:
+                            @ SubscriptExprNode (93:8):
+                            >>> arr:
+                                @ IdentifierExprNode (93:8):
+                                >>> identifier: sum
+                            >>> sub:
+                                @ IdentifierExprNode (93:12):
+                                >>> identifier: o
+                        >>> rhs:
+                            @ BinaryExprNode (93:17):
+                            >>> op: ADD
+                            >>> lhs:
+                                @ SubscriptExprNode (93:17):
+                                >>> arr:
+                                    @ IdentifierExprNode (93:17):
+                                    >>> identifier: sum
+                                >>> sub:
+                                    @ IdentifierExprNode (93:21):
+                                    >>> identifier: lc
+                            >>> rhs:
+                                @ SubscriptExprNode (93:27):
+                                >>> arr:
+                                    @ IdentifierExprNode (93:27):
+                                    >>> identifier: sum
+                                >>> sub:
+                                    @ IdentifierExprNode (93:31):
+                                    >>> identifier: rc
+                    @ ExprStmtNode (94:8):
+                    >>> expr:
+                        @ AssignExprNode (94:8):
+                        >>> lhs:
+                            @ SubscriptExprNode (94:8):
+                            >>> arr:
+                                @ IdentifierExprNode (94:8):
+                                >>> identifier: flag
+                            >>> sub:
+                                @ IdentifierExprNode (94:13):
+                                >>> identifier: o
+                        >>> rhs:
+                            @ BinaryExprNode (94:18):
+                            >>> op: BITWISE_AND
+                            >>> lhs:
+                                @ SubscriptExprNode (94:18):
+                                >>> arr:
+                                    @ IdentifierExprNode (94:18):
+                                    >>> identifier: flag
+                                >>> sub:
+                                    @ IdentifierExprNode (94:23):
+                                    >>> identifier: lc
+                            >>> rhs:
+                                @ SubscriptExprNode (94:29):
+                                >>> arr:
+                                    @ IdentifierExprNode (94:29):
+                                    >>> identifier: flag
+                                >>> sub:
+                                    @ IdentifierExprNode (94:34):
+                                    >>> identifier: rc
+                    @ CondStmtNode (95:8):
+                    >>> cond:
+                        @ BinaryExprNode (95:11):
+                        >>> op: GREATER
+                        >>> lhs:
+                            @ SubscriptExprNode (95:11):
+                            >>> arr:
+                                @ IdentifierExprNode (95:11):
+                                >>> identifier: flag
+                            >>> sub:
+                                @ IdentifierExprNode (95:16):
+                                >>> identifier: o
+                        >>> rhs:
+                            @ IntConstExprNode (95:19):
+                            >>> value: 0
+                    >>> thenStmt:
+                        @ BlockStmtNode (95:21):
+                        >>> stmtsAndVarDecls:
+                            @ ForStmtNode (96:12):
+                            >>> init:
+                                @ AssignExprNode (96:16):
+                                >>> lhs:
+                                    @ IdentifierExprNode (96:16):
+                                    >>> identifier: i
+                                >>> rhs:
+                                    @ IntConstExprNode (96:20):
+                                    >>> value: 0
+                            >>> cond:
+                                @ BinaryExprNode (96:23):
+                                >>> op: LESS
+                                >>> lhs:
+                                    @ IdentifierExprNode (96:23):
+                                    >>> identifier: i
+                                >>> rhs:
+                                    @ IdentifierExprNode (96:27):
+                                    >>> identifier: L
+                            >>> step:
+                                @ PrefixExprNode (96:30):
+                                >>> op: PREFIX_INC
+                                >>> expr:
+                                    @ IdentifierExprNode (96:32):
+                                    >>> identifier: i
+                            >>> stmt:
+                                @ ExprStmtNode (97:16):
+                                >>> expr:
+                                    @ AssignExprNode (97:16):
+                                    >>> lhs:
+                                        @ SubscriptExprNode (97:16):
+                                        >>> arr:
+                                            @ SubscriptExprNode (97:16):
+                                            >>> arr:
+                                                @ IdentifierExprNode (97:16):
+                                                >>> identifier: s
+                                            >>> sub:
+                                                @ IdentifierExprNode (97:18):
+                                                >>> identifier: o
+                                        >>> sub:
+                                            @ IdentifierExprNode (97:21):
+                                            >>> identifier: i
+                                    >>> rhs:
+                                        @ BinaryExprNode (97:26):
+                                        >>> op: ADD
+                                        >>> lhs:
+                                            @ SubscriptExprNode (97:26):
+                                            >>> arr:
+                                                @ SubscriptExprNode (97:26):
+                                                >>> arr:
+                                                    @ IdentifierExprNode (97:26):
+                                                    >>> identifier: s
+                                                >>> sub:
+                                                    @ IdentifierExprNode (97:28):
+                                                    >>> identifier: lc
+                                            >>> sub:
+                                                @ IdentifierExprNode (97:32):
+                                                >>> identifier: i
+                                        >>> rhs:
+                                            @ SubscriptExprNode (97:37):
+                                            >>> arr:
+                                                @ SubscriptExprNode (97:37):
+                                                >>> arr:
+                                                    @ IdentifierExprNode (97:37):
+                                                    >>> identifier: s
+                                                >>> sub:
+                                                    @ IdentifierExprNode (97:39):
+                                                    >>> identifier: rc
+                                            >>> sub:
+                                                @ IdentifierExprNode (97:43):
+                                                >>> identifier: i
+                            @ ExprStmtNode (98:12):
+                            >>> expr:
+                                @ AssignExprNode (98:12):
+                                >>> lhs:
+                                    @ SubscriptExprNode (98:12):
+                                    >>> arr:
+                                        @ IdentifierExprNode (98:12):
+                                        >>> identifier: now
+                                    >>> sub:
+                                        @ IntConstExprNode (98:16):
+                                        >>> value: 0
+                                >>> rhs:
+                                    @ IntConstExprNode (98:21):
+                                    >>> value: 0
+                    >>> elseStmt: null
+    @ FuncDeclNode (103:0):
+    >>> isContruct: false
+    >>> returnType:
+        @ TypeNode (103:0):
+        >>> type: PrimitiveType(VOID)
+    >>> name: pushdown
+    >>> parameterList:
+        @ VaeDeclNode (103:14):
+        >>> type:
+            @ TypeNode (103:14):
+            >>> type: PrimitiveType(INT)
+        >>> name: o
+        >>> init: null
+    >>> body:
+        @ BlockStmtNode (103:21):
+        >>> stmtsAndVarDecls:
+            @ CondStmtNode (104:4):
+            >>> cond:
+                @ BinaryExprNode (104:7):
+                >>> op: GREATER
+                >>> lhs:
+                    @ SubscriptExprNode (104:7):
+                    >>> arr:
+                        @ IdentifierExprNode (104:7):
+                        >>> identifier: t
+                    >>> sub:
+                        @ IdentifierExprNode (104:9):
+                        >>> identifier: o
+                >>> rhs:
+                    @ IntConstExprNode (104:12):
+                    >>> value: 0
+            >>> thenStmt:
+                @ BlockStmtNode (104:15):
+                >>> stmtsAndVarDecls:
+                    @ VaeDeclNode (105:12):
+                    >>> type:
+                        @ TypeNode (105:8):
+                        >>> type: PrimitiveType(INT)
+                    >>> name: lc
+                    >>> init:
+                        @ BinaryExprNode (105:17):
+                        >>> op: MUL
+                        >>> lhs:
+                            @ IdentifierExprNode (105:17):
+                            >>> identifier: o
+                        >>> rhs:
+                            @ IntConstExprNode (105:21):
+                            >>> value: 2
+                    @ VaeDeclNode (106:12):
+                    >>> type:
+                        @ TypeNode (106:8):
+                        >>> type: PrimitiveType(INT)
+                    >>> name: rc
+                    >>> init:
+                        @ BinaryExprNode (106:17):
+                        >>> op: ADD
+                        >>> lhs:
+                            @ BinaryExprNode (106:17):
+                            >>> op: MUL
+                            >>> lhs:
+                                @ IdentifierExprNode (106:17):
+                                >>> identifier: o
+                            >>> rhs:
+                                @ IntConstExprNode (106:21):
+                                >>> value: 2
+                        >>> rhs:
+                            @ IntConstExprNode (106:25):
+                            >>> value: 1
+                    @ ExprStmtNode (107:8):
+                    >>> expr:
+                        @ AssignExprNode (107:8):
+                        >>> lhs:
+                            @ SubscriptExprNode (107:8):
+                            >>> arr:
+                                @ IdentifierExprNode (107:8):
+                                >>> identifier: now
+                            >>> sub:
+                                @ IdentifierExprNode (107:12):
+                                >>> identifier: lc
+                        >>> rhs:
+                            @ BinaryExprNode (107:18):
+                            >>> op: MOD
+                            >>> lhs:
+                                @ BinaryExprNode (107:19):
+                                >>> op: ADD
+                                >>> lhs:
+                                    @ SubscriptExprNode (107:19):
+                                    >>> arr:
+                                        @ IdentifierExprNode (107:19):
+                                        >>> identifier: now
+                                    >>> sub:
+                                        @ IdentifierExprNode (107:23):
+                                        >>> identifier: lc
+                                >>> rhs:
+                                    @ SubscriptExprNode (107:29):
+                                    >>> arr:
+                                        @ IdentifierExprNode (107:29):
+                                        >>> identifier: t
+                                    >>> sub:
+                                        @ IdentifierExprNode (107:31):
+                                        >>> identifier: o
+                            >>> rhs:
+                                @ IdentifierExprNode (107:37):
+                                >>> identifier: L
+                    @ ExprStmtNode (108:8):
+                    >>> expr:
+                        @ AssignExprNode (108:8):
+                        >>> lhs:
+                            @ SubscriptExprNode (108:8):
+                            >>> arr:
+                                @ IdentifierExprNode (108:8):
+                                >>> identifier: sum
+                            >>> sub:
+                                @ IdentifierExprNode (108:12):
+                                >>> identifier: lc
+                        >>> rhs:
+                            @ SubscriptExprNode (108:18):
+                            >>> arr:
+                                @ SubscriptExprNode (108:18):
+                                >>> arr:
+                                    @ IdentifierExprNode (108:18):
+                                    >>> identifier: s
+                                >>> sub:
+                                    @ IdentifierExprNode (108:20):
+                                    >>> identifier: lc
+                            >>> sub:
+                                @ SubscriptExprNode (108:24):
+                                >>> arr:
+                                    @ IdentifierExprNode (108:24):
+                                    >>> identifier: now
+                                >>> sub:
+                                    @ IdentifierExprNode (108:28):
+                                    >>> identifier: lc
+                    @ ExprStmtNode (109:8):
+                    >>> expr:
+                        @ AssignExprNode (109:8):
+                        >>> lhs:
+                            @ SubscriptExprNode (109:8):
+                            >>> arr:
+                                @ IdentifierExprNode (109:8):
+                                >>> identifier: t
+                            >>> sub:
+                                @ IdentifierExprNode (109:10):
+                                >>> identifier: lc
+                        >>> rhs:
+                            @ BinaryExprNode (109:16):
+                            >>> op: MOD
+                            >>> lhs:
+                                @ BinaryExprNode (109:17):
+                                >>> op: ADD
+                                >>> lhs:
+                                    @ SubscriptExprNode (109:17):
+                                    >>> arr:
+                                        @ IdentifierExprNode (109:17):
+                                        >>> identifier: t
+                                    >>> sub:
+                                        @ IdentifierExprNode (109:19):
+                                        >>> identifier: lc
+                                >>> rhs:
+                                    @ SubscriptExprNode (109:25):
+                                    >>> arr:
+                                        @ IdentifierExprNode (109:25):
+                                        >>> identifier: t
+                                    >>> sub:
+                                        @ IdentifierExprNode (109:27):
+                                        >>> identifier: o
+                            >>> rhs:
+                                @ IdentifierExprNode (109:33):
+                                >>> identifier: L
+                    @ ExprStmtNode (110:8):
+                    >>> expr:
+                        @ AssignExprNode (110:8):
+                        >>> lhs:
+                            @ SubscriptExprNode (110:8):
+                            >>> arr:
+                                @ IdentifierExprNode (110:8):
+                                >>> identifier: now
+                            >>> sub:
+                                @ IdentifierExprNode (110:12):
+                                >>> identifier: rc
+                        >>> rhs:
+                            @ BinaryExprNode (110:18):
+                            >>> op: MOD
+                            >>> lhs:
+                                @ BinaryExprNode (110:19):
+                                >>> op: ADD
+                                >>> lhs:
+                                    @ SubscriptExprNode (110:19):
+                                    >>> arr:
+                                        @ IdentifierExprNode (110:19):
+                                        >>> identifier: now
+                                    >>> sub:
+                                        @ IdentifierExprNode (110:23):
+                                        >>> identifier: rc
+                                >>> rhs:
+                                    @ SubscriptExprNode (110:29):
+                                    >>> arr:
+                                        @ IdentifierExprNode (110:29):
+                                        >>> identifier: t
+                                    >>> sub:
+                                        @ IdentifierExprNode (110:31):
+                                        >>> identifier: o
+                            >>> rhs:
+                                @ IdentifierExprNode (110:37):
+                                >>> identifier: L
+                    @ ExprStmtNode (111:8):
+                    >>> expr:
+                        @ AssignExprNode (111:8):
+                        >>> lhs:
+                            @ SubscriptExprNode (111:8):
+                            >>> arr:
+                                @ IdentifierExprNode (111:8):
+                                >>> identifier: sum
+                            >>> sub:
+                                @ IdentifierExprNode (111:12):
+                                >>> identifier: rc
+                        >>> rhs:
+                            @ SubscriptExprNode (111:18):
+                            >>> arr:
+                                @ SubscriptExprNode (111:18):
+                                >>> arr:
+                                    @ IdentifierExprNode (111:18):
+                                    >>> identifier: s
+                                >>> sub:
+                                    @ IdentifierExprNode (111:20):
+                                    >>> identifier: rc
+                            >>> sub:
+                                @ SubscriptExprNode (111:24):
+                                >>> arr:
+                                    @ IdentifierExprNode (111:24):
+                                    >>> identifier: now
+                                >>> sub:
+                                    @ IdentifierExprNode (111:28):
+                                    >>> identifier: rc
+                    @ ExprStmtNode (112:8):
+                    >>> expr:
+                        @ AssignExprNode (112:8):
+                        >>> lhs:
+                            @ SubscriptExprNode (112:8):
+                            >>> arr:
+                                @ IdentifierExprNode (112:8):
+                                >>> identifier: t
+                            >>> sub:
+                                @ IdentifierExprNode (112:10):
+                                >>> identifier: rc
+                        >>> rhs:
+                            @ BinaryExprNode (112:16):
+                            >>> op: MOD
+                            >>> lhs:
+                                @ BinaryExprNode (112:17):
+                                >>> op: ADD
+                                >>> lhs:
+                                    @ SubscriptExprNode (112:17):
+                                    >>> arr:
+                                        @ IdentifierExprNode (112:17):
+                                        >>> identifier: t
+                                    >>> sub:
+                                        @ IdentifierExprNode (112:19):
+                                        >>> identifier: rc
+                                >>> rhs:
+                                    @ SubscriptExprNode (112:25):
+                                    >>> arr:
+                                        @ IdentifierExprNode (112:25):
+                                        >>> identifier: t
+                                    >>> sub:
+                                        @ IdentifierExprNode (112:27):
+                                        >>> identifier: o
+                            >>> rhs:
+                                @ IdentifierExprNode (112:33):
+                                >>> identifier: L
+                    @ ExprStmtNode (113:8):
+                    >>> expr:
+                        @ AssignExprNode (113:8):
+                        >>> lhs:
+                            @ SubscriptExprNode (113:8):
+                            >>> arr:
+                                @ IdentifierExprNode (113:8):
+                                >>> identifier: t
+                            >>> sub:
+                                @ IdentifierExprNode (113:10):
+                                >>> identifier: o
+                        >>> rhs:
+                            @ IntConstExprNode (113:15):
+                            >>> value: 0
+            >>> elseStmt: null
+    @ VaeDeclNode (117:4):
+    >>> type:
+        @ TypeNode (117:0):
+        >>> type: PrimitiveType(INT)
+    >>> name: pl
+    >>> init:
+        @ IntConstExprNode (117:9):
+        >>> value: 0
+    @ VaeDeclNode (118:4):
+    >>> type:
+        @ TypeNode (118:0):
+        >>> type: PrimitiveType(INT)
+    >>> name: pr
+    >>> init:
+        @ IntConstExprNode (118:9):
+        >>> value: 0
+    @ FuncDeclNode (120:0):
+    >>> isContruct: false
+    >>> returnType:
+        @ TypeNode (120:0):
+        >>> type: PrimitiveType(VOID)
+    >>> name: update
+    >>> parameterList:
+        @ VaeDeclNode (120:12):
+        >>> type:
+            @ TypeNode (120:12):
+            >>> type: PrimitiveType(INT)
+        >>> name: o
+        >>> init: null
+        @ VaeDeclNode (120:19):
+        >>> type:
+            @ TypeNode (120:19):
+            >>> type: PrimitiveType(INT)
+        >>> name: l
+        >>> init: null
+        @ VaeDeclNode (120:26):
+        >>> type:
+            @ TypeNode (120:26):
+            >>> type: PrimitiveType(INT)
+        >>> name: r
+        >>> init: null
+    >>> body:
+        @ BlockStmtNode (120:33):
+        >>> stmtsAndVarDecls:
+            @ CondStmtNode (121:4):
+            >>> cond:
+                @ BinaryExprNode (121:8):
+                >>> op: LOGIC_AND
+                >>> lhs:
+                    @ BinaryExprNode (121:8):
+                    >>> op: LOGIC_AND
+                    >>> lhs:
+                        @ BinaryExprNode (121:8):
+                        >>> op: LESS_EQUAL
+                        >>> lhs:
+                            @ IdentifierExprNode (121:8):
+                            >>> identifier: pl
+                        >>> rhs:
+                            @ IdentifierExprNode (121:14):
+                            >>> identifier: l
+                    >>> rhs:
+                        @ BinaryExprNode (121:19):
+                        >>> op: GREATER_EQUAL
+                        >>> lhs:
+                            @ IdentifierExprNode (121:19):
+                            >>> identifier: pr
+                        >>> rhs:
+                            @ IdentifierExprNode (121:25):
+                            >>> identifier: r
+                >>> rhs:
+                    @ BinaryExprNode (121:30):
+                    >>> op: GREATER
+                    >>> lhs:
+                        @ SubscriptExprNode (121:30):
+                        >>> arr:
+                            @ IdentifierExprNode (121:30):
+                            >>> identifier: flag
+                        >>> sub:
+                            @ IdentifierExprNode (121:35):
+                            >>> identifier: o
+                    >>> rhs:
+                        @ IntConstExprNode (121:38):
+                        >>> value: 0
+            >>> thenStmt:
+                @ BlockStmtNode (121:41):
+                >>> stmtsAndVarDecls:
+                    @ ExprStmtNode (122:8):
+                    >>> expr:
+                        @ AssignExprNode (122:8):
+                        >>> lhs:
+                            @ SubscriptExprNode (122:8):
+                            >>> arr:
+                                @ IdentifierExprNode (122:8):
+                                >>> identifier: now
+                            >>> sub:
+                                @ IdentifierExprNode (122:12):
+                                >>> identifier: o
+                        >>> rhs:
+                            @ BinaryExprNode (122:17):
+                            >>> op: MOD
+                            >>> lhs:
+                                @ BinaryExprNode (122:18):
+                                >>> op: ADD
+                                >>> lhs:
+                                    @ SubscriptExprNode (122:18):
+                                    >>> arr:
+                                        @ IdentifierExprNode (122:18):
+                                        >>> identifier: now
+                                    >>> sub:
+                                        @ IdentifierExprNode (122:22):
+                                        >>> identifier: o
+                                >>> rhs:
+                                    @ IntConstExprNode (122:27):
+                                    >>> value: 1
+                            >>> rhs:
+                                @ IdentifierExprNode (122:32):
+                                >>> identifier: L
+                    @ ExprStmtNode (123:8):
+                    >>> expr:
+                        @ AssignExprNode (123:8):
+                        >>> lhs:
+                            @ SubscriptExprNode (123:8):
+                            >>> arr:
+                                @ IdentifierExprNode (123:8):
+                                >>> identifier: sum
+                            >>> sub:
+                                @ IdentifierExprNode (123:12):
+                                >>> identifier: o
+                        >>> rhs:
+                            @ SubscriptExprNode (123:17):
+                            >>> arr:
+                                @ SubscriptExprNode (123:17):
+                                >>> arr:
+                                    @ IdentifierExprNode (123:17):
+                                    >>> identifier: s
+                                >>> sub:
+                                    @ IdentifierExprNode (123:19):
+                                    >>> identifier: o
+                            >>> sub:
+                                @ SubscriptExprNode (123:22):
+                                >>> arr:
+                                    @ IdentifierExprNode (123:22):
+                                    >>> identifier: now
+                                >>> sub:
+                                    @ IdentifierExprNode (123:26):
+                                    >>> identifier: o
+                    @ ExprStmtNode (124:8):
+                    >>> expr:
+                        @ AssignExprNode (124:8):
+                        >>> lhs:
+                            @ SubscriptExprNode (124:8):
+                            >>> arr:
+                                @ IdentifierExprNode (124:8):
+                                >>> identifier: t
+                            >>> sub:
+                                @ IdentifierExprNode (124:10):
+                                >>> identifier: o
+                        >>> rhs:
+                            @ BinaryExprNode (124:15):
+                            >>> op: MOD
+                            >>> lhs:
+                                @ BinaryExprNode (124:16):
+                                >>> op: ADD
+                                >>> lhs:
+                                    @ SubscriptExprNode (124:16):
+                                    >>> arr:
+                                        @ IdentifierExprNode (124:16):
+                                        >>> identifier: t
+                                    >>> sub:
+                                        @ IdentifierExprNode (124:18):
+                                        >>> identifier: o
+                                >>> rhs:
+                                    @ IntConstExprNode (124:23):
+                                    >>> value: 1
+                            >>> rhs:
+                                @ IdentifierExprNode (124:28):
+                                >>> identifier: L
+                    @ ReturnStmtNode (125:8):
+                    >>> expr: null
+            >>> elseStmt: null
+            @ CondStmtNode (127:4):
+            >>> cond:
+                @ BinaryExprNode (127:7):
+                >>> op: EQUAL
+                >>> lhs:
+                    @ IdentifierExprNode (127:7):
+                    >>> identifier: l
+                >>> rhs:
+                    @ IdentifierExprNode (127:12):
+                    >>> identifier: r
+            >>> thenStmt:
+                @ BlockStmtNode (127:15):
+                >>> stmtsAndVarDecls:
+                    @ ExprStmtNode (128:8):
+                    >>> expr:
+                        @ AssignExprNode (128:8):
+                        >>> lhs:
+                            @ SubscriptExprNode (128:8):
+                            >>> arr:
+                                @ IdentifierExprNode (128:8):
+                                >>> identifier: sum
+                            >>> sub:
+                                @ IdentifierExprNode (128:12):
+                                >>> identifier: o
+                        >>> rhs:
+                            @ BinaryExprNode (128:17):
+                            >>> op: MOD
+                            >>> lhs:
+                                @ FuncCallExprNode (128:17):
+                                >>> func:
+                                    @ IdentifierExprNode (128:17):
+                                    >>> identifier: square
+                                >>> args:
+                                    @ SubscriptExprNode (128:24):
+                                    >>> arr:
+                                        @ IdentifierExprNode (128:24):
+                                        >>> identifier: sum
+                                    >>> sub:
+                                        @ IdentifierExprNode (128:28):
+                                        >>> identifier: o
+                            >>> rhs:
+                                @ IdentifierExprNode (128:34):
+                                >>> identifier: p
+                    @ CondStmtNode (129:8):
+                    >>> cond:
+                        @ BinaryExprNode (129:11):
+                        >>> op: GREATER
+                        >>> lhs:
+                            @ SubscriptExprNode (129:11):
+                            >>> arr:
+                                @ IdentifierExprNode (129:11):
+                                >>> identifier: b
+                            >>> sub:
+                                @ SubscriptExprNode (129:13):
+                                >>> arr:
+                                    @ IdentifierExprNode (129:13):
+                                    >>> identifier: sum
+                                >>> sub:
+                                    @ IdentifierExprNode (129:17):
+                                    >>> identifier: o
+                        >>> rhs:
+                            @ IntConstExprNode (129:21):
+                            >>> value: 0
+                    >>> thenStmt:
+                        @ BlockStmtNode (129:24):
+                        >>> stmtsAndVarDecls:
+                            @ ExprStmtNode (130:12):
+                            >>> expr:
+                                @ AssignExprNode (130:12):
+                                >>> lhs:
+                                    @ SubscriptExprNode (130:12):
+                                    >>> arr:
+                                        @ IdentifierExprNode (130:12):
+                                        >>> identifier: flag
+                                    >>> sub:
+                                        @ IdentifierExprNode (130:17):
+                                        >>> identifier: o
+                                >>> rhs:
+                                    @ IntConstExprNode (130:22):
+                                    >>> value: 1
+                            @ ExprStmtNode (131:12):
+                            >>> expr:
+                                @ AssignExprNode (131:12):
+                                >>> lhs:
+                                    @ SubscriptExprNode (131:12):
+                                    >>> arr:
+                                        @ SubscriptExprNode (131:12):
+                                        >>> arr:
+                                            @ IdentifierExprNode (131:12):
+                                            >>> identifier: s
+                                        >>> sub:
+                                            @ IdentifierExprNode (131:14):
+                                            >>> identifier: o
+                                    >>> sub:
+                                        @ IntConstExprNode (131:17):
+                                        >>> value: 0
+                                >>> rhs:
+                                    @ SubscriptExprNode (131:22):
+                                    >>> arr:
+                                        @ IdentifierExprNode (131:22):
+                                        >>> identifier: sum
+                                    >>> sub:
+                                        @ IdentifierExprNode (131:26):
+                                        >>> identifier: o
+                            @ VaeDeclNode (132:16):
+                            >>> type:
+                                @ TypeNode (132:12):
+                                >>> type: PrimitiveType(INT)
+                            >>> name: i
+                            >>> init:
+                                @ IntConstExprNode (132:20):
+                                >>> value: 0
+                            @ ForStmtNode (133:12):
+                            >>> init:
+                                @ AssignExprNode (133:16):
+                                >>> lhs:
+                                    @ IdentifierExprNode (133:16):
+                                    >>> identifier: i
+                                >>> rhs:
+                                    @ IntConstExprNode (133:20):
+                                    >>> value: 1
+                            >>> cond:
+                                @ BinaryExprNode (133:23):
+                                >>> op: LESS
+                                >>> lhs:
+                                    @ IdentifierExprNode (133:23):
+                                    >>> identifier: i
+                                >>> rhs:
+                                    @ IdentifierExprNode (133:27):
+                                    >>> identifier: L
+                            >>> step:
+                                @ PrefixExprNode (133:30):
+                                >>> op: PREFIX_INC
+                                >>> expr:
+                                    @ IdentifierExprNode (133:32):
+                                    >>> identifier: i
+                            >>> stmt:
+                                @ ExprStmtNode (134:16):
+                                >>> expr:
+                                    @ AssignExprNode (134:16):
+                                    >>> lhs:
+                                        @ SubscriptExprNode (134:16):
+                                        >>> arr:
+                                            @ SubscriptExprNode (134:16):
+                                            >>> arr:
+                                                @ IdentifierExprNode (134:16):
+                                                >>> identifier: s
+                                            >>> sub:
+                                                @ IdentifierExprNode (134:18):
+                                                >>> identifier: o
+                                        >>> sub:
+                                            @ IdentifierExprNode (134:21):
+                                            >>> identifier: i
+                                    >>> rhs:
+                                        @ BinaryExprNode (134:26):
+                                        >>> op: MOD
+                                        >>> lhs:
+                                            @ FuncCallExprNode (134:26):
+                                            >>> func:
+                                                @ IdentifierExprNode (134:26):
+                                                >>> identifier: square
+                                            >>> args:
+                                                @ SubscriptExprNode (134:33):
+                                                >>> arr:
+                                                    @ SubscriptExprNode (134:33):
+                                                    >>> arr:
+                                                        @ IdentifierExprNode (134:33):
+                                                        >>> identifier: s
+                                                    >>> sub:
+                                                        @ IdentifierExprNode (134:35):
+                                                        >>> identifier: o
+                                                >>> sub:
+                                                    @ BinaryExprNode (134:38):
+                                                    >>> op: SUB
+                                                    >>> lhs:
+                                                        @ IdentifierExprNode (134:38):
+                                                        >>> identifier: i
+                                                    >>> rhs:
+                                                        @ IntConstExprNode (134:42):
+                                                        >>> value: 1
+                                        >>> rhs:
+                                            @ IdentifierExprNode (134:48):
+                                            >>> identifier: p
+                    >>> elseStmt: null
+                    @ ReturnStmtNode (136:8):
+                    >>> expr: null
+            >>> elseStmt: null
+            @ CondStmtNode (138:4):
+            >>> cond:
+                @ BinaryExprNode (138:7):
+                >>> op: GREATER
+                >>> lhs:
+                    @ SubscriptExprNode (138:7):
+                    >>> arr:
+                        @ IdentifierExprNode (138:7):
+                        >>> identifier: t
+                    >>> sub:
+                        @ IdentifierExprNode (138:9):
+                        >>> identifier: o
+                >>> rhs:
+                    @ IntConstExprNode (138:12):
+                    >>> value: 0
+            >>> thenStmt:
+                @ ExprStmtNode (138:15):
+                >>> expr:
+                    @ FuncCallExprNode (138:15):
+                    >>> func:
+                        @ IdentifierExprNode (138:15):
+                        >>> identifier: pushdown
+                    >>> args:
+                        @ IdentifierExprNode (138:24):
+                        >>> identifier: o
+            >>> elseStmt: null
+            @ VaeDeclNode (139:8):
+            >>> type:
+                @ TypeNode (139:4):
+                >>> type: PrimitiveType(INT)
+            >>> name: lc
+            >>> init:
+                @ BinaryExprNode (139:13):
+                >>> op: MUL
+                >>> lhs:
+                    @ IdentifierExprNode (139:13):
+                    >>> identifier: o
+                >>> rhs:
+                    @ IntConstExprNode (139:17):
+                    >>> value: 2
+            @ VaeDeclNode (140:8):
+            >>> type:
+                @ TypeNode (140:4):
+                >>> type: PrimitiveType(INT)
+            >>> name: rc
+            >>> init:
+                @ BinaryExprNode (140:13):
+                >>> op: ADD
+                >>> lhs:
+                    @ BinaryExprNode (140:13):
+                    >>> op: MUL
+                    >>> lhs:
+                        @ IdentifierExprNode (140:13):
+                        >>> identifier: o
+                    >>> rhs:
+                        @ IntConstExprNode (140:17):
+                        >>> value: 2
+                >>> rhs:
+                    @ IntConstExprNode (140:21):
+                    >>> value: 1
+            @ VaeDeclNode (141:8):
+            >>> type:
+                @ TypeNode (141:4):
+                >>> type: PrimitiveType(INT)
+            >>> name: mid
+            >>> init:
+                @ BinaryExprNode (141:14):
+                >>> op: DIV
+                >>> lhs:
+                    @ BinaryExprNode (141:15):
+                    >>> op: ADD
+                    >>> lhs:
+                        @ IdentifierExprNode (141:15):
+                        >>> identifier: l
+                    >>> rhs:
+                        @ IdentifierExprNode (141:19):
+                        >>> identifier: r
+                >>> rhs:
+                    @ IntConstExprNode (141:24):
+                    >>> value: 2
+            @ CondStmtNode (142:4):
+            >>> cond:
+                @ BinaryExprNode (142:7):
+                >>> op: LESS_EQUAL
+                >>> lhs:
+                    @ IdentifierExprNode (142:7):
+                    >>> identifier: pl
+                >>> rhs:
+                    @ IdentifierExprNode (142:13):
+                    >>> identifier: mid
+            >>> thenStmt:
+                @ ExprStmtNode (142:18):
+                >>> expr:
+                    @ FuncCallExprNode (142:18):
+                    >>> func:
+                        @ IdentifierExprNode (142:18):
+                        >>> identifier: update
+                    >>> args:
+                        @ IdentifierExprNode (142:25):
+                        >>> identifier: lc
+                        @ IdentifierExprNode (142:29):
+                        >>> identifier: l
+                        @ IdentifierExprNode (142:32):
+                        >>> identifier: mid
+            >>> elseStmt: null
+            @ CondStmtNode (143:4):
+            >>> cond:
+                @ BinaryExprNode (143:7):
+                >>> op: GREATER_EQUAL
+                >>> lhs:
+                    @ IdentifierExprNode (143:7):
+                    >>> identifier: pr
+                >>> rhs:
+                    @ BinaryExprNode (143:13):
+                    >>> op: ADD
+                    >>> lhs:
+                        @ IdentifierExprNode (143:13):
+                        >>> identifier: mid
+                    >>> rhs:
+                        @ IntConstExprNode (143:19):
+                        >>> value: 1
+            >>> thenStmt:
+                @ ExprStmtNode (143:22):
+                >>> expr:
+                    @ FuncCallExprNode (143:22):
+                    >>> func:
+                        @ IdentifierExprNode (143:22):
+                        >>> identifier: update
+                    >>> args:
+                        @ IdentifierExprNode (143:29):
+                        >>> identifier: rc
+                        @ BinaryExprNode (143:33):
+                        >>> op: ADD
+                        >>> lhs:
+                            @ IdentifierExprNode (143:33):
+                            >>> identifier: mid
+                        >>> rhs:
+                            @ IntConstExprNode (143:39):
+                            >>> value: 1
+                        @ IdentifierExprNode (143:42):
+                        >>> identifier: r
+            >>> elseStmt: null
+            @ ExprStmtNode (144:4):
+            >>> expr:
+                @ AssignExprNode (144:4):
+                >>> lhs:
+                    @ SubscriptExprNode (144:4):
+                    >>> arr:
+                        @ IdentifierExprNode (144:4):
+                        >>> identifier: sum
+                    >>> sub:
+                        @ IdentifierExprNode (144:8):
+                        >>> identifier: o
+                >>> rhs:
+                    @ BinaryExprNode (144:13):
+                    >>> op: ADD
+                    >>> lhs:
+                        @ SubscriptExprNode (144:13):
+                        >>> arr:
+                            @ IdentifierExprNode (144:13):
+                            >>> identifier: sum
+                        >>> sub:
+                            @ IdentifierExprNode (144:17):
+                            >>> identifier: lc
+                    >>> rhs:
+                        @ SubscriptExprNode (144:23):
+                        >>> arr:
+                            @ IdentifierExprNode (144:23):
+                            >>> identifier: sum
+                        >>> sub:
+                            @ IdentifierExprNode (144:27):
+                            >>> identifier: rc
+            @ ExprStmtNode (145:4):
+            >>> expr:
+                @ AssignExprNode (145:4):
+                >>> lhs:
+                    @ SubscriptExprNode (145:4):
+                    >>> arr:
+                        @ IdentifierExprNode (145:4):
+                        >>> identifier: flag
+                    >>> sub:
+                        @ IdentifierExprNode (145:9):
+                        >>> identifier: o
+                >>> rhs:
+                    @ BinaryExprNode (145:14):
+                    >>> op: BITWISE_AND
+                    >>> lhs:
+                        @ SubscriptExprNode (145:14):
+                        >>> arr:
+                            @ IdentifierExprNode (145:14):
+                            >>> identifier: flag
+                        >>> sub:
+                            @ IdentifierExprNode (145:19):
+                            >>> identifier: lc
+                    >>> rhs:
+                        @ SubscriptExprNode (145:25):
+                        >>> arr:
+                            @ IdentifierExprNode (145:25):
+                            >>> identifier: flag
+                        >>> sub:
+                            @ IdentifierExprNode (145:30):
+                            >>> identifier: rc
+            @ CondStmtNode (146:4):
+            >>> cond:
+                @ BinaryExprNode (146:7):
+                >>> op: GREATER
+                >>> lhs:
+                    @ SubscriptExprNode (146:7):
+                    >>> arr:
+                        @ IdentifierExprNode (146:7):
+                        >>> identifier: flag
+                    >>> sub:
+                        @ IdentifierExprNode (146:12):
+                        >>> identifier: o
+                >>> rhs:
+                    @ IntConstExprNode (146:15):
+                    >>> value: 0
+            >>> thenStmt:
+                @ BlockStmtNode (146:17):
+                >>> stmtsAndVarDecls:
+                    @ VaeDeclNode (147:12):
+                    >>> type:
+                        @ TypeNode (147:8):
+                        >>> type: PrimitiveType(INT)
+                    >>> name: i
+                    >>> init:
+                        @ IntConstExprNode (147:16):
+                        >>> value: 0
+                    @ ForStmtNode (148:8):
+                    >>> init:
+                        @ AssignExprNode (148:12):
+                        >>> lhs:
+                            @ IdentifierExprNode (148:12):
+                            >>> identifier: i
+                        >>> rhs:
+                            @ IntConstExprNode (148:16):
+                            >>> value: 0
+                    >>> cond:
+                        @ BinaryExprNode (148:19):
+                        >>> op: LESS
+                        >>> lhs:
+                            @ IdentifierExprNode (148:19):
+                            >>> identifier: i
+                        >>> rhs:
+                            @ IdentifierExprNode (148:23):
+                            >>> identifier: L
+                    >>> step:
+                        @ PrefixExprNode (148:26):
+                        >>> op: PREFIX_INC
+                        >>> expr:
+                            @ IdentifierExprNode (148:28):
+                            >>> identifier: i
+                    >>> stmt:
+                        @ ExprStmtNode (149:12):
+                        >>> expr:
+                            @ AssignExprNode (149:12):
+                            >>> lhs:
+                                @ SubscriptExprNode (149:12):
+                                >>> arr:
+                                    @ SubscriptExprNode (149:12):
+                                    >>> arr:
+                                        @ IdentifierExprNode (149:12):
+                                        >>> identifier: s
+                                    >>> sub:
+                                        @ IdentifierExprNode (149:14):
+                                        >>> identifier: o
+                                >>> sub:
+                                    @ IdentifierExprNode (149:17):
+                                    >>> identifier: i
+                            >>> rhs:
+                                @ BinaryExprNode (149:22):
+                                >>> op: ADD
+                                >>> lhs:
+                                    @ SubscriptExprNode (149:22):
+                                    >>> arr:
+                                        @ SubscriptExprNode (149:22):
+                                        >>> arr:
+                                            @ IdentifierExprNode (149:22):
+                                            >>> identifier: s
+                                        >>> sub:
+                                            @ IdentifierExprNode (149:24):
+                                            >>> identifier: lc
+                                    >>> sub:
+                                        @ BinaryExprNode (149:28):
+                                        >>> op: MOD
+                                        >>> lhs:
+                                            @ BinaryExprNode (149:29):
+                                            >>> op: ADD
+                                            >>> lhs:
+                                                @ IdentifierExprNode (149:29):
+                                                >>> identifier: i
+                                            >>> rhs:
+                                                @ SubscriptExprNode (149:33):
+                                                >>> arr:
+                                                    @ IdentifierExprNode (149:33):
+                                                    >>> identifier: now
+                                                >>> sub:
+                                                    @ IdentifierExprNode (149:37):
+                                                    >>> identifier: lc
+                                        >>> rhs:
+                                            @ IdentifierExprNode (149:44):
+                                            >>> identifier: L
+                                >>> rhs:
+                                    @ SubscriptExprNode (149:49):
+                                    >>> arr:
+                                        @ SubscriptExprNode (149:49):
+                                        >>> arr:
+                                            @ IdentifierExprNode (149:49):
+                                            >>> identifier: s
+                                        >>> sub:
+                                            @ IdentifierExprNode (149:51):
+                                            >>> identifier: rc
+                                    >>> sub:
+                                        @ BinaryExprNode (149:55):
+                                        >>> op: MOD
+                                        >>> lhs:
+                                            @ BinaryExprNode (149:56):
+                                            >>> op: ADD
+                                            >>> lhs:
+                                                @ IdentifierExprNode (149:56):
+                                                >>> identifier: i
+                                            >>> rhs:
+                                                @ SubscriptExprNode (149:60):
+                                                >>> arr:
+                                                    @ IdentifierExprNode (149:60):
+                                                    >>> identifier: now
+                                                >>> sub:
+                                                    @ IdentifierExprNode (149:64):
+                                                    >>> identifier: rc
+                                        >>> rhs:
+                                            @ IdentifierExprNode (149:71):
+                                            >>> identifier: L
+                    @ ExprStmtNode (150:8):
+                    >>> expr:
+                        @ AssignExprNode (150:8):
+                        >>> lhs:
+                            @ SubscriptExprNode (150:8):
+                            >>> arr:
+                                @ IdentifierExprNode (150:8):
+                                >>> identifier: now
+                            >>> sub:
+                                @ IdentifierExprNode (150:12):
+                                >>> identifier: o
+                        >>> rhs:
+                            @ IntConstExprNode (150:17):
+                            >>> value: 0
+            >>> elseStmt: null
+    @ FuncDeclNode (154:0):
+    >>> isContruct: false
+    >>> returnType:
+        @ TypeNode (154:0):
+        >>> type: PrimitiveType(INT)
+    >>> name: query
+    >>> parameterList:
+        @ VaeDeclNode (154:10):
+        >>> type:
+            @ TypeNode (154:10):
+            >>> type: PrimitiveType(INT)
+        >>> name: o
+        >>> init: null
+        @ VaeDeclNode (154:17):
+        >>> type:
+            @ TypeNode (154:17):
+            >>> type: PrimitiveType(INT)
+        >>> name: l
+        >>> init: null
+        @ VaeDeclNode (154:24):
+        >>> type:
+            @ TypeNode (154:24):
+            >>> type: PrimitiveType(INT)
+        >>> name: r
+        >>> init: null
+    >>> body:
+        @ BlockStmtNode (154:31):
+        >>> stmtsAndVarDecls:
+            @ CondStmtNode (155:4):
+            >>> cond:
+                @ BinaryExprNode (155:8):
+                >>> op: LOGIC_AND
+                >>> lhs:
+                    @ BinaryExprNode (155:8):
+                    >>> op: LESS_EQUAL
+                    >>> lhs:
+                        @ IdentifierExprNode (155:8):
+                        >>> identifier: pl
+                    >>> rhs:
+                        @ IdentifierExprNode (155:14):
+                        >>> identifier: l
+                >>> rhs:
+                    @ BinaryExprNode (155:19):
+                    >>> op: GREATER_EQUAL
+                    >>> lhs:
+                        @ IdentifierExprNode (155:19):
+                        >>> identifier: pr
+                    >>> rhs:
+                        @ IdentifierExprNode (155:25):
+                        >>> identifier: r
+            >>> thenStmt:
+                @ ReturnStmtNode (155:28):
+                >>> expr:
+                    @ SubscriptExprNode (155:35):
+                    >>> arr:
+                        @ IdentifierExprNode (155:35):
+                        >>> identifier: sum
+                    >>> sub:
+                        @ IdentifierExprNode (155:39):
+                        >>> identifier: o
+            >>> elseStmt: null
+            @ VaeDeclNode (156:8):
+            >>> type:
+                @ TypeNode (156:4):
+                >>> type: PrimitiveType(INT)
+            >>> name: lc
+            >>> init:
+                @ BinaryExprNode (156:13):
+                >>> op: MUL
+                >>> lhs:
+                    @ IdentifierExprNode (156:13):
+                    >>> identifier: o
+                >>> rhs:
+                    @ IntConstExprNode (156:17):
+                    >>> value: 2
+            @ VaeDeclNode (157:8):
+            >>> type:
+                @ TypeNode (157:4):
+                >>> type: PrimitiveType(INT)
+            >>> name: rc
+            >>> init:
+                @ BinaryExprNode (157:13):
+                >>> op: ADD
+                >>> lhs:
+                    @ BinaryExprNode (157:13):
+                    >>> op: MUL
+                    >>> lhs:
+                        @ IdentifierExprNode (157:13):
+                        >>> identifier: o
+                    >>> rhs:
+                        @ IntConstExprNode (157:17):
+                        >>> value: 2
+                >>> rhs:
+                    @ IntConstExprNode (157:21):
+                    >>> value: 1
+            @ VaeDeclNode (158:8):
+            >>> type:
+                @ TypeNode (158:4):
+                >>> type: PrimitiveType(INT)
+            >>> name: mid
+            >>> init:
+                @ BinaryExprNode (158:14):
+                >>> op: DIV
+                >>> lhs:
+                    @ BinaryExprNode (158:15):
+                    >>> op: ADD
+                    >>> lhs:
+                        @ IdentifierExprNode (158:15):
+                        >>> identifier: l
+                    >>> rhs:
+                        @ IdentifierExprNode (158:19):
+                        >>> identifier: r
+                >>> rhs:
+                    @ IntConstExprNode (158:24):
+                    >>> value: 2
+            @ VaeDeclNode (159:8):
+            >>> type:
+                @ TypeNode (159:4):
+                >>> type: PrimitiveType(INT)
+            >>> name: ss
+            >>> init:
+                @ IntConstExprNode (159:13):
+                >>> value: 0
+            @ CondStmtNode (160:4):
+            >>> cond:
+                @ BinaryExprNode (160:7):
+                >>> op: GREATER
+                >>> lhs:
+                    @ SubscriptExprNode (160:7):
+                    >>> arr:
+                        @ IdentifierExprNode (160:7):
+                        >>> identifier: t
+                    >>> sub:
+                        @ IdentifierExprNode (160:9):
+                        >>> identifier: o
+                >>> rhs:
+                    @ IntConstExprNode (160:12):
+                    >>> value: 0
+            >>> thenStmt:
+                @ ExprStmtNode (160:15):
+                >>> expr:
+                    @ FuncCallExprNode (160:15):
+                    >>> func:
+                        @ IdentifierExprNode (160:15):
+                        >>> identifier: pushdown
+                    >>> args:
+                        @ IdentifierExprNode (160:24):
+                        >>> identifier: o
+            >>> elseStmt: null
+            @ CondStmtNode (161:4):
+            >>> cond:
+                @ BinaryExprNode (161:7):
+                >>> op: LESS_EQUAL
+                >>> lhs:
+                    @ IdentifierExprNode (161:7):
+                    >>> identifier: pl
+                >>> rhs:
+                    @ IdentifierExprNode (161:13):
+                    >>> identifier: mid
+            >>> thenStmt:
+                @ ExprStmtNode (161:18):
+                >>> expr:
+                    @ AssignExprNode (161:18):
+                    >>> lhs:
+                        @ IdentifierExprNode (161:18):
+                        >>> identifier: ss
+                    >>> rhs:
+                        @ BinaryExprNode (161:23):
+                        >>> op: MOD
+                        >>> lhs:
+                            @ BinaryExprNode (161:24):
+                            >>> op: ADD
+                            >>> lhs:
+                                @ IdentifierExprNode (161:24):
+                                >>> identifier: ss
+                            >>> rhs:
+                                @ FuncCallExprNode (161:29):
+                                >>> func:
+                                    @ IdentifierExprNode (161:29):
+                                    >>> identifier: query
+                                >>> args:
+                                    @ IdentifierExprNode (161:35):
+                                    >>> identifier: lc
+                                    @ IdentifierExprNode (161:39):
+                                    >>> identifier: l
+                                    @ IdentifierExprNode (161:42):
+                                    >>> identifier: mid
+                        >>> rhs:
+                            @ IdentifierExprNode (161:50):
+                            >>> identifier: MOD
+            >>> elseStmt: null
+            @ CondStmtNode (162:4):
+            >>> cond:
+                @ BinaryExprNode (162:7):
+                >>> op: GREATER_EQUAL
+                >>> lhs:
+                    @ IdentifierExprNode (162:7):
+                    >>> identifier: pr
+                >>> rhs:
+                    @ BinaryExprNode (162:13):
+                    >>> op: ADD
+                    >>> lhs:
+                        @ IdentifierExprNode (162:13):
+                        >>> identifier: mid
+                    >>> rhs:
+                        @ IntConstExprNode (162:19):
+                        >>> value: 1
+            >>> thenStmt:
+                @ ExprStmtNode (162:22):
+                >>> expr:
+                    @ AssignExprNode (162:22):
+                    >>> lhs:
+                        @ IdentifierExprNode (162:22):
+                        >>> identifier: ss
+                    >>> rhs:
+                        @ BinaryExprNode (162:27):
+                        >>> op: MOD
+                        >>> lhs:
+                            @ BinaryExprNode (162:28):
+                            >>> op: ADD
+                            >>> lhs:
+                                @ IdentifierExprNode (162:28):
+                                >>> identifier: ss
+                            >>> rhs:
+                                @ FuncCallExprNode (162:33):
+                                >>> func:
+                                    @ IdentifierExprNode (162:33):
+                                    >>> identifier: query
+                                >>> args:
+                                    @ IdentifierExprNode (162:39):
+                                    >>> identifier: rc
+                                    @ BinaryExprNode (162:43):
+                                    >>> op: ADD
+                                    >>> lhs:
+                                        @ IdentifierExprNode (162:43):
+                                        >>> identifier: mid
+                                    >>> rhs:
+                                        @ IntConstExprNode (162:49):
+                                        >>> value: 1
+                                    @ IdentifierExprNode (162:52):
+                                    >>> identifier: r
+                        >>> rhs:
+                            @ IdentifierExprNode (162:58):
+                            >>> identifier: MOD
+            >>> elseStmt: null
+            @ ReturnStmtNode (163:4):
+            >>> expr:
+                @ IdentifierExprNode (163:11):
+                >>> identifier: ss
+    @ FuncDeclNode (166:0):
+    >>> isContruct: false
+    >>> returnType:
+        @ TypeNode (166:0):
+        >>> type: PrimitiveType(INT)
+    >>> name: main
+    >>> parameterList: null
+    >>> body:
+        @ BlockStmtNode (166:11):
+        >>> stmtsAndVarDecls:
+            @ ExprStmtNode (167:4):
+            >>> expr:
+                @ AssignExprNode (167:4):
+                >>> lhs:
+                    @ IdentifierExprNode (167:4):
+                    >>> identifier: n
+                >>> rhs:
+                    @ IntConstExprNode (167:8):
+                    >>> value: 40000
+            @ ExprStmtNode (168:4):
+            >>> expr:
+                @ AssignExprNode (168:4):
+                >>> lhs:
+                    @ IdentifierExprNode (168:4):
+                    >>> identifier: m
+                >>> rhs:
+                    @ IntConstExprNode (168:8):
+                    >>> value: 40000
+            @ ExprStmtNode (169:4):
+            >>> expr:
+                @ AssignExprNode (169:4):
+                >>> lhs:
+                    @ IdentifierExprNode (169:4):
+                    >>> identifier: p
+                >>> rhs:
+                    @ IntConstExprNode (169:8):
+                    >>> value: 9977
+            @ VaeDeclNode (170:8):
+            >>> type:
+                @ TypeNode (170:4):
+                >>> type: PrimitiveType(INT)
+            >>> name: i
+            >>> init:
+                @ IntConstExprNode (170:12):
+                >>> value: 1
+            @ ForStmtNode (171:4):
+            >>> init:
+                @ AssignExprNode (171:8):
+                >>> lhs:
+                    @ IdentifierExprNode (171:8):
+                    >>> identifier: i
+                >>> rhs:
+                    @ IntConstExprNode (171:12):
+                    >>> value: 1
+            >>> cond:
+                @ BinaryExprNode (171:15):
+                >>> op: LESS_EQUAL
+                >>> lhs:
+                    @ IdentifierExprNode (171:15):
+                    >>> identifier: i
+                >>> rhs:
+                    @ IdentifierExprNode (171:20):
+                    >>> identifier: n
+            >>> step:
+                @ PrefixExprNode (171:23):
+                >>> op: PREFIX_INC
+                >>> expr:
+                    @ IdentifierExprNode (171:25):
+                    >>> identifier: i
+            >>> stmt:
+                @ ExprStmtNode (172:8):
+                >>> expr:
+                    @ AssignExprNode (172:8):
+                    >>> lhs:
+                        @ SubscriptExprNode (172:8):
+                        >>> arr:
+                            @ IdentifierExprNode (172:8):
+                            >>> identifier: a
+                        >>> sub:
+                            @ IdentifierExprNode (172:10):
+                            >>> identifier: i
+                    >>> rhs:
+                        @ FuncCallExprNode (172:15):
+                        >>> func:
+                            @ IdentifierExprNode (172:15):
+                            >>> identifier: RandRange
+                        >>> args:
+                            @ IntConstExprNode (172:25):
+                            >>> value: 0
+                            @ IdentifierExprNode (172:28):
+                            >>> identifier: p
+            @ ExprStmtNode (173:4):
+            >>> expr:
+                @ FuncCallExprNode (173:4):
+                >>> func:
+                    @ IdentifierExprNode (173:4):
+                    >>> identifier: init
+                >>> args: null
+            @ ExprStmtNode (174:4):
+            >>> expr:
+                @ FuncCallExprNode (174:4):
+                >>> func:
+                    @ IdentifierExprNode (174:4):
+                    >>> identifier: build
+                >>> args:
+                    @ IntConstExprNode (174:10):
+                    >>> value: 1
+                    @ IntConstExprNode (174:13):
+                    >>> value: 1
+                    @ IdentifierExprNode (174:16):
+                    >>> identifier: n
+            @ WhileStmtNode (175:4):
+            >>> cond:
+                @ BinaryExprNode (175:10):
+                >>> op: GREATER
+                >>> lhs:
+                    @ IdentifierExprNode (175:10):
+                    >>> identifier: m
+                >>> rhs:
+                    @ IntConstExprNode (175:12):
+                    >>> value: 0
+            >>> stmt:
+                @ BlockStmtNode (175:15):
+                >>> stmtsAndVarDecls:
+                    @ ExprStmtNode (176:8):
+                    >>> expr:
+                        @ AssignExprNode (176:8):
+                        >>> lhs:
+                            @ IdentifierExprNode (176:8):
+                            >>> identifier: op
+                        >>> rhs:
+                            @ BinaryExprNode (176:13):
+                            >>> op: MOD
+                            >>> lhs:
+                                @ FuncCallExprNode (176:13):
+                                >>> func:
+                                    @ IdentifierExprNode (176:13):
+                                    >>> identifier: Rand
+                                >>> args: null
+                            >>> rhs:
+                                @ IntConstExprNode (176:22):
+                                >>> value: 2
+                    @ ExprStmtNode (177:8):
+                    >>> expr:
+                        @ AssignExprNode (177:8):
+                        >>> lhs:
+                            @ IdentifierExprNode (177:8):
+                            >>> identifier: pl
+                        >>> rhs:
+                            @ FuncCallExprNode (177:13):
+                            >>> func:
+                                @ IdentifierExprNode (177:13):
+                                >>> identifier: RandRange
+                            >>> args:
+                                @ IntConstExprNode (177:23):
+                                >>> value: 1
+                                @ IdentifierExprNode (177:26):
+                                >>> identifier: n
+                    @ ExprStmtNode (178:8):
+                    >>> expr:
+                        @ AssignExprNode (178:8):
+                        >>> lhs:
+                            @ IdentifierExprNode (178:8):
+                            >>> identifier: pr
+                        >>> rhs:
+                            @ FuncCallExprNode (178:13):
+                            >>> func:
+                                @ IdentifierExprNode (178:13):
+                                >>> identifier: RandRange
+                            >>> args:
+                                @ IntConstExprNode (178:23):
+                                >>> value: 1
+                                @ IdentifierExprNode (178:26):
+                                >>> identifier: n
+                    @ WhileStmtNode (179:8):
+                    >>> cond:
+                        @ BinaryExprNode (179:14):
+                        >>> op: LESS_EQUAL
+                        >>> lhs:
+                            @ IdentifierExprNode (179:14):
+                            >>> identifier: pr
+                        >>> rhs:
+                            @ IdentifierExprNode (179:20):
+                            >>> identifier: pl
+                    >>> stmt:
+                        @ ExprStmtNode (180:12):
+                        >>> expr:
+                            @ AssignExprNode (180:12):
+                            >>> lhs:
+                                @ IdentifierExprNode (180:12):
+                                >>> identifier: pr
+                            >>> rhs:
+                                @ FuncCallExprNode (180:17):
+                                >>> func:
+                                    @ IdentifierExprNode (180:17):
+                                    >>> identifier: RandRange
+                                >>> args:
+                                    @ IntConstExprNode (180:27):
+                                    >>> value: 1
+                                    @ IdentifierExprNode (180:30):
+                                    >>> identifier: n
+                    @ CondStmtNode (181:8):
+                    >>> cond:
+                        @ BinaryExprNode (181:11):
+                        >>> op: EQUAL
+                        >>> lhs:
+                            @ IdentifierExprNode (181:11):
+                            >>> identifier: op
+                        >>> rhs:
+                            @ IntConstExprNode (181:17):
+                            >>> value: 0
+                    >>> thenStmt:
+                        @ ExprStmtNode (181:20):
+                        >>> expr:
+                            @ FuncCallExprNode (181:20):
+                            >>> func:
+                                @ IdentifierExprNode (181:20):
+                                >>> identifier: update
+                            >>> args:
+                                @ IntConstExprNode (181:27):
+                                >>> value: 1
+                                @ IntConstExprNode (181:30):
+                                >>> value: 1
+                                @ IdentifierExprNode (181:33):
+                                >>> identifier: n
+                    >>> elseStmt: null
+                    @ CondStmtNode (182:8):
+                    >>> cond:
+                        @ BinaryExprNode (182:11):
+                        >>> op: EQUAL
+                        >>> lhs:
+                            @ IdentifierExprNode (182:11):
+                            >>> identifier: op
+                        >>> rhs:
+                            @ IntConstExprNode (182:17):
+                            >>> value: 1
+                    >>> thenStmt:
+                        @ ExprStmtNode (182:20):
+                        >>> expr:
+                            @ AssignExprNode (182:20):
+                            >>> lhs:
+                                @ IdentifierExprNode (182:20):
+                                >>> identifier: ans
+                            >>> rhs:
+                                @ BinaryExprNode (182:26):
+                                >>> op: MOD
+                                >>> lhs:
+                                    @ BinaryExprNode (182:27):
+                                    >>> op: ADD
+                                    >>> lhs:
+                                        @ IdentifierExprNode (182:27):
+                                        >>> identifier: ans
+                                    >>> rhs:
+                                        @ FuncCallExprNode (182:33):
+                                        >>> func:
+                                            @ IdentifierExprNode (182:33):
+                                            >>> identifier: query
+                                        >>> args:
+                                            @ IntConstExprNode (182:39):
+                                            >>> value: 1
+                                            @ IntConstExprNode (182:42):
+                                            >>> value: 1
+                                            @ IdentifierExprNode (182:45):
+                                            >>> identifier: n
+                                >>> rhs:
+                                    @ IdentifierExprNode (182:49):
+                                    >>> identifier: MOD
+                    >>> elseStmt: null
+                    @ ExprStmtNode (183:8):
+                    >>> expr:
+                        @ SuffixExprNode (183:8):
+                        >>> op: SUFFIX_DEC
+                        >>> expr:
+                            @ IdentifierExprNode (183:8):
+                            >>> identifier: m
+            @ ExprStmtNode (185:4):
+            >>> expr:
+                @ FuncCallExprNode (185:4):
+                >>> func:
+                    @ IdentifierExprNode (185:4):
+                    >>> identifier: print
+                >>> args:
+                    @ FuncCallExprNode (185:10):
+                    >>> func:
+                        @ IdentifierExprNode (185:10):
+                        >>> identifier: toString
+                    >>> args:
+                        @ IdentifierExprNode (185:19):
+                        >>> identifier: ans
+            @ ReturnStmtNode (186:4):
+            >>> expr:
+                @ IntConstExprNode (186:11):
+                >>> value: 0

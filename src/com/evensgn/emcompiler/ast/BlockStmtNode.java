@@ -23,7 +23,7 @@ public class BlockStmtNode extends StmtNode {
     }
 
     public void initScope(Scope parentScope) {
-        scope = new Scope(parentScope);
+        scope = new Scope(parentScope, false);
     }
 
     public List<StmtNode> getStmts() {

@@ -18,15 +18,16 @@ public class Scope {
 
     private Map<String, Entity> entityMap = new HashMap<>();
     private Scope parent;
-    private boolean isTop;
+    private boolean isTop, isClassScope;
 
     public Scope() {
         this.isTop = true;
     }
 
-    public Scope(Scope parent) {
+    public Scope(Scope parent, boolean isClassScope) {
         this.isTop = false;
         this.parent = parent;
+        this.isClassScope = isClassScope;
     }
 
     static public String varKey(String name) {
