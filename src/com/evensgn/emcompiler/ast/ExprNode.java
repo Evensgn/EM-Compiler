@@ -1,5 +1,7 @@
 package com.evensgn.emcompiler.ast;
 
+import com.evensgn.emcompiler.ir.BasicBlock;
+import com.evensgn.emcompiler.ir.RegValue;
 import com.evensgn.emcompiler.type.Type;
 
 /**
@@ -9,6 +11,10 @@ import com.evensgn.emcompiler.type.Type;
 abstract public class ExprNode extends Node {
     private Type type;
     private boolean isLeftValue;
+    private RegValue regValue;
+
+    // for short circuit of boolean expression
+    private BasicBlock trueBB, falseBB;
 
     public void setType(Type type) {
         this.type = type;
@@ -24,5 +30,13 @@ abstract public class ExprNode extends Node {
 
     public boolean isLeftValue() {
         return isLeftValue;
+    }
+
+    public RegValue getRegValue() {
+        return regValue;
+    }
+
+    public void setRegValue(RegValue regValue) {
+        this.regValue = regValue;
     }
 }

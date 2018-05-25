@@ -5,10 +5,14 @@ package com.evensgn.emcompiler;
  * @since 2018/3/29
  */
 public class Configuration {
-    private static final int INT_SIZE = 4;
+    private static final int REG_SIZE = 8;
 
     public static String configInfo() {
         return "==== emcompiler Configuration ====\n" +
-                String.format("Size of int: %d\n", INT_SIZE);
+                String.format("Size of register: %d\n", REG_SIZE);
+    }
+
+    public static int getRegSize() {
+        return REG_SIZE;
     }
 }

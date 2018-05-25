@@ -30,6 +30,10 @@ public class Scope {
         this.isClassScope = isClassScope;
     }
 
+    public boolean isTop() {
+        return isTop;
+    }
+
     static public String varKey(String name) {
         return VAR_PREFIX + name;
     }

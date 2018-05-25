@@ -1,11 +1,14 @@
 package com.evensgn.emcompiler.type;
 
+import com.evensgn.emcompiler.Configuration;
+
 public class ArrayType extends Type {
     private Type baseType;
 
     public ArrayType(Type baseType) {
-        this.hyperType = HyperTypes.ARRAY;
+        hyperType = HyperTypes.ARRAY;
         this.baseType = baseType;
+        varSize = Configuration.getRegSize();
     }
 
     public Type getBaseType() {

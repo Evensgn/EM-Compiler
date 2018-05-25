@@ -14,7 +14,7 @@ public class FuncEntity extends Entity {
     private List<VarEntity> parameters;
     private Type returnType;
     private String className;
-    private boolean isConstruct, isMember;
+    private boolean isConstruct, isMember, isBuiltIn = false;
 
     public FuncEntity(String name, Type type) {
         super(name, type);
@@ -33,18 +33,18 @@ public class FuncEntity extends Entity {
         className = null;
     }
 
-    public FuncEntity(FuncDeclNode node, String className) {
+    FuncEntity(FuncDeclNode node, String className) {
         super(node.getName(), new FunctionType(node.getName()));
         parameters = new ArrayList<>();
+        parameters.add(new VarEntity(Scope.THIS_PARA_NAME, new ClassType(className)));
+        isMember = true;
+        this.className = className;
         for (VarDeclNode paraDecl : node.getParameterList()) {
             parameters.add(new VarEntity(paraDecl));
         }
         if (node.getReturnType() == null) returnType = null;
         else returnType = node.getReturnType().getType();
         isConstruct = node.isConstruct();
-        isMember = false;
-        isMember = true;
-        this.className = className;
     }
 
     public void setParameters(List<VarEntity> parameters) {
@@ -69,6 +69,14 @@ public class FuncEntity extends Entity {
 
     public boolean isMember() {
         return isMember;
+    }
+
+    public boolean isBuiltIn() {
+        return isBuiltIn;
+    }
+
+    public void setBuiltIn(boolean builtIn) {
+        isBuiltIn = builtIn;
     }
 
     public String getClassName() {

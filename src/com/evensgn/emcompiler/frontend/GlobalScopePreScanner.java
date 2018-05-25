@@ -22,6 +22,7 @@ public class GlobalScopePreScanner extends BaseScopeScanner {
         FuncEntity entity = new FuncEntity(name, new FunctionType(name));
         entity.setParameters(parameters);
         entity.setReturnType(returnType);
+        entity.setBuiltIn(true);
         thisScope.putCheck(name, key, entity);
     }
 

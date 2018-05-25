@@ -5,9 +5,14 @@ abstract public class Type {
         VOID, INT, BOOL, STRING, CLASS, ARRAY, FUNCTION, NULL
     }
 
+    int varSize;
     HyperTypes hyperType;
 
     public HyperTypes getHyperType() {
         return hyperType;
+    }
+
+    public int getVarSize() {
+        return varSize;
     }
 }

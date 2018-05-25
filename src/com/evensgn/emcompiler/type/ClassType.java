@@ -1,11 +1,14 @@
 package com.evensgn.emcompiler.type;
 
+import com.evensgn.emcompiler.Configuration;
+
 public class ClassType extends Type {
     private String name;
 
     public ClassType(String name) {
-        this.hyperType = HyperTypes.CLASS;
-        this.name = name;
+        hyperType = HyperTypes.CLASS;
+        name = name;
+        varSize = Configuration.getRegSize();
     }
 
     public String getName() {
