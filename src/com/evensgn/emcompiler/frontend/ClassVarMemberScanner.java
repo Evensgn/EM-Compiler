@@ -8,6 +8,7 @@ import com.evensgn.emcompiler.type.ClassType;
 
 public class ClassVarMemberScanner extends BaseScopeScanner {
     private Scope globalScope, currentClassScope;
+    private int currentOffset = 0;
 
     public ClassVarMemberScanner(Scope globalScope) {
         this.globalScope = globalScope;
@@ -29,6 +30,7 @@ public class ClassVarMemberScanner extends BaseScopeScanner {
     public void visit(ClassDeclNode node) {
         ClassEntity entity = (ClassEntity) globalScope.getCheck(node.location(), node.getName(), Scope.classKey(node.getName()));
         currentClassScope = entity.getScope();
+        currentOffset = 0;
         for (VarDeclNode varMemDecl : node.getVarMember()) {
             varMemDecl.accept(this);
         }
@@ -42,6 +44,8 @@ public class ClassVarMemberScanner extends BaseScopeScanner {
         }
         checkVarDeclInit(node);
         VarEntity entity = new VarEntity(node.getName(), node.getType().getType());
+        entity.setAddrOffset(currentOffset);
+        currentOffset += node.getType().getType().getVarSize();
         currentClassScope.putCheck(node.location(), node.getName(), Scope.varKey(node.getName()), entity);
     }
 }

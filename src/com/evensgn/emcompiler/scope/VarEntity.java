@@ -6,6 +6,8 @@ import com.evensgn.emcompiler.type.Type;
 
 public class VarEntity extends Entity {
     private IRRegister irRegister;
+    // for member variables
+    private int addrOffset;
 
     public VarEntity(String name, Type type) {
         super(name, type);
@@ -21,5 +23,13 @@ public class VarEntity extends Entity {
 
     public void setIrRegister(IRRegister irRegister) {
         this.irRegister = irRegister;
+    }
+
+    public int getAddrOffset() {
+        return addrOffset;
+    }
+
+    public void setAddrOffset(int addrOffset) {
+        this.addrOffset = addrOffset;
     }
 }

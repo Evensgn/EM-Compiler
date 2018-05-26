@@ -2,15 +2,14 @@ package com.evensgn.emcompiler.frontend;
 
 import com.evensgn.emcompiler.Configuration;
 import com.evensgn.emcompiler.ast.*;
+import com.evensgn.emcompiler.compiler.Compiler;
 import com.evensgn.emcompiler.ir.*;
-import com.evensgn.emcompiler.scope.FuncEntity;
-import com.evensgn.emcompiler.scope.Scope;
-import com.evensgn.emcompiler.scope.VarEntity;
-import com.evensgn.emcompiler.type.BoolType;
-import com.evensgn.emcompiler.type.IntType;
-import com.evensgn.emcompiler.type.Type;
-import com.evensgn.emcompiler.type.VoidType;
+import com.evensgn.emcompiler.scope.*;
+import com.evensgn.emcompiler.type.*;
 import com.evensgn.emcompiler.utils.CompilerError;
+import com.sun.crypto.provider.DESCipher;
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import org.antlr.v4.codegen.model.decl.Decl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,8 @@ public class IRBuilder extends BaseScopeScanner {
     private BasicBlock currentBB = null;
     private Scope globalScope, currentScope;
     private List<GlobalVarInit> globalInitList = new ArrayList<>();
-    private boolean isFuncArgDecl;
+    private boolean isFuncArgDecl = false, wantAddr = false;
+    private BasicBlock currentLoopStepBB, currentLoopAfterBB;
 
     public IRRoot getIR() {
         return ir;
@@ -50,9 +50,21 @@ public class IRBuilder extends BaseScopeScanner {
 
     }
 
+    private boolean isMemoryAccess(ExprNode node) {
+        return node instanceof SubscriptExprNode || node instanceof MemberAccessExprNode;
+    }
+
     @Override
     public void visit(ProgramNode node) {
         currentScope = globalScope;
+        // pre-scanning for functions
+        for (DeclNode decl : node.getDecls()) {
+            if (decl instanceof FuncDeclNode) {
+                FuncEntity funcEntity = (FuncEntity) currentScope.get(Scope.funcKey(decl.getName()));
+                IRFunction newIRFunc = new IRFunction(funcEntity);
+                ir.addFunc(newIRFunc);
+            }
+        }
         for (DeclNode decl : node.getDecls()) {
             if (decl instanceof VarDeclNode) {
                 decl.accept(this);
@@ -70,8 +82,7 @@ public class IRBuilder extends BaseScopeScanner {
 
     @Override
     public void visit(FuncDeclNode node) {
-        FuncEntity funcEntity = (FuncEntity) currentScope.get(Scope.funcKey(node.getName()));
-        currentFunc = new IRFunction(funcEntity);
+        currentFunc = ir.getFunc(node.getName());
         node.getBody().accept(this);
         if (!currentBB.isHasJumpInst()) {
             if (node.getReturnType() == null || node.getReturnType().getType() instanceof VoidType) {
@@ -112,6 +123,10 @@ public class IRBuilder extends BaseScopeScanner {
                     currentBB.addInst(new IRMove(currentBB, vreg, new IntImmediate(0)));
                 }
             } else {
+                if (node.getInit().getType() instanceof BoolType) {
+                    node.getInit().setTrueBB(new BasicBlock(currentFunc, null));
+                    node.getInit().setFalseBB(new BasicBlock(currentFunc, null));
+                }
                 node.getInit().accept(this);
                 processIRAssign(vreg, node.getInit(), node.getInit().getType().getVarSize());
             }
@@ -120,62 +135,234 @@ public class IRBuilder extends BaseScopeScanner {
 
     @Override
     public void visit(BlockStmtNode node) {
-        super.visit(node);
+        currentScope = node.getScope();
+        for (Node stmtOrVarDecl : node.getStmtsAndVarDecls()) {
+            if (stmtOrVarDecl instanceof VarDeclNode) {
+                stmtOrVarDecl.accept(this);
+            } else if (stmtOrVarDecl instanceof StmtNode) {
+                stmtOrVarDecl.accept(this);
+            } else {
+                throw new CompilerError("invalid type of statement or variable declaration");
+            }
+        }
+        currentScope = currentScope.getParent();
     }
 
     @Override
     public void visit(ExprStmtNode node) {
-        super.visit(node);
+        node.getExpr().accept(this);
     }
 
     @Override
     public void visit(CondStmtNode node) {
-        super.visit(node);
+        BasicBlock thenBB = new BasicBlock(currentFunc, "if_then");
+        BasicBlock afterBB = new BasicBlock(currentFunc, "if_after");
+
+        currentBB = thenBB;
+        node.getThenStmt().accept(this);
+        currentBB.setJumpInst(new IRJump(currentBB, afterBB));
+
+        if (node.getElseStmt() != null) {
+            BasicBlock elseBB = new BasicBlock(currentFunc, "if_else");
+            node.getCond().setTrueBB(thenBB);
+            node.getCond().setFalseBB(elseBB);
+            node.getCond().accept(this);
+
+            currentBB = elseBB;
+            node.getElseStmt().accept(this);
+            currentBB.setJumpInst(new IRJump(currentBB, afterBB));
+        } else {
+            node.getCond().setTrueBB(thenBB);
+            node.getCond().setFalseBB(afterBB);
+            node.getCond().accept(this);
+        }
+
+        currentBB = afterBB;
     }
 
     @Override
     public void visit(WhileStmtNode node) {
-        super.visit(node);
+        BasicBlock condBB = new BasicBlock(currentFunc, "while_cond");
+        BasicBlock bodyBB = new BasicBlock(currentFunc, "while_body");
+        BasicBlock afterBB = new BasicBlock(currentFunc, "while_after");
+
+        currentBB.setJumpInst(new IRJump(currentBB, condBB));
+        currentBB = condBB;
+        node.getCond().setTrueBB(bodyBB);
+        node.getCond().setFalseBB(afterBB);
+        node.getCond().accept(this);
+
+        currentBB = bodyBB;
+        BasicBlock externalLoopCondBB = currentLoopStepBB, externalLoopAfterBB = currentLoopAfterBB;
+        currentLoopStepBB = condBB;
+        currentLoopAfterBB = afterBB;    node.getStmt().accept(this);
+        currentBB.setJumpInst(new IRJump(currentBB, condBB));
+
+        currentLoopStepBB = externalLoopCondBB;
+        currentLoopAfterBB = externalLoopAfterBB;
+
+        currentBB = afterBB;
     }
 
     @Override
     public void visit(ForStmtNode node) {
-        super.visit(node);
+        BasicBlock condBB, stepBB, bodyBB, afterBB;
+        bodyBB = new BasicBlock(currentFunc, "for_body");
+        if (node.getCond() != null) condBB = new BasicBlock(currentFunc, "for_cond");
+        else condBB = bodyBB;
+        if (node.getStep() != null) stepBB = new BasicBlock(currentFunc, "for_step");
+        else stepBB = condBB;
+        afterBB = new BasicBlock(currentFunc, "for_after");
+
+        BasicBlock externalLoopStepBB = currentLoopStepBB, externalLoopAfterBB = currentLoopAfterBB;
+        currentLoopStepBB = stepBB;
+        currentLoopAfterBB = afterBB;
+
+        if (node.getInit() != null) node.getInit().accept(this);
+        currentBB.setJumpInst(new IRJump(currentBB, condBB));
+
+        if (node.getCond() != null) {
+            currentBB = condBB;
+            node.getCond().setTrueBB(bodyBB);
+            node.getCond().setFalseBB(afterBB);
+            node.getCond().accept(this);
+        }
+
+        if (node.getStep() != null) {
+            currentBB = stepBB;
+            node.getStep().accept(this);
+            currentBB.setJumpInst(new IRJump(currentBB, condBB));
+        }
+
+
+        currentBB = bodyBB;
+        node.getStmt().accept(this);
+        currentBB.setJumpInst(new IRJump(currentBB, stepBB));
+
+        currentLoopStepBB = externalLoopStepBB;
+        currentLoopAfterBB = externalLoopAfterBB;
+
+        currentBB = afterBB;
     }
 
     @Override
     public void visit(ContinueStmtNode node) {
-        super.visit(node);
+        currentBB.setJumpInst(new IRJump(currentBB, currentLoopStepBB));
     }
 
     @Override
     public void visit(BreakStmtNode node) {
-        super.visit(node);
+        currentBB.setJumpInst(new IRJump(currentBB, currentLoopAfterBB));
     }
 
     @Override
     public void visit(ReturnStmtNode node) {
-        super.visit(node);
+        Type retType = currentFunc.getFuncEntity().getReturnType();
+        if (retType == null || retType instanceof VoidType) {
+            currentBB.setJumpInst(new IRReturn(currentBB, null));
+        } else {
+            if (retType instanceof BoolType) {
+                node.getExpr().setTrueBB(new BasicBlock(currentFunc, null));
+                node.getExpr().setFalseBB(new BasicBlock(currentFunc, null));
+            }
+            node.getExpr().accept(this);
+            currentBB.setJumpInst(new IRReturn(currentBB, node.getExpr().getRegValue()));
+        }
+    }
+
+    private void processSelfIncDec(ExprNode expr, ExprNode node, boolean isSuffix, boolean isInc) {
+        boolean needMemOp = isMemoryAccess(expr);
+        boolean bakWantAddr = wantAddr;
+
+        wantAddr = false;
+        expr.accept(this);
+
+        if (isSuffix) {
+            VirtualRegister vreg = new VirtualRegister(null);
+            currentBB.addInst(new IRMove(currentBB, vreg, expr.getRegValue()));
+            node.setRegValue(vreg);
+        } else {
+            node.setRegValue(expr.getRegValue());
+        }
+
+        IntImmediate one = new IntImmediate(1);
+        IRBinaryOperation.IRBinaryOp op = isInc ? IRBinaryOperation.IRBinaryOp.ADD : IRBinaryOperation.IRBinaryOp.SUB;
+
+        if (needMemOp) {
+            // get addr of expr
+            wantAddr = true;
+            expr.accept(this);
+
+            VirtualRegister vreg = new VirtualRegister(null);
+            currentBB.addInst(new IRBinaryOperation(currentBB, vreg, op, expr.getRegValue(), one));
+            currentBB.addInst(new IRStore(currentBB, vreg, expr.getType().getVarSize(), expr.getAddrValue(), expr.getAddrOffset()));
+            if (!isSuffix) {
+                expr.setRegValue(vreg);
+            }
+        } else {
+            currentBB.addInst(new IRBinaryOperation(currentBB, (IRRegister) expr.getRegValue(), op, expr.getAddrValue(), one));
+        }
+        wantAddr = bakWantAddr;
     }
 
     @Override
     public void visit(SuffixExprNode node) {
-        super.visit(node);
+        processSelfIncDec(node.getExpr(), node, true, node.getOp() == SuffixExprNode.SuffixOps.SUFFIX_INC);
     }
 
     @Override
     public void visit(FuncCallExprNode node) {
-        super.visit(node);
+        String funcName = ((FunctionType)(node.getFunc().getType())).getName();
+        List<RegValue> args = new ArrayList<>();
+        if (node.getFunc() instanceof MemberAccessExprNode) {
+            ExprNode thisExpr = ((MemberAccessExprNode) (node.getFunc())).getExpr();
+            thisExpr.accept(this);
+            String className = ((ClassType) (thisExpr.getType())).getName();
+            funcName = IRRoot.irMemberFuncName(className, funcName);
+            args.add(thisExpr.getRegValue());
+        }
+        IRFunction irFunction = ir.getFunc(funcName);
+        if (irFunction.getFuncEntity().isBuiltIn()) {
+            // process built-in functions
+            return;
+        }
+        for (ExprNode arg : node.getArgs()) {
+            arg.accept(this);
+            args.add(arg.getRegValue());
+        }
+        VirtualRegister vreg = new VirtualRegister(null);
+        currentBB.addInst(new IRFunctionCall(currentBB, irFunction, args, vreg));
+        node.setRegValue(vreg);
     }
 
     @Override
     public void visit(SubscriptExprNode node) {
-        super.visit(node);
+
     }
 
     @Override
     public void visit(MemberAccessExprNode node) {
-        super.visit(node);
+        boolean wantAddrBak = wantAddr;
+        wantAddr = false;
+        node.getExpr().accept(this);
+        wantAddr = wantAddrBak;
+
+        RegValue classAddr = node.getExpr().getRegValue();
+        String className = ((ClassType) (node.getExpr().getType())).getName();
+        ClassEntity classEntity = (ClassEntity) currentScope.getCheck(className, Scope.classKey(className));
+        VarEntity memberEntity = (VarEntity) classEntity.getScope().selfGet(Scope.varKey(node.getMember()));
+
+        if (wantAddr) {
+            node.setAddrValue(classAddr);
+            node.setAddrOffset(memberEntity.getAddrOffset());
+        } else {
+            VirtualRegister vreg = new VirtualRegister(null);
+            node.setRegValue(vreg);
+            currentBB.addInst(new IRLoad(currentBB, vreg, memberEntity.getType().getVarSize(), classAddr, memberEntity.getAddrOffset()));
+            if (node.getType() instanceof BoolType) {
+                currentBB.addInst(new IRBranch(currentBB, node.getRegValue(), node.getTrueBB(), node.getFalseBB()));
+            }
+        }
     }
 
     @Override

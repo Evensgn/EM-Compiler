@@ -8,9 +8,16 @@ import java.util.Map;
 public class IRRoot {
     private Map<String, IRFunction> funcs = new HashMap<>();
     private List<StaticData> staticDataList = new ArrayList<>();
+    static public String irMemberFuncName(String className, String funcName) {
+        return String.format("__member_%s_%s", className, funcName);
+    }
 
-    public void insertFunc(IRFunction func) {
+    public void addFunc(IRFunction func) {
         funcs.put(func.getName(), func);
+    }
+
+    public IRFunction getFunc(String name) {
+        return funcs.get(name);
     }
 
     public void addStaticData(StaticData staticData) {

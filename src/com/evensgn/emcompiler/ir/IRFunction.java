@@ -30,4 +30,8 @@ public class IRFunction {
     public void addArgVReg(VirtualRegister vreg) {
         argVRegList.add(vreg);
     }
+
+    public FuncEntity getFuncEntity() {
+        return funcEntity;
+    }
 }

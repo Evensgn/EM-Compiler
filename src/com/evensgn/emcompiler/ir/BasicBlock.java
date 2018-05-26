@@ -12,8 +12,9 @@ public class BasicBlock {
     private boolean hasJumpInst = false;
     private Set<BasicBlock> prevBBSet = new HashSet<>(), nextBBSet = new HashSet<>();
 
-    public BasicBlock(IRFunction func) {
+    public BasicBlock(IRFunction func, String name) {
         this.func = func;
+        this.name = name;
     }
 
     public void addInst(IRInstruction inst) {

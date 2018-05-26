@@ -11,9 +11,8 @@ import com.evensgn.emcompiler.type.Type;
 abstract public class ExprNode extends Node {
     private Type type;
     private boolean isLeftValue;
-    private RegValue regValue;
-
-    // for short circuit of boolean expression
+    private RegValue regValue, addrValue;
+    private int addrOffset;
     private BasicBlock trueBB, falseBB;
 
     public void setType(Type type) {
@@ -34,6 +33,38 @@ abstract public class ExprNode extends Node {
 
     public RegValue getRegValue() {
         return regValue;
+    }
+
+    public BasicBlock getTrueBB() {
+        return trueBB;
+    }
+
+    public BasicBlock getFalseBB() {
+        return falseBB;
+    }
+
+    public void setTrueBB(BasicBlock trueBB) {
+        this.trueBB = trueBB;
+    }
+
+    public void setFalseBB(BasicBlock falseBB) {
+        this.falseBB = falseBB;
+    }
+
+    public RegValue getAddrValue() {
+        return addrValue;
+    }
+
+    public int getAddrOffset() {
+        return addrOffset;
+    }
+
+    public void setAddrValue(RegValue addrValue) {
+        this.addrValue = addrValue;
+    }
+
+    public void setAddrOffset(int addrOffset) {
+        this.addrOffset = addrOffset;
     }
 
     public void setRegValue(RegValue regValue) {

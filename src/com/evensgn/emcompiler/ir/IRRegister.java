@@ -1,4 +1,4 @@
 package com.evensgn.emcompiler.ir;
 
-public abstract class IRRegister {
+public abstract class IRRegister extends RegValue {
 }
