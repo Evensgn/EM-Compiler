@@ -4,7 +4,7 @@ public class IRBinaryOperation extends IRInstruction {
     public enum IRBinaryOp {
         ADD, SUB, MUL, DIV, MOD,
         SHL, SHR,
-        AND, OR, XOR
+        BITWISE_AND, BITWISE_OR, BITWISE_XOR
     }
 
     private IRRegister dest;

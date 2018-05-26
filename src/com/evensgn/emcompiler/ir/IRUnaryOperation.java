@@ -2,9 +2,16 @@ package com.evensgn.emcompiler.ir;
 
 public class IRUnaryOperation extends IRInstruction {
     public enum IRUnaryOp {
-        NOT, NEG
+        BITWISE_NOT, NEG
     }
-    public IRUnaryOperation(BasicBlock parentBB) {
+    private IRRegister dest;
+    private IRUnaryOp op;
+    private RegValue rhs;
+
+    public IRUnaryOperation(BasicBlock parentBB, IRRegister dest, IRUnaryOp op, RegValue rhs) {
         super(parentBB);
+        this.dest = dest;
+        this.op = op;
+        this.rhs = rhs;
     }
 }

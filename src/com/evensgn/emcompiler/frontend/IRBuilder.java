@@ -9,6 +9,7 @@ import com.evensgn.emcompiler.type.*;
 import com.evensgn.emcompiler.utils.CompilerError;
 import com.sun.crypto.provider.DESCipher;
 import com.sun.org.apache.xpath.internal.operations.Bool;
+import javafx.scene.media.VideoTrack;
 import org.antlr.v4.codegen.model.decl.Decl;
 
 import java.util.ArrayList;
@@ -46,8 +47,25 @@ public class IRBuilder extends BaseScopeScanner {
         return funcNode;
     }
 
-    private void processIRAssign(IRRegister lhs, ExprNode rhs, int size) {
-
+    private void processIRAssign(RegValue dest, int addrOffset,  ExprNode rhs, int size, boolean needMemOp) {
+        if (rhs.getType() instanceof BoolType) {
+            BasicBlock mergeBB = new BasicBlock(currentFunc, null);
+            if (needMemOp) {
+                rhs.getTrueBB().addInst(new IRStore(rhs.getTrueBB(), new IntImmediate(1), BoolType.getInstance().getVarSize(), dest, addrOffset));
+                rhs.getFalseBB().addInst(new IRStore(rhs.getFalseBB(), new IntImmediate(0), BoolType.getInstance().getVarSize(), dest, addrOffset));
+            } else {
+                rhs.getTrueBB().addInst(new IRMove(rhs.getTrueBB(), (VirtualRegister) dest, new IntImmediate(1)));
+                rhs.getFalseBB().addInst(new IRMove(rhs.getFalseBB(), (VirtualRegister) dest, new IntImmediate(0)));
+            }
+            rhs.getTrueBB().addInst(new IRJump(rhs.getTrueBB(), mergeBB));
+            rhs.getFalseBB().addInst(new IRJump(rhs.getFalseBB(), mergeBB));
+        } else {
+            if (needMemOp) {
+                currentBB.addInst(new IRStore(currentBB, rhs.getRegValue(), rhs.getType().getVarSize(), dest, addrOffset));
+            } else {
+                currentBB.addInst(new IRMove(currentBB, (VirtualRegister) dest, rhs.getRegValue()));
+            }
+        }
     }
 
     private boolean isMemoryAccess(ExprNode node) {
@@ -95,7 +113,13 @@ public class IRBuilder extends BaseScopeScanner {
 
     @Override
     public void visit(ClassDeclNode node) {
-        super.visit(node);
+        ClassEntity entity = (ClassEntity) currentScope.get(Scope.classKey(node.getName()));
+        for (VarDeclNode decl : node.getVarMember()) {
+            decl.accept(this);
+        }
+        for (FuncDeclNode decl : node.getFuncMember()) {
+            decl.accept(this);
+        }
     }
 
     @Override
@@ -128,7 +152,7 @@ public class IRBuilder extends BaseScopeScanner {
                     node.getInit().setFalseBB(new BasicBlock(currentFunc, null));
                 }
                 node.getInit().accept(this);
-                processIRAssign(vreg, node.getInit(), node.getInit().getType().getVarSize());
+                processIRAssign(vreg, 0, node.getInit(), node.getInit().getType().getVarSize(), false);
             }
         }
     }
@@ -337,7 +361,27 @@ public class IRBuilder extends BaseScopeScanner {
 
     @Override
     public void visit(SubscriptExprNode node) {
+        boolean wantAddrBak = wantAddr;
+        wantAddr = false;
+        node.getArr().accept(this);
+        node.getSub().accept(this);
+        wantAddr = wantAddrBak;
 
+        VirtualRegister vreg = new VirtualRegister(null);
+        IntImmediate elementSize = new IntImmediate(node.getType().getVarSize());
+        currentBB.addInst(new IRBinaryOperation(currentBB, vreg, IRBinaryOperation.IRBinaryOp.MUL, node.getSub().getRegValue(), elementSize));
+        currentBB.addInst(new IRBinaryOperation(currentBB, vreg, IRBinaryOperation.IRBinaryOp.ADD, node.getArr().getRegValue(), vreg));
+
+        if (wantAddr) {
+            node.setAddrValue(vreg);
+            node.setAddrOffset(Configuration.getRegSize());
+        } else {
+            currentBB.addInst(new IRLoad(currentBB, vreg, node.getType().getVarSize(), vreg, Configuration.getRegSize()));
+            node.setRegValue(vreg);
+            if (node.getTrueBB() != null) {
+                currentBB.addInst(new IRBranch(currentBB, node.getRegValue(), node.getTrueBB(), node.getFalseBB()));
+            }
+        }
     }
 
     @Override
@@ -359,7 +403,7 @@ public class IRBuilder extends BaseScopeScanner {
             VirtualRegister vreg = new VirtualRegister(null);
             node.setRegValue(vreg);
             currentBB.addInst(new IRLoad(currentBB, vreg, memberEntity.getType().getVarSize(), classAddr, memberEntity.getAddrOffset()));
-            if (node.getType() instanceof BoolType) {
+            if (node.getTrueBB() != null) {
                 currentBB.addInst(new IRBranch(currentBB, node.getRegValue(), node.getTrueBB(), node.getFalseBB()));
             }
         }
@@ -367,7 +411,39 @@ public class IRBuilder extends BaseScopeScanner {
 
     @Override
     public void visit(PrefixExprNode node) {
-        super.visit(node);
+        VirtualRegister vreg;
+        switch (node.getOp()) {
+            case PREFIX_DEC:
+            case PREFIX_INC:
+                processSelfIncDec(node.getExpr(), node, false, node.getOp() == PrefixExprNode.PrefixOps.PREFIX_INC);
+                break;
+
+            case POS:
+                node.setRegValue(node.getExpr().getRegValue());
+                break;
+
+            case NEG:
+                vreg = new VirtualRegister(null);
+                node.setRegValue(vreg);
+                node.getExpr().accept(this);
+                currentBB.addInst(new IRUnaryOperation(currentBB, vreg, IRUnaryOperation.IRUnaryOp.NEG, node.getExpr().getRegValue()));
+                break;
+
+            case BITWISE_NOT:
+                vreg = new VirtualRegister(null);
+                node.setRegValue(vreg);
+                node.getExpr().accept(this);
+                currentBB.addInst(new IRUnaryOperation(currentBB, vreg, IRUnaryOperation.IRUnaryOp.BITWISE_NOT, node.getExpr().getRegValue()));
+                break;
+
+            case LOGIC_NOT:
+                node.getExpr().setTrueBB(node.getFalseBB());
+                node.getExpr().setFalseBB(node.getTrueBB());
+                node.getExpr().accept(this);
+                break;
+            default:
+                throw new CompilerError("invalid prefix operation");
+        }
     }
 
     @Override
@@ -375,9 +451,140 @@ public class IRBuilder extends BaseScopeScanner {
         super.visit(node);
     }
 
+    // short circuit for boolean operation
+    private void processLogicalBinaryOp(BinaryExprNode node) {
+        if (node.getOp() == BinaryExprNode.BinaryOps.LOGIC_AND) {
+            node.getLhs().setTrueBB(new BasicBlock(currentFunc, "and_lhs_true"));
+            node.getLhs().setFalseBB(node.getFalseBB());
+            node.getLhs().accept(this);
+            currentBB = node.getLhs().getTrueBB();
+        } else if (node.getOp() == BinaryExprNode.BinaryOps.LOGIC_OR) {
+            node.getLhs().setTrueBB(node.getTrueBB());
+            node.getRhs().setFalseBB(new BasicBlock(currentFunc, "or_lhs_false"));
+            node.getLhs().accept(this);
+            currentBB = node.getLhs().getFalseBB();
+        } else {
+            throw new CompilerError("invalid boolean binary operation");
+        }
+
+        node.getRhs().setTrueBB(node.getTrueBB());
+        node.getRhs().setFalseBB(node.getFalseBB());
+        node.getRhs().accept(this);
+    }
+
+    private void processStringBinaryOp(BinaryExprNode node) {
+        if (!(node.getLhs().getType() instanceof StringType)) {
+            throw new CompilerError("invalid string binary operation");
+        }
+
+    }
+
+    private void processArithBinaryOp(BinaryExprNode node) {
+        if (node.getLhs().getType() instanceof StringType) {
+            processStringBinaryOp(node);
+            return;
+        }
+
+        node.getLhs().accept(this);
+        node.getRhs().accept(this);
+        IRBinaryOperation.IRBinaryOp op;
+        switch (node.getOp()) {
+            case MUL:
+                op = IRBinaryOperation.IRBinaryOp.MUL; break;
+            case DIV:
+                op = IRBinaryOperation.IRBinaryOp.DIV; break;
+            case MOD:
+                op = IRBinaryOperation.IRBinaryOp.MOD; break;
+            case ADD:
+                op = IRBinaryOperation.IRBinaryOp.ADD; break;
+            case SUB:
+                op = IRBinaryOperation.IRBinaryOp.SUB; break;
+            case SHL:
+                op = IRBinaryOperation.IRBinaryOp.SHL; break;
+            case SHR:
+                op = IRBinaryOperation.IRBinaryOp.SHR; break;
+            case BITWISE_AND:
+                op = IRBinaryOperation.IRBinaryOp.BITWISE_AND; break;
+            case BITWISE_OR:
+                op = IRBinaryOperation.IRBinaryOp.BITWISE_OR; break;
+            case BITWISE_XOR:
+                op = IRBinaryOperation.IRBinaryOp.BITWISE_XOR; break;
+            default:
+                throw new CompilerError("invalid int arithmetic binary operation");
+        }
+
+        VirtualRegister vreg = new VirtualRegister(null);
+        node.setRegValue(vreg);
+        currentBB.addInst(new IRBinaryOperation(currentBB, vreg, op, node.getLhs().getRegValue(), node.getRhs().getRegValue()));
+    }
+
+    private void processCmpBinaryOp(BinaryExprNode node) {
+        if (node.getLhs().getType() instanceof StringType) {
+            processStringBinaryOp(node);
+            return;
+        }
+
+        node.getLhs().accept(this);
+        node.getRhs().accept(this);
+        IRComparison.IRCmpOp op;
+        switch (node.getOp()) {
+            case GREATER:
+                op = IRComparison.IRCmpOp.GREATER; break;
+            case LESS:
+                op = IRComparison.IRCmpOp.LESS; break;
+            case GREATER_EQUAL:
+                op = IRComparison.IRCmpOp.GREATER_EQUAL; break;
+            case LESS_EQUAL:
+                op = IRComparison.IRCmpOp.LESS_EQUAL; break;
+            case EQUAL:
+                op = IRComparison.IRCmpOp.EQUAL; break;
+            case INEQUAL:
+                op = IRComparison.IRCmpOp.INEQUAL; break;
+            default:
+                throw new CompilerError("invalid int comparison binary operation");
+        }
+
+        VirtualRegister vreg = new VirtualRegister(null);
+        currentBB.addInst(new IRComparison(currentBB, vreg, op, node.getLhs().getRegValue(), node.getRhs().getRegValue()));
+        if (node.getTrueBB() != null) {
+            currentBB.addInst(new IRBranch(currentBB, vreg, node.getTrueBB(), node.getFalseBB()));
+        } else {
+            node.setRegValue(vreg);
+        }
+    }
+
+
     @Override
     public void visit(BinaryExprNode node) {
-        super.visit(node);
+        VirtualRegister vreg;
+        switch (node.getOp()) {
+            case LOGIC_AND:
+            case LOGIC_OR:
+                processLogicalBinaryOp(node);
+                break;
+
+            case MUL:
+            case DIV:
+            case MOD:
+            case ADD:
+            case SUB:
+            case SHL:
+            case SHR:
+            case BITWISE_AND:
+            case BITWISE_OR:
+            case BITWISE_XOR:
+                processArithBinaryOp(node);
+                break;
+
+            case GREATER:
+            case LESS:
+            case GREATER_EQUAL:
+            case LESS_EQUAL:
+            case EQUAL:
+            case INEQUAL:
+                processCmpBinaryOp(node);
+                break;
+        }
     }
 
     @Override
