@@ -36,6 +36,7 @@ public class ClassVarMemberScanner extends BaseScopeScanner {
         for (VarDeclNode varMemDecl : node.getVarMember()) {
             varMemDecl.accept(this);
         }
+        entity.setMemorySize(currentOffset);
     }
 
     @Override

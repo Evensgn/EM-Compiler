@@ -7,6 +7,7 @@ import com.evensgn.emcompiler.type.Type;
 
 public class ClassEntity extends Entity {
     private Scope scope;
+    private int memorySize;
 
     public ClassEntity(String name, Type type, Scope parentScope) {
         super(name, type);
@@ -23,6 +24,14 @@ public class ClassEntity extends Entity {
             entity = new FuncEntity(funcMemDecl, node.getName());
             scope.putCheck(funcMemDecl.location(), funcMemDecl.getName(), key, entity);
         }
+    }
+
+    public int getMemorySize() {
+        return memorySize;
+    }
+
+    public void setMemorySize(int memorySize) {
+        this.memorySize = memorySize;
     }
 
     public Scope getScope() {

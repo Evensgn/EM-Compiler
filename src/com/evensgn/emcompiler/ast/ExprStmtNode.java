@@ -12,6 +12,11 @@ public class ExprStmtNode extends StmtNode {
         this.location = location;
     }
 
+    public ExprStmtNode(ExprNode expr) {
+        this.expr = expr;
+        this.location = expr.location();
+    }
+
     public ExprNode getExpr() {
         return expr;
     }

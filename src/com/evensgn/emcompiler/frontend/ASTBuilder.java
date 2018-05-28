@@ -8,10 +8,12 @@ import com.evensgn.emcompiler.utils.SemanticError;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ASTBuilder extends EMxStarBaseVisitor<Node> {
+    private final String ARRAY_CREATOR_IDX_NAME = "__array_idx_";
     private TypeNode typeForVarDecl;
 
     @Override
@@ -355,10 +357,41 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
         return new FuncCallExprNode(func, args, Location.fromCtx(ctx));
     }
 
+    private BlockStmtNode expandMultiArray(ExprNode lhs, ExprNode rhs, int idx, Type newTypeNow, Location loc) {
+        List<Node> declAndStmts = new ArrayList<>();
+
+        int sizeDims = ((NewExprNode) rhs).getDims().size();
+        List<ExprNode> dimsNow = new ArrayList<>();
+        dimsNow.add(((NewExprNode) rhs).getDims().get(idx));
+        int numDimNow = ((NewExprNode) rhs).getNumDim() - idx;
+        NewExprNode newExprNow = new NewExprNode(new TypeNode(newTypeNow, loc), dimsNow, numDimNow, loc);
+        declAndStmts.add(new ExprStmtNode(new AssignExprNode(lhs, newExprNow, loc)));
+        if (idx < sizeDims - 1) {
+            String idxName = String.format(ARRAY_CREATOR_IDX_NAME + "%d", idx);
+            declAndStmts.add(new VarDeclNode(new TypeNode(IntType.getInstance(), loc), idxName, null, loc));
+            lhs = new SubscriptExprNode(lhs, new IdentifierExprNode(idxName, loc), loc);
+            ExprNode init = new AssignExprNode(new IdentifierExprNode(idxName, loc), new IntConstExprNode(0, loc), loc);
+            ExprNode cond = new BinaryExprNode(BinaryExprNode.BinaryOps.LESS, new IdentifierExprNode(idxName, loc), dimsNow.get(0), loc);
+            ExprNode step = new SuffixExprNode(SuffixExprNode.SuffixOps.SUFFIX_INC, new IdentifierExprNode(idxName, loc), loc);
+            BlockStmtNode forBody = expandMultiArray(lhs, rhs, idx + 1, ((ArrayType) newTypeNow).getBaseType(), loc);
+            declAndStmts.add(new ForStmtNode(init, cond, step, forBody, loc));
+        }
+        return new BlockStmtNode(declAndStmts, loc);
+    }
+
     @Override
     public Node visitAssignExpr(EMxStarParser.AssignExprContext ctx) {
         ExprNode lhs = (ExprNode) visit(ctx.lhs);
         ExprNode rhs = (ExprNode) visit(ctx.rhs);
+        // for multi-dimensional array creator syntactic sugar
+        // expand it into one-dimensional array creators
+        if (rhs instanceof NewExprNode && ((NewExprNode) rhs).getDims() != null && ((NewExprNode) rhs).getDims().size() > 1) {
+            Location loc = Location.fromCtx(ctx);
+
+            Type newTypeNow = ((NewExprNode) rhs).getNewType().getType();
+
+            return expandMultiArray(lhs, rhs, 0, newTypeNow, loc);
+        }
         return new AssignExprNode(lhs, rhs, Location.fromCtx(ctx));
     }
 

@@ -11,6 +11,7 @@ import com.sun.crypto.provider.DESCipher;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.scene.media.VideoTrack;
 import org.antlr.v4.codegen.model.decl.Decl;
+import sun.reflect.generics.tree.BaseType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -366,6 +367,9 @@ public class IRBuilder extends BaseScopeScanner {
         VirtualRegister vreg = new VirtualRegister(null);
         currentBB.addInst(new IRFunctionCall(currentBB, irFunction, args, vreg));
         node.setRegValue(vreg);
+        if (node.getTrueBB() != null) {
+            currentBB.setJumpInst(new IRBranch(currentBB, node.getRegValue(), node.getTrueBB(), node.getFalseBB()));
+        }
     }
 
     @Override
@@ -457,8 +461,27 @@ public class IRBuilder extends BaseScopeScanner {
 
     @Override
     public void visit(NewExprNode node) {
-        // TO DO
-        // definetely
+        VirtualRegister vreg = new VirtualRegister(null);
+        Type newType = node.getNewType().getType();
+        if (newType instanceof ClassType) {
+            String className = ((ClassType) newType).getName();
+            ClassEntity classEntity = (ClassEntity) globalScope.get(Scope.classKey(className));
+            currentBB.addInst(new IRHeapAlloc(currentBB, vreg, new IntImmediate(classEntity.getMemorySize())));
+            // TO DO construction function
+        } else if (newType instanceof ArrayType) {
+            ExprNode dim = node.getDims().get(0);
+            boolean wantAddrBak = wantAddr;
+            wantAddr = false;
+            dim.accept(this);
+            wantAddr = wantAddrBak;
+            currentBB.addInst(new IRBinaryOperation(currentBB, vreg, IRBinaryOperation.IRBinaryOp.MUL, dim.getRegValue(), new IntImmediate(Configuration.getRegSize())));
+            currentBB.addInst(new IRBinaryOperation(currentBB, vreg, IRBinaryOperation.IRBinaryOp.ADD, vreg, new IntImmediate(Configuration.getRegSize())));
+            currentBB.addInst(new IRHeapAlloc(currentBB, vreg, vreg));
+            currentBB.addInst(new IRStore(currentBB, dim.getRegValue(), Configuration.getRegSize(), vreg, 0));
+        } else {
+            throw new CompilerError("invalid new type");
+        }
+        node.setRegValue(vreg);
     }
 
     // short circuit for boolean operation
