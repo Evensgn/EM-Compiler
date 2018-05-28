@@ -46,8 +46,8 @@ public class IRFunction {
     private Set<BasicBlock> dfsVisited = null;
 
     private void dfsPostOrder(BasicBlock bb) {
-        System.out.println("dfsPostOrder " + bb.getName());
         if (dfsVisited.contains(bb)) return;
+        dfsVisited.add(bb);
         for (BasicBlock nextBB : bb.getNextBBSet()) {
             dfsPostOrder(nextBB);
         }
@@ -56,13 +56,11 @@ public class IRFunction {
     }
 
     public List<BasicBlock> getReversePostOrder() {
-        System.out.println("getReversePostOrder 1");
         if (reversePostOrder != null) return reversePostOrder;
         reversePostOrder = new ArrayList<>();
         dfsVisited = new HashSet<>();
         dfsPostOrder(startBB);
 
-        System.out.println("getReversePostOrder 2");
         dfsVisited = null;
         for (int i = 0; i < reversePostOrder.size(); ++i) {
             reversePostOrder.get(i).setPostOrderIdx(i);

@@ -18,7 +18,6 @@ public class IRPrinter implements IRVisitor {
 
     public IRPrinter(PrintStream out) {
         this.out = out;
-        System.out.println("IRPrinter construction");
     }
 
     private Map<BasicBlock, String> bbMap = new HashMap<>();
@@ -81,7 +80,6 @@ public class IRPrinter implements IRVisitor {
 
     @Override
     public void visit(IRRoot node) {
-        System.out.println("IRPrinter IRRoot");
         // Static Data
         isStaticDef = true;
         for (StaticData staticData : node.getStaticDataList()) {
@@ -95,7 +93,6 @@ public class IRPrinter implements IRVisitor {
         for (IRFunction func : node.getFuncs().values()) {
             func.accept(this);
         }
-        System.out.println("IRPrinter IRRoot finish");
     }
 
     @Override
@@ -125,7 +122,7 @@ public class IRPrinter implements IRVisitor {
 
     @Override
     public void visit(IRBranch node) {
-        out.print("    br");
+        out.print("    br ");
         node.getCond().accept(this);
         out.println(" %" + getBBID(node.getThenBB()) + " %" + getBBID(node.getElseBB()));
         out.println();
@@ -144,6 +141,7 @@ public class IRPrinter implements IRVisitor {
         } else {
             out.print("0");
         }
+        out.println();
         out.println();
     }
 

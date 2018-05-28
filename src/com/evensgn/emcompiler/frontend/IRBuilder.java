@@ -189,24 +189,30 @@ public class IRBuilder extends BaseScopeScanner {
     public void visit(CondStmtNode node) {
         BasicBlock thenBB = new BasicBlock(currentFunc, "if_then");
         BasicBlock afterBB = new BasicBlock(currentFunc, "if_after");
+        BasicBlock elseBB;
+
+        if (node.getElseStmt() != null) {
+            elseBB = new BasicBlock(currentFunc, "if_else");
+            node.getCond().setTrueBB(thenBB);
+            node.getCond().setFalseBB(elseBB);
+            node.getCond().accept(this);
+        } else {
+            elseBB = null;
+            node.getCond().setTrueBB(thenBB);
+            node.getCond().setFalseBB(afterBB);
+            node.getCond().accept(this);
+        }
 
         currentBB = thenBB;
         node.getThenStmt().accept(this);
         currentBB.setJumpInst(new IRJump(currentBB, afterBB));
 
         if (node.getElseStmt() != null) {
-            BasicBlock elseBB = new BasicBlock(currentFunc, "if_else");
-            node.getCond().setTrueBB(thenBB);
-            node.getCond().setFalseBB(elseBB);
-            node.getCond().accept(this);
-
             currentBB = elseBB;
             node.getElseStmt().accept(this);
-            currentBB.setJumpInst(new IRJump(currentBB, afterBB));
-        } else {
-            node.getCond().setTrueBB(thenBB);
-            node.getCond().setFalseBB(afterBB);
-            node.getCond().accept(this);
+            if (!currentBB.isHasJumpInst()) {
+                currentBB.setJumpInst(new IRJump(currentBB, afterBB));
+            }
         }
 
         currentBB = afterBB;
@@ -218,6 +224,10 @@ public class IRBuilder extends BaseScopeScanner {
         BasicBlock bodyBB = new BasicBlock(currentFunc, "while_body");
         BasicBlock afterBB = new BasicBlock(currentFunc, "while_after");
 
+        BasicBlock externalLoopCondBB = currentLoopStepBB, externalLoopAfterBB = currentLoopAfterBB;
+        currentLoopStepBB = condBB;
+        currentLoopAfterBB = afterBB;
+
         currentBB.setJumpInst(new IRJump(currentBB, condBB));
         currentBB = condBB;
         node.getCond().setTrueBB(bodyBB);
@@ -225,9 +235,6 @@ public class IRBuilder extends BaseScopeScanner {
         node.getCond().accept(this);
 
         currentBB = bodyBB;
-        BasicBlock externalLoopCondBB = currentLoopStepBB, externalLoopAfterBB = currentLoopAfterBB;
-        currentLoopStepBB = condBB;
-        currentLoopAfterBB = afterBB;
         node.getStmt().accept(this);
         currentBB.setJumpInst(new IRJump(currentBB, condBB));
 
