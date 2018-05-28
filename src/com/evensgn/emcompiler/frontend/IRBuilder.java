@@ -114,12 +114,14 @@ public class IRBuilder extends BaseScopeScanner {
     @Override
     public void visit(ClassDeclNode node) {
         ClassEntity entity = (ClassEntity) currentScope.get(Scope.classKey(node.getName()));
+        currentScope = entity.getScope();
         for (VarDeclNode decl : node.getVarMember()) {
             decl.accept(this);
         }
         for (FuncDeclNode decl : node.getFuncMember()) {
             decl.accept(this);
         }
+        currentScope = currentScope.getParent();
     }
 
     @Override
@@ -337,23 +339,30 @@ public class IRBuilder extends BaseScopeScanner {
     @Override
     public void visit(FuncCallExprNode node) {
         String funcName = ((FunctionType)(node.getFunc().getType())).getName();
+        FuncEntity funcEntity = (FuncEntity) currentScope.get(Scope.funcKey(funcName));
         List<RegValue> args = new ArrayList<>();
-        if (node.getFunc() instanceof MemberAccessExprNode) {
-            ExprNode thisExpr = ((MemberAccessExprNode) (node.getFunc())).getExpr();
+        if (funcEntity.isMember()) {
+            ExprNode thisExpr;
+            if (node.getFunc() instanceof MemberAccessExprNode) {
+                thisExpr = ((MemberAccessExprNode) (node.getFunc())).getExpr();
+            } else {
+                thisExpr = new ThisExprNode(null);
+            }
             thisExpr.accept(this);
             String className = ((ClassType) (thisExpr.getType())).getName();
             funcName = IRRoot.irMemberFuncName(className, funcName);
             args.add(thisExpr.getRegValue());
         }
-        IRFunction irFunction = ir.getFunc(funcName);
-        if (irFunction.getFuncEntity().isBuiltIn()) {
+        if (funcEntity.isBuiltIn()) {
             // process built-in functions
+            // TO DO
             return;
         }
         for (ExprNode arg : node.getArgs()) {
             arg.accept(this);
             args.add(arg.getRegValue());
         }
+        IRFunction irFunction = ir.getFunc(funcName);
         VirtualRegister vreg = new VirtualRegister(null);
         currentBB.addInst(new IRFunctionCall(currentBB, irFunction, args, vreg));
         node.setRegValue(vreg);
@@ -379,7 +388,7 @@ public class IRBuilder extends BaseScopeScanner {
             currentBB.addInst(new IRLoad(currentBB, vreg, node.getType().getVarSize(), vreg, Configuration.getRegSize()));
             node.setRegValue(vreg);
             if (node.getTrueBB() != null) {
-                currentBB.addInst(new IRBranch(currentBB, node.getRegValue(), node.getTrueBB(), node.getFalseBB()));
+                currentBB.setJumpInst(new IRBranch(currentBB, node.getRegValue(), node.getTrueBB(), node.getFalseBB()));
             }
         }
     }
@@ -404,7 +413,7 @@ public class IRBuilder extends BaseScopeScanner {
             node.setRegValue(vreg);
             currentBB.addInst(new IRLoad(currentBB, vreg, memberEntity.getType().getVarSize(), classAddr, memberEntity.getAddrOffset()));
             if (node.getTrueBB() != null) {
-                currentBB.addInst(new IRBranch(currentBB, node.getRegValue(), node.getTrueBB(), node.getFalseBB()));
+                currentBB.setJumpInst(new IRBranch(currentBB, node.getRegValue(), node.getTrueBB(), node.getFalseBB()));
             }
         }
     }
@@ -448,7 +457,8 @@ public class IRBuilder extends BaseScopeScanner {
 
     @Override
     public void visit(NewExprNode node) {
-        super.visit(node);
+        // TO DO
+        // definetely
     }
 
     // short circuit for boolean operation
@@ -476,7 +486,7 @@ public class IRBuilder extends BaseScopeScanner {
         if (!(node.getLhs().getType() instanceof StringType)) {
             throw new CompilerError("invalid string binary operation");
         }
-
+        // TO DO
     }
 
     private void processArithBinaryOp(BinaryExprNode node) {
@@ -547,7 +557,7 @@ public class IRBuilder extends BaseScopeScanner {
         VirtualRegister vreg = new VirtualRegister(null);
         currentBB.addInst(new IRComparison(currentBB, vreg, op, node.getLhs().getRegValue(), node.getRhs().getRegValue()));
         if (node.getTrueBB() != null) {
-            currentBB.addInst(new IRBranch(currentBB, vreg, node.getTrueBB(), node.getFalseBB()));
+            currentBB.setJumpInst(new IRBranch(currentBB, vreg, node.getTrueBB(), node.getFalseBB()));
         } else {
             node.setRegValue(vreg);
         }
@@ -589,41 +599,76 @@ public class IRBuilder extends BaseScopeScanner {
 
     @Override
     public void visit(AssignExprNode node) {
-        super.visit(node);
+        if (node.getRhs().getType() instanceof BoolType) {
+            node.getRhs().setTrueBB(new BasicBlock(currentFunc, null));
+            node.getRhs().setFalseBB(new BasicBlock(currentFunc, null));
+        }
+        node.getRhs().accept(this);
+
+        boolean needMemOp = node.getLhs() instanceof MemberAccessExprNode || node.getLhs() instanceof SubscriptExprNode;
+        wantAddr = needMemOp;
+        node.getLhs().accept(this);
+        wantAddr = false;
+
+        RegValue dest;
+        int addrOffset;
+        if (needMemOp) {
+            dest = node.getLhs().getAddrValue();
+            addrOffset = node.getLhs().getAddrOffset();
+        } else {
+            dest = node.getLhs().getRegValue();
+            addrOffset = 0;
+        }
+        processIRAssign(dest, addrOffset, node.getRhs(), Configuration.getRegSize(), needMemOp);
+        node.setRegValue(node.getRegValue());
     }
 
     @Override
     public void visit(IdentifierExprNode node) {
-        super.visit(node);
+        // should be a variable instead of a function
+        VarEntity varEntity = (VarEntity) currentScope.get(Scope.varKey(node.getIdentifier()));
+        node.setRegValue(varEntity.getIrRegister());
+        if (node.getTrueBB() != null) {
+            currentBB.setJumpInst(new IRBranch(currentBB, node.getRegValue(), node.getTrueBB(), node.getFalseBB()));
+        }
     }
 
     @Override
     public void visit(ThisExprNode node) {
-        super.visit(node);
+        VarEntity thisEntity = (VarEntity) currentScope.get(Scope.varKey(Scope.THIS_PARA_NAME));
+        node.setRegValue(thisEntity.getIrRegister());
+        if (node.getTrueBB() != null) {
+            currentBB.setJumpInst(new IRBranch(currentBB, node.getRegValue(), node.getTrueBB(), node.getFalseBB()));
+        }
     }
 
     @Override
     public void visit(IntConstExprNode node) {
-        super.visit(node);
+        node.setRegValue(new IntImmediate(node.getValue()));
     }
 
     @Override
     public void visit(StringConstExprNode node) {
-        super.visit(node);
+        StaticString staticStr = ir.getStaticStr(node.getValue());
+        if (staticStr == null) {
+            staticStr = new StaticString(node.getValue());
+            ir.addStaticStr(staticStr);
+        }
+        node.setRegValue(staticStr);
     }
 
     @Override
     public void visit(BoolConstExprNode node) {
-        super.visit(node);
+        node.setRegValue(new IntImmediate(node.getValue() ? 1 : 0));
     }
 
     @Override
     public void visit(NullExprNode node) {
-        super.visit(node);
+        node.setRegValue(new IntImmediate(0));
     }
 
     @Override
     public void visit(TypeNode node) {
-        super.visit(node);
+        // no actions to take
     }
 }

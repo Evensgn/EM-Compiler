@@ -8,9 +8,17 @@ public class VarEntity extends Entity {
     private IRRegister irRegister;
     // for member variables
     private int addrOffset;
+    private boolean isMember = false;
+    private String className;
 
     public VarEntity(String name, Type type) {
         super(name, type);
+    }
+
+    public VarEntity(String name, Type type, String className) {
+        super(name, type);
+        isMember = true;
+        this.className = className;
     }
 
     public VarEntity(VarDeclNode node) {

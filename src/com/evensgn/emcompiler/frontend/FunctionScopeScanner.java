@@ -59,8 +59,8 @@ public class FunctionScopeScanner extends BaseScopeScanner {
             if (node.isConstruct() && !(node.getName().equals(((ClassType) currentClassType).getName())))
                 throw new SemanticError(node.location(), String.format("Function \"%s\" should have a return type", node.getName()));
         }
-        for (VarDeclNode pareDecl : node.getParameterList()) {
-            pareDecl.accept(this);
+        for (VarDeclNode paraDecl : node.getParameterList()) {
+            paraDecl.accept(this);
         }
         currentScope = currentScope.getParent();
         node.getBody().accept(this);
@@ -392,7 +392,8 @@ public class FunctionScopeScanner extends BaseScopeScanner {
             invalidAssignType = true;
         if (invalidAssignType)
             throw new SemanticError(node.location(), String.format("Assignment operator cannot be applied to different types \"%s\" and \"%s\"", node.getLhs().getType().toString(), node.getRhs().getType().toString()));
-        node.setType(VoidType.getInstance());
+        // support for a = b = c
+        node.setType(node.getLhs().getType());
         node.setLeftValue(false);
     }
 

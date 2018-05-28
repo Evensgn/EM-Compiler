@@ -1,6 +1,6 @@
 package com.evensgn.emcompiler.ir;
 
-public class IRStore extends IRJumpInstruction {
+public class IRStore extends IRInstruction {
     private RegValue value;
     private int size;
     private RegValue addr;
