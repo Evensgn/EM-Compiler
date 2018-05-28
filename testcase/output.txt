@@ -1,0 +1,64 @@
+space @x 8
+space @y 8
+
+func main {
+%main_entry:
+    call __init_func 
+    $a = move 0
+    $vreg = mul 2 8
+    $vreg = add $vreg 8
+    $vreg = alloc $vreg
+    store 8 $vreg 2 0
+    $vreg_2 = move 0
+    $vreg_3 = move $vreg
+    jump %while_cond
+
+%while_cond:
+    $vreg_4 = slt $vreg_2 2
+    br $vreg_4 %while_body %while_after
+
+%while_after:
+    $vreg_5 = move $vreg
+    $a = move $vreg_5
+    ret 0
+
+%while_body:
+    $vreg_3 = add $vreg_3 8
+    $vreg_6 = mul 3 8
+    $vreg_6 = add $vreg_6 8
+    $vreg_6 = alloc $vreg_6
+    store 8 $vreg_6 3 0
+    $vreg_7 = move 0
+    $vreg_8 = move $vreg_6
+    jump %while_cond_2
+
+%while_cond_2:
+    $vreg_9 = slt $vreg_7 3
+    br $vreg_9 %while_body_2 %while_after_2
+
+%while_after_2:
+    store 8 $vreg_3 $vreg_6 0
+    $vreg_2 = add $vreg_2 1
+    jump %while_cond
+
+%while_body_2:
+    $vreg_8 = add $vreg_8 8
+    $vreg_10 = mul 4 8
+    $vreg_10 = add $vreg_10 8
+    $vreg_10 = alloc $vreg_10
+    store 8 $vreg_10 4 0
+    store 8 $vreg_8 $vreg_10 0
+    $vreg_7 = add $vreg_7 1
+    jump %while_cond_2
+
+}
+
+func __init_func {
+%__init_func_entry:
+    @x = move 1
+    $vreg = add @x 5
+    @y = move $vreg
+    ret 0
+
+}
+

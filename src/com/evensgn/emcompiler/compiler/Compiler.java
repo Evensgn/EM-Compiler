@@ -54,7 +54,7 @@ public class Compiler {
         functionScopeScanner.visit(ast);
         IRBuilder irBuilder = new IRBuilder(functionScopeScanner.getGlobalScope());
         irBuilder.visit(ast);
-        IRPrinter irPrinter = new IRPrinter(System.out);
+        IRPrinter irPrinter = new IRPrinter(outS);
         irPrinter.visit(irBuilder.getIR());
         System.out.println("compiler finished.");
     }

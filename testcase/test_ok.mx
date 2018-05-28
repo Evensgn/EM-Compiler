@@ -2,12 +2,7 @@ int x = 1;
 int y = x + 5;
 
 int main() {
-    int a = 1;
-    while (a < 10) {
-        a = a + 1;
-    }
-    //int[][][] a = new int[2][3][];
-    //int[][][] a;
-    //a = new int[2][3][];
+    int[][][][][] a;
+    a = new int[2][3][4][][];
     return 0;
 }

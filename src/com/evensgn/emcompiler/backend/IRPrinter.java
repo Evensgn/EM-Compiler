@@ -99,7 +99,7 @@ public class IRPrinter implements IRVisitor {
     public void visit(IRFunction node) {
         vregMap = new IdentityHashMap<>();
         vregCnt = new HashMap<>();
-        out.printf("function %s ", node.getName());
+        out.printf("func %s ", node.getName());
         for (VirtualRegister paraVReg : node.getArgVRegList()) {
             out.printf("$%s ", getVRegID(paraVReg));
         }

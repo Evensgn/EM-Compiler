@@ -1,6 +1,8 @@
 package com.evensgn.emcompiler;
 
 import com.evensgn.emcompiler.compiler.Compiler;
+import com.evensgn.emcompiler.utils.LLIRInterpreter;
+import jdk.internal.util.xml.impl.Input;
 
 import java.io.*;
 
@@ -84,5 +86,7 @@ public class Main {
             System.err.println(e.getMessage());
             System.exit(1);
         }
+
+        new LLIRInterpreter(new FileInputStream(outFile), false).run();
     }
 }
