@@ -16,6 +16,10 @@ public class FunctionScopeScanner extends BaseScopeScanner {
         this.globalScope = globalScope;
     }
 
+    public Scope getGlobalScope() {
+        return globalScope;
+    }
+
     @Override
     public void visit(ProgramNode node) {
         currentScope = globalScope;

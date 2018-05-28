@@ -42,9 +42,13 @@ public class IRBuilder extends BaseScopeScanner {
             stmts.add(new ExprStmtNode(assignExpr, null));
         }
         BlockStmtNode body = new BlockStmtNode(stmts, null);
+        body.initScope(globalScope);
         TypeNode retType = new TypeNode(VoidType.getInstance(), null);
         FuncDeclNode funcNode = new FuncDeclNode(retType, INIT_FUNC_NAME, new ArrayList<>(), body, null);
-        globalScope.put(Scope.funcKey(INIT_FUNC_NAME), new FuncEntity(funcNode));
+        FuncEntity funcEntity = new FuncEntity(funcNode);
+        globalScope.put(Scope.funcKey(INIT_FUNC_NAME), funcEntity);
+        IRFunction newIRFunc = new IRFunction(funcEntity);
+        ir.addFunc(newIRFunc);
         return funcNode;
     }
 
@@ -84,6 +88,8 @@ public class IRBuilder extends BaseScopeScanner {
                 ir.addFunc(newIRFunc);
             }
         }
+        FuncDeclNode initFunc = makeInitFunc();
+        initFunc.accept(this);
         for (DeclNode decl : node.getDecls()) {
             if (decl instanceof VarDeclNode) {
                 decl.accept(this);
@@ -95,13 +101,16 @@ public class IRBuilder extends BaseScopeScanner {
                 throw new CompilerError(decl.location(), "Invalid declaration node type");
             }
         }
-        FuncDeclNode initFunc = makeInitFunc();
-        initFunc.accept(this);
     }
 
     @Override
     public void visit(FuncDeclNode node) {
         currentFunc = ir.getFunc(node.getName());
+        currentBB = currentFunc.firstBB();
+        // call global init function
+        if (node.getName() == "main") {
+            currentBB.addInst(new IRFunctionCall(currentBB, ir.getFunc(INIT_FUNC_NAME), new ArrayList<>(), null));
+        }
         node.getBody().accept(this);
         if (!currentBB.isHasJumpInst()) {
             if (node.getReturnType() == null || node.getReturnType().getType() instanceof VoidType) {
@@ -222,7 +231,8 @@ public class IRBuilder extends BaseScopeScanner {
         currentBB = bodyBB;
         BasicBlock externalLoopCondBB = currentLoopStepBB, externalLoopAfterBB = currentLoopAfterBB;
         currentLoopStepBB = condBB;
-        currentLoopAfterBB = afterBB;    node.getStmt().accept(this);
+        currentLoopAfterBB = afterBB;
+        node.getStmt().accept(this);
         currentBB.setJumpInst(new IRJump(currentBB, condBB));
 
         currentLoopStepBB = externalLoopCondBB;
@@ -260,7 +270,6 @@ public class IRBuilder extends BaseScopeScanner {
             node.getStep().accept(this);
             currentBB.setJumpInst(new IRJump(currentBB, condBB));
         }
-
 
         currentBB = bodyBB;
         node.getStmt().accept(this);
@@ -459,6 +468,48 @@ public class IRBuilder extends BaseScopeScanner {
         }
     }
 
+    private void processArrayNew(NewExprNode node, VirtualRegister oreg, RegValue addr, int idx) {
+        VirtualRegister vreg = new VirtualRegister(null);
+        ExprNode dim = node.getDims().get(idx);
+        boolean wantAddrBak = wantAddr;
+        wantAddr = false;
+        dim.accept(this);
+        wantAddr = wantAddrBak;
+        currentBB.addInst(new IRBinaryOperation(currentBB, vreg, IRBinaryOperation.IRBinaryOp.MUL, dim.getRegValue(), new IntImmediate(Configuration.getRegSize())));
+        currentBB.addInst(new IRBinaryOperation(currentBB, vreg, IRBinaryOperation.IRBinaryOp.ADD, vreg, new IntImmediate(Configuration.getRegSize())));
+        currentBB.addInst(new IRHeapAlloc(currentBB, vreg, vreg));
+        currentBB.addInst(new IRStore(currentBB, dim.getRegValue(), Configuration.getRegSize(), vreg, 0));
+        if (idx < node.getDims().size() - 1) {
+            VirtualRegister loop_idx = new VirtualRegister(null);
+            VirtualRegister addrNow = new VirtualRegister(null);
+            currentBB.addInst(new IRMove(currentBB, loop_idx, new IntImmediate(0)));
+            currentBB.addInst(new IRMove(currentBB, addrNow, vreg));
+            BasicBlock condBB = new BasicBlock(currentFunc, "while_cond");
+            BasicBlock bodyBB = new BasicBlock(currentFunc, "while_body");
+            BasicBlock afterBB = new BasicBlock(currentFunc, "while_after");
+            currentBB.setJumpInst(new IRJump(currentBB, condBB));
+
+            currentBB = condBB;
+            IRComparison.IRCmpOp op = IRComparison.IRCmpOp.LESS;
+            VirtualRegister cmpReg = new VirtualRegister(null);
+            currentBB.addInst(new IRComparison(currentBB, cmpReg, op, loop_idx, dim.getRegValue()));
+            currentBB.setJumpInst(new IRBranch(currentBB, cmpReg, bodyBB, afterBB));
+
+            currentBB = bodyBB;
+            currentBB.addInst(new IRBinaryOperation(currentBB, addrNow, IRBinaryOperation.IRBinaryOp.ADD, addrNow, new IntImmediate(Configuration.getRegSize())));
+            processArrayNew(node, null, addrNow, idx + 1);
+            currentBB.addInst(new IRBinaryOperation(currentBB, loop_idx, IRBinaryOperation.IRBinaryOp.ADD, loop_idx, new IntImmediate(1)));
+            currentBB.setJumpInst(new IRJump(currentBB, condBB));
+
+            currentBB = afterBB;
+        }
+        if (idx == 0) {
+            currentBB.addInst(new IRMove(currentBB, oreg, vreg));
+        } else {
+            currentBB.addInst(new IRStore(currentBB, vreg, Configuration.getRegSize(), addr, 0));
+        }
+    }
+
     @Override
     public void visit(NewExprNode node) {
         VirtualRegister vreg = new VirtualRegister(null);
@@ -467,17 +518,16 @@ public class IRBuilder extends BaseScopeScanner {
             String className = ((ClassType) newType).getName();
             ClassEntity classEntity = (ClassEntity) globalScope.get(Scope.classKey(className));
             currentBB.addInst(new IRHeapAlloc(currentBB, vreg, new IntImmediate(classEntity.getMemorySize())));
-            // TO DO construction function
+            //  call construction function
+            String funcName = IRRoot.irMemberFuncName(className, className);
+            IRFunction irFunc = ir.getFunc(funcName);
+            if (irFunc != null) {
+                List<RegValue> args = new ArrayList<>();
+                args.add(vreg);
+                currentBB.addInst(new IRFunctionCall(currentBB, irFunc, args, null));
+            }
         } else if (newType instanceof ArrayType) {
-            ExprNode dim = node.getDims().get(0);
-            boolean wantAddrBak = wantAddr;
-            wantAddr = false;
-            dim.accept(this);
-            wantAddr = wantAddrBak;
-            currentBB.addInst(new IRBinaryOperation(currentBB, vreg, IRBinaryOperation.IRBinaryOp.MUL, dim.getRegValue(), new IntImmediate(Configuration.getRegSize())));
-            currentBB.addInst(new IRBinaryOperation(currentBB, vreg, IRBinaryOperation.IRBinaryOp.ADD, vreg, new IntImmediate(Configuration.getRegSize())));
-            currentBB.addInst(new IRHeapAlloc(currentBB, vreg, vreg));
-            currentBB.addInst(new IRStore(currentBB, dim.getRegValue(), Configuration.getRegSize(), vreg, 0));
+            processArrayNew(node, vreg, null, 0);
         } else {
             throw new CompilerError("invalid new type");
         }

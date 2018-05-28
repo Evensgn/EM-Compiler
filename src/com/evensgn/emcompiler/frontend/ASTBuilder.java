@@ -357,6 +357,7 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
         return new FuncCallExprNode(func, args, Location.fromCtx(ctx));
     }
 
+/*
     private BlockStmtNode expandMultiArray(ExprNode lhs, ExprNode rhs, int idx, Type newTypeNow, Location loc) {
         List<Node> declAndStmts = new ArrayList<>();
 
@@ -378,12 +379,13 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
         }
         return new BlockStmtNode(declAndStmts, loc);
     }
+*/
 
     @Override
     public Node visitAssignExpr(EMxStarParser.AssignExprContext ctx) {
         ExprNode lhs = (ExprNode) visit(ctx.lhs);
         ExprNode rhs = (ExprNode) visit(ctx.rhs);
-        // for multi-dimensional array creator syntactic sugar
+        /*// for multi-dimensional array creator syntactic sugar
         // expand it into one-dimensional array creators
         if (rhs instanceof NewExprNode && ((NewExprNode) rhs).getDims() != null && ((NewExprNode) rhs).getDims().size() > 1) {
             Location loc = Location.fromCtx(ctx);
@@ -391,7 +393,7 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
             Type newTypeNow = ((NewExprNode) rhs).getNewType().getType();
 
             return expandMultiArray(lhs, rhs, 0, newTypeNow, loc);
-        }
+        }*/
         return new AssignExprNode(lhs, rhs, Location.fromCtx(ctx));
     }
 

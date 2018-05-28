@@ -2,6 +2,7 @@ package com.evensgn.emcompiler.compiler;
 
 import com.evensgn.emcompiler.ast.ProgramNode;
 import com.evensgn.emcompiler.frontend.*;
+import com.evensgn.emcompiler.ir.IRBinaryOperation;
 import com.evensgn.emcompiler.parser.EMxStarLexer;
 import com.evensgn.emcompiler.parser.EMxStarParser;
 import com.evensgn.emcompiler.parser.SyntaxErrorListener;
@@ -50,6 +51,8 @@ public class Compiler {
         classVarMemberScanner.visit(ast);
         FunctionScopeScanner functionScopeScanner = new FunctionScopeScanner(classVarMemberScanner.getGlobalScope());
         functionScopeScanner.visit(ast);
+        IRBuilder irBuilder = new IRBuilder(functionScopeScanner.getGlobalScope());
+        irBuilder.visit(ast);
         System.out.println("compiler finished.");
     }
 }

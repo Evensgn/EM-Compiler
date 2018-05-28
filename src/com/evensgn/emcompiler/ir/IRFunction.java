@@ -31,6 +31,11 @@ public class IRFunction {
         argVRegList.add(vreg);
     }
 
+    public BasicBlock firstBB() {
+        headBB = new BasicBlock(this, funcEntity.getName() + "_entry");
+        return headBB;
+    }
+
     public FuncEntity getFuncEntity() {
         return funcEntity;
     }
