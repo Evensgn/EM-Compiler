@@ -18,4 +18,24 @@ public class IRBinaryOperation extends IRInstruction {
         this.lhs = lhs;
         this.rhs = rhs;
     }
+
+    public void accept(IRVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    public IRBinaryOp getOp() {
+        return op;
+    }
+
+    public IRRegister getDest() {
+        return dest;
+    }
+
+    public RegValue getLhs() {
+        return lhs;
+    }
+
+    public RegValue getRhs() {
+        return rhs;
+    }
 }

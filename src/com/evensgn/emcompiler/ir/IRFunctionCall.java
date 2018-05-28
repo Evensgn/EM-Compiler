@@ -13,4 +13,20 @@ public class IRFunctionCall extends IRInstruction {
         this.args = args;
         this.dest = dest;
     }
+
+    public void accept(IRVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    public IRFunction getFunc() {
+        return func;
+    }
+
+    public List<RegValue> getArgs() {
+        return args;
+    }
+
+    public VirtualRegister getDest() {
+        return dest;
+    }
 }

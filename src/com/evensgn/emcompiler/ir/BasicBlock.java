@@ -10,6 +10,7 @@ public class BasicBlock {
     private IRFunction func;
     private String name;
     private boolean hasJumpInst = false;
+    private int postOrderIdx;
     private Set<BasicBlock> prevBBSet = new HashSet<>(), nextBBSet = new HashSet<>();
 
     public BasicBlock(IRFunction func, String name) {
@@ -27,6 +28,10 @@ public class BasicBlock {
             lastInst.setNextInst(inst);
             lastInst = inst;
         }
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void addPrevBB(BasicBlock bb) {
@@ -57,5 +62,33 @@ public class BasicBlock {
 
     public boolean isHasJumpInst() {
         return hasJumpInst;
+    }
+
+    public Set<BasicBlock> getPrevBBSet() {
+        return prevBBSet;
+    }
+
+    public Set<BasicBlock> getNextBBSet() {
+        return nextBBSet;
+    }
+
+    public void setPostOrderIdx(int postOrderIdx) {
+        this.postOrderIdx = postOrderIdx;
+    }
+
+    public int getPostOrderIdx() {
+        return postOrderIdx;
+    }
+
+    public IRInstruction getFirstInst() {
+        return firstInst;
+    }
+
+    public IRInstruction getLastInst() {
+        return lastInst;
+    }
+
+    public void accept(IRVisitor visitor) {
+        visitor.visit(this);
     }
 }

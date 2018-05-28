@@ -16,4 +16,24 @@ public class IRComparison extends IRInstruction {
         this.lhs = lhs;
         this.rhs = rhs;
     }
+
+    public void accept(IRVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    public IRRegister getDest() {
+        return dest;
+    }
+
+    public IRCmpOp getOp() {
+        return op;
+    }
+
+    public RegValue getLhs() {
+        return lhs;
+    }
+
+    public RegValue getRhs() {
+        return rhs;
+    }
 }

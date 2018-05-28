@@ -9,4 +9,16 @@ public class IRHeapAlloc extends IRInstruction {
         this.dest = dest;
         this.allocSize = allocSize;
     }
+
+    public void accept(IRVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    public IRRegister getDest() {
+        return dest;
+    }
+
+    public RegValue getAllocSize() {
+        return allocSize;
+    }
 }

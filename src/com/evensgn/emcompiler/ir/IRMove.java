@@ -9,4 +9,16 @@ public class IRMove extends IRInstruction {
         this.lhs = lhs;
         this.rhs = rhs;
     }
+
+    public void accept(IRVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    public IRRegister getLhs() {
+        return lhs;
+    }
+
+    public RegValue getRhs() {
+        return rhs;
+    }
 }

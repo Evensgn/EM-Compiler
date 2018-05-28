@@ -10,4 +10,8 @@ public class VirtualRegister extends IRRegister {
     public String getName() {
         return name;
     }
+
+    public void accept(IRVisitor visitor) {
+        visitor.visit(this);
+    }
 }

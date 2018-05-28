@@ -1,5 +1,16 @@
+int x = 1;
+int y = x + 5;
+
 int main() {
-    int[][][] a;
-    a = new int[2][3][];
+    int a = 1;
+    if (a < 1) {
+        a = a + 2;
+    } else {
+        int b = a;
+        a = b * 2;
+    }
+    //int[][][] a = new int[2][3][];
+    //int[][][] a;
+    //a = new int[2][3][];
     return 0;
 }

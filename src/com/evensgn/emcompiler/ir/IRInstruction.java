@@ -15,4 +15,18 @@ public abstract class IRInstruction {
     public void setNextInst(IRInstruction nextInst) {
         this.nextInst = nextInst;
     }
+
+    public abstract void accept(IRVisitor visitor);
+
+    public IRInstruction getPrevInst() {
+        return prevInst;
+    }
+
+    public IRInstruction getNextInst() {
+        return nextInst;
+    }
+
+    public BasicBlock getParentBB() {
+        return parentBB;
+    }
 }

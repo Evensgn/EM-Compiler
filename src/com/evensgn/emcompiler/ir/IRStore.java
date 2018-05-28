@@ -13,4 +13,24 @@ public class IRStore extends IRInstruction {
         this.addr = addr;
         this.addrOffset = addrOffset;
     }
+
+    public void accept(IRVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    public RegValue getValue() {
+        return value;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public RegValue getAddr() {
+        return addr;
+    }
+
+    public int getAddrOffset() {
+        return addrOffset;
+    }
 }

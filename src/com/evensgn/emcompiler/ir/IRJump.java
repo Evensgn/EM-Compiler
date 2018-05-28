@@ -11,4 +11,8 @@ public class IRJump extends IRJumpInstruction {
     public BasicBlock getTargetBB() {
         return targetBB;
     }
+
+    public void accept(IRVisitor visitor) {
+        visitor.visit(this);
+    }
 }

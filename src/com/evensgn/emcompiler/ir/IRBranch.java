@@ -18,4 +18,12 @@ public class IRBranch extends IRJumpInstruction {
     public BasicBlock getElseBB() {
         return elseBB;
     }
+
+    public RegValue getCond() {
+        return cond;
+    }
+
+    public void accept(IRVisitor visitor) {
+        visitor.visit(this);
+    }
 }

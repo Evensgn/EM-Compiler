@@ -13,4 +13,24 @@ public class IRLoad extends IRInstruction {
         this.addr = addr;
         this.addrOffset = addrOffset;
     }
+
+    public void accept(IRVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    public VirtualRegister getDest() {
+        return dest;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public RegValue getAddr() {
+        return addr;
+    }
+
+    public int getAddrOffset() {
+        return addrOffset;
+    }
 }

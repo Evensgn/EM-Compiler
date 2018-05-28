@@ -2,22 +2,16 @@ package com.evensgn.emcompiler.frontend;
 
 import com.evensgn.emcompiler.Configuration;
 import com.evensgn.emcompiler.ast.*;
-import com.evensgn.emcompiler.compiler.Compiler;
 import com.evensgn.emcompiler.ir.*;
 import com.evensgn.emcompiler.scope.*;
 import com.evensgn.emcompiler.type.*;
 import com.evensgn.emcompiler.utils.CompilerError;
-import com.sun.crypto.provider.DESCipher;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import javafx.scene.media.VideoTrack;
-import org.antlr.v4.codegen.model.decl.Decl;
-import sun.reflect.generics.tree.BaseType;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class IRBuilder extends BaseScopeScanner {
-    private final String INIT_FUNC_NAME = "#INIT_FUNC";
+    private final String INIT_FUNC_NAME = "__init_func";
     private IRRoot ir = new IRRoot();
     private IRFunction currentFunc = null;
     private BasicBlock currentBB = null;
@@ -68,7 +62,7 @@ public class IRBuilder extends BaseScopeScanner {
             if (needMemOp) {
                 currentBB.addInst(new IRStore(currentBB, rhs.getRegValue(), rhs.getType().getVarSize(), dest, addrOffset));
             } else {
-                currentBB.addInst(new IRMove(currentBB, (VirtualRegister) dest, rhs.getRegValue()));
+                currentBB.addInst(new IRMove(currentBB, (IRRegister) dest, rhs.getRegValue()));
             }
         }
     }
@@ -86,13 +80,15 @@ public class IRBuilder extends BaseScopeScanner {
                 FuncEntity funcEntity = (FuncEntity) currentScope.get(Scope.funcKey(decl.getName()));
                 IRFunction newIRFunc = new IRFunction(funcEntity);
                 ir.addFunc(newIRFunc);
+            } else if (decl instanceof VarDeclNode) {
+                decl.accept(this);
             }
         }
         FuncDeclNode initFunc = makeInitFunc();
         initFunc.accept(this);
         for (DeclNode decl : node.getDecls()) {
             if (decl instanceof VarDeclNode) {
-                decl.accept(this);
+                // no actions to take
             } else if (decl instanceof ClassDeclNode) {
                 decl.accept(this);
             } else if (decl instanceof FuncDeclNode) {
@@ -106,9 +102,9 @@ public class IRBuilder extends BaseScopeScanner {
     @Override
     public void visit(FuncDeclNode node) {
         currentFunc = ir.getFunc(node.getName());
-        currentBB = currentFunc.firstBB();
+        currentBB = currentFunc.genFirstBB();
         // call global init function
-        if (node.getName() == "main") {
+        if (node.getName().equals("main")) {
             currentBB.addInst(new IRFunctionCall(currentBB, ir.getFunc(INIT_FUNC_NAME), new ArrayList<>(), null));
         }
         node.getBody().accept(this);

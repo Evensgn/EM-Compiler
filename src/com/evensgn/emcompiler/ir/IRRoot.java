@@ -29,7 +29,23 @@ public class IRRoot {
         return staticStrs.get(str);
     }
 
+    public Map<String, IRFunction> getFuncs() {
+        return funcs;
+    }
+
+    public List<StaticData> getStaticDataList() {
+        return staticDataList;
+    }
+
+    public Map<String, StaticString> getStaticStrs() {
+        return staticStrs;
+    }
+
     public void addStaticData(StaticData staticData) {
         staticDataList.add(staticData);
+    }
+
+    public void accept(IRVisitor visitor) {
+        visitor.visit(this);
     }
 }

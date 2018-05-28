@@ -12,4 +12,8 @@ public class StaticString extends StaticData {
     public String getValue() {
         return value;
     }
+
+    public void accept(IRVisitor visitor) {
+        visitor.visit(this);
+    }
 }

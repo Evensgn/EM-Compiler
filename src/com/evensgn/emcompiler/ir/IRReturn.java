@@ -7,4 +7,12 @@ public class IRReturn extends IRJumpInstruction {
         super(parentBB);
         this.retValue = retValue;
     }
+
+    public void accept(IRVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    public RegValue getRetValue() {
+        return retValue;
+    }
 }

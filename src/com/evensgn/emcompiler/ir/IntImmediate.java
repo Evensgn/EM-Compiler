@@ -10,4 +10,8 @@ public class IntImmediate extends RegValue {
     public int getValue() {
         return value;
     }
+
+    public void accept(IRVisitor visitor) {
+        visitor.visit(this);
+    }
 }

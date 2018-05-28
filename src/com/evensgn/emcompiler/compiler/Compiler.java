@@ -1,6 +1,7 @@
 package com.evensgn.emcompiler.compiler;
 
 import com.evensgn.emcompiler.ast.ProgramNode;
+import com.evensgn.emcompiler.backend.IRPrinter;
 import com.evensgn.emcompiler.frontend.*;
 import com.evensgn.emcompiler.ir.IRBinaryOperation;
 import com.evensgn.emcompiler.parser.EMxStarLexer;
@@ -43,8 +44,8 @@ public class Compiler {
     public void compile() throws Exception {
         System.out.println("compiler is running");
         buildAST();
-        ASTPrinter astPrinter = new ASTPrinter(outS);
-        astPrinter.visit(ast);
+        //ASTPrinter astPrinter = new ASTPrinter(outS);
+        //astPrinter.visit(ast);
         GlobalScopePreScanner globalScopePreScanner = new GlobalScopePreScanner();
         globalScopePreScanner.visit(ast);
         ClassVarMemberScanner classVarMemberScanner = new ClassVarMemberScanner(globalScopePreScanner.getScope());
@@ -53,6 +54,8 @@ public class Compiler {
         functionScopeScanner.visit(ast);
         IRBuilder irBuilder = new IRBuilder(functionScopeScanner.getGlobalScope());
         irBuilder.visit(ast);
+        IRPrinter irPrinter = new IRPrinter(System.out);
+        irPrinter.visit(irBuilder.getIR());
         System.out.println("compiler finished.");
     }
 }

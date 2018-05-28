@@ -14,4 +14,20 @@ public class IRUnaryOperation extends IRInstruction {
         this.op = op;
         this.rhs = rhs;
     }
+
+    public void accept(IRVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    public IRUnaryOp getOp() {
+        return op;
+    }
+
+    public IRRegister getDest() {
+        return dest;
+    }
+
+    public RegValue getRhs() {
+        return rhs;
+    }
 }

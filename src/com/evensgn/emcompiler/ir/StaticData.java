@@ -16,4 +16,6 @@ public abstract class StaticData extends IRRegister {
     public int getSize() {
         return size;
     }
+
+    public abstract void accept(IRVisitor visitor);
 }
