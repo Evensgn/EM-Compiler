@@ -2,6 +2,7 @@ package com.evensgn.emcompiler.frontend;
 
 import com.evensgn.emcompiler.Configuration;
 import com.evensgn.emcompiler.ast.*;
+import com.evensgn.emcompiler.compiler.Compiler;
 import com.evensgn.emcompiler.ir.*;
 import com.evensgn.emcompiler.scope.*;
 import com.evensgn.emcompiler.type.*;
@@ -19,6 +20,7 @@ public class IRBuilder extends BaseScopeScanner {
     private List<GlobalVarInit> globalInitList = new ArrayList<>();
     private boolean isFuncArgDecl = false, wantAddr = false;
     private BasicBlock currentLoopStepBB, currentLoopAfterBB;
+    private String currentClassName = null;
 
     public IRRoot getIR() {
         return ir;
@@ -67,8 +69,22 @@ public class IRBuilder extends BaseScopeScanner {
         }
     }
 
+    private boolean checkIdentiferThisMemberAccess(IdentifierExprNode node) {
+        if (!node.isChecked()) {
+            if (currentClassName != null) {
+                VarEntity varEntity = (VarEntity) currentScope.get(Scope.varKey(node.getIdentifier()));
+                node.setNeedMemOp(varEntity.getIrRegister() == null);
+            } else {
+                node.setNeedMemOp(false);
+            }
+            node.setChecked(true);
+        }
+        return node.isNeedMemOp();
+    }
+
     private boolean isMemoryAccess(ExprNode node) {
-        return node instanceof SubscriptExprNode || node instanceof MemberAccessExprNode;
+        return node instanceof SubscriptExprNode || node instanceof MemberAccessExprNode ||
+                (node instanceof IdentifierExprNode && checkIdentiferThisMemberAccess((IdentifierExprNode) node));
     }
 
     @Override
@@ -82,6 +98,15 @@ public class IRBuilder extends BaseScopeScanner {
                 ir.addFunc(newIRFunc);
             } else if (decl instanceof VarDeclNode) {
                 decl.accept(this);
+            } else if (decl instanceof ClassDeclNode) {
+                ClassEntity entity = (ClassEntity) currentScope.get(Scope.classKey(decl.getName()));
+                currentScope = entity.getScope();
+                for (FuncDeclNode memberFunc : ((ClassDeclNode) decl).getFuncMember()) {
+                    FuncEntity funcEntity = (FuncEntity) currentScope.get(Scope.funcKey(memberFunc.getName()));
+                    IRFunction newIRFunc = new IRFunction(funcEntity);
+                    ir.addFunc(newIRFunc);
+                }
+                currentScope = currentScope.getParent();
             }
         }
         FuncDeclNode initFunc = makeInitFunc();
@@ -101,15 +126,27 @@ public class IRBuilder extends BaseScopeScanner {
 
     @Override
     public void visit(FuncDeclNode node) {
-        currentFunc = ir.getFunc(node.getName());
+        String funcName = node.getName();
+        if (currentClassName != null) {
+            funcName = IRRoot.irMemberFuncName(currentClassName, funcName);
+        }
+        currentFunc = ir.getFunc(funcName);
         currentBB = currentFunc.genFirstBB();
         // for parameter declaration
+        Scope currentScopeBak = currentScope;
         currentScope = node.getBody().getScope();
+        if (currentClassName != null) {
+            VarEntity entity = (VarEntity) currentScope.get(Scope.varKey(Scope.THIS_PARA_NAME));
+            VirtualRegister vreg = new VirtualRegister(Scope.THIS_PARA_NAME);
+            entity.setIrRegister(vreg);
+            currentFunc.addArgVReg(vreg);
+        }
         isFuncArgDecl = true;
         for (VarDeclNode argDecl : node.getParameterList()) {
             argDecl.accept(this);
         }
         isFuncArgDecl = false;
+        currentScope = currentScopeBak;
         // call global init function
         if (node.getName().equals("main")) {
             currentBB.addInst(new IRFunctionCall(currentBB, ir.getFunc(INIT_FUNC_NAME), new ArrayList<>(), null));
@@ -127,14 +164,12 @@ public class IRBuilder extends BaseScopeScanner {
     @Override
     public void visit(ClassDeclNode node) {
         ClassEntity entity = (ClassEntity) currentScope.get(Scope.classKey(node.getName()));
-        currentScope = entity.getScope();
-        for (VarDeclNode decl : node.getVarMember()) {
-            decl.accept(this);
-        }
+        currentClassName = node.getName();
+        currentScope = globalScope;
         for (FuncDeclNode decl : node.getFuncMember()) {
             decl.accept(this);
         }
-        currentScope = currentScope.getParent();
+        currentClassName = null;
     }
 
     @Override
@@ -360,15 +395,19 @@ public class IRBuilder extends BaseScopeScanner {
 
     @Override
     public void visit(FuncCallExprNode node) {
-        String funcName = ((FunctionType)(node.getFunc().getType())).getName();
-        FuncEntity funcEntity = (FuncEntity) currentScope.get(Scope.funcKey(funcName));
+        FuncEntity funcEntity = node.getFuncEntity();
+        String funcName = funcEntity.getName();
         List<RegValue> args = new ArrayList<>();
         if (funcEntity.isMember()) {
             ExprNode thisExpr;
             if (node.getFunc() instanceof MemberAccessExprNode) {
                 thisExpr = ((MemberAccessExprNode) (node.getFunc())).getExpr();
             } else {
+                if (currentClassName == null) {
+                    throw new CompilerError("invalid member function call of this pointer");
+                }
                 thisExpr = new ThisExprNode(null);
+                thisExpr.setType(new ClassType(currentClassName));
             }
             thisExpr.accept(this);
             String className = ((ClassType) (thisExpr.getType())).getName();
@@ -692,7 +731,7 @@ public class IRBuilder extends BaseScopeScanner {
         }
         node.getRhs().accept(this);
 
-        boolean needMemOp = node.getLhs() instanceof MemberAccessExprNode || node.getLhs() instanceof SubscriptExprNode;
+        boolean needMemOp = isMemoryAccess(node.getLhs());
         wantAddr = needMemOp;
         node.getLhs().accept(this);
         wantAddr = false;
@@ -714,9 +753,28 @@ public class IRBuilder extends BaseScopeScanner {
     public void visit(IdentifierExprNode node) {
         // should be a variable instead of a function
         VarEntity varEntity = (VarEntity) currentScope.get(Scope.varKey(node.getIdentifier()));
-        node.setRegValue(varEntity.getIrRegister());
-        if (node.getTrueBB() != null) {
-            currentBB.setJumpInst(new IRBranch(currentBB, node.getRegValue(), node.getTrueBB(), node.getFalseBB()));
+        if (varEntity.getIrRegister() == null) {
+            ThisExprNode thisExprNode = new ThisExprNode(null);
+            thisExprNode.setType(new ClassType(currentClassName));
+            MemberAccessExprNode memberAccessExprNode = new MemberAccessExprNode(thisExprNode, node.getIdentifier(), null);
+            memberAccessExprNode.accept(this);
+            if (wantAddr) {
+                node.setAddrValue(memberAccessExprNode.getAddrValue());
+                node.setAddrOffset(memberAccessExprNode.getAddrOffset());
+            } else {
+                node.setRegValue(memberAccessExprNode.getRegValue());
+                if (node.getTrueBB() != null) {
+                    currentBB.setJumpInst(new IRBranch(currentBB, node.getRegValue(), node.getTrueBB(), node.getFalseBB()));
+                }
+            }
+            // is actually this.identifier, which is a member accessing expression
+            node.setNeedMemOp(true);
+        }
+        else {
+            node.setRegValue(varEntity.getIrRegister());
+            if (node.getTrueBB() != null) {
+                currentBB.setJumpInst(new IRBranch(currentBB, node.getRegValue(), node.getTrueBB(), node.getFalseBB()));
+            }
         }
     }
 

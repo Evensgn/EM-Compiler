@@ -150,8 +150,12 @@ public class IRPrinter implements IRVisitor {
         out.print("    ");
         String op = null;
         switch (node.getOp()) {
-            case NEG: op = "neg"; break;
-            case BITWISE_NOT: op = "not"; break;
+            case NEG:
+                op = "neg";
+                break;
+            case BITWISE_NOT:
+                op = "not";
+                break;
         }
         node.getDest().accept(this);
         out.printf(" = %s ", op);
@@ -164,16 +168,36 @@ public class IRPrinter implements IRVisitor {
         out.print("    ");
         String op = null;
         switch (node.getOp()) {
-            case ADD: op = "add"; break;
-            case SUB: op = "sub"; break;
-            case MUL: op = "mul"; break;
-            case DIV: op = "div"; break;
-            case MOD: op = "rem"; break;
-            case SHL: op = "shl"; break;
-            case SHR: op = "shr"; break;
-            case BITWISE_AND: op = "and"; break;
-            case BITWISE_OR: op = "or"; break;
-            case BITWISE_XOR: op = "xor"; break;
+            case ADD:
+                op = "add";
+                break;
+            case SUB:
+                op = "sub";
+                break;
+            case MUL:
+                op = "mul";
+                break;
+            case DIV:
+                op = "div";
+                break;
+            case MOD:
+                op = "rem";
+                break;
+            case SHL:
+                op = "shl";
+                break;
+            case SHR:
+                op = "shr";
+                break;
+            case BITWISE_AND:
+                op = "and";
+                break;
+            case BITWISE_OR:
+                op = "or";
+                break;
+            case BITWISE_XOR:
+                op = "xor";
+                break;
         }
         node.getDest().accept(this);
         out.printf(" = %s ", op);
@@ -188,12 +212,24 @@ public class IRPrinter implements IRVisitor {
         out.print("    ");
         String op = null;
         switch (node.getOp()) {
-            case EQUAL: op = "seq"; break;
-            case INEQUAL: op = "sne"; break;
-            case GREATER: op = "sgt"; break;
-            case GREATER_EQUAL: op = "sge"; break;
-            case LESS: op = "slt"; break;
-            case LESS_EQUAL: op = "sle"; break;
+            case EQUAL:
+                op = "seq";
+                break;
+            case INEQUAL:
+                op = "sne";
+                break;
+            case GREATER:
+                op = "sgt";
+                break;
+            case GREATER_EQUAL:
+                op = "sge";
+                break;
+            case LESS:
+                op = "slt";
+                break;
+            case LESS_EQUAL:
+                op = "sle";
+                break;
         }
         node.getDest().accept(this);
         out.printf(" = %s ", op);

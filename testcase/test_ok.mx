@@ -1,10 +1,21 @@
-int main() {
-    int i = 0;
-    int c = 3;
-    for (i = 1; i < 10; i++) {
-        ++c;
+class A {
+    int x, y;
+    A() {
+        x = 5;
+        y = 8;
+        ok();
+        return;
     }
-    return c;
+    void ok() {
+        x = x * 3;
+        return;
+    }
+}
+
+int main() {
+     A a = new A;
+     a.ok();
+     return a.x - a.y;
 }
 
 // return 12

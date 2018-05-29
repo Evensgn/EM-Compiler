@@ -1,27 +1,33 @@
 
+func __member_A_A $__this_para {
+%A_entry:
+    store 8 $__this_para 5 0
+    store 8 $__this_para 8 8
+    $vreg = call __member_A_ok $__this_para 
+    ret 0
+
+}
+
 func main {
 %main_entry:
     call __init_func 
-    $i = move 0
-    $c = move 3
-    $i = move 1
-    jump %for_cond
+    $vreg = alloc 16
+    call __member_A_A $vreg 
+    $a = move $vreg
+    $vreg_2 = call __member_A_ok $a 
+    $vreg_3 = load 8 $a 0
+    $vreg_4 = load 8 $a 8
+    $vreg_5 = sub $vreg_3 $vreg_4
+    ret $vreg_5
 
-%for_cond:
-    $vreg = slt $i 10
-    br $vreg %for_body %for_after
+}
 
-%for_after:
-    ret $c
-
-%for_body:
-    $c = add $c 1
-    jump %for_step
-
-%for_step:
-    $vreg_2 = move $i
-    $i = add $i 1
-    jump %for_cond
+func __member_A_ok $__this_para {
+%ok_entry:
+    $vreg = load 8 $__this_para 0
+    $vreg_2 = mul $vreg 3
+    store 8 $__this_para $vreg_2 0
+    ret 0
 
 }
 

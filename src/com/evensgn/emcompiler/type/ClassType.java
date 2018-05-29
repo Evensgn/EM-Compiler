@@ -7,7 +7,7 @@ public class ClassType extends Type {
 
     public ClassType(String name) {
         hyperType = HyperTypes.CLASS;
-        name = name;
+        this.name = name;
         varSize = Configuration.getRegSize();
     }
 

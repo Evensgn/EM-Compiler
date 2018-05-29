@@ -13,9 +13,10 @@ public class IRFunction {
     private BasicBlock startBB = null, endBB = null;
     private List<VirtualRegister> argVRegList = new ArrayList<>();
     private List<BasicBlock> reversePostOrder = null;
+    private String name;
 
     public String getName() {
-        return funcEntity.getName();
+        return name;
     }
 
     public List<VarEntity> getParameters() {
@@ -24,6 +25,10 @@ public class IRFunction {
 
     public IRFunction(FuncEntity funcEntity) {
         this.funcEntity = funcEntity;
+        name = funcEntity.getName();
+        if (funcEntity.isMember()) {
+            name = IRRoot.irMemberFuncName(funcEntity.getClassName(), name);
+        }
     }
 
     public List<VirtualRegister> getArgVRegList() {

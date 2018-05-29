@@ -5,11 +5,13 @@ import com.evensgn.emcompiler.scope.*;
 import com.evensgn.emcompiler.type.*;
 import com.evensgn.emcompiler.utils.CompilerError;
 import com.evensgn.emcompiler.utils.SemanticError;
+import sun.security.krb5.internal.crypto.CksumType;
 
 public class FunctionScopeScanner extends BaseScopeScanner {
     private Scope globalScope, currentScope;
     private int inLoop;
-    private Type currentReturnType, currentClassType;
+    private Type currentReturnType;
+    private ClassType currentClassType;
     private FuncEntity currentFuncEntity;
 
     public FunctionScopeScanner(Scope globalScope) {
@@ -60,8 +62,9 @@ public class FunctionScopeScanner extends BaseScopeScanner {
         if (currentClassType != null) {
             String key = Scope.varKey(Scope.THIS_PARA_NAME);
             currentScope.putCheck(node.location(), Scope.THIS_PARA_NAME, key, new VarEntity(Scope.THIS_PARA_NAME, currentClassType));
-            if (node.isConstruct() && !(node.getName().equals(((ClassType) currentClassType).getName())))
+            if (node.isConstruct() && !(node.getName().equals(currentClassType.getName()))) {
                 throw new SemanticError(node.location(), String.format("Function \"%s\" should have a return type", node.getName()));
+            }
         }
         for (VarDeclNode paraDecl : node.getParameterList()) {
             paraDecl.accept(this);
@@ -74,7 +77,7 @@ public class FunctionScopeScanner extends BaseScopeScanner {
     public void visit(ClassDeclNode node) {
         ClassEntity entity = (ClassEntity) currentScope.getCheck(node.location(), node.getName(), Scope.classKey(node.getName()));
         currentScope = entity.getScope();
-        currentClassType = entity.getType();
+        currentClassType = (ClassType) entity.getType();
         for (FuncDeclNode funcDecl : node.getFuncMember()) {
             funcDecl.accept(this);
         }
@@ -207,24 +210,26 @@ public class FunctionScopeScanner extends BaseScopeScanner {
         if (!(node.getFunc().getType() instanceof FunctionType))
             throw new SemanticError(node.getFunc().location(), String.format("Type \"%s\" is not callable", node.getFunc().getType().toString()));
         FuncEntity funcEntity = currentFuncEntity;
+        node.setFuncEntity(funcEntity);
         int paraNum = funcEntity.getParameters().size();
-        if (paraNum != node.getArgs().size())
+        int firstParaIdx = funcEntity.isMember() ? 1 : 0;
+        if (paraNum - firstParaIdx != node.getArgs().size())
             throw new SemanticError(node.location(), String.format("Function call has inconsistent number of arguments, expected %d but got %d", paraNum, node.getArgs().size()));
         boolean invalidArgType;
-        for (int i = 0; i < paraNum; ++i) {
+        for (int i = 0; i < paraNum - firstParaIdx; ++i) {
             node.getArgs().get(i).accept(this);
             if (node.getArgs().get(i).getType() instanceof VoidType)
                 invalidArgType = true;
             else if (node.getArgs().get(i).getType() instanceof NullType)
-                invalidArgType = !(funcEntity.getParameters().get(i).getType() instanceof ClassType || funcEntity.getParameters().get(i).getType() instanceof ArrayType);
+                invalidArgType = !(funcEntity.getParameters().get(i + firstParaIdx).getType() instanceof ClassType || funcEntity.getParameters().get(i + firstParaIdx).getType() instanceof ArrayType);
             else
-                invalidArgType = !(funcEntity.getParameters().get(i).getType().equals(node.getArgs().get(i).getType()));
+                invalidArgType = !(funcEntity.getParameters().get(i + firstParaIdx).getType().equals(node.getArgs().get(i).getType()));
             if (invalidArgType) {
                 throw new SemanticError(
                     node.getArgs().get(i).location(),
                     String.format(
                         "Function call has inconsistent type of arguments, expected %s but got %s",
-                        funcEntity.getParameters().get(i).getType().toString(),
+                        funcEntity.getParameters().get(i + firstParaIdx).getType().toString(),
                         node.getArgs().get(i).getType().toString()
                     )
                 );

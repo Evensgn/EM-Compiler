@@ -14,7 +14,7 @@ public class Scope {
     static private final String FUNC_PREFIX = "$FUNC$";
     static public final String ARRAY_CLASS_NAME = "#ARRAY";
     static public final String STRING_CLASS_NAME = "#STRING";
-    static public final String THIS_PARA_NAME = "#THIS";
+    static public final String THIS_PARA_NAME = "__this_para";
 
     private Map<String, Entity> entityMap = new HashMap<>();
     private Scope parent;
