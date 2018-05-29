@@ -103,6 +103,13 @@ public class IRBuilder extends BaseScopeScanner {
     public void visit(FuncDeclNode node) {
         currentFunc = ir.getFunc(node.getName());
         currentBB = currentFunc.genFirstBB();
+        // for parameter declaration
+        currentScope = node.getBody().getScope();
+        isFuncArgDecl = true;
+        for (VarDeclNode argDecl : node.getParameterList()) {
+            argDecl.accept(this);
+        }
+        isFuncArgDecl = false;
         // call global init function
         if (node.getName().equals("main")) {
             currentBB.addInst(new IRFunctionCall(currentBB, ir.getFunc(INIT_FUNC_NAME), new ArrayList<>(), null));
@@ -205,7 +212,9 @@ public class IRBuilder extends BaseScopeScanner {
 
         currentBB = thenBB;
         node.getThenStmt().accept(this);
-        currentBB.setJumpInst(new IRJump(currentBB, afterBB));
+        if (!currentBB.isHasJumpInst()) {
+            currentBB.setJumpInst(new IRJump(currentBB, afterBB));
+        }
 
         if (node.getElseStmt() != null) {
             currentBB = elseBB;
@@ -339,7 +348,7 @@ public class IRBuilder extends BaseScopeScanner {
                 expr.setRegValue(vreg);
             }
         } else {
-            currentBB.addInst(new IRBinaryOperation(currentBB, (IRRegister) expr.getRegValue(), op, expr.getAddrValue(), one));
+            currentBB.addInst(new IRBinaryOperation(currentBB, (IRRegister) expr.getRegValue(), op, expr.getRegValue(), one));
         }
         wantAddr = bakWantAddr;
     }
@@ -471,6 +480,7 @@ public class IRBuilder extends BaseScopeScanner {
         }
     }
 
+    // This function expands multi-dimensional array creators into multiple one-dimensional ones
     private void processArrayNew(NewExprNode node, VirtualRegister oreg, RegValue addr, int idx) {
         VirtualRegister vreg = new VirtualRegister(null);
         ExprNode dim = node.getDims().get(idx);
@@ -612,6 +622,7 @@ public class IRBuilder extends BaseScopeScanner {
 
         node.getLhs().accept(this);
         node.getRhs().accept(this);
+
         IRComparison.IRCmpOp op;
         switch (node.getOp()) {
             case GREATER:

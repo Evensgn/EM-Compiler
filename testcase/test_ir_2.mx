@@ -1,0 +1,12 @@
+int max(int a, int b) {
+    if (a > b) return a;
+    return b;
+}
+
+int main() {
+    int a = 10, b = 5;
+    int c = max(a, b);
+    return c;
+}
+
+// return 10

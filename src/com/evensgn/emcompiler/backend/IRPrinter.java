@@ -170,7 +170,7 @@ public class IRPrinter implements IRVisitor {
             case DIV: op = "div"; break;
             case MOD: op = "rem"; break;
             case SHL: op = "shl"; break;
-            case SHR: op = "ashr"; break;
+            case SHR: op = "shr"; break;
             case BITWISE_AND: op = "and"; break;
             case BITWISE_OR: op = "or"; break;
             case BITWISE_XOR: op = "xor"; break;

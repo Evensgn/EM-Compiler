@@ -1,8 +1,10 @@
-int x = 1;
-int y = x + 5;
-
 int main() {
-    int[][][][][] a;
-    a = new int[2][3][4][][];
-    return 0;
+    int i = 0;
+    int c = 3;
+    for (i = 1; i < 10; i++) {
+        ++c;
+    }
+    return c;
 }
+
+// return 12
