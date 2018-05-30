@@ -10,6 +10,10 @@ public class FunctionInlineProcessor {
 
     private IRRoot ir;
 
+    public IRRoot getIR() {
+        return ir;
+    }
+
     private class FuncInfo {
         int numInst = 0, numCalled = 0;
         boolean recursiveCall;
@@ -64,7 +68,7 @@ public class FunctionInlineProcessor {
                         if (calleeInfo.recursiveCall) continue;
                         if (calleeInfo.numInst > MAX_INLINE_INST || calleeInfo.numInst + funcInfo.numInst > MAX_FUNC_INST) continue;
 
-                        inlineFunctionCall((IRFunctionCall) inst);
+                        nextInst = inlineFunctionCall((IRFunctionCall) inst);
                         funcInfo.numInst += calleeInfo.numInst;
                         changed = true;
                         thisFuncChanged = true;
@@ -89,7 +93,7 @@ public class FunctionInlineProcessor {
     }
 
 
-    private void inlineFunctionCall(IRFunctionCall funcCallInst) {
+    private IRInstruction inlineFunctionCall(IRFunctionCall funcCallInst) {
         IRFunction callerFunc = funcCallInst.getParentBB().getFunc(), calleeFunc = funcCallInst.getFunc();
         List<BasicBlock> reversePostOrder = calleeFunc.getReversePostOrder();
 
@@ -130,9 +134,33 @@ public class FunctionInlineProcessor {
                 for (RegValue usedRegValue : inst.getUsedRegValues()) {
                     copyRegValue(renameMap, usedRegValue);
                 }
-
+                if (inst.getDefinedRegister() != null) {
+                    copyRegValue(renameMap, inst.getDefinedRegister());
+                }
+                if (newBB == newEndBB) {
+                    if (!(inst instanceof IRReturn)) {
+                        newEndBBFisrtInst.prependInst(inst.copyRename(renameMap));
+                    }
+                } else {
+                    if (inst instanceof IRJumpInstruction) {
+                        if (!(inst instanceof IRReturn)) {
+                            newBB.setJumpInst(((IRJumpInstruction) inst).copyRename(renameMap));
+                        }
+                    } else {
+                        newBB.addInst(inst.copyRename(renameMap));
+                    }
+                }
             }
         }
+        if (!funcCallInst.getParentBB().isHasJumpInst()) {
+            funcCallInst.getParentBB().setJumpInst(new IRJump(funcCallInst.getParentBB(), newEndBB));
+        }
+        IRReturn returnInst = calleeFunc.getRetInstList().get(0);
+        if (returnInst.getRetValue() != null) {
+            newEndBBFisrtInst.prependInst(new IRMove(newEndBB, funcCallInst.getDest(), (RegValue) renameMap.get(returnInst.getRetValue())));
+        }
+
+        return newEndBB.getFirstInst();
     }
 
     private void copyRegValue(Map<Object, Object> renameMap, RegValue regValue) {

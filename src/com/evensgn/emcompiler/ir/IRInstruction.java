@@ -52,9 +52,9 @@ public abstract class IRInstruction {
             throw new CompilerError("cannot remove an instruction already removed");
         }
         removed = true;
-        prevInst.setNextInst(nextInst);
-        nextInst.setPrevInst(prevInst);
-        if (this instanceof IRBranch) {
+        if (prevInst != null) prevInst.setNextInst(nextInst);
+        if (nextInst != null) nextInst.setPrevInst(prevInst);
+        if (this instanceof IRJumpInstruction) {
             parentBB.removeJumpInst();
         }
         if (this == parentBB.getFirstInst()) parentBB.setFirstInst(nextInst);

@@ -165,6 +165,32 @@ public class IRBuilder extends BaseScopeScanner {
                 currentBB.setJumpInst(new IRReturn(currentBB, new IntImmediate(0)));
             }
         }
+
+        // merge multiple return instructions to a single end basic block
+        if (currentFunc.getRetInstList().size() > 1) {
+            BasicBlock mergeEndBB = new BasicBlock(currentFunc, currentFunc.getName() + "_end");
+            VirtualRegister retReg;
+            if (node.getReturnType() == null || node.getReturnType().getType() instanceof VoidType) {
+                retReg = null;
+            } else {
+                retReg = new VirtualRegister("return_value");
+            }
+            List<IRReturn> retInstList = new ArrayList<>(currentFunc.getRetInstList());
+            for (IRReturn retInst : retInstList) {
+                BasicBlock bb = retInst.getParentBB();
+                if (retInst.getRetValue() != null) {
+                    retInst.prependInst(new IRMove(bb, retReg, retInst.getRetValue()));
+                }
+                retInst.remove();
+                bb.setJumpInst(new IRJump(bb, mergeEndBB));
+            }
+            mergeEndBB.setJumpInst(new IRReturn(mergeEndBB, retReg));
+            currentFunc.setEndBB(mergeEndBB);
+        } else {
+            currentFunc.setEndBB(currentFunc.getRetInstList().get(0).getParentBB());
+        }
+
+        currentFunc = null;
     }
 
     @Override

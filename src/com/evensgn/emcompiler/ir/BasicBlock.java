@@ -65,7 +65,7 @@ public class BasicBlock {
         } else if (jumpInst instanceof IRJump) {
             addNextBB(((IRJump) jumpInst).getTargetBB());
         } else if (jumpInst instanceof IRReturn) {
-            func.getRetInstSet().add((IRReturn) jumpInst);
+            func.getRetInstList().add((IRReturn) jumpInst);
         } else {
             throw new CompilerError("invalid type of IRJumpInstruction");
         }
@@ -79,7 +79,7 @@ public class BasicBlock {
         } else if (lastInst instanceof IRJump) {
             delNextBB(((IRJump) lastInst).getTargetBB());
         } else if (lastInst instanceof IRReturn) {
-            func.getRetInstSet().remove((IRReturn) lastInst);
+            func.getRetInstList().remove((IRReturn) lastInst);
         } else {
             throw new CompilerError("invalid type of IRJumpInstruction");
         }

@@ -1,49 +1,29 @@
 
 func main {
 %main_entry:
-    call __init_func 
-    $vreg = alloc 32
-    $obj = move $vreg
-    store 8 $obj 10 0
-    store 8 $obj 20 8
-    $vreg_2 = load 8 $obj 0
-    $vreg_3 = load 8 $obj 8
-    $vreg_4 = sgt $vreg_2 $vreg_3
-    br $vreg_4 %bb %bb_2
+    jump %__init_func_entry
 
-%bb_2:
-    store 8 $obj 0 16
-    jump %bb_3
-
-%bb:
-    store 8 $obj 1 16
-    jump %bb_3
-
-%bb_3:
-    $vreg_5 = load 8 $obj 16
-    br $vreg_5 %if_then %if_else
-
-%if_then:
-    store 8 $obj 40 24
-    jump %if_after
-
-%if_else:
-    store 8 $obj 80 24
-    jump %if_after
+%__init_func_entry:
+    $x = move 0
+    $y = move 0
+    $x = move 10
+    $y = move 19
+    $a = move $x
+    $b = move $y
+    $vreg = sgt $a $b
+    br $vreg %if_then %if_after
 
 %if_after:
-    $vreg_6 = load 8 $obj 0
-    $vreg_7 = load 8 $obj 8
-    $vreg_8 = add $vreg_6 $vreg_7
-    $vreg_9 = load 8 $obj 24
-    $vreg_10 = add $vreg_8 $vreg_9
-    ret $vreg_10
+    $return_value = move $b
+    jump %max_end
 
-}
+%if_then:
+    $return_value = move $a
+    jump %max_end
 
-func __init_func {
-%__init_func_entry:
-    ret 0
+%max_end:
+    $vreg_2 = move $return_value
+    ret $vreg_2
 
 }
 

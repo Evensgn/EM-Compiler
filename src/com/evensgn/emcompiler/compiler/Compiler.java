@@ -1,9 +1,12 @@
 package com.evensgn.emcompiler.compiler;
 
+import com.evensgn.emcompiler.Configuration;
 import com.evensgn.emcompiler.ast.ProgramNode;
+import com.evensgn.emcompiler.backend.FunctionInlineProcessor;
 import com.evensgn.emcompiler.backend.IRPrinter;
 import com.evensgn.emcompiler.frontend.*;
 import com.evensgn.emcompiler.ir.IRBinaryOperation;
+import com.evensgn.emcompiler.ir.IRRoot;
 import com.evensgn.emcompiler.parser.EMxStarLexer;
 import com.evensgn.emcompiler.parser.EMxStarParser;
 import com.evensgn.emcompiler.parser.SyntaxErrorListener;
@@ -54,8 +57,14 @@ public class Compiler {
         functionScopeScanner.visit(ast);
         IRBuilder irBuilder = new IRBuilder(functionScopeScanner.getGlobalScope());
         irBuilder.visit(ast);
+        IRRoot ir = irBuilder.getIR();
+        if (Configuration.isEnableFunctionInline()) {
+            FunctionInlineProcessor functionInlineProcessor = new FunctionInlineProcessor(ir);
+            functionInlineProcessor.run();
+            ir = functionInlineProcessor.getIR();
+        }
         IRPrinter irPrinter = new IRPrinter(outS);
-        irPrinter.visit(irBuilder.getIR());
+        irPrinter.visit(ir);
         System.out.println("compiler finished.");
     }
 }

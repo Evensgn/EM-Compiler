@@ -16,7 +16,7 @@ public class IRFunction {
     private List<BasicBlock> reversePostOrder = null;
     private String name;
     private boolean recursiveCall = false;
-    private Set<IRReturn> retInstSet = new HashSet<>();
+    private List<IRReturn> retInstList = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -116,8 +116,8 @@ public class IRFunction {
         return recursiveCall;
     }
 
-    public Set<IRReturn> getRetInstSet() {
-        return retInstSet;
+    public List<IRReturn> getRetInstList() {
+        return retInstList;
     }
 
     public void accept(IRVisitor visitor) {
