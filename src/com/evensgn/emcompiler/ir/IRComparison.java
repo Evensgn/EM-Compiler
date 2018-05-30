@@ -30,6 +30,11 @@ public class IRComparison extends IRInstruction {
         usedRegValues.add(rhs);
     }
 
+    @Override
+    public IRRegister getDefinedRegister() {
+        return dest;
+    }
+
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
     }

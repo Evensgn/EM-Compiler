@@ -15,6 +15,11 @@ public class IRJump extends IRJumpInstruction {
         // no actions
     }
 
+    @Override
+    public IRRegister getDefinedRegister() {
+        return null;
+    }
+
     public BasicBlock getTargetBB() {
         return targetBB;
     }

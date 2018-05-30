@@ -19,6 +19,11 @@ public class IRReturn extends IRJumpInstruction {
         if (retValue != null) usedRegValues.add(retValue);
     }
 
+    @Override
+    public IRRegister getDefinedRegister() {
+        return null;
+    }
+
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
     }

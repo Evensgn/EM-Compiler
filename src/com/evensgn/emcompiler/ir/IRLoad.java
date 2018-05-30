@@ -33,6 +33,11 @@ public class IRLoad extends IRInstruction {
         usedRegValues.add(addr);
     }
 
+    @Override
+    public IRRegister getDefinedRegister() {
+        return dest;
+    }
+
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
     }

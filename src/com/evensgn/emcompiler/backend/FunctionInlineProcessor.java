@@ -127,8 +127,17 @@ public class FunctionInlineProcessor {
         for (BasicBlock oldBB : reversePostOrder) {
             BasicBlock newBB = (BasicBlock) renameMap.get(oldBB);
             for (IRInstruction inst = oldBB.getFirstInst(); inst != null; inst = inst.getNextInst()) {
+                for (RegValue usedRegValue : inst.getUsedRegValues()) {
+                    copyRegValue(renameMap, usedRegValue);
+                }
 
             }
+        }
+    }
+
+    private void copyRegValue(Map<Object, Object> renameMap, RegValue regValue) {
+        if (!renameMap.containsKey(regValue)) {
+            renameMap.put(regValue, regValue.copy());
         }
     }
 }

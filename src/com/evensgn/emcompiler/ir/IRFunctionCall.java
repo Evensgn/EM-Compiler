@@ -27,6 +27,11 @@ public class IRFunctionCall extends IRInstruction {
         }
     }
 
+    @Override
+    public IRRegister getDefinedRegister() {
+        return dest;
+    }
+
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
     }

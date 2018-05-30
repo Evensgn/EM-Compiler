@@ -21,6 +21,11 @@ public class IRHeapAlloc extends IRInstruction {
         usedRegValues.add(allocSize);
     }
 
+    @Override
+    public IRRegister getDefinedRegister() {
+        return dest;
+    }
+
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
     }

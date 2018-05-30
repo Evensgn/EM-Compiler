@@ -22,6 +22,11 @@ public class IRBranch extends IRJumpInstruction {
         usedRegValues.add(cond);
     }
 
+    @Override
+    public IRRegister getDefinedRegister() {
+        return null;
+    }
+
     public BasicBlock getThenBB() {
         return thenBB;
     }

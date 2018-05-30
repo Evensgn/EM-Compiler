@@ -78,4 +78,18 @@ public abstract class IRInstruction {
     public abstract IRInstruction copyRename(Map<Object, Object> renameMap);
 
     public abstract void reloadUsedRegistersRegValues();
+
+    public List<IRRegister> getUsedRegisters() {
+        return usedRegisters;
+    }
+
+    public List<RegValue> getUsedRegValues() {
+        return usedRegValues;
+    }
+
+    public boolean isRemoved() {
+        return removed;
+    }
+
+    public abstract IRRegister getDefinedRegister();
 }

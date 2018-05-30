@@ -24,6 +24,10 @@ public class IRStore extends IRInstruction {
         this.isStaticData = true;
     }
 
+    @Override
+    public IRRegister getDefinedRegister() {
+        return null;
+    }
 
     @Override
     public void reloadUsedRegistersRegValues() {

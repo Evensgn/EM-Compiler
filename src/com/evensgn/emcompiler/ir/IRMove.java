@@ -21,6 +21,11 @@ public class IRMove extends IRInstruction {
         usedRegValues.add(rhs);
     }
 
+    @Override
+    public IRRegister getDefinedRegister() {
+        return lhs;
+    }
+
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
     }
