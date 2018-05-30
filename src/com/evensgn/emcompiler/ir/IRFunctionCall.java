@@ -14,6 +14,17 @@ public class IRFunctionCall extends IRInstruction {
         this.func = func;
         this.args = args;
         this.dest = dest;
+        reloadUsedRegistersRegValues();
+    }
+
+    @Override
+    public void reloadUsedRegistersRegValues() {
+        usedRegisters.clear();
+        usedRegValues.clear();
+        for (RegValue arg : args) {
+            if (arg instanceof IRRegister) usedRegisters.add((IRRegister) arg);
+            usedRegValues.add(arg);
+        }
     }
 
     public void accept(IRVisitor visitor) {

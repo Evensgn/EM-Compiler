@@ -1,5 +1,6 @@
 package com.evensgn.emcompiler.ir;
 
+import java.rmi.registry.Registry;
 import java.util.Map;
 
 public class IRBinaryOperation extends IRInstruction {
@@ -19,6 +20,17 @@ public class IRBinaryOperation extends IRInstruction {
         this.op = op;
         this.lhs = lhs;
         this.rhs = rhs;
+        reloadUsedRegistersRegValues();
+    }
+
+    @Override
+    public void reloadUsedRegistersRegValues() {
+        usedRegisters.clear();
+        usedRegValues.clear();
+        if (lhs instanceof IRRegister) usedRegisters.add((IRRegister) lhs);
+        if (rhs instanceof IRRegister) usedRegisters.add((IRRegister) rhs);
+        usedRegValues.add(lhs);
+        usedRegValues.add(rhs);
     }
 
     public void accept(IRVisitor visitor) {

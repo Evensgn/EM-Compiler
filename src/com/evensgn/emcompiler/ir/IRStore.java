@@ -16,11 +16,23 @@ public class IRStore extends IRInstruction {
         this.addr = addr;
         this.addrOffset = addrOffset;
         this.isStaticData = false;
+        reloadUsedRegistersRegValues();
     }
 
     public IRStore(BasicBlock parentBB, RegValue value, int size, StaticData addr) {
         this(parentBB, value, size, addr, 0);
         this.isStaticData = true;
+    }
+
+
+    @Override
+    public void reloadUsedRegistersRegValues() {
+        usedRegisters.clear();
+        usedRegValues.clear();
+        if (addr instanceof IRRegister && !(addr instanceof StaticSlot)) usedRegisters.add((IRRegister) addr);
+        if (value instanceof IRRegister) usedRegisters.add((IRRegister) value);
+        usedRegValues.add(addr);
+        usedRegValues.add(value);
     }
 
     public void accept(IRVisitor visitor) {

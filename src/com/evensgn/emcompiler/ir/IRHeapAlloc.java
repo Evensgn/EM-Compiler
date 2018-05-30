@@ -10,6 +10,15 @@ public class IRHeapAlloc extends IRInstruction {
         super(parentBB);
         this.dest = dest;
         this.allocSize = allocSize;
+        reloadUsedRegistersRegValues();
+    }
+
+    @Override
+    public void reloadUsedRegistersRegValues() {
+        usedRegisters.clear();
+        usedRegValues.clear();
+        if (allocSize instanceof IRRegister) usedRegisters.add((IRRegister) allocSize);
+        usedRegValues.add(allocSize);
     }
 
     public void accept(IRVisitor visitor) {

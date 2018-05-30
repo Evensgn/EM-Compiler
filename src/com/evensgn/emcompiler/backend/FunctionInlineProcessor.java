@@ -112,10 +112,23 @@ public class FunctionInlineProcessor {
             inst.remove();
         }
         IRInstruction newEndBBFisrtInst = newEndBB.getFirstInst();
-
         for (int i = 0; i < funcCallInst.getArgs().size(); ++i) {
             VirtualRegister oldArgVreg = calleeFunc.getArgVRegList().get(i);
             VirtualRegister newArgVreg = oldArgVreg.copy();
+            funcCallInst.prependInst(new IRMove(funcCallInst.getParentBB(), newArgVreg, funcCallInst.getArgs().get(i)));
+            renameMap.put(oldArgVreg, newArgVreg);
+        }
+        funcCallInst.remove();
+        for (BasicBlock bb : reversePostOrder) {
+            if (!renameMap.containsKey(bb)) {
+                renameMap.put(bb, new BasicBlock(callerFunc, bb.getName()));
+            }
+        }
+        for (BasicBlock oldBB : reversePostOrder) {
+            BasicBlock newBB = (BasicBlock) renameMap.get(oldBB);
+            for (IRInstruction inst = oldBB.getFirstInst(); inst != null; inst = inst.getNextInst()) {
+
+            }
         }
     }
 }

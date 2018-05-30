@@ -8,6 +8,15 @@ public class IRReturn extends IRJumpInstruction {
     public IRReturn(BasicBlock parentBB, RegValue retValue) {
         super(parentBB);
         this.retValue = retValue;
+        reloadUsedRegistersRegValues();
+    }
+
+    @Override
+    public void reloadUsedRegistersRegValues() {
+        usedRegisters.clear();
+        usedRegValues.clear();
+        if (retValue != null && retValue instanceof IRRegister) usedRegisters.add((IRRegister) retValue);
+        if (retValue != null) usedRegValues.add(retValue);
     }
 
     public void accept(IRVisitor visitor) {

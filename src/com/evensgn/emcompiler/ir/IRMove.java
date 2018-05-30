@@ -10,6 +10,15 @@ public class IRMove extends IRInstruction {
         super(parentBB);
         this.lhs = lhs;
         this.rhs = rhs;
+        reloadUsedRegistersRegValues();
+    }
+
+    @Override
+    public void reloadUsedRegistersRegValues() {
+        usedRegisters.clear();
+        usedRegValues.clear();
+        if (rhs instanceof IRRegister) usedRegisters.add((IRRegister) rhs);
+        usedRegValues.add(rhs);
     }
 
     public void accept(IRVisitor visitor) {

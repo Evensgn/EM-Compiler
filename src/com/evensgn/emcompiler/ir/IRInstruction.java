@@ -2,15 +2,41 @@ package com.evensgn.emcompiler.ir;
 
 import com.evensgn.emcompiler.utils.CompilerError;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public abstract class IRInstruction {
     private IRInstruction prevInst = null, nextInst = null;
     private BasicBlock parentBB;
+    protected List<IRRegister> usedRegisters = new ArrayList<>();
+    protected List<RegValue> usedRegValues = new ArrayList<>();
     private boolean removed = false;
 
     public IRInstruction(BasicBlock parentBB) {
         this.parentBB = parentBB;
+    }
+
+    public void prependInst(IRInstruction inst) {
+        if (prevInst != null) prevInst.linkNextInst(inst);
+        else parentBB.setFirstInst(inst);
+        inst.linkNextInst(this);
+    }
+
+    public void appendInst(IRInstruction inst) {
+        if (nextInst != null) nextInst.linkPrevInst(inst);
+        else parentBB.setLastInst(inst);
+        inst.setPrevInst(this);
+    }
+
+    public void linkPrevInst(IRInstruction inst) {
+        prevInst = inst;
+        inst.setNextInst(this);
+    }
+
+    public void linkNextInst(IRInstruction inst) {
+        nextInst = inst;
+        inst.setPrevInst(this);
     }
 
     public void setPrevInst(IRInstruction prevInst) {
@@ -50,4 +76,6 @@ public abstract class IRInstruction {
     }
 
     public abstract IRInstruction copyRename(Map<Object, Object> renameMap);
+
+    public abstract void reloadUsedRegistersRegValues();
 }

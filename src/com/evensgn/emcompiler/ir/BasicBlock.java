@@ -25,7 +25,7 @@ public class BasicBlock {
         if (lastInst == null) {
             firstInst = lastInst = inst;
         } else {
-            lastInst.setNextInst(inst);
+            lastInst.linkNextInst(inst);
             lastInst = inst;
         }
     }

@@ -16,12 +16,21 @@ public class IRLoad extends IRInstruction {
         this.addr = addr;
         this.addrOffset = addrOffset;
         this.isStaticData = false;
+        reloadUsedRegistersRegValues();
     }
 
     public IRLoad(BasicBlock parentBB, IRRegister dest, int size, StaticData addr, boolean isLoadAddr) {
         this(parentBB, dest, size, addr, 0);
         this.isStaticData = true;
         this.isLoadAddr = isLoadAddr;
+    }
+
+    @Override
+    public void reloadUsedRegistersRegValues() {
+        usedRegisters.clear();
+        usedRegValues.clear();
+        if (addr instanceof IRRegister && !(addr instanceof StaticSlot)) usedRegisters.add((IRRegister) addr);
+        usedRegValues.add(addr);
     }
 
     public void accept(IRVisitor visitor) {

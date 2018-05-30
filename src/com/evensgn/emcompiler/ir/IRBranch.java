@@ -11,6 +11,15 @@ public class IRBranch extends IRJumpInstruction {
         this.cond = cond;
         this.thenBB = thenBB;
         this.elseBB = elseBB;
+        reloadUsedRegistersRegValues();
+    }
+
+    @Override
+    public void reloadUsedRegistersRegValues() {
+        usedRegisters.clear();
+        usedRegValues.clear();
+        if (cond instanceof IRRegister) usedRegisters.add((IRRegister) cond);
+        usedRegValues.add(cond);
     }
 
     public BasicBlock getThenBB() {

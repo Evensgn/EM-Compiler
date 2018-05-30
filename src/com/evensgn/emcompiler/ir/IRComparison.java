@@ -17,6 +17,17 @@ public class IRComparison extends IRInstruction {
         this.op = op;
         this.lhs = lhs;
         this.rhs = rhs;
+        reloadUsedRegistersRegValues();
+    }
+
+    @Override
+    public void reloadUsedRegistersRegValues() {
+        usedRegisters.clear();
+        usedRegValues.clear();
+        if (lhs instanceof IRRegister) usedRegisters.add((IRRegister) lhs);
+        if (rhs instanceof IRRegister) usedRegisters.add((IRRegister) rhs);
+        usedRegValues.add(lhs);
+        usedRegValues.add(rhs);
     }
 
     public void accept(IRVisitor visitor) {

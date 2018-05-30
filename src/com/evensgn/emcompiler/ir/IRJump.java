@@ -10,6 +10,11 @@ public class IRJump extends IRJumpInstruction {
         this.targetBB = targetBB;
     }
 
+    @Override
+    public void reloadUsedRegistersRegValues() {
+        // no actions
+    }
+
     public BasicBlock getTargetBB() {
         return targetBB;
     }
