@@ -14,4 +14,9 @@ public class IntImmediate extends RegValue {
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
     }
+
+    @Override
+    public IntImmediate copy() {
+        return new IntImmediate(value);
+    }
 }

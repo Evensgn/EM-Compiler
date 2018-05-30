@@ -21,33 +21,6 @@ public class FunctionInlineProcessor {
         this.ir = ir;
     }
 
-    private void inlineFunctionCall(IRFunctionCall funcCallInst) {
-        IRFunction callerFunc = funcCallInst.getParentBB().getFunc(), calleeFunc = funcCallInst.getFunc();
-        List<BasicBlock> reversePostOrder = calleeFunc.getReversePostOrder();
-
-        Map<Object, Object> renameMap = new HashMap<>();
-        BasicBlock oldEndBB = calleeFunc.getEndBB();
-        BasicBlock newEndBB = new BasicBlock(callerFunc, oldEndBB.getName());
-        renameMap.put(oldEndBB, newEndBB);
-        renameMap.put(calleeFunc.getStartBB(), funcCallInst.getParentBB());
-        if (callerFunc.getEndBB() == funcCallInst.getParentBB()) {
-            callerFunc.setEndBB(newEndBB);
-        }
-
-        Map<Object, Object> callBBRenameMap = Collections.singletonMap(funcCallInst.getParentBB(), newEndBB);
-        for (IRInstruction inst = funcCallInst.getNextInst(); inst != null; inst = inst.getNextInst()) {
-            if (inst instanceof IRJumpInstruction) {
-                newEndBB.setJumpInst(((IRJumpInstruction) inst).copyRename(callBBRenameMap));
-            } else {
-                newEndBB.addInst(inst.copyRename(callBBRenameMap));
-            }
-            inst.remove();
-        }
-        IRInstruction newEndBBFisrtInst = newEndBB.getFirstInst();
-
-
-    }
-
     public void run() {
         for (IRFunction irFunction : ir.getFuncs().values()) {
             irFunction.setRecursiveCall(irFunction.calleeSet.contains(irFunction));
@@ -113,5 +86,36 @@ public class FunctionInlineProcessor {
             irFunction.updateCalleeSet();
         }
         ir.updateCalleeSet();
+    }
+
+
+    private void inlineFunctionCall(IRFunctionCall funcCallInst) {
+        IRFunction callerFunc = funcCallInst.getParentBB().getFunc(), calleeFunc = funcCallInst.getFunc();
+        List<BasicBlock> reversePostOrder = calleeFunc.getReversePostOrder();
+
+        Map<Object, Object> renameMap = new HashMap<>();
+        BasicBlock oldEndBB = calleeFunc.getEndBB();
+        BasicBlock newEndBB = new BasicBlock(callerFunc, oldEndBB.getName());
+        renameMap.put(oldEndBB, newEndBB);
+        renameMap.put(calleeFunc.getStartBB(), funcCallInst.getParentBB());
+        if (callerFunc.getEndBB() == funcCallInst.getParentBB()) {
+            callerFunc.setEndBB(newEndBB);
+        }
+
+        Map<Object, Object> callBBRenameMap = Collections.singletonMap(funcCallInst.getParentBB(), newEndBB);
+        for (IRInstruction inst = funcCallInst.getNextInst(); inst != null; inst = inst.getNextInst()) {
+            if (inst instanceof IRJumpInstruction) {
+                newEndBB.setJumpInst(((IRJumpInstruction) inst).copyRename(callBBRenameMap));
+            } else {
+                newEndBB.addInst(inst.copyRename(callBBRenameMap));
+            }
+            inst.remove();
+        }
+        IRInstruction newEndBBFisrtInst = newEndBB.getFirstInst();
+
+        for (int i = 0; i < funcCallInst.getArgs().size(); ++i) {
+            VirtualRegister oldArgVreg = calleeFunc.getArgVRegList().get(i);
+            VirtualRegister newArgVreg = oldArgVreg.copy();
+        }
     }
 }

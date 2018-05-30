@@ -8,4 +8,6 @@ public class StaticVar extends StaticData {
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
     }
+
+
 }

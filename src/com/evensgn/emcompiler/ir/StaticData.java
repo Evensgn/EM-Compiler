@@ -18,4 +18,9 @@ public abstract class StaticData extends IRRegister {
     }
 
     public abstract void accept(IRVisitor visitor);
+
+    @Override
+    public StaticData copy() {
+        return this;
+    }
 }

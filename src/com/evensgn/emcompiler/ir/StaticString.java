@@ -16,4 +16,5 @@ public class StaticString extends StaticData {
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
     }
+
 }
