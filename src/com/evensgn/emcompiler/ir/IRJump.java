@@ -1,5 +1,7 @@
 package com.evensgn.emcompiler.ir;
 
+import java.util.Map;
+
 public class IRJump extends IRJumpInstruction {
     private BasicBlock targetBB;
 
@@ -14,5 +16,13 @@ public class IRJump extends IRJumpInstruction {
 
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public IRJump copyRename(Map<Object, Object> renameMap) {
+        return new IRJump(
+                (BasicBlock) renameMap.getOrDefault(getParentBB(), getParentBB()),
+                (BasicBlock) renameMap.getOrDefault(targetBB, targetBB)
+        );
     }
 }

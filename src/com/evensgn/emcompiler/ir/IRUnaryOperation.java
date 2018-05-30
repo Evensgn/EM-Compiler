@@ -1,5 +1,7 @@
 package com.evensgn.emcompiler.ir;
 
+import java.util.Map;
+
 public class IRUnaryOperation extends IRInstruction {
     public enum IRUnaryOp {
         BITWISE_NOT, NEG
@@ -29,5 +31,15 @@ public class IRUnaryOperation extends IRInstruction {
 
     public RegValue getRhs() {
         return rhs;
+    }
+
+    @Override
+    public IRUnaryOperation copyRename(Map<Object, Object> renameMap) {
+        return new IRUnaryOperation(
+                (BasicBlock) renameMap.getOrDefault(getParentBB(), getParentBB()),
+                (IRRegister) renameMap.getOrDefault(dest, dest),
+                op,
+                (RegValue) renameMap.getOrDefault(rhs, rhs)
+        );
     }
 }

@@ -1,5 +1,7 @@
 package com.evensgn.emcompiler.ir;
 
+import java.util.Map;
+
 public class IRReturn extends IRJumpInstruction {
     private RegValue retValue;
 
@@ -14,5 +16,13 @@ public class IRReturn extends IRJumpInstruction {
 
     public RegValue getRetValue() {
         return retValue;
+    }
+
+    @Override
+    public IRReturn copyRename(Map<Object, Object> renameMap) {
+        return new IRReturn(
+                (BasicBlock) renameMap.getOrDefault(getParentBB(), getParentBB()),
+                (RegValue) renameMap.getOrDefault(retValue, retValue)
+        );
     }
 }

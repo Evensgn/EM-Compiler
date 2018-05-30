@@ -1,27 +1,23 @@
-int main() {
-    int a = 5;
-    int b = 0;
-    int c;
-    bool d = b != 0 && a/b != 1;
-    if (d) {
-        c = 10;
-    } else {
-        c = 20;
-    }
-
-    bool e;
-    e = !(c == 10 && a/b == 0 && a == 5);
-    if (e)
-        c = 30;
-
-    return c;
+class C2 {
+    int x;
+    int y;
+    bool b;
+    int z;
 }
 
-
+int main() {
+    C2 obj = new C2;
+    obj.x = 10;
+    obj.y = 20;
+    obj.b = obj.x > obj.y;
+    if (obj.b) obj.z = 40;
+    else obj.z = 80;
+    return obj.x + obj.y + obj.z;
+}
 
 /*!! metadata:
 === comment ===
-simple4.mx
+struct3.mx
 === assert ===
 exitcode
 === timeout ===
@@ -33,6 +29,6 @@ codegen pretest
 === is_public ===
 True
 === exitcode ===
-30
+110
 
 !!*/

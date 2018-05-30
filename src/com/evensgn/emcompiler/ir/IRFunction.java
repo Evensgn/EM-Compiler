@@ -4,6 +4,7 @@ import com.evensgn.emcompiler.ast.BlockStmtNode;
 import com.evensgn.emcompiler.scope.FuncEntity;
 import com.evensgn.emcompiler.scope.VarEntity;
 import javafx.geometry.Pos;
+import org.antlr.v4.runtime.ParserRuleContext;
 import sun.net.www.http.PosterOutputStream;
 
 import java.util.*;
@@ -14,6 +15,8 @@ public class IRFunction {
     private List<VirtualRegister> argVRegList = new ArrayList<>();
     private List<BasicBlock> reversePostOrder = null;
     private String name;
+    private boolean recursiveCall = false;
+    private Set<IRReturn> retInstSet = new HashSet<>();
 
     public String getName() {
         return name;
@@ -31,6 +34,20 @@ public class IRFunction {
         }
     }
 
+    public Set<IRFunction> calleeSet = new HashSet<>();
+    public Set<IRFunction> recursiveCalleeSet = new HashSet<>();
+
+    public void updateCalleeSet() {
+        calleeSet.clear();
+        for (BasicBlock bb : getReversePostOrder()) {
+            for (IRInstruction inst = bb.getFirstInst(); inst != null; inst = inst.getNextInst()) {
+                if (inst instanceof IRFunctionCall) {
+                    calleeSet.add(((IRFunctionCall) inst).getFunc());
+                }
+            }
+        }
+    }
+
     public List<VirtualRegister> getArgVRegList() {
         return argVRegList;
     }
@@ -42,6 +59,18 @@ public class IRFunction {
     public BasicBlock genFirstBB() {
         startBB = new BasicBlock(this, funcEntity.getName() + "_entry");
         return startBB;
+    }
+
+    public BasicBlock getStartBB() {
+        return startBB;
+    }
+
+    public BasicBlock getEndBB() {
+        return endBB;
+    }
+
+    public void setEndBB(BasicBlock endBB) {
+        this.endBB = endBB;
     }
 
     public FuncEntity getFuncEntity() {
@@ -61,7 +90,13 @@ public class IRFunction {
     }
 
     public List<BasicBlock> getReversePostOrder() {
-        if (reversePostOrder != null) return reversePostOrder;
+        if (reversePostOrder == null) {
+            calcReversePostOrder();
+        }
+        return reversePostOrder;
+    }
+
+    public void calcReversePostOrder() {
         reversePostOrder = new ArrayList<>();
         dfsVisited = new HashSet<>();
         dfsPostOrder(startBB);
@@ -71,7 +106,18 @@ public class IRFunction {
             reversePostOrder.get(i).setPostOrderIdx(i);
         }
         Collections.reverse(reversePostOrder);
-        return reversePostOrder;
+    }
+
+    public void setRecursiveCall(boolean recursiveCall) {
+        this.recursiveCall = recursiveCall;
+    }
+
+    public boolean isRecursiveCall() {
+        return recursiveCall;
+    }
+
+    public Set<IRReturn> getRetInstSet() {
+        return retInstSet;
     }
 
     public void accept(IRVisitor visitor) {

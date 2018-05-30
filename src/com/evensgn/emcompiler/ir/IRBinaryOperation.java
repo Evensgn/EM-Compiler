@@ -1,5 +1,7 @@
 package com.evensgn.emcompiler.ir;
 
+import java.util.Map;
+
 public class IRBinaryOperation extends IRInstruction {
     public enum IRBinaryOp {
         ADD, SUB, MUL, DIV, MOD,
@@ -37,5 +39,16 @@ public class IRBinaryOperation extends IRInstruction {
 
     public RegValue getRhs() {
         return rhs;
+    }
+
+    @Override
+    public IRBinaryOperation copyRename(Map<Object, Object> renameMap) {
+        return new IRBinaryOperation(
+                (BasicBlock) renameMap.getOrDefault(getParentBB(), getParentBB()),
+                (IRRegister) renameMap.getOrDefault(dest, dest),
+                op,
+                (RegValue) renameMap.getOrDefault(lhs, lhs),
+                (RegValue) renameMap.getOrDefault(rhs, rhs)
+        );
     }
 }

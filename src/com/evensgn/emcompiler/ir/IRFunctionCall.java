@@ -1,6 +1,8 @@
 package com.evensgn.emcompiler.ir;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class IRFunctionCall extends IRInstruction {
     private IRFunction func;
@@ -28,5 +30,19 @@ public class IRFunctionCall extends IRInstruction {
 
     public VirtualRegister getDest() {
         return dest;
+    }
+
+    @Override
+    public IRFunctionCall copyRename(Map<Object, Object> renameMap) {
+        List<RegValue> copyArgs = new ArrayList<>();
+        for (RegValue arg : args) {
+            copyArgs.add((RegValue) renameMap.getOrDefault(arg, arg));
+        }
+        return new IRFunctionCall(
+                (BasicBlock) renameMap.getOrDefault(getParentBB(), getParentBB()),
+                func,
+                copyArgs,
+                (VirtualRegister) renameMap.getOrDefault(dest, dest)
+        );
     }
 }

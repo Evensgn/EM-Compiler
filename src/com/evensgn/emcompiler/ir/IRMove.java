@@ -1,5 +1,7 @@
 package com.evensgn.emcompiler.ir;
 
+import java.util.Map;
+
 public class IRMove extends IRInstruction {
     private IRRegister lhs;
     private RegValue rhs;
@@ -20,5 +22,14 @@ public class IRMove extends IRInstruction {
 
     public RegValue getRhs() {
         return rhs;
+    }
+
+    @Override
+    public IRMove copyRename(Map<Object, Object> renameMap) {
+        return new IRMove(
+                (BasicBlock) renameMap.getOrDefault(getParentBB(), getParentBB()),
+                (IRRegister) renameMap.getOrDefault(lhs, lhs),
+                (RegValue) renameMap.getOrDefault(rhs, rhs)
+        );
     }
 }

@@ -1,24 +1,34 @@
 package com.evensgn.emcompiler.ir;
 
+import java.util.Map;
+
 public class IRLoad extends IRInstruction {
-    private VirtualRegister dest;
+    private IRRegister dest;
     private int size;
     private RegValue addr;
     private int addrOffset;
+    private boolean isStaticData, isLoadAddr;
 
-    public IRLoad(BasicBlock parentBB, VirtualRegister dest, int size, RegValue addr, int addrOffset) {
+    public IRLoad(BasicBlock parentBB, IRRegister dest, int size, RegValue addr, int addrOffset) {
         super(parentBB);
         this.dest = dest;
         this.size = size;
         this.addr = addr;
         this.addrOffset = addrOffset;
+        this.isStaticData = false;
+    }
+
+    public IRLoad(BasicBlock parentBB, IRRegister dest, int size, StaticData addr, boolean isLoadAddr) {
+        this(parentBB, dest, size, addr, 0);
+        this.isStaticData = true;
+        this.isLoadAddr = isLoadAddr;
     }
 
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
     }
 
-    public VirtualRegister getDest() {
+    public IRRegister getDest() {
         return dest;
     }
 
@@ -32,5 +42,26 @@ public class IRLoad extends IRInstruction {
 
     public int getAddrOffset() {
         return addrOffset;
+    }
+
+    @Override
+    public IRLoad copyRename(Map<Object, Object> renameMap) {
+        if (isStaticData) {
+            return new IRLoad(
+                    (BasicBlock) renameMap.getOrDefault(getParentBB(), getParentBB()),
+                    (IRRegister) renameMap.getOrDefault(dest, dest),
+                    size,
+                    (StaticData) renameMap.getOrDefault(addr, addr),
+                    isLoadAddr
+            );
+        } else {
+            return new IRLoad(
+                    (BasicBlock) renameMap.getOrDefault(getParentBB(), getParentBB()),
+                    (IRRegister) renameMap.getOrDefault(dest, dest),
+                    size,
+                    (RegValue) renameMap.getOrDefault(addr, addr),
+                    addrOffset
+            );
+        }
     }
 }

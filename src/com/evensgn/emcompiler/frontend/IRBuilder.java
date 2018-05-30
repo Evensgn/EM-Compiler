@@ -124,6 +124,10 @@ public class IRBuilder extends BaseScopeScanner {
                 throw new CompilerError(decl.location(), "Invalid declaration node type");
             }
         }
+        for (IRFunction irFunction : ir.getFuncs().values()) {
+            irFunction.updateCalleeSet();
+        }
+        ir.updateCalleeSet();
     }
 
     @Override
@@ -165,7 +169,6 @@ public class IRBuilder extends BaseScopeScanner {
 
     @Override
     public void visit(ClassDeclNode node) {
-        ClassEntity entity = (ClassEntity) currentScope.get(Scope.classKey(node.getName()));
         currentClassName = node.getName();
         currentScope = globalScope;
         for (FuncDeclNode decl : node.getFuncMember()) {
