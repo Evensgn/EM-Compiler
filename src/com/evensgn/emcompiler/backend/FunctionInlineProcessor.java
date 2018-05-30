@@ -45,7 +45,7 @@ public class FunctionInlineProcessor {
         }
         IRInstruction newEndBBFisrtInst = newEndBB.getFirstInst();
 
-        // TO DO copyRename
+
     }
 
     public void run() {

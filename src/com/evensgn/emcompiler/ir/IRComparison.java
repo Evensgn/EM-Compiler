@@ -1,5 +1,7 @@
 package com.evensgn.emcompiler.ir;
 
+import java.util.Map;
+
 public class IRComparison extends IRInstruction {
     public enum IRCmpOp {
         GREATER, LESS, GREATER_EQUAL, LESS_EQUAL, EQUAL, INEQUAL
@@ -35,5 +37,16 @@ public class IRComparison extends IRInstruction {
 
     public RegValue getRhs() {
         return rhs;
+    }
+
+    @Override
+    public IRComparison copyRename(Map<Object, Object> renameMap) {
+        return new IRComparison(
+                (BasicBlock) renameMap.getOrDefault(getParentBB(), getParentBB()),
+                (IRRegister) renameMap.getOrDefault(dest, dest),
+                op,
+                (RegValue) renameMap.getOrDefault(lhs, lhs),
+                (RegValue) renameMap.getOrDefault(rhs, rhs)
+        );
     }
 }
