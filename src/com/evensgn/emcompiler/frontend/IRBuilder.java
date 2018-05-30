@@ -8,6 +8,7 @@ import com.evensgn.emcompiler.scope.*;
 import com.evensgn.emcompiler.type.*;
 import com.evensgn.emcompiler.utils.CompilerError;
 
+import javax.swing.text.AbstractDocument;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,8 +59,9 @@ public class IRBuilder extends BaseScopeScanner {
                 rhs.getTrueBB().addInst(new IRMove(rhs.getTrueBB(), (VirtualRegister) dest, new IntImmediate(1)));
                 rhs.getFalseBB().addInst(new IRMove(rhs.getFalseBB(), (VirtualRegister) dest, new IntImmediate(0)));
             }
-            rhs.getTrueBB().addInst(new IRJump(rhs.getTrueBB(), mergeBB));
-            rhs.getFalseBB().addInst(new IRJump(rhs.getFalseBB(), mergeBB));
+            rhs.getTrueBB().setJumpInst(new IRJump(rhs.getTrueBB(), mergeBB));
+            rhs.getFalseBB().setJumpInst(new IRJump(rhs.getFalseBB(), mergeBB));
+            currentBB = mergeBB;
         } else {
             if (needMemOp) {
                 currentBB.addInst(new IRStore(currentBB, rhs.getRegValue(), rhs.getType().getVarSize(), dest, addrOffset));
@@ -419,7 +421,7 @@ public class IRBuilder extends BaseScopeScanner {
             // TO DO
             return;
         }
-        for (ExprNode arg : node.getArgs()) {
+        for (ExprNode arg  : node.getArgs()) {
             arg.accept(this);
             args.add(arg.getRegValue());
         }
@@ -595,7 +597,7 @@ public class IRBuilder extends BaseScopeScanner {
             currentBB = node.getLhs().getTrueBB();
         } else if (node.getOp() == BinaryExprNode.BinaryOps.LOGIC_OR) {
             node.getLhs().setTrueBB(node.getTrueBB());
-            node.getRhs().setFalseBB(new BasicBlock(currentFunc, "or_lhs_false"));
+            node.getLhs().setFalseBB(new BasicBlock(currentFunc, "or_lhs_false"));
             node.getLhs().accept(this);
             currentBB = node.getLhs().getFalseBB();
         } else {
@@ -692,7 +694,6 @@ public class IRBuilder extends BaseScopeScanner {
 
     @Override
     public void visit(BinaryExprNode node) {
-        VirtualRegister vreg;
         switch (node.getOp()) {
             case LOGIC_AND:
             case LOGIC_OR:
@@ -746,7 +747,7 @@ public class IRBuilder extends BaseScopeScanner {
             addrOffset = 0;
         }
         processIRAssign(dest, addrOffset, node.getRhs(), Configuration.getRegSize(), needMemOp);
-        node.setRegValue(node.getRegValue());
+        node.setRegValue(node.getRhs().getRegValue());
     }
 
     @Override
@@ -805,6 +806,9 @@ public class IRBuilder extends BaseScopeScanner {
     @Override
     public void visit(BoolConstExprNode node) {
         node.setRegValue(new IntImmediate(node.getValue() ? 1 : 0));
+        if (node.getTrueBB() != null) {
+            currentBB.setJumpInst(new IRBranch(currentBB, node.getRegValue(), node.getTrueBB(), node.getFalseBB()));
+        }
     }
 
     @Override

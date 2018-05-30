@@ -1,33 +1,68 @@
 
-func __member_A_A $__this_para {
-%A_entry:
-    store 8 $__this_para 5 0
-    store 8 $__this_para 8 8
-    $vreg = call __member_A_ok $__this_para 
-    ret 0
-
-}
-
 func main {
 %main_entry:
     call __init_func 
-    $vreg = alloc 16
-    call __member_A_A $vreg 
-    $a = move $vreg
-    $vreg_2 = call __member_A_ok $a 
-    $vreg_3 = load 8 $a 0
-    $vreg_4 = load 8 $a 8
-    $vreg_5 = sub $vreg_3 $vreg_4
-    ret $vreg_5
+    $a = move 5
+    $b = move 0
+    $c = move 0
+    $vreg = sne $b 0
+    br $vreg %and_lhs_true %bb
 
-}
+%and_lhs_true:
+    $vreg_2 = div $a $b
+    $vreg_3 = sne $vreg_2 1
+    br $vreg_3 %bb_2 %bb
 
-func __member_A_ok $__this_para {
-%ok_entry:
-    $vreg = load 8 $__this_para 0
-    $vreg_2 = mul $vreg 3
-    store 8 $__this_para $vreg_2 0
-    ret 0
+%bb_2:
+    $d = move 1
+    jump %bb_3
+
+%bb:
+    $d = move 0
+    jump %bb_3
+
+%bb_3:
+    br $d %if_then %if_else
+
+%if_else:
+    $c = move 20
+    jump %if_after
+
+%if_then:
+    $c = move 10
+    jump %if_after
+
+%if_after:
+    $e = move 0
+    $vreg_4 = seq $c 10
+    br $vreg_4 %and_lhs_true_2 %bb_4
+
+%and_lhs_true_2:
+    $vreg_5 = div $a $b
+    $vreg_6 = seq $vreg_5 0
+    br $vreg_6 %and_lhs_true_3 %bb_4
+
+%and_lhs_true_3:
+    $vreg_7 = seq $a 5
+    br $vreg_7 %bb_5 %bb_4
+
+%bb_4:
+    $e = move 1
+    jump %bb_6
+
+%bb_5:
+    $e = move 0
+    jump %bb_6
+
+%bb_6:
+    br $e %if_then_2 %if_after_2
+
+%if_then_2:
+    $c = move 30
+    jump %if_after_2
+
+%if_after_2:
+    ret $c
 
 }
 

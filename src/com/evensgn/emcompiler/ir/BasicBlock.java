@@ -39,10 +39,10 @@ public class BasicBlock {
     }
 
     public void addNextBB(BasicBlock bb) {
+        nextBBSet.add(bb);
         if (bb != null) {
-            nextBBSet.add(bb);
+            bb.addPrevBB(this);
         }
-        bb.addPrevBB(this);
     }
 
     public void setJumpInst(IRJumpInstruction jumpInst) {
