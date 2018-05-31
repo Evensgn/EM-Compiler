@@ -16,6 +16,11 @@ public class IRJump extends IRJumpInstruction {
     }
 
     @Override
+    public void setUsedRegisters(Map<IRRegister, IRRegister> renameMap) {
+        // no actions
+    }
+
+    @Override
     public IRRegister getDefinedRegister() {
         return null;
     }

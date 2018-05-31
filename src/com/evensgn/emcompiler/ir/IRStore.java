@@ -39,6 +39,13 @@ public class IRStore extends IRInstruction {
         usedRegValues.add(value);
     }
 
+    @Override
+    public void setUsedRegisters(Map<IRRegister, IRRegister> renameMap) {
+        if (addr instanceof IRRegister && !(addr instanceof StaticSlot)) addr = renameMap.get(addr);
+        if (value instanceof IRRegister) value = renameMap.get(value);
+        reloadUsedRegistersRegValues();
+    }
+
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
     }
@@ -57,6 +64,10 @@ public class IRStore extends IRInstruction {
 
     public int getAddrOffset() {
         return addrOffset;
+    }
+
+    public boolean isStaticData() {
+        return isStaticData;
     }
 
     @Override

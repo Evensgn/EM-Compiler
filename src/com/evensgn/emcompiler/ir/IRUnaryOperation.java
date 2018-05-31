@@ -27,6 +27,12 @@ public class IRUnaryOperation extends IRInstruction {
     }
 
     @Override
+    public void setUsedRegisters(Map<IRRegister, IRRegister> renameMap) {
+        if (rhs instanceof IRRegister) rhs = renameMap.get(rhs);
+        reloadUsedRegistersRegValues();
+    }
+
+    @Override
     public IRRegister getDefinedRegister() {
         return dest;
     }

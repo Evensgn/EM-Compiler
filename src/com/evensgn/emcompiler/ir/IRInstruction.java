@@ -92,4 +92,6 @@ public abstract class IRInstruction {
     }
 
     public abstract IRRegister getDefinedRegister();
+
+    public abstract void setUsedRegisters(Map<IRRegister, IRRegister> renameMap);
 }

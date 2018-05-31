@@ -61,7 +61,6 @@ public class Compiler {
         if (Configuration.isEnableFunctionInline()) {
             FunctionInlineProcessor functionInlineProcessor = new FunctionInlineProcessor(ir);
             functionInlineProcessor.run();
-            ir = functionInlineProcessor.getIR();
         }
         IRPrinter irPrinter = new IRPrinter(outS);
         irPrinter.visit(ir);

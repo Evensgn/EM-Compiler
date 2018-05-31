@@ -31,6 +31,13 @@ public class IRComparison extends IRInstruction {
     }
 
     @Override
+    public void setUsedRegisters(Map<IRRegister, IRRegister> renameMap) {
+        if (lhs instanceof IRRegister) lhs = renameMap.get(lhs);
+        if (rhs instanceof IRRegister) rhs = renameMap.get(rhs);
+        reloadUsedRegistersRegValues();
+    }
+
+    @Override
     public IRRegister getDefinedRegister() {
         return dest;
     }

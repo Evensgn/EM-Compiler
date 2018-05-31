@@ -23,6 +23,12 @@ public class IRBranch extends IRJumpInstruction {
     }
 
     @Override
+    public void setUsedRegisters(Map<IRRegister, IRRegister> renameMap) {
+        if (cond instanceof IRRegister) cond = renameMap.get(cond);
+        reloadUsedRegistersRegValues();
+    }
+
+    @Override
     public IRRegister getDefinedRegister() {
         return null;
     }

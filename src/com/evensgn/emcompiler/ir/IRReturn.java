@@ -20,6 +20,12 @@ public class IRReturn extends IRJumpInstruction {
     }
 
     @Override
+    public void setUsedRegisters(Map<IRRegister, IRRegister> renameMap) {
+        if (retValue != null && retValue instanceof IRRegister) retValue = renameMap.get(retValue);
+        reloadUsedRegistersRegValues();
+    }
+
+    @Override
     public IRRegister getDefinedRegister() {
         return null;
     }

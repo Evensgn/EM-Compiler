@@ -2,13 +2,11 @@ package com.evensgn.emcompiler.frontend;
 
 import com.evensgn.emcompiler.Configuration;
 import com.evensgn.emcompiler.ast.*;
-import com.evensgn.emcompiler.compiler.Compiler;
 import com.evensgn.emcompiler.ir.*;
 import com.evensgn.emcompiler.scope.*;
 import com.evensgn.emcompiler.type.*;
 import com.evensgn.emcompiler.utils.CompilerError;
 
-import javax.swing.text.AbstractDocument;
 import java.util.ArrayList;
 import java.util.List;
 

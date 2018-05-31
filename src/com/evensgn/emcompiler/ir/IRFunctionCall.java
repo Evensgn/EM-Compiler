@@ -28,6 +28,16 @@ public class IRFunctionCall extends IRInstruction {
     }
 
     @Override
+    public void setUsedRegisters(Map<IRRegister, IRRegister> renameMap) {
+        for (int i = 0; i < args.size(); ++i) {
+            if (args.get(i) instanceof IRRegister) {
+                args.set(i, renameMap.get((IRRegister) args.get(i)));
+            }
+        }
+        reloadUsedRegistersRegValues();
+    }
+
+    @Override
     public IRRegister getDefinedRegister() {
         return dest;
     }

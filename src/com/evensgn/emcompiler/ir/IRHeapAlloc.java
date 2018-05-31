@@ -22,6 +22,12 @@ public class IRHeapAlloc extends IRInstruction {
     }
 
     @Override
+    public void setUsedRegisters(Map<IRRegister, IRRegister> renameMap) {
+        if (allocSize instanceof IRRegister) allocSize = renameMap.get(allocSize);
+        reloadUsedRegistersRegValues();
+    }
+
+    @Override
     public IRRegister getDefinedRegister() {
         return dest;
     }

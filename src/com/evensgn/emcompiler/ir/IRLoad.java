@@ -34,6 +34,12 @@ public class IRLoad extends IRInstruction {
     }
 
     @Override
+    public void setUsedRegisters(Map<IRRegister, IRRegister> renameMap) {
+        if (addr instanceof IRRegister && !(addr instanceof StaticSlot)) addr = renameMap.get(addr);
+        reloadUsedRegistersRegValues();
+    }
+
+    @Override
     public IRRegister getDefinedRegister() {
         return dest;
     }
@@ -56,6 +62,10 @@ public class IRLoad extends IRInstruction {
 
     public int getAddrOffset() {
         return addrOffset;
+    }
+
+    public boolean isStaticData() {
+        return isStaticData;
     }
 
     @Override
