@@ -4,6 +4,7 @@ import com.evensgn.emcompiler.Configuration;
 import com.evensgn.emcompiler.ast.ProgramNode;
 import com.evensgn.emcompiler.backend.FunctionInlineProcessor;
 import com.evensgn.emcompiler.backend.IRPrinter;
+import com.evensgn.emcompiler.backend.StaticDataProcessor;
 import com.evensgn.emcompiler.frontend.*;
 import com.evensgn.emcompiler.ir.IRBinaryOperation;
 import com.evensgn.emcompiler.ir.IRRoot;
@@ -65,5 +66,7 @@ public class Compiler {
         IRPrinter irPrinter = new IRPrinter(outS);
         irPrinter.visit(ir);
         System.out.println("compiler finished.");
+        StaticDataProcessor staticDataProcessor = new StaticDataProcessor(ir);
+        staticDataProcessor.run();
     }
 }

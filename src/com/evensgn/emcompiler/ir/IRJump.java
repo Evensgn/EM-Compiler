@@ -25,6 +25,12 @@ public class IRJump extends IRJumpInstruction {
         return null;
     }
 
+    @Override
+    public void setDefinedRegister(VirtualRegister vreg) {
+        // no actions
+    }
+
+
     public BasicBlock getTargetBB() {
         return targetBB;
     }

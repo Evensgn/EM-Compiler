@@ -45,6 +45,11 @@ public class IRBinaryOperation extends IRInstruction {
         return dest;
     }
 
+    @Override
+    public void setDefinedRegister(VirtualRegister vreg) {
+        dest = vreg;
+    }
+
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
     }

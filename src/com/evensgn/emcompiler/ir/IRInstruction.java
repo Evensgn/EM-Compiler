@@ -94,4 +94,6 @@ public abstract class IRInstruction {
     public abstract IRRegister getDefinedRegister();
 
     public abstract void setUsedRegisters(Map<IRRegister, IRRegister> renameMap);
+
+    public abstract void setDefinedRegister(VirtualRegister vreg);
 }

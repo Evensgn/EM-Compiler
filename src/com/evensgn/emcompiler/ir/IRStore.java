@@ -30,6 +30,11 @@ public class IRStore extends IRInstruction {
     }
 
     @Override
+    public void setDefinedRegister(VirtualRegister vreg) {
+        // no actions
+    }
+
+    @Override
     public void reloadUsedRegistersRegValues() {
         usedRegisters.clear();
         usedRegValues.clear();

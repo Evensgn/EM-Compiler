@@ -33,6 +33,11 @@ public class IRBranch extends IRJumpInstruction {
         return null;
     }
 
+    @Override
+    public void setDefinedRegister(VirtualRegister vreg) {
+        // no actions
+    }
+
     public BasicBlock getThenBB() {
         return thenBB;
     }

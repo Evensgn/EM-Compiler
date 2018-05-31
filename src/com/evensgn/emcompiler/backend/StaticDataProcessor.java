@@ -1,5 +1,6 @@
 package com.evensgn.emcompiler.backend;
 
+import com.evensgn.emcompiler.Configuration;
 import com.evensgn.emcompiler.ir.*;
 
 import java.util.*;
@@ -53,7 +54,66 @@ public class StaticDataProcessor {
                         }
                         inst.setUsedRegisters(renameMap);
                     }
+                    IRRegister definedRegister = inst.getDefinedRegister();
+                    if (definedRegister != null && definedRegister instanceof StaticData) {
+                        VirtualRegister vreg = getStaticDataVreg(funcInfo.staticDataVregMap, (StaticData) definedRegister);
+                        inst.setDefinedRegister(vreg);
+                        funcInfo.definedStaticData.add((StaticData) definedRegister);
+                    }
                 }
+            }
+
+            // load static data at the beginning of function
+            BasicBlock startBB = irFunction.getStartBB();
+            IRInstruction firtInst = startBB.getFirstInst();
+            funcInfo.staticDataVregMap.forEach((staticData, virtualRegister) ->
+                    firtInst.prependInst(new IRLoad(startBB, virtualRegister, Configuration.getRegSize(), staticData, staticData instanceof StaticString)));
+        }
+
+        // TO DO add built-in functions
+        for (IRFunction irFunction : ir.getFuncs().values()) {
+            FuncInfo funcInfo = funcInfoMap.get(irFunction);
+            funcInfo.recursiveUsedStaticData.addAll(funcInfo.staticDataVregMap.keySet());
+            for (IRFunction calleeFunc : irFunction.recursiveCalleeSet) {
+                FuncInfo calleeFuncInfo = funcInfoMap.get(calleeFunc);
+                funcInfo.recursiveUsedStaticData.addAll(calleeFuncInfo.staticDataVregMap.keySet());
+            }
+        }
+
+        for (IRFunction irFunction : ir.getFuncs().values()) {
+            FuncInfo funcInfo = funcInfoMap.get(irFunction);
+            Set<StaticData> usedStaticData = funcInfo.staticDataVregMap.keySet();
+            if (usedStaticData.isEmpty()) continue;
+            for (BasicBlock bb : irFunction.getReversePostOrder()) {
+                for (IRInstruction inst = bb.getFirstInst(); inst != null; inst = inst.getNextInst()) {
+                    if (!(inst instanceof IRFunctionCall)) continue;
+                    IRFunction calleeFunc = ((IRFunctionCall) inst).getFunc();
+                    FuncInfo calleeFuncInfo = funcInfoMap.get(calleeFunc);
+                    // store defined static data before function call
+                    for (StaticData staticData : funcInfo.definedStaticData) {
+                        if (calleeFuncInfo.recursiveUsedStaticData.contains(staticData)) {
+                            inst.prependInst(new IRStore(bb, funcInfo.staticDataVregMap.get(staticData), Configuration.getRegSize(), staticData));
+                        }
+                    }
+                    // load used static data after function call
+                    if (calleeFuncInfo == null) continue;
+                    if (calleeFuncInfo.definedStaticData.isEmpty()) continue;
+                    Set<StaticData> loadStaticDataSet = new HashSet<>();
+                    loadStaticDataSet.addAll(calleeFuncInfo.definedStaticData);
+                    loadStaticDataSet.retainAll(usedStaticData);
+                    for (StaticData staticData : loadStaticDataSet) {
+                        inst.appendInst(new IRLoad(bb, funcInfo.staticDataVregMap.get(staticData), Configuration.getRegSize(), staticData, staticData instanceof StaticString));
+                    }
+                }
+            }
+        }
+
+        for (IRFunction irFunction : ir.getFuncs().values()) {
+            FuncInfo funcInfo = funcInfoMap.get(irFunction);
+            IRReturn retInst = irFunction.getRetInstList().get(0);
+            // store defined data at the end of function
+            for (StaticData staticData : funcInfo.definedStaticData) {
+                retInst.prependInst(new IRStore(retInst.getParentBB(), funcInfo.staticDataVregMap.get(staticData), Configuration.getRegSize(), staticData));
             }
         }
     }

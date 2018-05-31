@@ -30,6 +30,11 @@ public class IRReturn extends IRJumpInstruction {
         return null;
     }
 
+    @Override
+    public void setDefinedRegister(VirtualRegister vreg) {
+        // no actions
+    }
+
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
     }

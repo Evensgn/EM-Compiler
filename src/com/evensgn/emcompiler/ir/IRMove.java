@@ -32,6 +32,11 @@ public class IRMove extends IRInstruction {
         return lhs;
     }
 
+    @Override
+    public void setDefinedRegister(VirtualRegister vreg) {
+        lhs = vreg;
+    }
+
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
     }
