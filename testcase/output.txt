@@ -4,26 +4,38 @@ func main {
     jump %__init_func_entry
 
 %__init_func_entry:
-    $x = move 0
-    $y = move 0
-    $x = move 10
-    $y = move 19
-    $a = move $x
-    $b = move $y
-    $vreg = sgt $a $b
-    br $vreg %if_then %if_after
+    $vreg = call tak 18 12 6 
+    ret $vreg
 
-%if_after:
-    $return_value = move $b
-    jump %max_end
+}
+
+func tak $x $y $z {
+%tak_entry:
+    $vreg = slt $y $x
+    br $vreg %if_then %if_else
 
 %if_then:
-    $return_value = move $a
-    jump %max_end
+    $vreg_2 = move $x
+    $vreg_2 = sub $vreg_2 1
+    $vreg_3 = call tak $vreg_2 $y $z 
+    $vreg_4 = move $y
+    $vreg_4 = sub $vreg_4 1
+    $vreg_5 = call tak $vreg_4 $z $x 
+    $vreg_6 = move $z
+    $vreg_6 = sub $vreg_6 1
+    $vreg_7 = call tak $vreg_6 $x $y 
+    $vreg_8 = call tak $vreg_3 $vreg_5 $vreg_7 
+    $vreg_9 = move 1
+    $vreg_9 = add $vreg_9 $vreg_8
+    $return_value = move $vreg_9
+    jump %tak_end
 
-%max_end:
-    $vreg_2 = move $return_value
-    ret $vreg_2
+%if_else:
+    $return_value = move $z
+    jump %tak_end
+
+%tak_end:
+    ret $return_value
 
 }
 

@@ -3,6 +3,8 @@ package com.evensgn.emcompiler.ir;
 import java.rmi.registry.Registry;
 import java.util.Map;
 
+import static com.evensgn.emcompiler.ir.IRBinaryOperation.IRBinaryOp.*;
+
 public class IRBinaryOperation extends IRInstruction {
     public enum IRBinaryOp {
         ADD, SUB, MUL, DIV, MOD,
@@ -21,6 +23,10 @@ public class IRBinaryOperation extends IRInstruction {
         this.lhs = lhs;
         this.rhs = rhs;
         reloadUsedRegistersRegValues();
+    }
+
+    public boolean isCommutativeOp() {
+        return op == ADD || op == MUL || op == BITWISE_AND || op == BITWISE_OR || op == BITWISE_XOR;
     }
 
     @Override
@@ -68,6 +74,14 @@ public class IRBinaryOperation extends IRInstruction {
 
     public RegValue getRhs() {
         return rhs;
+    }
+
+    public void setLhs(RegValue lhs) {
+        this.lhs = lhs;
+    }
+
+    public void setRhs(RegValue rhs) {
+        this.rhs = rhs;
     }
 
     @Override

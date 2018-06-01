@@ -5,6 +5,7 @@ import com.evensgn.emcompiler.ast.ProgramNode;
 import com.evensgn.emcompiler.backend.FunctionInlineProcessor;
 import com.evensgn.emcompiler.backend.IRPrinter;
 import com.evensgn.emcompiler.backend.StaticDataProcessor;
+import com.evensgn.emcompiler.backend.TwoRegOpTransformer;
 import com.evensgn.emcompiler.frontend.*;
 import com.evensgn.emcompiler.ir.IRBinaryOperation;
 import com.evensgn.emcompiler.ir.IRRoot;
@@ -63,6 +64,8 @@ public class Compiler {
             FunctionInlineProcessor functionInlineProcessor = new FunctionInlineProcessor(ir);
             functionInlineProcessor.run();
         }
+        TwoRegOpTransformer twoRegOpTransformer = new TwoRegOpTransformer(ir);
+        twoRegOpTransformer.run();
         IRPrinter irPrinter = new IRPrinter(outS);
         irPrinter.visit(ir);
         System.out.println("compiler finished.");
