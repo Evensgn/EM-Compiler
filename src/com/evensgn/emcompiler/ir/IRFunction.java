@@ -14,6 +14,7 @@ public class IRFunction {
     private BasicBlock startBB = null, endBB = null;
     private List<VirtualRegister> argVRegList = new ArrayList<>();
     private List<BasicBlock> reversePostOrder = null;
+    private List<BasicBlock> reversePreOrder = null;
     private String name;
     private boolean recursiveCall = false;
     private List<IRReturn> retInstList = new ArrayList<>();
@@ -89,6 +90,16 @@ public class IRFunction {
         reversePostOrder.add(bb);
     }
 
+    private void dfsPreOrder(BasicBlock bb) {
+        if (dfsVisited.contains(bb)) return;
+        dfsVisited.add(bb);
+        // actually is pre order now
+        reversePreOrder.add(bb);
+        for (BasicBlock nextBB : bb.getNextBBSet()) {
+            dfsPreOrder(nextBB);
+        }
+    }
+
     public List<BasicBlock> getReversePostOrder() {
         if (reversePostOrder == null) {
             calcReversePostOrder();
@@ -100,12 +111,29 @@ public class IRFunction {
         reversePostOrder = new ArrayList<>();
         dfsVisited = new HashSet<>();
         dfsPostOrder(startBB);
-
         dfsVisited = null;
         for (int i = 0; i < reversePostOrder.size(); ++i) {
             reversePostOrder.get(i).setPostOrderIdx(i);
         }
         Collections.reverse(reversePostOrder);
+    }
+
+    public List<BasicBlock> getReversePreOrder() {
+        if (reversePreOrder == null) {
+            calcReversePreOrder();
+        }
+        return reversePreOrder;
+    }
+
+    public void calcReversePreOrder() {
+        reversePreOrder = new ArrayList<>();
+        dfsVisited = new HashSet<>();
+        dfsPreOrder(startBB);
+        dfsVisited = null;
+        for (int i = 0; i < reversePreOrder.size(); ++i) {
+            reversePreOrder.get(i).setPreOrderIdx(i);
+        }
+        Collections.reverse(reversePreOrder);
     }
 
     public void setRecursiveCall(boolean recursiveCall) {

@@ -5,6 +5,7 @@ import com.evensgn.emcompiler.utils.CompilerError;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class IRInstruction {
     private IRInstruction prevInst = null, nextInst = null;
@@ -12,6 +13,7 @@ public abstract class IRInstruction {
     protected List<IRRegister> usedRegisters = new ArrayList<>();
     protected List<RegValue> usedRegValues = new ArrayList<>();
     private boolean removed = false;
+    public Set<VirtualRegister> liveIn = null, liveOut = null;
 
     public IRInstruction(BasicBlock parentBB) {
         this.parentBB = parentBB;

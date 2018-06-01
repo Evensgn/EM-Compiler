@@ -10,7 +10,7 @@ public class BasicBlock {
     private IRFunction func;
     private String name;
     private boolean hasJumpInst = false;
-    private int postOrderIdx;
+    private int postOrderIdx, preOrderIdx;
     private Set<BasicBlock> prevBBSet = new HashSet<>(), nextBBSet = new HashSet<>();
 
     public BasicBlock(IRFunction func, String name) {
@@ -99,6 +99,10 @@ public class BasicBlock {
 
     public void setPostOrderIdx(int postOrderIdx) {
         this.postOrderIdx = postOrderIdx;
+    }
+
+    public void setPreOrderIdx(int preOrderIdx) {
+        this.preOrderIdx = preOrderIdx;
     }
 
     public int getPostOrderIdx() {

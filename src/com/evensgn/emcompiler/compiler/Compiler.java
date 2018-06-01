@@ -2,10 +2,7 @@ package com.evensgn.emcompiler.compiler;
 
 import com.evensgn.emcompiler.Configuration;
 import com.evensgn.emcompiler.ast.ProgramNode;
-import com.evensgn.emcompiler.backend.FunctionInlineProcessor;
-import com.evensgn.emcompiler.backend.IRPrinter;
-import com.evensgn.emcompiler.backend.StaticDataProcessor;
-import com.evensgn.emcompiler.backend.TwoRegOpTransformer;
+import com.evensgn.emcompiler.backend.*;
 import com.evensgn.emcompiler.frontend.*;
 import com.evensgn.emcompiler.ir.IRBinaryOperation;
 import com.evensgn.emcompiler.ir.IRRoot;
@@ -61,15 +58,12 @@ public class Compiler {
         irBuilder.visit(ast);
         IRRoot ir = irBuilder.getIR();
         if (Configuration.isEnableFunctionInline()) {
-            FunctionInlineProcessor functionInlineProcessor = new FunctionInlineProcessor(ir);
-            functionInlineProcessor.run();
+            new FunctionInlineProcessor(ir).run();
         }
-        TwoRegOpTransformer twoRegOpTransformer = new TwoRegOpTransformer(ir);
-        twoRegOpTransformer.run();
-        IRPrinter irPrinter = new IRPrinter(outS);
-        irPrinter.visit(ir);
+        new TwoRegOpTransformer(ir).run();
+        new IRPrinter(outS).visit(ir);
         System.out.println("compiler finished.");
-        StaticDataProcessor staticDataProcessor = new StaticDataProcessor(ir);
-        staticDataProcessor.run();
+        new StaticDataProcessor(ir).run();
+        new RegLivelinessAnalysis(ir).run();
     }
 }

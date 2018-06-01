@@ -6,7 +6,6 @@ import com.evensgn.emcompiler.ir.*;
 import com.evensgn.emcompiler.scope.*;
 import com.evensgn.emcompiler.type.*;
 import com.evensgn.emcompiler.utils.CompilerError;
-import com.sun.javafx.applet.ExperimentalExtensions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -811,35 +810,91 @@ public class IRBuilder extends BaseScopeScanner {
 
         node.getLhs().accept(this);
         node.getRhs().accept(this);
+
+        RegValue lhs = node.getLhs().getRegValue(), rhs = node.getRhs().getRegValue(), tmp;
+        boolean bothConst = lhs instanceof IntImmediate && rhs instanceof IntImmediate;
+        int lhsImm = 0, rhsImm = 0;
+        if (lhs instanceof IntImmediate) lhsImm = ((IntImmediate) lhs).getValue();
+        if (rhs instanceof IntImmediate) rhsImm = ((IntImmediate) rhs).getValue();
         IRBinaryOperation.IRBinaryOp op;
         switch (node.getOp()) {
             case MUL:
-                op = IRBinaryOperation.IRBinaryOp.MUL; break;
+                op = IRBinaryOperation.IRBinaryOp.MUL;
+                if (bothConst) {
+                    node.setRegValue(new IntImmediate(lhsImm * rhsImm));
+                    return;
+                }
+                break;
             case DIV:
-                op = IRBinaryOperation.IRBinaryOp.DIV; break;
+                op = IRBinaryOperation.IRBinaryOp.DIV;
+                if (bothConst && rhsImm != 0) {
+                    node.setRegValue(new IntImmediate(lhsImm / rhsImm));
+                    return;
+                }
+                break;
             case MOD:
-                op = IRBinaryOperation.IRBinaryOp.MOD; break;
+                op = IRBinaryOperation.IRBinaryOp.MOD;
+                if (bothConst && rhsImm != 0) {
+                    node.setRegValue(new IntImmediate(lhsImm % rhsImm));
+                    return;
+                }
+                break;
             case ADD:
-                op = IRBinaryOperation.IRBinaryOp.ADD; break;
+                op = IRBinaryOperation.IRBinaryOp.ADD;
+                if (bothConst) {
+                    node.setRegValue(new IntImmediate(lhsImm + rhsImm));
+                    return;
+                }
+                break;
             case SUB:
-                op = IRBinaryOperation.IRBinaryOp.SUB; break;
+                op = IRBinaryOperation.IRBinaryOp.SUB;
+                if (bothConst) {
+                    node.setRegValue(new IntImmediate(lhsImm - rhsImm));
+                    return;
+                }
+                break;
             case SHL:
-                op = IRBinaryOperation.IRBinaryOp.SHL; break;
+                op = IRBinaryOperation.IRBinaryOp.SHL;
+                if (bothConst) {
+                    node.setRegValue(new IntImmediate(lhsImm << rhsImm));
+                    return;
+                }
+                break;
             case SHR:
-                op = IRBinaryOperation.IRBinaryOp.SHR; break;
+                op = IRBinaryOperation.IRBinaryOp.SHR;
+                if (bothConst) {
+                    node.setRegValue(new IntImmediate(lhsImm >> rhsImm));
+                    return;
+                }
+                break;
             case BITWISE_AND:
-                op = IRBinaryOperation.IRBinaryOp.BITWISE_AND; break;
+                op = IRBinaryOperation.IRBinaryOp.BITWISE_AND;
+                if (bothConst) {
+                    node.setRegValue(new IntImmediate(lhsImm & rhsImm));
+                    return;
+                }
+                break;
             case BITWISE_OR:
-                op = IRBinaryOperation.IRBinaryOp.BITWISE_OR; break;
+                op = IRBinaryOperation.IRBinaryOp.BITWISE_OR;
+                if (bothConst) {
+                    node.setRegValue(new IntImmediate(lhsImm | rhsImm));
+                    return;
+                }
+                break;
             case BITWISE_XOR:
-                op = IRBinaryOperation.IRBinaryOp.BITWISE_XOR; break;
+                op = IRBinaryOperation.IRBinaryOp.BITWISE_XOR;
+                if (bothConst) {
+                    node.setRegValue(new IntImmediate(lhsImm ^ rhsImm));
+                    return;
+                }
+                break;
             default:
                 throw new CompilerError("invalid int arithmetic binary operation");
         }
 
         VirtualRegister vreg = new VirtualRegister(null);
         node.setRegValue(vreg);
-        currentBB.addInst(new IRBinaryOperation(currentBB, vreg, op, node.getLhs().getRegValue(), node.getRhs().getRegValue()));
+        currentBB.addInst(new IRBinaryOperation(currentBB, vreg, op, lhs, rhs));
     }
 
     private void processCmpBinaryOp(BinaryExprNode node) {
@@ -851,26 +906,67 @@ public class IRBuilder extends BaseScopeScanner {
         node.getLhs().accept(this);
         node.getRhs().accept(this);
 
+        RegValue lhs = node.getLhs().getRegValue(), rhs = node.getRhs().getRegValue(), tmp;
+        boolean bothConst = lhs instanceof IntImmediate && rhs instanceof IntImmediate;
+        int lhsImm = 0, rhsImm = 0;
+        if (lhs instanceof IntImmediate) lhsImm = ((IntImmediate) lhs).getValue();
+        if (rhs instanceof IntImmediate) rhsImm = ((IntImmediate) rhs).getValue();
         IRComparison.IRCmpOp op;
         switch (node.getOp()) {
             case GREATER:
-                op = IRComparison.IRCmpOp.GREATER; break;
+                op = IRComparison.IRCmpOp.GREATER;
+                if (bothConst) {
+                    if (lhsImm > rhsImm) node.setRegValue(new IntImmediate(1));
+                    else node.setRegValue(new IntImmediate(0));
+                    return;
+                }
+                break;
             case LESS:
-                op = IRComparison.IRCmpOp.LESS; break;
+                op = IRComparison.IRCmpOp.LESS;
+                if (bothConst) {
+                    if (lhsImm < rhsImm) node.setRegValue(new IntImmediate(1));
+                    else node.setRegValue(new IntImmediate(0));
+                    return;
+                }
+                break;
             case GREATER_EQUAL:
-                op = IRComparison.IRCmpOp.GREATER_EQUAL; break;
+                op = IRComparison.IRCmpOp.GREATER_EQUAL;
+                if (bothConst) {
+                    if (lhsImm >= rhsImm) node.setRegValue(new IntImmediate(1));
+                    else node.setRegValue(new IntImmediate(0));
+                    return;
+                }
+                break;
             case LESS_EQUAL:
-                op = IRComparison.IRCmpOp.LESS_EQUAL; break;
+                op = IRComparison.IRCmpOp.LESS_EQUAL;
+                if (bothConst) {
+                    if (lhsImm <= rhsImm) node.setRegValue(new IntImmediate(1));
+                    else node.setRegValue(new IntImmediate(0));
+                    return;
+                }
+                break;
             case EQUAL:
-                op = IRComparison.IRCmpOp.EQUAL; break;
+                op = IRComparison.IRCmpOp.EQUAL;
+                if (bothConst) {
+                    if (lhsImm == rhsImm) node.setRegValue(new IntImmediate(1));
+                    else node.setRegValue(new IntImmediate(0));
+                    return;
+                }
+                break;
             case INEQUAL:
-                op = IRComparison.IRCmpOp.INEQUAL; break;
+                op = IRComparison.IRCmpOp.INEQUAL;
+                if (bothConst) {
+                    if (lhsImm != rhsImm) node.setRegValue(new IntImmediate(1));
+                    else node.setRegValue(new IntImmediate(0));
+                    return;
+                }
+                break;
             default:
                 throw new CompilerError("invalid int comparison binary operation");
         }
 
         VirtualRegister vreg = new VirtualRegister(null);
-        currentBB.addInst(new IRComparison(currentBB, vreg, op, node.getLhs().getRegValue(), node.getRhs().getRegValue()));
+        currentBB.addInst(new IRComparison(currentBB, vreg, op, lhs, rhs));
         if (node.getTrueBB() != null) {
             currentBB.setJumpInst(new IRBranch(currentBB, vreg, node.getTrueBB(), node.getFalseBB()));
         } else {
