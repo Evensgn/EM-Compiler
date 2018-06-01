@@ -14,7 +14,7 @@ public class FuncEntity extends Entity {
     private List<VarEntity> parameters;
     private Type returnType;
     private String className;
-    private boolean isConstruct, isMember, isBuiltIn = false;
+    private boolean isConstruct = false, isMember = false, isBuiltIn = false;
 
     public FuncEntity(String name, Type type) {
         super(name, type);
@@ -81,5 +81,9 @@ public class FuncEntity extends Entity {
 
     public String getClassName() {
         return className;
+    }
+
+    public void setMember(boolean member) {
+        isMember = member;
     }
 }

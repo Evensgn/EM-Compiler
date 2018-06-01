@@ -23,6 +23,9 @@ public class GlobalScopePreScanner extends BaseScopeScanner {
         entity.setParameters(parameters);
         entity.setReturnType(returnType);
         entity.setBuiltIn(true);
+        if (!thisScope.isTop()) {
+            entity.setMember(true);
+        }
         thisScope.putCheck(name, key, entity);
     }
 
