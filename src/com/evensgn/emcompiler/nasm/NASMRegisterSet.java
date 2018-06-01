@@ -1,12 +1,14 @@
 package com.evensgn.emcompiler.nasm;
 
+import com.evensgn.emcompiler.ir.PhysicalRegister;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class NASMRegisterSet {
-    public static final Collection<NASMRegister> allRegs, generalRegs, callerSaveRegs, calleeSaveRegs;
+    public static final Collection<PhysicalRegister> allRegs, generalRegs, callerSaveRegs, calleeSaveRegs;
 
     static {
         List<NASMRegister> all = new ArrayList<>();

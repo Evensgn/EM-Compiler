@@ -52,7 +52,7 @@ public class IRBinaryOperation extends IRInstruction {
     }
 
     @Override
-    public void setDefinedRegister(VirtualRegister vreg) {
+    public void setDefinedRegister(IRRegister vreg) {
         dest = vreg;
     }
 
@@ -78,10 +78,12 @@ public class IRBinaryOperation extends IRInstruction {
 
     public void setLhs(RegValue lhs) {
         this.lhs = lhs;
+        reloadUsedRegistersRegValues();
     }
 
     public void setRhs(RegValue rhs) {
         this.rhs = rhs;
+        reloadUsedRegistersRegValues();
     }
 
     @Override

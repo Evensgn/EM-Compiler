@@ -7,7 +7,7 @@ import java.util.Map;
 public class IRFunctionCall extends IRInstruction {
     private IRFunction func;
     private List<RegValue> args;
-    private VirtualRegister dest;
+    private IRRegister dest;
 
     public IRFunctionCall(BasicBlock parentBB, IRFunction func, List<RegValue> args, VirtualRegister dest) {
         super(parentBB);
@@ -43,7 +43,7 @@ public class IRFunctionCall extends IRInstruction {
     }
 
     @Override
-    public void setDefinedRegister(VirtualRegister vreg) {
+    public void setDefinedRegister(IRRegister vreg) {
         dest = vreg;
     }
 
@@ -59,7 +59,7 @@ public class IRFunctionCall extends IRInstruction {
         return args;
     }
 
-    public VirtualRegister getDest() {
+    public IRRegister getDest() {
         return dest;
     }
 

@@ -33,7 +33,7 @@ public class IRHeapAlloc extends IRInstruction {
     }
 
     @Override
-    public void setDefinedRegister(VirtualRegister vreg) {
+    public void setDefinedRegister(IRRegister vreg) {
         dest = vreg;
     }
 

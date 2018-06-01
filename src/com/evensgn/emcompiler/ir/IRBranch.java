@@ -34,7 +34,7 @@ public class IRBranch extends IRJumpInstruction {
     }
 
     @Override
-    public void setDefinedRegister(VirtualRegister vreg) {
+    public void setDefinedRegister(IRRegister vreg) {
         // no actions
     }
 

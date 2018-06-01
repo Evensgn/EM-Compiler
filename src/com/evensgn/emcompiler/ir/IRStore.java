@@ -30,7 +30,7 @@ public class IRStore extends IRInstruction {
     }
 
     @Override
-    public void setDefinedRegister(VirtualRegister vreg) {
+    public void setDefinedRegister(IRRegister vreg) {
         // no actions
     }
 
@@ -38,7 +38,7 @@ public class IRStore extends IRInstruction {
     public void reloadUsedRegistersRegValues() {
         usedRegisters.clear();
         usedRegValues.clear();
-        if (addr instanceof IRRegister && !(addr instanceof StaticSlot)) usedRegisters.add((IRRegister) addr);
+        if (addr instanceof IRRegister && !(addr instanceof StackSlot)) usedRegisters.add((IRRegister) addr);
         if (value instanceof IRRegister) usedRegisters.add((IRRegister) value);
         usedRegValues.add(addr);
         usedRegValues.add(value);
@@ -46,7 +46,7 @@ public class IRStore extends IRInstruction {
 
     @Override
     public void setUsedRegisters(Map<IRRegister, IRRegister> renameMap) {
-        if (addr instanceof IRRegister && !(addr instanceof StaticSlot)) addr = renameMap.get(addr);
+        if (addr instanceof IRRegister && !(addr instanceof StackSlot)) addr = renameMap.get(addr);
         if (value instanceof IRRegister) value = renameMap.get(value);
         reloadUsedRegistersRegValues();
     }

@@ -311,4 +311,9 @@ public class IRPrinter implements IRVisitor {
         if (isStaticDef) out.printf("asciiz @%s %s\n", getStaticDataID(node), node.getValue());
         else out.print("@" + getStaticDataID(node));
     }
+
+    @Override
+    public void visit(PhysicalRegister node) {
+        // no actions
+    }
 }

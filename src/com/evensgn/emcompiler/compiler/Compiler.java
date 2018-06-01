@@ -6,6 +6,7 @@ import com.evensgn.emcompiler.backend.*;
 import com.evensgn.emcompiler.frontend.*;
 import com.evensgn.emcompiler.ir.IRBinaryOperation;
 import com.evensgn.emcompiler.ir.IRRoot;
+import com.evensgn.emcompiler.nasm.NASMRegisterSet;
 import com.evensgn.emcompiler.parser.EMxStarLexer;
 import com.evensgn.emcompiler.parser.EMxStarParser;
 import com.evensgn.emcompiler.parser.SyntaxErrorListener;
@@ -57,13 +58,15 @@ public class Compiler {
         IRBuilder irBuilder = new IRBuilder(functionScopeScanner.getGlobalScope());
         irBuilder.visit(ast);
         IRRoot ir = irBuilder.getIR();
+        new TwoRegOpTransformer(ir).run();
         if (Configuration.isEnableFunctionInline()) {
             new FunctionInlineProcessor(ir).run();
         }
-        new TwoRegOpTransformer(ir).run();
         new IRPrinter(outS).visit(ir);
         System.out.println("compiler finished.");
         new StaticDataProcessor(ir).run();
         new RegLivelinessAnalysis(ir).run();
+        new RegisterPreprocessor(ir).run();
+        new RegisterAllocator(ir, NASMRegisterSet.generalRegs).run();
     }
 }
