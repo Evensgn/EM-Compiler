@@ -19,6 +19,7 @@ public interface IRVisitor {
     void visit(IRHeapAlloc node);
 
     void visit(VirtualRegister node);
+    void visit(PhysicalRegister node);
     void visit(IntImmediate node);
     void visit(StaticVar node);
     void visit(StaticString node);
