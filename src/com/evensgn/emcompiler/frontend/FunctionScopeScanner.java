@@ -1,6 +1,7 @@
 package com.evensgn.emcompiler.frontend;
 
 import com.evensgn.emcompiler.ast.*;
+import com.evensgn.emcompiler.ir.IntImmediate;
 import com.evensgn.emcompiler.scope.*;
 import com.evensgn.emcompiler.type.*;
 import com.evensgn.emcompiler.utils.CompilerError;
@@ -308,6 +309,12 @@ public class FunctionScopeScanner extends BaseScopeScanner {
 
     @Override
     public void visit(NewExprNode node) {
+        for (ExprNode dim : node.getDims()) {
+            dim.accept(this);
+            if (!(dim.getType() instanceof IntType)) {
+                throw new SemanticError(dim.location(), "dimension size of array should be integer type");
+            }
+        }
         node.setType(node.getNewType().getType());
         node.setLeftValue(false);
     }
@@ -411,6 +418,7 @@ public class FunctionScopeScanner extends BaseScopeScanner {
         String name = node.getIdentifier();
         Entity entity = currentScope.getVarFuncCheck(node.location(), name);
         if (entity instanceof VarEntity) {
+            node.setVarEntity((VarEntity) entity);
             node.setLeftValue(true);
         }
         else if (entity instanceof FuncEntity) {

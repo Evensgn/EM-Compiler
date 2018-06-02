@@ -3,7 +3,6 @@ package com.evensgn.emcompiler.backend;
 import com.evensgn.emcompiler.Configuration;
 import com.evensgn.emcompiler.ir.*;
 import com.evensgn.emcompiler.utils.CompilerError;
-import sun.awt.ConstrainableGraphics;
 
 import java.util.*;
 

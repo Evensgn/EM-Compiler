@@ -1036,7 +1036,7 @@ public class IRBuilder extends BaseScopeScanner {
     @Override
     public void visit(IdentifierExprNode node) {
         // should be a variable instead of a function
-        VarEntity varEntity = (VarEntity) currentScope.get(Scope.varKey(node.getIdentifier()));
+        VarEntity varEntity = node.getVarEntity();
         if (varEntity.getIrRegister() == null) {
             ThisExprNode thisExprNode = new ThisExprNode(null);
             thisExprNode.setType(new ClassType(currentClassName));
