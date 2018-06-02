@@ -115,15 +115,15 @@ public class RegisterAllocator {
                 while (!degreeSmallVregNodes.isEmpty()) {
                     Iterator<VirtualRegister> iterator = degreeSmallVregNodes.iterator();
                     VirtualRegister vreg = iterator.next();
-                    removeVregNode(vreg);
                     iterator.remove();
+                    removeVregNode(vreg);
                     vregOrder.add(vreg);
                 }
                 if (vregNodes.isEmpty()) break;
                 Iterator<VirtualRegister> iterator = vregNodes.iterator();
                 VirtualRegister vreg = iterator.next();
-                removeVregNode(vreg);
                 iterator.remove();
+                removeVregNode(vreg);
                 vregOrder.add(vreg);
             }
             Collections.reverse(vregOrder);
@@ -160,7 +160,7 @@ public class RegisterAllocator {
                         }
                         if (vregInfo.color == null) {
                             vregInfo.color = irFunction.getArgsStackSlotMap().get(vreg);
-                            if (vregInfo.color == null) vregInfo.color = new StackSlot(irFunction, vreg.getName());
+                            if (vregInfo.color == null) vregInfo.color = new StackSlot(irFunction, vreg.getName(), false);
                         }
                     }
                 }

@@ -67,6 +67,7 @@ public class Compiler {
         new StaticDataProcessor(ir).run();
         new RegLivelinessAnalysis(ir).run();
         new RegisterPreprocessor(ir).run();
-        //new RegisterAllocator(ir, NASMRegisterSet.generalRegs).run();
+        new RegisterAllocator(ir, NASMRegisterSet.generalRegs).run();
+        new NASMTransformer(ir).run();
     }
 }

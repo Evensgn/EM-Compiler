@@ -4,9 +4,10 @@ public class StackSlot extends IRRegister {
     private IRFunction parentFunc;
     private String name;
 
-    public StackSlot(IRFunction parentFunc, String name) {
+    public StackSlot(IRFunction parentFunc, String name, boolean isArgSlot) {
         this.parentFunc = parentFunc;
         this.name = name;
+        if (!isArgSlot) parentFunc.getStackSlots().add(this);
     }
 
     public IRFunction getParentFunc() {

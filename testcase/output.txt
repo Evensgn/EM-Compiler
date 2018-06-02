@@ -4,150 +4,67 @@ func main {
     jump %__init_func_entry
 
 %__init_func_entry:
-    $la = move 5
-    $lb = move 10
-    $a = move 0
-    $vreg = move $lb
-    $vreg = mul $vreg 8
-    $vreg = add $vreg 8
-    $vreg = alloc $vreg
-    store 8 $vreg $lb 0
-    $vreg_2 = move $vreg
-    $b = move $vreg_2
-    $vreg_3 = move 2
-    $vreg_3 = mul $vreg_3 8
-    $vreg_3 = add $vreg_3 8
-    $vreg_3 = alloc $vreg_3
-    store 8 $vreg_3 2 0
-    $vreg_4 = move $vreg_3
-    $c = move $vreg_4
-    $vreg_5 = move $la
-    $vreg_5 = mul $vreg_5 8
-    $vreg_5 = add $vreg_5 8
-    $vreg_5 = alloc $vreg_5
-    store 8 $vreg_5 $la 0
-    $vreg_6 = move $vreg_5
-    $a = move $vreg_6
-    $vreg_7 = move 0
-    $vreg_7 = mul $vreg_7 8
-    $vreg_7 = add $vreg_7 $c
-    store 8 $vreg_7 $a 8
-    $vreg_8 = move 1
-    $vreg_8 = mul $vreg_8 8
-    $vreg_8 = add $vreg_8 $c
-    store 8 $vreg_8 $b 8
-    $cnt = move 0
-    $i = move 0
-    $j = move 0
-    $i = move 0
-    jump %for_cond
+    $a = move 5
+    $b = move 0
+    $c = move 0
+    $vreg = sne $b 0
+    br $vreg %and_lhs_true %bb
 
-%for_cond:
-    $vreg_9 = slt $i 2
-    br $vreg_9 %for_body %for_after
+%and_lhs_true:
+    $vreg_2 = div $a $b
+    $vreg_3 = sne $vreg_2 1
+    br $vreg_3 %bb_2 %bb
 
-%for_body:
-    $j = move 0
-    jump %for_cond_2
+%bb_2:
+    $d = move 1
+    jump %bb_3
 
-%for_cond_2:
-    $vreg_10 = slt $j $la
-    br $vreg_10 %for_body_2 %for_after_2
+%bb:
+    $d = move 0
+    jump %bb_3
 
-%for_body_2:
-    $cnt = add $cnt 1
-    $vreg_11 = move $i
-    $vreg_11 = mul $vreg_11 8
-    $vreg_11 = add $vreg_11 $c
-    $vreg_11 = load 8 $vreg_11 8
-    $vreg_12 = move $j
-    $vreg_12 = mul $vreg_12 8
-    $vreg_12 = add $vreg_12 $vreg_11
-    store 8 $vreg_12 $cnt 8
-    jump %for_step
+%bb_3:
+    br $d %if_then %if_else
 
-%for_step:
-    $j = add $j 1
-    jump %for_cond_2
+%if_else:
+    $c = move 20
+    jump %if_after
 
-%for_after_2:
-    jump %for_step_2
+%if_then:
+    $c = move 10
+    jump %if_after
 
-%for_step_2:
-    $i = add $i 1
-    jump %for_cond
+%if_after:
+    $e = move 0
+    $vreg_4 = seq $c 10
+    br $vreg_4 %and_lhs_true_2 %bb_4
 
-%for_after:
-    $j = move $la
-    jump %for_cond_3
+%and_lhs_true_2:
+    $vreg_5 = div $a $b
+    $vreg_6 = seq $vreg_5 0
+    br $vreg_6 %and_lhs_true_3 %bb_4
 
-%for_cond_3:
-    $vreg_13 = slt $j $lb
-    br $vreg_13 %for_body_3 %for_after_3
+%and_lhs_true_3:
+    $vreg_7 = seq $a 5
+    br $vreg_7 %bb_5 %bb_4
 
-%for_after_3:
-    $sum = move 0
-    $i = move 0
-    jump %for_cond_4
+%bb_4:
+    $e = move 1
+    jump %bb_6
 
-%for_cond_4:
-    $vreg_14 = slt $i $la
-    br $vreg_14 %for_body_4 %for_after_4
+%bb_5:
+    $e = move 0
+    jump %bb_6
 
-%for_body_4:
-    $vreg_15 = move $i
-    $vreg_15 = mul $vreg_15 8
-    $vreg_15 = add $vreg_15 $a
-    $vreg_15 = load 8 $vreg_15 8
-    $vreg_16 = move $sum
-    $vreg_16 = add $vreg_16 $vreg_15
-    $sum = move $vreg_16
-    jump %for_step_3
+%bb_6:
+    br $e %if_then_2 %if_after_2
 
-%for_step_3:
-    $i = add $i 1
-    jump %for_cond_4
+%if_then_2:
+    $c = move 30
+    jump %if_after_2
 
-%for_after_4:
-    $i = move 0
-    jump %for_cond_5
-
-%for_cond_5:
-    $vreg_17 = slt $i $lb
-    br $vreg_17 %for_body_5 %for_after_5
-
-%for_after_5:
-    ret $sum
-
-%for_body_5:
-    $vreg_18 = move $i
-    $vreg_18 = mul $vreg_18 8
-    $vreg_18 = add $vreg_18 $b
-    $vreg_18 = load 8 $vreg_18 8
-    $vreg_19 = move $sum
-    $vreg_19 = add $vreg_19 $vreg_18
-    $sum = move $vreg_19
-    jump %for_step_4
-
-%for_step_4:
-    $i = add $i 1
-    jump %for_cond_5
-
-%for_body_3:
-    $cnt = add $cnt 1
-    $vreg_20 = move 1
-    $vreg_20 = mul $vreg_20 8
-    $vreg_20 = add $vreg_20 $c
-    $vreg_20 = load 8 $vreg_20 8
-    $vreg_21 = move $j
-    $vreg_21 = mul $vreg_21 8
-    $vreg_21 = add $vreg_21 $vreg_20
-    store 8 $vreg_21 $cnt 8
-    jump %for_step_5
-
-%for_step_5:
-    $j = add $j 1
-    jump %for_cond_3
+%if_after_2:
+    ret $c
 
 }
 

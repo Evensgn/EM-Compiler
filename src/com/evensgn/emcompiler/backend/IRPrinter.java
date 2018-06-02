@@ -316,4 +316,14 @@ public class IRPrinter implements IRVisitor {
     public void visit(PhysicalRegister node) {
         // no actions
     }
+
+    @Override
+    public void visit(IRPush node) {
+        // no actions
+    }
+
+    @Override
+    public void visit(IRPop node) {
+        // no actions
+    }
 }

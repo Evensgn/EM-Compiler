@@ -19,6 +19,7 @@ public class IRFunction {
     private boolean recursiveCall = false;
     private List<IRReturn> retInstList = new ArrayList<>();
     private Set<PhysicalRegister> usedPhysicalGeneralRegs = new HashSet<>();
+    private boolean isBuiltIn = false;
 
     public String getName() {
         return name;
@@ -149,6 +150,12 @@ public class IRFunction {
         return retInstList;
     }
 
+    private List<StackSlot> stackSlots = new ArrayList<>();
+
+    public List<StackSlot> getStackSlots() {
+        return stackSlots;
+    }
+
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
     }
@@ -161,5 +168,9 @@ public class IRFunction {
 
     public Set<PhysicalRegister> getUsedPhysicalGeneralRegs() {
         return usedPhysicalGeneralRegs;
+    }
+
+    public boolean isBuiltIn() {
+        return isBuiltIn;
     }
 }

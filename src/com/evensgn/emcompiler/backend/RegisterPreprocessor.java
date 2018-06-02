@@ -4,9 +4,6 @@ import com.evensgn.emcompiler.Configuration;
 import com.evensgn.emcompiler.ir.*;
 import com.evensgn.emcompiler.nasm.NASMRegisterSet;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class RegisterPreprocessor {
     private IRRoot ir;
 
@@ -16,11 +13,11 @@ public class RegisterPreprocessor {
 
     private void processFuncArgs(IRFunction func) {
         IRInstruction firtInst = func.getStartBB().getFirstInst();
-        for (int i = 0; i < func.getArgVRegList().size(); ++i) {
+        for (int i = 6; i < func.getArgVRegList().size(); ++i) {
             VirtualRegister argVreg = func.getArgVRegList().get(i);
-            StackSlot argSlot = new StackSlot(func, "arg" + i);
+            StackSlot argSlot = new StackSlot(func, "arg" + i, true);
             func.getArgsStackSlotMap().put(argVreg, argSlot);
-            if (i > 5) firtInst.prependInst(new IRLoad(firtInst.getParentBB(), argVreg, Configuration.getRegSize(), argSlot, 0));
+            firtInst.prependInst(new IRLoad(firtInst.getParentBB(), argVreg, Configuration.getRegSize(), argSlot, 0));
         }
         if (func.getArgVRegList().size() > 0) func.getArgVRegList().get(0).setForcedPhysicalRegister(NASMRegisterSet.rdi);
         if (func.getArgVRegList().size() > 1) func.getArgVRegList().get(1).setForcedPhysicalRegister(NASMRegisterSet.rsi);
@@ -34,5 +31,16 @@ public class RegisterPreprocessor {
         for (IRFunction irFunction : ir.getFuncs().values()) {
             processFuncArgs(irFunction);
         }
+        /*for (IRFunction irFunction : ir.getFuncs().values()) {
+            for (BasicBlock bb : irFunction.getReversePreOrder()) {
+                for (IRInstruction inst = bb.getFirstInst(); inst != null; inst = inst.getNextInst()) {
+                    if (inst instanceof IRHeapAlloc) {
+                        if (irFunction.getArgVRegList().size() > 0) {
+                            // BLANK
+                        }
+                    }
+                }
+            }
+        }*/
     }
 }

@@ -309,10 +309,12 @@ public class FunctionScopeScanner extends BaseScopeScanner {
 
     @Override
     public void visit(NewExprNode node) {
-        for (ExprNode dim : node.getDims()) {
-            dim.accept(this);
-            if (!(dim.getType() instanceof IntType)) {
-                throw new SemanticError(dim.location(), "dimension size of array should be integer type");
+        if (node.getDims() != null) {
+            for (ExprNode dim : node.getDims()) {
+                dim.accept(this);
+                if (!(dim.getType() instanceof IntType)) {
+                    throw new SemanticError(dim.location(), "dimension size of array should be integer type");
+                }
             }
         }
         node.setType(node.getNewType().getType());

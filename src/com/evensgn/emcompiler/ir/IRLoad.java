@@ -93,4 +93,12 @@ public class IRLoad extends IRInstruction {
             );
         }
     }
+
+    public void setAddr(RegValue addr) {
+        this.addr = addr;
+    }
+
+    public void setAddrOffset(int addrOffset) {
+        this.addrOffset = addrOffset;
+    }
 }
