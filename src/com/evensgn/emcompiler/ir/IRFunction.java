@@ -3,10 +3,6 @@ package com.evensgn.emcompiler.ir;
 import com.evensgn.emcompiler.ast.BlockStmtNode;
 import com.evensgn.emcompiler.scope.FuncEntity;
 import com.evensgn.emcompiler.scope.VarEntity;
-import javafx.geometry.Pos;
-import org.antlr.v4.runtime.ParserRuleContext;
-import sun.net.www.http.PosterOutputStream;
-
 import java.util.*;
 
 public class IRFunction {

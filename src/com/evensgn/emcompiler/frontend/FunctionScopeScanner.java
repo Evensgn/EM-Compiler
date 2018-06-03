@@ -6,7 +6,6 @@ import com.evensgn.emcompiler.scope.*;
 import com.evensgn.emcompiler.type.*;
 import com.evensgn.emcompiler.utils.CompilerError;
 import com.evensgn.emcompiler.utils.SemanticError;
-import sun.security.krb5.internal.crypto.CksumType;
 
 public class FunctionScopeScanner extends BaseScopeScanner {
     private Scope globalScope, currentScope;
