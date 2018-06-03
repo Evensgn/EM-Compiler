@@ -99,6 +99,10 @@ public class NASMTransformer {
                             for (int i = args.size() - 1; i > 5; --i) {
                                 inst.prependInst(new IRPush(inst.getParentBB(), args.get(i)));
                             }
+                            // for rsp alignment
+                            if (args.size() > 6 && (args.size() - 6) % 2 == 1) {
+                                inst.prependInst(new IRPush(inst.getParentBB(), new IntImmediate(0)));
+                            }
                         }
 
                         // remove extra arguments
