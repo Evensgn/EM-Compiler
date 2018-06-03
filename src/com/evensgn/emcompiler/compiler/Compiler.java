@@ -47,7 +47,6 @@ public class Compiler {
     }
 
     public void compile() throws Exception {
-        System.out.println("compiler is running");
         buildAST();
         if (astOutS != null) new ASTPrinter(astOutS).visit(ast);
         GlobalScopePreScanner globalScopePreScanner = new GlobalScopePreScanner();
@@ -62,7 +61,6 @@ public class Compiler {
         new TwoRegOpTransformer(ir).run();
         if (Configuration.isEnableFunctionInline()) new FunctionInlineProcessor(ir).run();
         if (irOutS != null) new IRPrinter(irOutS).visit(ir);
-        System.out.println("compiler finished.");
         new StaticDataProcessor(ir).run();
         new RegLivelinessAnalysis(ir).run();
         new RegisterPreprocessor(ir).run();
