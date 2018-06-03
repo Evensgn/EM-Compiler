@@ -93,7 +93,8 @@ public class Main {
             System.exit(1);
         }
 
-        /*LLIRInterpreter leLeIRInterpreter = new LLIRInterpreter(new FileInputStream(irOutFile), false);
+        /*
+        LLIRInterpreter leLeIRInterpreter = new LLIRInterpreter(new FileInputStream(irOutFile), false);
         leLeIRInterpreter.run();
         System.out.println("LLIRInterpreter exit code: " + leLeIRInterpreter.getExitcode());*/
     }

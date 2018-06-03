@@ -9,86 +9,131 @@
 # function main
 
 main:
-		push	r13
-		push	r12
 		sub		rsp, 8
 		jmp		__block___init_func_entry_1
 
 __block___init_func_entry_1:
-		mov		r13, 5
-		mov		r11, 0
-		mov		r12, 0
-		xor		rax, rax
-		cmp		r11, 0
-		setne	al
+		push	r10
+		push	0
+		mov		rdi, 18
+		mov		rsi, 12
+		mov		rdx, 6
+		call	__block_tak_entry_1
+		add		rsp, 8
+		pop		r10
 		mov		r10, rax
-		cmp		r10, 1
-		je		__block_and_lhs_true_1
-		jmp		__block_if_else_1
+		mov		rax, r10
+		add		rsp, 8
+		ret
 
-__block_and_lhs_true_1:
-		mov		rax, r13
-		cqo
-		mov		rdi, r11
-		idiv	rdi
-		mov		r10, rax
+# function tak
+
+__block_tak_entry_1:
+		push	r12
 		xor		rax, rax
-		cmp		r10, 1
-		setne	al
+		cmp		rsi, rdi
+		setl	al
 		mov		r10, rax
 		cmp		r10, 1
 		je		__block_if_then_1
 		jmp		__block_if_else_1
 
 __block_if_then_1:
-		mov		r12, 10
-		jmp		__block_if_after_1
+		mov		r10, rdi
+		dec		r10
+		push	rsi
+		push	rdi
+		push	r11
+		push	r10
+		push	rdx
+		push	0
+		push	rsi
+		push	rdx
+		mov		rdi, r10
+		mov		rsi, qword[rsp+8]
+		mov		rdx, qword[rsp]
+		add		rsp, 16
+		call	__block_tak_entry_1
+		add		rsp, 8
+		pop		rdx
+		pop		r10
+		pop		r11
+		pop		rdi
+		pop		rsi
+		mov		r11, rax
+		mov		r10, rsi
+		dec		r10
+		push	rsi
+		push	rdi
+		push	r11
+		push	r10
+		push	rdx
+		push	0
+		push	rdx
+		push	rdi
+		mov		rdi, r10
+		mov		rsi, qword[rsp+8]
+		mov		rdx, qword[rsp]
+		add		rsp, 16
+		call	__block_tak_entry_1
+		add		rsp, 8
+		pop		rdx
+		pop		r10
+		pop		r11
+		pop		rdi
+		pop		rsi
+		mov		r12, rax
+		mov		r10, rdx
+		dec		r10
+		push	rsi
+		push	rdi
+		push	r11
+		push	r10
+		push	rdx
+		push	0
+		push	rdi
+		push	rsi
+		mov		rdi, r10
+		mov		rsi, qword[rsp+8]
+		mov		rdx, qword[rsp]
+		add		rsp, 16
+		call	__block_tak_entry_1
+		add		rsp, 8
+		pop		rdx
+		pop		r10
+		pop		r11
+		pop		rdi
+		pop		rsi
+		mov		r10, rax
+		push	rsi
+		push	rdi
+		push	r11
+		push	r10
+		push	rdx
+		push	0
+		mov		rdi, r11
+		mov		rsi, r12
+		mov		rdx, r10
+		call	__block_tak_entry_1
+		add		rsp, 8
+		pop		rdx
+		pop		r10
+		pop		r11
+		pop		rdi
+		pop		rsi
+		mov		r10, rax
+		mov		r11, 1
+		add		r11, r10
+		mov		r10, r11
+		jmp		__block_tak_end_1
 
 __block_if_else_1:
-		mov		r12, 20
-		jmp		__block_if_after_1
+		mov		r10, rdx
+		jmp		__block_tak_end_1
 
-__block_if_after_1:
-		xor		rax, rax
-		cmp		r12, 10
-		sete	al
-		mov		r10, rax
-		cmp		r10, 1
-		je		__block_and_lhs_true_2
-		jmp		__block_if_then_2
-
-__block_and_lhs_true_2:
-		mov		rax, r13
-		cqo
-		mov		rdi, r11
-		idiv	rdi
-		mov		r10, rax
-		xor		rax, rax
-		cmp		r10, 0
-		sete	al
-		mov		r10, rax
-		cmp		r10, 1
-		je		__block_and_lhs_true_3
-		jmp		__block_if_then_2
-
-__block_and_lhs_true_3:
-		xor		rax, rax
-		cmp		r13, 5
-		sete	al
-		mov		r10, rax
-		cmp		r10, 1
-		je		__block_if_after_2
-		jmp		__block_if_then_2
-
-__block_if_then_2:
-		mov		r12, 30
-		jmp		__block_if_after_2
-
-__block_if_after_2:
-		mov		rax, r12
-		add		rsp, 8
+__block_tak_end_1:
+		mov		rax, r10
 		pop		r12
-		pop		r13
 		ret
 
 

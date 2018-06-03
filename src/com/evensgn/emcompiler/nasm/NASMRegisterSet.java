@@ -10,6 +10,7 @@ import java.util.List;
 public class NASMRegisterSet {
     public static final Collection<PhysicalRegister> allRegs, generalRegs, callerSaveRegs, calleeSaveRegs;
     public static final NASMRegister rax, rcx, rdx, rbx, rsi, rdi, rsp, rbp, r8, r9, r10, r11, r12, r13, r14, r15;
+    public static final List<PhysicalRegister> arg6;
 
     static {
         List<NASMRegister> all = new ArrayList<>();
@@ -17,22 +18,30 @@ public class NASMRegisterSet {
         List<NASMRegister> callerSave = new ArrayList<>();
         List<NASMRegister> calleeSave = new ArrayList<>();
 
-        rax = new NASMRegister("rax", false, true, false);
-        rcx = new NASMRegister("rcx", false, true, false);
-        rdx = new NASMRegister("rdx", false, true, false);
-        rbx = new NASMRegister("rbx", false, false, true);
-        rsi = new NASMRegister("rsi", false, true, false);
-        rdi = new NASMRegister("rdi", false, true, false);
-        rsp = new NASMRegister("rsp", false, true, false);
-        rbp = new NASMRegister("rbp", false, false, true);
-        r8 = new NASMRegister("r8", true, true, false);
-        r9 = new NASMRegister("r9", true, true, false);
-        r10 = new NASMRegister("r10", true, true, false);
-        r11 = new NASMRegister("r11", true, true, false);
-        r12 = new NASMRegister("r12", true, false, true);
-        r13 = new NASMRegister("r13", true, false, true);
-        r14 = new NASMRegister("r14", true, false, true);
-        r15 = new NASMRegister("r15", true, false, true);
+        rax = new NASMRegister("rax", false, true, false, -1);
+        rcx = new NASMRegister("rcx", false, true, false, 3);
+        rdx = new NASMRegister("rdx", false, true, false, 2);
+        rbx = new NASMRegister("rbx", false, false, true, -1);
+        rsi = new NASMRegister("rsi", false, true, false, 1);
+        rdi = new NASMRegister("rdi", false, true, false, 0);
+        rsp = new NASMRegister("rsp", false, true, false, -1);
+        rbp = new NASMRegister("rbp", false, false, true, -1);
+        r8 = new NASMRegister("r8", true, true, false, 4);
+        r9 = new NASMRegister("r9", true, true, false, 5);
+        r10 = new NASMRegister("r10", true, true, false, -1);
+        r11 = new NASMRegister("r11", true, true, false, -1);
+        r12 = new NASMRegister("r12", true, false, true, -1);
+        r13 = new NASMRegister("r13", true, false, true, -1);
+        r14 = new NASMRegister("r14", true, false, true, -1);
+        r15 = new NASMRegister("r15", true, false, true, -1);
+
+        arg6 = new ArrayList<>();
+        arg6.add(rdi);
+        arg6.add(rsi);
+        arg6.add(rdx);
+        arg6.add(rcx);
+        arg6.add(r8);
+        arg6.add(r9);
 
         all.add(rax);
         all.add(rcx);

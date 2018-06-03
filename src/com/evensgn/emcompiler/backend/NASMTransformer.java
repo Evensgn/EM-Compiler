@@ -2,7 +2,9 @@ package com.evensgn.emcompiler.backend;
 
 import com.evensgn.emcompiler.Configuration;
 import com.evensgn.emcompiler.ir.*;
+import com.evensgn.emcompiler.nasm.NASMRegister;
 
+import javax.swing.*;
 import java.util.*;
 
 import static com.evensgn.emcompiler.nasm.NASMRegisterSet.*;
@@ -34,7 +36,7 @@ public class NASMTransformer {
 
             funcInfo.numStackSlot = irFunction.getStackSlots().size();
             for (int i = 0; i < funcInfo.numStackSlot; ++i) {
-                funcInfo.stackSlotOffsetMap.put(irFunction.getStackSlots().get(i), -i * Configuration.getRegSize());
+                funcInfo.stackSlotOffsetMap.put(irFunction.getStackSlots().get(i), i * Configuration.getRegSize());
             }
             // for rsp alignment
             if ((funcInfo.usedCalleeSaveRegs.size() + funcInfo.numStackSlot) % 2 == 0) {
@@ -79,36 +81,61 @@ public class NASMTransformer {
                         IRFunction calleeFunc = ((IRFunctionCall) inst).getFunc();
                         FuncInfo calleeInfo = funcInfoMap.get(calleeFunc);
                         // push caller save registers which would be changed by callee
+                        int numPushCallerSave = 0;
                         for (PhysicalRegister preg : funcInfo.usedCallerSaveRegs) {
                             if (calleeInfo.recursiveUsedRegs.contains(preg)) {
+                                ++numPushCallerSave;
                                 inst.prependInst(new IRPush(inst.getParentBB(), preg));
                             }
                         }
 
                         // set arguments
+                        boolean extraPush = false;
                         List<RegValue> args = ((IRFunctionCall) inst).getArgs();
+                        List<Integer> arg6BakOffset = new ArrayList<>();
+                        Map<PhysicalRegister, Integer> arg6BakOffsetMap = new HashMap<>();
                         if (calleeFunc.isBuiltIn()) {
                             // TO DO process built-in functions
                         } else {
-                            if (args.size() > 0) inst.prependInst(new IRMove(inst.getParentBB(), rdi, args.get(0)));
-                            if (args.size() > 1) inst.prependInst(new IRMove(inst.getParentBB(), rsi, args.get(1)));
-                            if (args.size() > 2) inst.prependInst(new IRMove(inst.getParentBB(), rdx, args.get(2)));
-                            if (args.size() > 3) inst.prependInst(new IRMove(inst.getParentBB(), rcx, args.get(3)));
-                            if (args.size() > 4) inst.prependInst(new IRMove(inst.getParentBB(), r8, args.get(4)));
-                            if (args.size() > 5) inst.prependInst(new IRMove(inst.getParentBB(), r9, args.get(5)));
                             // for rsp alignment
-                            if (funcInfo.numExtraArgs % 2 == 1) {
+                            if ((numPushCallerSave + funcInfo.numExtraArgs) % 2 == 1) {
+                                extraPush = true;
                                 inst.prependInst(new IRPush(inst.getParentBB(), new IntImmediate(0)));
                             }
                             for (int i = args.size() - 1; i > 5; --i) {
                                 inst.prependInst(new IRPush(inst.getParentBB(), args.get(i)));
                             }
-                        }
 
-                        // remove extra arguments
-                        if (funcInfo.numExtraArgs > 0) {
-                            int numPushArg = (funcInfo.numExtraArgs % 2 == 0) ? funcInfo.numExtraArgs : funcInfo.numExtraArgs + 1;
-                            inst.appendInst(new IRBinaryOperation(inst.getParentBB(), rsp, IRBinaryOperation.IRBinaryOp.SUB, rsp, new IntImmediate(numPushArg * Configuration.getRegSize())));
+                            int bakOffset = 0;
+                            for (int i = 0; i < 6; ++i) {
+                                if (args.size() <= i) break;
+                                if (args.get(i) instanceof PhysicalRegister && ((PhysicalRegister) args.get(i)).isArg6() && ((PhysicalRegister) args.get(i)).getArg6Idx() < args.size()) {
+                                    PhysicalRegister preg = (PhysicalRegister) args.get(i);
+                                    if (arg6BakOffsetMap.containsKey(preg)) {
+                                        arg6BakOffset.add(arg6BakOffsetMap.get(preg));
+                                    } else {
+                                        arg6BakOffset.add(bakOffset);
+                                        arg6BakOffsetMap.put(preg, bakOffset);
+                                        inst.prependInst(new IRPush(inst.getParentBB(), preg));
+                                        ++bakOffset;
+                                    }
+                                } else {
+                                    arg6BakOffset.add(-1);
+                                }
+                            }
+
+                            for (int i = 0; i < 6; ++i) {
+                                if (args.size() <= i) break;
+                                if (arg6BakOffset.get(i) == -1) {
+                                    inst.prependInst(new IRMove(inst.getParentBB(), arg6.get(i), args.get(i)));
+                                } else {
+                                    inst.prependInst(new IRLoad(inst.getParentBB(), arg6.get(i), Configuration.getRegSize(), rsp, Configuration.getRegSize() * (bakOffset - arg6BakOffset.get(i) - 1)));
+                                }
+                            }
+
+                            if (bakOffset > 0) {
+                                inst.prependInst(new IRBinaryOperation(inst.getParentBB(), rsp, IRBinaryOperation.IRBinaryOp.ADD, rsp, new IntImmediate(bakOffset * Configuration.getRegSize())));
+                            }
                         }
 
                         // get return value
@@ -119,17 +146,29 @@ public class NASMTransformer {
                         // restore caller save registers
                         for (PhysicalRegister preg : funcInfo.usedCallerSaveRegs) {
                             if (calleeInfo.recursiveUsedRegs.contains(preg)) {
-                                inst.appendInst(new IRPush(inst.getParentBB(), preg));
+                                inst.appendInst(new IRPop(inst.getParentBB(), preg));
                             }
+                        }
+
+                        // remove extra arguments
+                        if (funcInfo.numExtraArgs > 0 || extraPush) {
+                            int numPushArg = extraPush ? funcInfo.numExtraArgs + 1 : funcInfo.numExtraArgs;
+                            inst.appendInst(new IRBinaryOperation(inst.getParentBB(), rsp, IRBinaryOperation.IRBinaryOp.ADD, rsp, new IntImmediate(numPushArg * Configuration.getRegSize())));
                         }
                     } else if (inst instanceof IRHeapAlloc) {
                         // push caller save registers which would be changed by callee
+                        int numPushCallerSave = 0;
                         for (PhysicalRegister preg : funcInfo.usedCallerSaveRegs) {
+                            ++numPushCallerSave;
                             // could be optimized known which reg would not be changed by malloc
                             inst.prependInst(new IRPush(inst.getParentBB(), preg));
                         }
                         // set arg
                         inst.prependInst(new IRMove(inst.getParentBB(), rdi, ((IRHeapAlloc) inst).getAllocSize()));
+                        // for rsp alignment
+                        if (numPushCallerSave % 2 == 1) {
+                            inst.prependInst(new IRPush(inst.getParentBB(), new IntImmediate(0)));
+                        }
                         // get return value
                         inst.appendInst(new IRMove(inst.getParentBB(), ((IRHeapAlloc) inst).getDest(), rax));
                         // restore caller save registers
@@ -137,6 +176,11 @@ public class NASMTransformer {
                             // could be optimized known which reg would not be changed by malloc
                             inst.appendInst(new IRPop(inst.getParentBB(), preg));
                         }
+                        // restore rsp
+                        if (numPushCallerSave % 2 == 1) {
+                            inst.appendInst(new IRBinaryOperation(inst.getParentBB(), rsp, IRBinaryOperation.IRBinaryOp.ADD, rsp, new IntImmediate(Configuration.getRegSize())));
+                        }
+
                     } else if (inst instanceof IRLoad) {
                         if (((IRLoad) inst).getAddr() instanceof StackSlot) {
                             ((IRLoad) inst).setAddrOffset(funcInfo.stackSlotOffsetMap.get(((IRLoad) inst).getAddr()));

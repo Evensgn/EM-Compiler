@@ -1,24 +1,24 @@
-int main() {
-    int a = 5;
-    int b = 0;
-    int c;
-    if (b != 0 && a/b != 1) {
-        c = 10;
+int tak(int x, int y, int z) {
+    if(y < x) {
+        return 1 + tak( tak(x - 1, y , z),
+            tak(y - 1, z , x),
+            tak(z - 1, x , y)
+        );
     } else {
-        c = 20;
+       return z;
     }
-
-    if (!(c == 10 && a/b == 0 && a == 5))
-        c = 30;
-
-    return c;
 }
+
+int main() {
+    return tak(18,12,6);
+}
+
 
 
 
 /*!! metadata:
 === comment ===
-simple2.mx
+function2.mx
 === assert ===
 exitcode
 === timeout ===
@@ -30,6 +30,6 @@ codegen pretest
 === is_public ===
 True
 === exitcode ===
-30
+13
 
 !!*/
