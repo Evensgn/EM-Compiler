@@ -135,7 +135,7 @@ public class NASMTransformer {
                         // restore caller save registers
                         for (PhysicalRegister preg : funcInfo.usedCallerSaveRegs) {
                             // could be optimized known which reg would not be changed by malloc
-                            inst.appendInst(new IRPush(inst.getParentBB(), preg));
+                            inst.appendInst(new IRPop(inst.getParentBB(), preg));
                         }
                     } else if (inst instanceof IRLoad) {
                         if (((IRLoad) inst).getAddr() instanceof StackSlot) {
@@ -154,11 +154,11 @@ public class NASMTransformer {
                         }
                     }
                 }
+            }
 
-                IRReturn retInst = irFunction.getRetInstList().get(0);
-                if (retInst.getRetValue() != null) {
-                    retInst.prependInst(new IRMove(retInst.getParentBB(), rax, retInst.getRetValue()));
-                }
+            IRReturn retInst = irFunction.getRetInstList().get(0);
+            if (retInst.getRetValue() != null) {
+                retInst.prependInst(new IRMove(retInst.getParentBB(), rax, retInst.getRetValue()));
             }
 
             // transform function exit

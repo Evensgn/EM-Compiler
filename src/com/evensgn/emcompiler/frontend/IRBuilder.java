@@ -553,7 +553,14 @@ public class IRBuilder extends BaseScopeScanner {
                 thisExpr.setType(new ClassType(currentClassName));
             }
             thisExpr.accept(this);
-            String className = ((ClassType) (thisExpr.getType())).getName();
+            String className;
+            if (thisExpr.getType() instanceof ClassType) {
+                className = ((ClassType) (thisExpr.getType())).getName();
+            } else if (thisExpr.getType() instanceof ArrayType) {
+                className = Scope.ARRAY_CLASS_NAME;
+            } else {
+                className = Scope.STRING_CLASS_NAME;
+            }
             funcName = IRRoot.irMemberFuncName(className, funcName);
             args.add(thisExpr.getRegValue());
         }

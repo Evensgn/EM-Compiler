@@ -9,76 +9,59 @@
 # function main
 
 main:
-		push	r13
 		push	r12
-		sub		rsp, 8
 		jmp		__block___init_func_entry_1
 
 __block___init_func_entry_1:
-		mov		r11, 10
-		mov		r13, 0
-		mov		r12, 0
-		mov		r12, 1
-		jmp		__block_for_cond_1
-
-__block_for_cond_1:
+		push	r10
+		push	r11
+		mov		rdi, 32
+		call	malloc
+		pop		r11
+		pop		r10
+		mov		r11, rax
+		mov		qword[r11], 10
+		mov		qword[r11+8], 20
+		mov		r10, qword[r11]
+		mov		r12, qword[r11+8]
 		xor		rax, rax
-		cmp		r12, r11
-		setle	al
+		cmp		r10, r12
+		setg	al
 		mov		r10, rax
 		cmp		r10, 1
-		je		__block_for_body_1
-		jmp		__block_for_after_1
+		je		__block_null_1
+		jmp		__block_null_2
 
-__block_for_after_1:
-		mov		r12, 0
-		mov		r12, 1
-		jmp		__block_for_cond_2
+__block_null_2:
+		mov		qword[r11+16], 0
+		jmp		__block_null_3
 
-__block_for_cond_2:
-		xor		rax, rax
-		cmp		r12, r11
-		setle	al
-		mov		r10, rax
+__block_null_1:
+		mov		qword[r11+16], 1
+		jmp		__block_null_3
+
+__block_null_3:
+		mov		r10, qword[r11+16]
 		cmp		r10, 1
-		je		__block_for_body_2
-		jmp		__block_for_after_2
+		je		__block_if_then_1
+		jmp		__block_if_else_1
 
-__block_for_after_2:
-		mov		rax, r13
-		mov		rax, r13
-		mov		rax, r13
-		mov		rax, r13
-		mov		rax, r13
-		mov		rax, r13
-		mov		rax, r13
-		mov		rax, r13
-		mov		rax, r13
-		mov		rax, r13
-		add		rsp, 8
+__block_if_then_1:
+		mov		qword[r11+24], 40
+		jmp		__block_if_after_1
+
+__block_if_else_1:
+		mov		qword[r11+24], 80
+		jmp		__block_if_after_1
+
+__block_if_after_1:
+		mov		r12, qword[r11]
+		mov		r10, qword[r11+8]
+		add		r12, r10
+		mov		r10, qword[r11+24]
+		add		r12, r10
+		mov		rax, r12
 		pop		r12
-		pop		r13
 		ret
-
-__block_for_body_2:
-		mov		r10, r13
-		add		r10, 10
-		add		r10, r12
-		mov		r13, r10
-		jmp		__block_for_step_1
-
-__block_for_step_1:
-		inc		r12
-		jmp		__block_for_cond_2
-
-__block_for_body_1:
-		mov		r10, r13
-		add		r10, r12
-		mov		r13, r10
-		jmp		__block_for_step_2
-
-__block_for_step_2:
-		inc		r12
-		jmp		__block_for_cond_1
 
 

@@ -36,15 +36,15 @@ public class GlobalScopePreScanner extends BaseScopeScanner {
         putBuiltInFunc(scope,"getInt", new ArrayList<>(), IntType.getInstance());
         putBuiltInFunc(scope,"toString", Collections.singletonList(new VarEntity("i", IntType.getInstance())), StringType.getInstance());
         String stringKey = Scope.classKey(Scope.STRING_CLASS_NAME);
-        ClassEntity stringEntity = new ClassEntity("string", new ClassType(Scope.STRING_CLASS_NAME), scope);
-        putBuiltInFunc(stringEntity.getScope(), "length", new ArrayList<>(), IntType.getInstance());
-        putBuiltInFunc(stringEntity.getScope(), "substring", Arrays.asList(new VarEntity("left", IntType.getInstance()), new VarEntity("right", IntType.getInstance())), StringType.getInstance());
-        putBuiltInFunc(stringEntity.getScope(), "parseInt", new ArrayList<>(), IntType.getInstance());
-        putBuiltInFunc(stringEntity.getScope(), "ord", Collections.singletonList(new VarEntity("pos", IntType.getInstance())), IntType.getInstance());
+        ClassEntity stringEntity = new ClassEntity(Scope.STRING_CLASS_NAME, new ClassType(Scope.STRING_CLASS_NAME), scope);
+        putBuiltInFunc(stringEntity.getScope(), "length", Arrays.asList(new VarEntity(Scope.THIS_PARA_NAME, StringType.getInstance())), IntType.getInstance());
+        putBuiltInFunc(stringEntity.getScope(), "substring", Arrays.asList(new VarEntity(Scope.THIS_PARA_NAME, StringType.getInstance()), new VarEntity("left", IntType.getInstance()), new VarEntity("right", IntType.getInstance())), StringType.getInstance());
+        putBuiltInFunc(stringEntity.getScope(), "parseInt", Arrays.asList(new VarEntity(Scope.THIS_PARA_NAME, StringType.getInstance())), IntType.getInstance());
+        putBuiltInFunc(stringEntity.getScope(), "ord", Arrays.asList(new VarEntity(Scope.THIS_PARA_NAME, StringType.getInstance()), new VarEntity("pos", IntType.getInstance())), IntType.getInstance());
         scope.putCheck(Scope.STRING_CLASS_NAME, stringKey, stringEntity);
         String arrayKey = Scope.classKey(Scope.ARRAY_CLASS_NAME);
-        ClassEntity arrayEntity = new ClassEntity("string", new ClassType(Scope.ARRAY_CLASS_NAME), scope);
-        putBuiltInFunc(arrayEntity.getScope(), "size", new ArrayList<>(), IntType.getInstance());
+        ClassEntity arrayEntity = new ClassEntity(Scope.ARRAY_CLASS_NAME, new ClassType(Scope.ARRAY_CLASS_NAME), scope);
+        putBuiltInFunc(arrayEntity.getScope(), "size", Arrays.asList(new VarEntity(Scope.THIS_PARA_NAME, new ArrayType(null))), IntType.getInstance());
         scope.putCheck(Scope.ARRAY_CLASS_NAME, arrayKey, arrayEntity);
     }
 

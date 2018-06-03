@@ -8,8 +8,7 @@ import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.evensgn.emcompiler.ir.IRBinaryOperation.IRBinaryOp.DIV;
-import static com.evensgn.emcompiler.ir.IRBinaryOperation.IRBinaryOp.MOD;
+import static com.evensgn.emcompiler.ir.IRBinaryOperation.IRBinaryOp.*;
 
 public class NASMPrinter implements IRVisitor {
     private PrintStream out;
@@ -155,6 +154,16 @@ public class NASMPrinter implements IRVisitor {
             } else {
                 out.println(", rdx");
             }
+        } else if (node.getOp() == SHL || node.getOp() == SHR) {
+            out.print("\t\tmov\t\trcx, ");
+            node.getRhs().accept(this);
+            if (node.getOp() == SHL) {
+                out.print("\n\t\tsal\t\t");
+            } else {
+                out.print("\n\t\tsar\t\t");
+            }
+            node.getLhs().accept(this);
+            out.println(", cl");
         } else {
             if (node.getDest() != node.getLhs())
                 throw new CompilerError("binary operation should have same dest and lhs");
@@ -167,7 +176,7 @@ public class NASMPrinter implements IRVisitor {
                         out.println();
                         return;
                     }
-                    op = "add";
+                    op = "add\t";
                     break;
                 case SUB:
                     if (node.getRhs() instanceof IntImmediate && ((IntImmediate) node.getRhs()).getValue() == 1) {
@@ -176,7 +185,7 @@ public class NASMPrinter implements IRVisitor {
                         out.println();
                         return;
                     }
-                    op = "sub";
+                    op = "sub\t";
                     break;
                 case MUL:
                     if (node.getRhs() instanceof IntImmediate && ((IntImmediate) node.getRhs()).getValue() == 1) {
@@ -184,25 +193,19 @@ public class NASMPrinter implements IRVisitor {
                     }
                     op = "imul";
                     break;
-                case SHR:
-                    op = "sar";
-                    break;
-                case SHL:
-                    op = "sal";
-                    break;
                 case BITWISE_OR:
-                    op = "or";
+                    op = "or\t";
                     break;
                 case BITWISE_XOR:
-                    op = "xor";
+                    op = "xor\t";
                     break;
                 case BITWISE_AND:
-                    op = "and";
+                    op = "and\t";
                     break;
                 default:
                     throw new CompilerError("invalid binary operation");
             }
-            out.print("\t\t" + op + "\t\t");
+            out.print("\t\t" + op + "\t");
             node.getLhs().accept(this);
             out.print(", ");
             node.getRhs().accept(this);
@@ -256,29 +259,44 @@ public class NASMPrinter implements IRVisitor {
         out.println();
     }
 
+    private String sizeStr(int memSize) {
+        String sizeStr;
+        switch (memSize) {
+            case 1:
+                sizeStr = "byte";
+                break;
+            case 2:
+                sizeStr = "word";
+                break;
+            case 4:
+                sizeStr = "dword";
+                break;
+            case 8:
+                sizeStr = "qword";
+                break;
+            default:
+                throw new CompilerError("invalid load size");
+        }
+        return sizeStr;
+    }
+
     @Override
     public void visit(IRLoad node) {
-        if (node.getSize() != Configuration.getRegSize()) {
-            throw new CompilerError("this load instruction is not of reg size");
-        }
         out.print("\t\tmov\t\t");
         node.getDest().accept(this);
-        out.print(", [");
+        out.print(", " + sizeStr(node.getSize()) + "[");
         node.getAddr().accept(this);
         if (node.getAddrOffset() < 0) {
             out.print(node.getAddrOffset());
         } else if (node.getAddrOffset() > 0) {
             out.print("+" + node.getAddrOffset());
         }
-        out.println("]\n");
+        out.println("]");
     }
 
     @Override
     public void visit(IRStore node) {
-        if (node.getSize() != Configuration.getRegSize()) {
-            throw new CompilerError("this store instruction is not of reg size");
-        }
-        out.print("\t\tmov\t\t[");
+        out.print("\t\tmov\t\t" + sizeStr(node.getSize()) + "[");
         node.getAddr().accept(this);
         if (node.getAddrOffset() < 0) {
             out.print(node.getAddrOffset());
