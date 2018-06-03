@@ -9,253 +9,86 @@
 # function main
 
 main:
-		push	r15
-		push	r12
 		push	r13
-		push	r14
-		sub		rsp, 56
+		push	r12
+		sub		rsp, 8
 		jmp		__block___init_func_entry_1
 
 __block___init_func_entry_1:
-		mov		r12, 5
-		mov		r10, 10
-		mov		r14, 0
-		mov		r11, r10
-		imul	r11, 8
-		add		r11, 8
-		push	r9
-		push	r8
-		push	r11
-		push	r10
+		mov		r13, 5
+		mov		r11, 0
+		mov		r12, 0
+		xor		rax, rax
+		cmp		r11, 0
+		setne	al
+		mov		r10, rax
+		cmp		r10, 1
+		je		__block_and_lhs_true_1
+		jmp		__block_if_else_1
+
+__block_and_lhs_true_1:
+		mov		rax, r13
+		cqo
 		mov		rdi, r11
-		call	malloc
-		pop		r10
-		pop		r11
-		pop		r8
-		pop		r9
-		mov		r11, rax
-		mov		qword[r11], r10
-		mov		r13, 2
-		imul	r13, 8
-		add		r13, 8
-		push	r9
-		push	r8
-		push	r11
-		push	r10
-		mov		rdi, r13
-		call	malloc
-		pop		r10
-		pop		r11
-		pop		r8
-		pop		r9
-		mov		r13, rax
-		mov		qword[r13], 2
-		mov		r8, r13
-		mov		qword[rsp-24], r8
-		mov		r13, r12
-		imul	r13, 8
-		add		r13, 8
-		push	r9
-		push	r8
-		push	r11
-		push	r10
-		mov		rdi, r13
-		call	malloc
-		pop		r10
-		pop		r11
-		pop		r8
-		pop		r9
-		mov		r13, rax
-		mov		qword[r13], r12
-		mov		r14, r13
-		mov		r13, 0
-		imul	r13, 8
-		mov		r8, qword[rsp-24]
-		add		r13, r8
-		mov		qword[r13+8], r14
-		mov		r13, 1
-		imul	r13, 8
-		mov		r8, qword[rsp-24]
-		add		r13, r8
-		mov		qword[r13+8], r11
-		mov		r8, 0
-		mov		qword[rsp-40], r8
-		mov		r15, 0
-		mov		r8, 0
-		mov		qword[rsp-16], r8
-		mov		r15, 0
-		jmp		__block_for_cond_1
-
-__block_for_cond_1:
+		idiv	rdi
+		mov		r10, rax
 		xor		rax, rax
-		cmp		r15, 2
-		setl	al
-		mov		r13, rax
-		cmp		r13, 1
-		je		__block_for_body_1
-		jmp		__block_for_after_1
+		cmp		r10, 1
+		setne	al
+		mov		r10, rax
+		cmp		r10, 1
+		je		__block_if_then_1
+		jmp		__block_if_else_1
 
-__block_for_body_1:
-		mov		r8, 0
-		mov		qword[rsp-16], r8
-		jmp		__block_for_cond_2
+__block_if_then_1:
+		mov		r12, 10
+		jmp		__block_if_after_1
 
-__block_for_cond_2:
-		mov		r8, qword[rsp-16]
+__block_if_else_1:
+		mov		r12, 20
+		jmp		__block_if_after_1
+
+__block_if_after_1:
 		xor		rax, rax
-		cmp		r8, r12
-		setl	al
-		mov		r13, rax
-		cmp		r13, 1
-		je		__block_for_body_2
-		jmp		__block_for_after_2
+		cmp		r12, 10
+		sete	al
+		mov		r10, rax
+		cmp		r10, 1
+		je		__block_and_lhs_true_2
+		jmp		__block_if_then_2
 
-__block_for_body_2:
-		mov		r8, qword[rsp-40]
-		inc		r8
-		mov		qword[rsp-40], r8
-		mov		r8, r15
-		mov		qword[rsp], r8
-		mov		r8, qword[rsp]
-		imul	r8, 8
-		mov		qword[rsp], r8
-		mov		r8, qword[rsp]
-		mov		r9, qword[rsp-24]
-		add		r8, r9
-		mov		qword[rsp], r8
-		mov		r8, qword[rsp]
-		mov		r8, qword[r8+8]
-		mov		qword[rsp], r8
-		mov		r8, qword[rsp-16]
-		mov		r13, r8
-		imul	r13, 8
-		mov		r8, qword[rsp]
-		add		r13, r8
-		mov		r8, qword[rsp-40]
-		mov		qword[r13+8], r8
-		jmp		__block_for_step_1
-
-__block_for_step_1:
-		mov		r8, qword[rsp-16]
-		inc		r8
-		mov		qword[rsp-16], r8
-		jmp		__block_for_cond_2
-
-__block_for_after_2:
-		jmp		__block_for_step_2
-
-__block_for_step_2:
-		inc		r15
-		jmp		__block_for_cond_1
-
-__block_for_after_1:
-		mov		r8, r12
-		mov		qword[rsp-16], r8
-		jmp		__block_for_cond_3
-
-__block_for_cond_3:
-		mov		r8, qword[rsp-16]
+__block_and_lhs_true_2:
+		mov		rax, r13
+		cqo
+		mov		rdi, r11
+		idiv	rdi
+		mov		r10, rax
 		xor		rax, rax
-		cmp		r8, r10
-		setl	al
-		mov		r13, rax
-		cmp		r13, 1
-		je		__block_for_body_3
-		jmp		__block_for_after_3
+		cmp		r10, 0
+		sete	al
+		mov		r10, rax
+		cmp		r10, 1
+		je		__block_and_lhs_true_3
+		jmp		__block_if_then_2
 
-__block_for_after_3:
-		mov		r8, 0
-		mov		qword[rsp-8], r8
-		mov		r15, 0
-		jmp		__block_for_cond_4
-
-__block_for_cond_4:
+__block_and_lhs_true_3:
 		xor		rax, rax
-		cmp		r15, r12
-		setl	al
-		mov		r13, rax
-		cmp		r13, 1
-		je		__block_for_body_4
-		jmp		__block_for_after_4
+		cmp		r13, 5
+		sete	al
+		mov		r10, rax
+		cmp		r10, 1
+		je		__block_if_after_2
+		jmp		__block_if_then_2
 
-__block_for_body_4:
-		mov		r13, r15
-		imul	r13, 8
-		add		r13, r14
-		mov		r13, qword[r13+8]
-		mov		r8, qword[rsp-8]
-		mov		qword[rsp-32], r8
-		mov		r8, qword[rsp-32]
-		add		r8, r13
-		mov		qword[rsp-32], r8
-		mov		r8, qword[rsp-32]
-		mov		qword[rsp-8], r8
-		jmp		__block_for_step_3
+__block_if_then_2:
+		mov		r12, 30
+		jmp		__block_if_after_2
 
-__block_for_step_3:
-		inc		r15
-		jmp		__block_for_cond_4
-
-__block_for_after_4:
-		mov		r15, 0
-		jmp		__block_for_cond_5
-
-__block_for_cond_5:
-		xor		rax, rax
-		cmp		r15, r10
-		setl	al
-		mov		r12, rax
-		cmp		r12, 1
-		je		__block_for_body_5
-		jmp		__block_for_after_5
-
-__block_for_after_5:
-		mov		r8, qword[rsp-8]
-		mov		rax, r8
-		add		rsp, 56
-		pop		r14
-		pop		r13
+__block_if_after_2:
+		mov		rax, r12
+		add		rsp, 8
 		pop		r12
-		pop		r15
+		pop		r13
 		ret
-
-__block_for_body_5:
-		mov		r12, r15
-		imul	r12, 8
-		add		r12, r11
-		mov		r12, qword[r12+8]
-		mov		r8, qword[rsp-8]
-		mov		r13, r8
-		add		r13, r12
-		mov		r8, r13
-		mov		qword[rsp-8], r8
-		jmp		__block_for_step_4
-
-__block_for_step_4:
-		inc		r15
-		jmp		__block_for_cond_5
-
-__block_for_body_3:
-		mov		r8, qword[rsp-40]
-		inc		r8
-		mov		qword[rsp-40], r8
-		mov		r15, 1
-		imul	r15, 8
-		mov		r8, qword[rsp-24]
-		add		r15, r8
-		mov		r15, qword[r15+8]
-		mov		r8, qword[rsp-16]
-		mov		r13, r8
-		imul	r13, 8
-		add		r13, r15
-		mov		r8, qword[rsp-40]
-		mov		qword[r13+8], r8
-		jmp		__block_for_step_5
-
-__block_for_step_5:
-		mov		r8, qword[rsp-16]
-		inc		r8
-		mov		qword[rsp-16], r8
-		jmp		__block_for_cond_3
 
 

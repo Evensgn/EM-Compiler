@@ -146,7 +146,7 @@ public class NASMPrinter implements IRVisitor {
             out.println("\t\tcqo");
             out.print("\t\tmov\t\trdi, ");
             node.getRhs().accept(this);
-            out.println("\t\tidiv\trdi");
+            out.println("\n\t\tidiv\trdi");
             out.print("\t\tmov\t\t");
             node.getDest().accept(this);
             if (node.getOp() == DIV) {
