@@ -39,4 +39,8 @@ public class IRPush extends IRInstruction {
     public void setDefinedRegister(IRRegister vreg) {
         // no actions
     }
+
+    public RegValue getValue() {
+        return value;
+    }
 }

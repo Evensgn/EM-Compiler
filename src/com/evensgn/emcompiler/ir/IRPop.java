@@ -39,4 +39,8 @@ public class IRPop extends IRInstruction {
     public void setDefinedRegister(IRRegister vreg) {
         // no actions
     }
+
+    public PhysicalRegister getPreg() {
+        return preg;
+    }
 }

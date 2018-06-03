@@ -37,7 +37,7 @@ public class NASMTransformer {
                 funcInfo.stackSlotOffsetMap.put(irFunction.getStackSlots().get(i), -i * Configuration.getRegSize());
             }
             // for rsp alignment
-            if ((funcInfo.usedCalleeSaveRegs.size() + funcInfo.numStackSlot) % 2 == 1) {
+            if ((funcInfo.usedCalleeSaveRegs.size() + funcInfo.numStackSlot) % 2 == 0) {
                 ++funcInfo.numStackSlot;
             }
 
@@ -70,15 +70,8 @@ public class NASMTransformer {
             for (PhysicalRegister preg : funcInfo.usedCalleeSaveRegs) {
                 firstInst.prependInst(new IRPush(entryBB, preg));
             }
-            firstInst.prependInst(new IRBinaryOperation(entryBB, rsp, IRBinaryOperation.IRBinaryOp.SUB, rsp, new IntImmediate(funcInfo.numStackSlot * Configuration.getRegSize())));
-
-            // transform function exit
-            BasicBlock exitBB = irFunction.getEndBB();
-            IRInstruction lastInst = exitBB.getLastInst();
-            for (PhysicalRegister preg : funcInfo.usedCalleeSaveRegs) {
-                lastInst.appendInst(new IRPop(entryBB, preg));
-            }
-            firstInst.appendInst(new IRBinaryOperation(entryBB, rsp, IRBinaryOperation.IRBinaryOp.ADD, rsp, new IntImmediate(funcInfo.numStackSlot * Configuration.getRegSize())));
+            if (funcInfo.numStackSlot > 0)
+                firstInst.prependInst(new IRBinaryOperation(entryBB, rsp, IRBinaryOperation.IRBinaryOp.SUB, rsp, new IntImmediate(funcInfo.numStackSlot * Configuration.getRegSize())));
 
             for (BasicBlock bb : irFunction.getReversePostOrder()) {
                 for (IRInstruction inst = bb.getFirstInst(); inst != null; inst = inst.getNextInst()) {
@@ -161,6 +154,15 @@ public class NASMTransformer {
                 if (retInst.getRetValue() != null) {
                     retInst.prependInst(new IRMove(retInst.getParentBB(), rax, retInst.getRetValue()));
                 }
+            }
+
+            // transform function exit
+            BasicBlock exitBB = irFunction.getEndBB();
+            IRInstruction lastInst = exitBB.getLastInst();
+            if (funcInfo.numStackSlot > 0)
+                lastInst.prependInst(new IRBinaryOperation(entryBB, rsp, IRBinaryOperation.IRBinaryOp.ADD, rsp, new IntImmediate(funcInfo.numStackSlot * Configuration.getRegSize())));
+            for (int i = funcInfo.usedCalleeSaveRegs.size() - 1; i >= 0; --i) {
+                lastInst.prependInst(new IRPop(entryBB, funcInfo.usedCalleeSaveRegs.get(i)));
             }
         }
     }

@@ -657,6 +657,7 @@ public class IRBuilder extends BaseScopeScanner {
                 node.getExpr().setFalseBB(node.getTrueBB());
                 node.getExpr().accept(this);
                 break;
+
             default:
                 throw new CompilerError("invalid prefix operation");
         }

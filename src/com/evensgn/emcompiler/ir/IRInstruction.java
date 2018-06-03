@@ -28,7 +28,7 @@ public abstract class IRInstruction {
     public void appendInst(IRInstruction inst) {
         if (nextInst != null) nextInst.linkPrevInst(inst);
         else parentBB.setLastInst(inst);
-        inst.setPrevInst(this);
+        inst.linkPrevInst(this);
     }
 
     public void linkPrevInst(IRInstruction inst) {

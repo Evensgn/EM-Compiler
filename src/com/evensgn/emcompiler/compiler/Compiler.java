@@ -24,12 +24,14 @@ import java.io.PrintStream;
  */
 public class Compiler {
     private InputStream inS;
-    private PrintStream outS;
+    private PrintStream astOutS, irOutS, nasmOutS;
     private ProgramNode ast;
 
-    public Compiler(InputStream inS, PrintStream outS) {
+    public Compiler(InputStream inS, PrintStream astOutS, PrintStream irOutS, PrintStream nasmOutS) {
         this.inS = inS;
-        this.outS = outS;
+        this.astOutS = astOutS;
+        this.irOutS = irOutS;
+        this.nasmOutS = nasmOutS;
     }
 
     private void buildAST() throws Exception {
@@ -47,8 +49,7 @@ public class Compiler {
     public void compile() throws Exception {
         System.out.println("compiler is running");
         buildAST();
-        //ASTPrinter astPrinter = new ASTPrinter(outS);
-        //astPrinter.visit(ast);
+        if (astOutS != null) new ASTPrinter(astOutS).visit(ast);
         GlobalScopePreScanner globalScopePreScanner = new GlobalScopePreScanner();
         globalScopePreScanner.visit(ast);
         ClassVarMemberScanner classVarMemberScanner = new ClassVarMemberScanner(globalScopePreScanner.getScope());
@@ -59,15 +60,14 @@ public class Compiler {
         irBuilder.visit(ast);
         IRRoot ir = irBuilder.getIR();
         new TwoRegOpTransformer(ir).run();
-        if (Configuration.isEnableFunctionInline()) {
-            new FunctionInlineProcessor(ir).run();
-        }
-        new IRPrinter(outS).visit(ir);
+        if (Configuration.isEnableFunctionInline()) new FunctionInlineProcessor(ir).run();
+        if (irOutS != null) new IRPrinter(irOutS).visit(ir);
         System.out.println("compiler finished.");
         new StaticDataProcessor(ir).run();
         new RegLivelinessAnalysis(ir).run();
         new RegisterPreprocessor(ir).run();
         new RegisterAllocator(ir, NASMRegisterSet.generalRegs).run();
         new NASMTransformer(ir).run();
+        new NASMPrinter(nasmOutS).visit(ir);
     }
 }

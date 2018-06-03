@@ -4,6 +4,7 @@ import com.evensgn.emcompiler.Configuration;
 import com.evensgn.emcompiler.ir.*;
 import com.evensgn.emcompiler.utils.CompilerError;
 
+import javax.rmi.ssl.SslRMIClientSocketFactory;
 import java.util.*;
 
 public class RegisterAllocator {

@@ -1,70 +1,45 @@
+		global	main
 
-func main {
-%main_entry:
-    jump %__init_func_entry
+		extern	malloc
 
-%__init_func_entry:
-    $a = move 5
-    $b = move 0
-    $c = move 0
-    $vreg = sne $b 0
-    br $vreg %and_lhs_true %bb
+		section	.bss
 
-%and_lhs_true:
-    $vreg_2 = div $a $b
-    $vreg_3 = sne $vreg_2 1
-    br $vreg_3 %bb_2 %bb
+		section	.text
 
-%bb_2:
-    $d = move 1
-    jump %bb_3
+# function main
 
-%bb:
-    $d = move 0
-    jump %bb_3
+main:
+		push	r14
+		push	r13
+		push	r12
+		push	r15
+		sub		rsp, 8
+		jmp		__block___init_func_entry_1
 
-%bb_3:
-    br $d %if_then %if_else
+__block___init_func_entry_1:
+		mov		r10, 1
+		mov		r8, 2
+		mov		[rsp], r8
+		mov		r11, 3
+		mov		r15, 4
+		mov		r14, 5
+		mov		r13, 6
+		mov		r12, 7
+		mov		r8, [rsp]
 
-%if_else:
-    $c = move 20
-    jump %if_after
+		add		r10, r8
+		add		r10, r11
+		add		r10, r15
+		add		r10, r14
+		add		r10, r13
+		add		r10, r12
+		mov		rax, r10
+		mov		rax, r10
+		add		rsp, 8
+		pop		r15
+		pop		r12
+		pop		r13
+		pop		r14
+		ret
 
-%if_then:
-    $c = move 10
-    jump %if_after
-
-%if_after:
-    $e = move 0
-    $vreg_4 = seq $c 10
-    br $vreg_4 %and_lhs_true_2 %bb_4
-
-%and_lhs_true_2:
-    $vreg_5 = div $a $b
-    $vreg_6 = seq $vreg_5 0
-    br $vreg_6 %and_lhs_true_3 %bb_4
-
-%and_lhs_true_3:
-    $vreg_7 = seq $a 5
-    br $vreg_7 %bb_5 %bb_4
-
-%bb_4:
-    $e = move 1
-    jump %bb_6
-
-%bb_5:
-    $e = move 0
-    jump %bb_6
-
-%bb_6:
-    br $e %if_then_2 %if_after_2
-
-%if_then_2:
-    $c = move 30
-    jump %if_after_2
-
-%if_after_2:
-    ret $c
-
-}
 

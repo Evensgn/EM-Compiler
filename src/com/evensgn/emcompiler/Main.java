@@ -37,7 +37,7 @@ public class Main {
     }
 
     public static void main(String[] args) throws Exception {
-        String inFile = null, outFile = null;
+        String inFile = null, astOutFile = null, irOutFile = null, nasmOutFile = null;
         boolean isPrintHelp = false, isPrintVersion = false, isPrintConfig = false;
         for (int i = 0; i < args.length; ++i) {
             String arg = args[i];
@@ -58,7 +58,7 @@ public class Main {
                     break;
 
                 case "-o":
-                    if (i + 1 < args.length) outFile = args[++i];
+                    if (i + 1 < args.length) nasmOutFile = args[++i];
                     else errorArgs();
                     break;
 
@@ -71,14 +71,21 @@ public class Main {
         if (isPrintHelp) printHelp();
         if (isPrintConfig) printConfig();
 
+        // TEMP CODE FOR TEST
+        irOutFile = "testcase/ir_output.txt";
+
         InputStream inS;
-        PrintStream outS;
+        PrintStream astOutS, irOutS, nasmOutS;
         if (inFile == null) inS = System.in;
         else inS = new FileInputStream(inFile);
-        if (outFile == null) outS = System.out;
-        else outS = new PrintStream(new FileOutputStream(outFile));
+        if (astOutFile == null) astOutS = null;
+        else astOutS = new PrintStream(new FileOutputStream(astOutFile));
+        if (irOutFile == null) irOutS = null;
+        else irOutS = new PrintStream(new FileOutputStream(irOutFile));
+        if (nasmOutFile == null) nasmOutS = System.out;
+        else nasmOutS = new PrintStream(new FileOutputStream(nasmOutFile));
 
-        Compiler compiler = new Compiler(inS, outS);
+        Compiler compiler = new Compiler(inS, astOutS, irOutS, nasmOutS);
         try {
             compiler.compile();
         }
@@ -87,7 +94,7 @@ public class Main {
             System.exit(1);
         }
 
-        LLIRInterpreter leLeIRInterpreter = new LLIRInterpreter(new FileInputStream(outFile), false);
+        LLIRInterpreter leLeIRInterpreter = new LLIRInterpreter(new FileInputStream(irOutFile), false);
         leLeIRInterpreter.run();
         System.out.println("LLIRInterpreter exit code: " + leLeIRInterpreter.getExitcode());
     }
