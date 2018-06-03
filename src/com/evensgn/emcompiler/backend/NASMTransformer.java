@@ -96,18 +96,19 @@ public class NASMTransformer {
                             if (args.size() > 3) inst.prependInst(new IRMove(inst.getParentBB(), rcx, args.get(3)));
                             if (args.size() > 4) inst.prependInst(new IRMove(inst.getParentBB(), r8, args.get(4)));
                             if (args.size() > 5) inst.prependInst(new IRMove(inst.getParentBB(), r9, args.get(5)));
+                            // for rsp alignment
+                            if (funcInfo.numExtraArgs % 2 == 1) {
+                                inst.prependInst(new IRPush(inst.getParentBB(), new IntImmediate(0)));
+                            }
                             for (int i = args.size() - 1; i > 5; --i) {
                                 inst.prependInst(new IRPush(inst.getParentBB(), args.get(i)));
-                            }
-                            // for rsp alignment
-                            if (args.size() > 6 && (args.size() - 6) % 2 == 1) {
-                                inst.prependInst(new IRPush(inst.getParentBB(), new IntImmediate(0)));
                             }
                         }
 
                         // remove extra arguments
                         if (funcInfo.numExtraArgs > 0) {
-                            inst.appendInst(new IRBinaryOperation(inst.getParentBB(), rsp, IRBinaryOperation.IRBinaryOp.SUB, rsp, new IntImmediate(funcInfo.numExtraArgs * Configuration.getRegSize())));
+                            int numPushArg = (funcInfo.numExtraArgs % 2 == 0) ? funcInfo.numExtraArgs : funcInfo.numExtraArgs + 1;
+                            inst.appendInst(new IRBinaryOperation(inst.getParentBB(), rsp, IRBinaryOperation.IRBinaryOp.SUB, rsp, new IntImmediate(numPushArg * Configuration.getRegSize())));
                         }
 
                         // get return value

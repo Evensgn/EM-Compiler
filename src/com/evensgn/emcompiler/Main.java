@@ -72,7 +72,7 @@ public class Main {
         if (isPrintConfig) printConfig();
 
         // TEMP CODE FOR TEST
-        irOutFile = "testcase/ir_output.txt";
+        //irOutFile = "testcase/ir_output.txt";
 
         InputStream inS;
         PrintStream astOutS, irOutS, nasmOutS;
@@ -94,8 +94,8 @@ public class Main {
             System.exit(1);
         }
 
-        LLIRInterpreter leLeIRInterpreter = new LLIRInterpreter(new FileInputStream(irOutFile), false);
+        /*LLIRInterpreter leLeIRInterpreter = new LLIRInterpreter(new FileInputStream(irOutFile), false);
         leLeIRInterpreter.run();
-        System.out.println("LLIRInterpreter exit code: " + leLeIRInterpreter.getExitcode());
+        System.out.println("LLIRInterpreter exit code: " + leLeIRInterpreter.getExitcode());*/
     }
 }

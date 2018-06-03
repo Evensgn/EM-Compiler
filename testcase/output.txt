@@ -9,37 +9,76 @@
 # function main
 
 main:
-		push	r14
 		push	r13
 		push	r12
-		push	r15
 		sub		rsp, 8
 		jmp		__block___init_func_entry_1
 
 __block___init_func_entry_1:
-		mov		r10, 1
-		mov		r8, 2
-		mov		[rsp], r8
-		mov		r11, 3
-		mov		r15, 4
-		mov		r14, 5
-		mov		r13, 6
-		mov		r12, 7
-		mov		r8, [rsp]
+		mov		r11, 10
+		mov		r13, 0
+		mov		r12, 0
+		mov		r12, 1
+		jmp		__block_for_cond_1
 
-		add		r10, r8
-		add		r10, r11
-		add		r10, r15
-		add		r10, r14
-		add		r10, r13
-		add		r10, r12
-		mov		rax, r10
-		mov		rax, r10
+__block_for_cond_1:
+		xor		rax, rax
+		cmp		r12, r11
+		setle	al
+		mov		r10, rax
+		cmp		r10, 1
+		je		__block_for_body_1
+		jmp		__block_for_after_1
+
+__block_for_after_1:
+		mov		r12, 0
+		mov		r12, 1
+		jmp		__block_for_cond_2
+
+__block_for_cond_2:
+		xor		rax, rax
+		cmp		r12, r11
+		setle	al
+		mov		r10, rax
+		cmp		r10, 1
+		je		__block_for_body_2
+		jmp		__block_for_after_2
+
+__block_for_after_2:
+		mov		rax, r13
+		mov		rax, r13
+		mov		rax, r13
+		mov		rax, r13
+		mov		rax, r13
+		mov		rax, r13
+		mov		rax, r13
+		mov		rax, r13
+		mov		rax, r13
+		mov		rax, r13
 		add		rsp, 8
-		pop		r15
 		pop		r12
 		pop		r13
-		pop		r14
 		ret
+
+__block_for_body_2:
+		mov		r10, r13
+		add		r10, 10
+		add		r10, r12
+		mov		r13, r10
+		jmp		__block_for_step_1
+
+__block_for_step_1:
+		inc		r12
+		jmp		__block_for_cond_2
+
+__block_for_body_1:
+		mov		r10, r13
+		add		r10, r12
+		mov		r13, r10
+		jmp		__block_for_step_2
+
+__block_for_step_2:
+		inc		r12
+		jmp		__block_for_cond_1
 
 
