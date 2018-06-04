@@ -3,6 +3,9 @@ package com.evensgn.emcompiler.backend;
 import com.evensgn.emcompiler.Configuration;
 import com.evensgn.emcompiler.ir.*;
 import com.evensgn.emcompiler.nasm.NASMRegisterSet;
+import sun.awt.ConstrainableGraphics;
+
+import static com.evensgn.emcompiler.nasm.NASMRegisterSet.rax;
 
 public class RegisterPreprocessor {
     private IRRoot ir;
@@ -31,16 +34,5 @@ public class RegisterPreprocessor {
         for (IRFunction irFunction : ir.getFuncs().values()) {
             processFuncArgs(irFunction);
         }
-        /*for (IRFunction irFunction : ir.getFuncs().values()) {
-            for (BasicBlock bb : irFunction.getReversePreOrder()) {
-                for (IRInstruction inst = bb.getFirstInst(); inst != null; inst = inst.getNextInst()) {
-                    if (inst instanceof IRHeapAlloc) {
-                        if (irFunction.getArgVRegList().size() > 0) {
-                            // BLANK
-                        }
-                    }
-                }
-            }
-        }*/
     }
 }

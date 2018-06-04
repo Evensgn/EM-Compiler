@@ -70,7 +70,9 @@ public class StaticDataProcessor {
                     firtInst.prependInst(new IRLoad(startBB, virtualRegister, Configuration.getRegSize(), staticData, staticData instanceof StaticString)));
         }
 
-        // TO DO add built-in functions
+        for (IRFunction builtFunc : ir.getBuiltInFuncs().values()) {
+            funcInfoMap.put(builtFunc, new FuncInfo());
+        }
         for (IRFunction irFunction : ir.getFuncs().values()) {
             FuncInfo funcInfo = funcInfoMap.get(irFunction);
             funcInfo.recursiveUsedStaticData.addAll(funcInfo.staticDataVregMap.keySet());
@@ -96,7 +98,6 @@ public class StaticDataProcessor {
                         }
                     }
                     // load used static data after function call
-                    if (calleeFuncInfo == null) continue;
                     if (calleeFuncInfo.definedStaticData.isEmpty()) continue;
                     Set<StaticData> loadStaticDataSet = new HashSet<>();
                     loadStaticDataSet.addAll(calleeFuncInfo.definedStaticData);

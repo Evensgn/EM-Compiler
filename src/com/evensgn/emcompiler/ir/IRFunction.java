@@ -11,7 +11,7 @@ public class IRFunction {
     private List<VirtualRegister> argVRegList = new ArrayList<>();
     private List<BasicBlock> reversePostOrder = null;
     private List<BasicBlock> reversePreOrder = null;
-    private String name;
+    private String name, builtInCallLabel;
     private boolean recursiveCall = false;
     private List<IRReturn> retInstList = new ArrayList<>();
     private Set<PhysicalRegister> usedPhysicalGeneralRegs = new HashSet<>();
@@ -31,6 +31,13 @@ public class IRFunction {
         if (funcEntity.isMember()) {
             name = IRRoot.irMemberFuncName(funcEntity.getClassName(), name);
         }
+    }
+
+    public IRFunction(String name, String builtInCallLabel) {
+        this.name = name;
+        this.builtInCallLabel = builtInCallLabel;
+        this.funcEntity = null;
+        this.isBuiltIn = true;
     }
 
     public Set<IRFunction> calleeSet = new HashSet<>();
@@ -168,5 +175,9 @@ public class IRFunction {
 
     public boolean isBuiltIn() {
         return isBuiltIn;
+    }
+
+    public String getBuiltInCallLabel() {
+        return builtInCallLabel;
     }
 }

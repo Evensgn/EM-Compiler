@@ -398,7 +398,7 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
 
     @Override
     public Node visitStringConst(EMxStarParser.StringConstContext ctx) {
-        return new StringConstExprNode(ctx.getText(), Location.fromCtx(ctx));
+        return new StringConstExprNode(ctx.getText().substring(1, ctx.getText().length() - 1), Location.fromCtx(ctx));
     }
 
     @Override

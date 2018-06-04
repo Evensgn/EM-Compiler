@@ -4,7 +4,12 @@ import com.evensgn.emcompiler.Configuration;
 import com.evensgn.emcompiler.ir.*;
 import com.evensgn.emcompiler.utils.CompilerError;
 
+import javax.annotation.processing.SupportedSourceVersion;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.Buffer;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -77,7 +82,15 @@ public class NASMPrinter implements IRVisitor {
         }
         out.println();
 
-        // TO DO add built-in functions
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader("lib/builtin_functions.asm"));
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                out.println(line);
+            }
+        } catch (IOException e) {
+            throw new CompilerError("IO exception when reading builtin functions from file");
+        }
     }
 
     @Override
@@ -290,9 +303,17 @@ public class NASMPrinter implements IRVisitor {
 
     @Override
     public void visit(IRLoad node) {
+        if (node.getAddr() instanceof StaticString) {
+            out.print("\t\tmov\t\t");
+            node.getDest().accept(this);
+            out.print(", " + sizeStr(node.getSize()) + " ");
+            node.getAddr().accept(this);
+            out.println();
+            return;
+        }
         out.print("\t\tmov\t\t");
         node.getDest().accept(this);
-        out.print(", " + sizeStr(node.getSize()) + "[");
+        out.print(", " + sizeStr(node.getSize()) + " [");
         node.getAddr().accept(this);
         if (node.getAddrOffset() < 0) {
             out.print(node.getAddrOffset());
@@ -304,7 +325,15 @@ public class NASMPrinter implements IRVisitor {
 
     @Override
     public void visit(IRStore node) {
-        out.print("\t\tmov\t\t" + sizeStr(node.getSize()) + "[");
+        if (node.getAddr() instanceof StaticString) {
+            out.print("\t\tmov\t\t" + sizeStr(node.getSize()) + " ");
+            node.getAddr().accept(this);
+            out.print(" ");
+            node.getValue().accept(this);
+            out.println();
+            return;
+        }
+        out.print("\t\tmov\t\t" + sizeStr(node.getSize()) + " [");
         node.getAddr().accept(this);
         if (node.getAddrOffset() < 0) {
             out.print(node.getAddrOffset());
@@ -318,7 +347,8 @@ public class NASMPrinter implements IRVisitor {
 
     @Override
     public void visit(IRFunctionCall node) {
-        out.println("\t\tcall\t" + bbId(node.getFunc().getStartBB()));
+        if (node.getFunc().isBuiltIn()) out.println("\t\tcall\t" + node.getFunc().getBuiltInCallLabel());
+        else out.println("\t\tcall\t" + bbId(node.getFunc().getStartBB()));
     }
 
     @Override
@@ -386,10 +416,10 @@ public class NASMPrinter implements IRVisitor {
     public void visit(StaticString node) {
         if (isDataSection) {
             out.printf("%s:\n", dataId(node));
-            out.printf("\t\tdq\t\t%d\n", node.getSize());
+            out.printf("\t\tdq\t\t%d\n", node.getValue().length());
             out.printf("\t\tdb\t\t%s\n", staticStrDataSection(node.getValue()));
         } else {
-            out.println(dataId(node));
+            out.print(dataId(node));
         }
     }
 }

@@ -249,6 +249,7 @@ public class IRBuilder extends BaseScopeScanner {
             } else {
                 throw new CompilerError("invalid type of statement or variable declaration");
             }
+            if (currentBB.isHasJumpInst()) break;
         }
         currentScope = currentScope.getParent();
     }
@@ -311,7 +312,9 @@ public class IRBuilder extends BaseScopeScanner {
 
         currentBB = bodyBB;
         node.getStmt().accept(this);
-        currentBB.setJumpInst(new IRJump(currentBB, condBB));
+        if (!currentBB.isHasJumpInst()) {
+            currentBB.setJumpInst(new IRJump(currentBB, condBB));
+        }
 
         currentLoopStepBB = externalLoopCondBB;
         currentLoopAfterBB = externalLoopAfterBB;
@@ -351,7 +354,9 @@ public class IRBuilder extends BaseScopeScanner {
 
         currentBB = bodyBB;
         node.getStmt().accept(this);
-        currentBB.setJumpInst(new IRJump(currentBB, stepBB));
+        if (!currentBB.isHasJumpInst()) {
+            currentBB.setJumpInst(new IRJump(currentBB, stepBB));
+        }
 
         currentLoopStepBB = externalLoopStepBB;
         currentLoopAfterBB = externalLoopAfterBB;

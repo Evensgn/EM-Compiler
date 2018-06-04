@@ -1,27 +1,3 @@
-		global	main
-
-		extern	malloc
-
-		section	.bss
-
-		section	.data
-
-		section	.text
-
-# function main
-
-main:
-		sub		rsp, 8
-		jmp		__block___init_func_entry_1
-
-__block___init_func_entry_1:
-		mov		rdi, 123
-		call	_Z8printInti
-		mov		rax, 0
-		add		rsp, 8
-		ret
-
-
 # built-in functions
 
 default rel

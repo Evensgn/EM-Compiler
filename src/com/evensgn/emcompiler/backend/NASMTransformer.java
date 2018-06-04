@@ -54,7 +54,9 @@ public class NASMTransformer {
             funcInfoMap.put(irFunction, funcInfo);
         }
 
-        // TO DO add funcInfo for built-in functions
+        for (IRFunction builtinFunc : ir.getBuiltInFuncs().values()) {
+            funcInfoMap.put(builtinFunc, new FuncInfo());
+        }
         for (IRFunction irFunction : funcInfoMap.keySet()) {
             FuncInfo funcInfo = funcInfoMap.get(irFunction);
             funcInfo.recursiveUsedRegs.addAll(irFunction.getUsedPhysicalGeneralRegs());
@@ -94,48 +96,56 @@ public class NASMTransformer {
                         List<RegValue> args = ((IRFunctionCall) inst).getArgs();
                         List<Integer> arg6BakOffset = new ArrayList<>();
                         Map<PhysicalRegister, Integer> arg6BakOffsetMap = new HashMap<>();
-                        if (calleeFunc.isBuiltIn()) {
-                            // TO DO process built-in functions
-                        } else {
-                            // for rsp alignment
-                            if ((numPushCallerSave + funcInfo.numExtraArgs) % 2 == 1) {
-                                extraPush = true;
-                                inst.prependInst(new IRPush(inst.getParentBB(), new IntImmediate(0)));
-                            }
-                            for (int i = args.size() - 1; i > 5; --i) {
+
+
+                        // for rsp alignment
+                        if ((numPushCallerSave + funcInfo.numExtraArgs) % 2 == 1) {
+                            extraPush = true;
+                            inst.prependInst(new IRPush(inst.getParentBB(), new IntImmediate(0)));
+                        }
+                        for (int i = args.size() - 1; i > 5; --i) {
+                            if (args.get(i) instanceof StackSlot) {
+                                inst.prependInst(new IRLoad(inst.getParentBB(), rax, Configuration.getRegSize(), rsp, funcInfo.stackSlotOffsetMap.get(args.get(i))));
+                                inst.prependInst(new IRPush(inst.getParentBB(), rax));
+                            } else {
                                 inst.prependInst(new IRPush(inst.getParentBB(), args.get(i)));
                             }
+                        }
 
-                            int bakOffset = 0;
-                            for (int i = 0; i < 6; ++i) {
-                                if (args.size() <= i) break;
-                                if (args.get(i) instanceof PhysicalRegister && ((PhysicalRegister) args.get(i)).isArg6() && ((PhysicalRegister) args.get(i)).getArg6Idx() < args.size()) {
-                                    PhysicalRegister preg = (PhysicalRegister) args.get(i);
-                                    if (arg6BakOffsetMap.containsKey(preg)) {
-                                        arg6BakOffset.add(arg6BakOffsetMap.get(preg));
-                                    } else {
-                                        arg6BakOffset.add(bakOffset);
-                                        arg6BakOffsetMap.put(preg, bakOffset);
-                                        inst.prependInst(new IRPush(inst.getParentBB(), preg));
-                                        ++bakOffset;
-                                    }
+                        int bakOffset = 0;
+                        for (int i = 0; i < 6; ++i) {
+                            if (args.size() <= i) break;
+                            if (args.get(i) instanceof PhysicalRegister && ((PhysicalRegister) args.get(i)).isArg6() && ((PhysicalRegister) args.get(i)).getArg6Idx() < args.size()) {
+                                PhysicalRegister preg = (PhysicalRegister) args.get(i);
+                                if (arg6BakOffsetMap.containsKey(preg)) {
+                                    arg6BakOffset.add(arg6BakOffsetMap.get(preg));
                                 } else {
-                                    arg6BakOffset.add(-1);
+                                    arg6BakOffset.add(bakOffset);
+                                    arg6BakOffsetMap.put(preg, bakOffset);
+                                    inst.prependInst(new IRPush(inst.getParentBB(), preg));
+                                    ++bakOffset;
                                 }
+                            } else {
+                                arg6BakOffset.add(-1);
                             }
+                        }
 
-                            for (int i = 0; i < 6; ++i) {
-                                if (args.size() <= i) break;
-                                if (arg6BakOffset.get(i) == -1) {
+                        for (int i = 0; i < 6; ++i) {
+                            if (args.size() <= i) break;
+                            if (arg6BakOffset.get(i) == -1) {
+                                if (args.get(i) instanceof StackSlot) {
+                                    inst.prependInst(new IRLoad(inst.getParentBB(), rax, Configuration.getRegSize(), rsp, funcInfo.stackSlotOffsetMap.get(args.get(i))));
+                                    inst.prependInst(new IRMove(inst.getParentBB(), arg6.get(i), rax));
+                                } else {
                                     inst.prependInst(new IRMove(inst.getParentBB(), arg6.get(i), args.get(i)));
-                                } else {
-                                    inst.prependInst(new IRLoad(inst.getParentBB(), arg6.get(i), Configuration.getRegSize(), rsp, Configuration.getRegSize() * (bakOffset - arg6BakOffset.get(i) - 1)));
                                 }
+                            } else {
+                                inst.prependInst(new IRLoad(inst.getParentBB(), arg6.get(i), Configuration.getRegSize(), rsp, Configuration.getRegSize() * (bakOffset - arg6BakOffset.get(i) - 1)));
                             }
+                        }
 
-                            if (bakOffset > 0) {
-                                inst.prependInst(new IRBinaryOperation(inst.getParentBB(), rsp, IRBinaryOperation.IRBinaryOp.ADD, rsp, new IntImmediate(bakOffset * Configuration.getRegSize())));
-                            }
+                        if (bakOffset > 0) {
+                            inst.prependInst(new IRBinaryOperation(inst.getParentBB(), rsp, IRBinaryOperation.IRBinaryOp.ADD, rsp, new IntImmediate(bakOffset * Configuration.getRegSize())));
                         }
 
                         // get return value

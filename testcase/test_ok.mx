@@ -1,6 +1,4 @@
-int a = 1, b = 10;
-
 int main() {
-    a = 5;
-    return a * b;
+    print(toString(123));
+    return 0;
 }
