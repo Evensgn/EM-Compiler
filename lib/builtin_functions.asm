@@ -51,6 +51,12 @@ __builtin_string_concat:
         mov     rdi, rax
         call    malloc
         mov     qword [rbp-8H], rax
+        mov     edx, dword [rbp-10H]
+        mov     eax, dword [rbp-0CH]
+        add     eax, edx
+        movsxd  rdx, eax
+        mov     rax, qword [rbp-8H]
+        mov     qword [rax], rdx
         add     qword [rbp-28H], 8
         add     qword [rbp-30H], 8
         add     qword [rbp-8H], 8
@@ -98,6 +104,7 @@ L_004:  mov     eax, dword [rbp-1CH]
         add     rax, rdx
         mov     byte [rax], 0
         mov     rax, qword [rbp-8H]
+        sub     rax, 8
         leave
         ret
 

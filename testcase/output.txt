@@ -2,23 +2,44 @@
 
 		extern	malloc
 
-		section	.bss
-
 		section	.data
+__static_data_static_str_1:
+		dq		8
+		db		98, 98, 98, 98, 98, 98, 98, 98, 0
+__static_data_static_str_2:
+		dq		4
+		db		97, 97, 97, 97, 0
 
 		section	.text
 
 # function main
 
 main:
-		sub		rsp, 8
+		push	r12
+		mov		r10, qword __static_data_static_str_2
+		mov		r11, qword __static_data_static_str_1
 		jmp		__block___init_func_entry_1
 
 __block___init_func_entry_1:
-		mov		rdi, 123
-		call	_Z8printInti
+		mov		r12, r10
+		mov		r10, r11
+		push	r11
+		push	r10
+		mov		rdi, r12
+		mov		rsi, r10
+		call	__builtin_string_concat
+		pop		r10
+		pop		r11
+		mov		r10, rax
+		mov		r10, qword [r10]
+		push	r11
+		push	r10
+		mov		rdi, r10
+		call	_Z10printlnInti
+		pop		r10
+		pop		r11
 		mov		rax, 0
-		add		rsp, 8
+		pop		r12
 		ret
 
 
@@ -75,6 +96,12 @@ __builtin_string_concat:
         mov     rdi, rax
         call    malloc
         mov     qword [rbp-8H], rax
+        mov     edx, dword [rbp-10H]
+        mov     eax, dword [rbp-0CH]
+        add     eax, edx
+        movsxd  rdx, eax
+        mov     rax, qword [rbp-8H]
+        mov     qword [rax], rdx
         add     qword [rbp-28H], 8
         add     qword [rbp-30H], 8
         add     qword [rbp-8H], 8
@@ -122,6 +149,7 @@ L_004:  mov     eax, dword [rbp-1CH]
         add     rax, rdx
         mov     byte [rax], 0
         mov     rax, qword [rbp-8H]
+        sub     rax, 8
         leave
         ret
 

@@ -432,7 +432,8 @@ public class IRBuilder extends BaseScopeScanner {
     private void processPrintFuncCall(ExprNode arg, String funcName) {
         if (arg instanceof BinaryExprNode) {
             // print(A + B); -> print(A); print(B);
-            processPrintFuncCall(((BinaryExprNode) arg).getLhs(), funcName);
+            // println(A + B); -> print(A); println(B);
+            processPrintFuncCall(((BinaryExprNode) arg).getLhs(), "print");
             processPrintFuncCall(((BinaryExprNode) arg).getRhs(), funcName);
             return;
         }
@@ -522,12 +523,24 @@ public class IRBuilder extends BaseScopeScanner {
                 break;
 
             case IRRoot.BUILTIN_STRING_ORD_FUNC_NAME:
+                vreg = new VirtualRegister("ord");
+                calleeFunc = ir.getBuiltInFunc(IRRoot.BUILTIN_STRING_ORD_FUNC_NAME);
+                vArgs.clear();
+                vArgs.add(thisExpr.getRegValue());
+                arg0 = node.getArgs().get(0);
+                arg0.accept(this);
+                vArgs.add(arg0.getRegValue());
+                currentBB.addInst(new IRFunctionCall(currentBB, calleeFunc, vArgs, vreg));
+                node.setRegValue(vreg);
+
+                // could be optimized
+                /*
                 arg0 = node.getArgs().get(0);
                 arg0.accept(this);
                 vreg = new VirtualRegister("ord");
                 currentBB.addInst(new IRBinaryOperation(currentBB, vreg, IRBinaryOperation.IRBinaryOp.ADD, thisExpr.getRegValue(), arg0.getRegValue()));
                 currentBB.addInst(new IRLoad(currentBB, vreg, 1, vreg, 4));
-                node.setRegValue(vreg);
+                node.setRegValue(vreg);*/
                 break;
 
             case IRRoot.BUILTIN_STRING_LENGTH_FUNC_NAME:

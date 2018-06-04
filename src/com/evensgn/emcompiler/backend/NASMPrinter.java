@@ -60,21 +60,25 @@ public class NASMPrinter implements IRVisitor {
         out.println("\t\textern\tmalloc");
         out.println();
 
-        isBssSection = true;
-        out.println("\t\tsection\t.bss");
-        for (StaticData staticData : node.getStaticDataList()) {
-            staticData.accept(this);
+        if (node.getStaticDataList().size() > 0) {
+            isBssSection = true;
+            out.println("\t\tsection\t.bss");
+            for (StaticData staticData : node.getStaticDataList()) {
+                staticData.accept(this);
+            }
+            out.println();
+            isBssSection = false;
         }
-        out.println();
-        isBssSection = false;
 
-        isDataSection = true;
-        out.println("\t\tsection\t.data");
-        for (StaticString staticString : node.getStaticStrs().values()) {
-            staticString.accept(this);
+        if (node.getStaticStrs().size() > 0) {
+            isDataSection = true;
+            out.println("\t\tsection\t.data");
+            for (StaticString staticString : node.getStaticStrs().values()) {
+                staticString.accept(this);
+            }
+            out.println();
+            isDataSection = false;
         }
-        out.println();
-        isDataSection = false;
 
         out.println("\t\tsection\t.text\n");
         for (IRFunction irFunction : node.getFuncs().values()) {

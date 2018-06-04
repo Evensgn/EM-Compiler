@@ -1,4 +1,26 @@
 int main() {
-    print(toString(123));
+    string s1 = "aaaa";
+    string s2 = "bbbbbbbb";
+    string s3 = s1 + s2;
+    println(toString(s3.length()));
     return 0;
 }
+
+
+/*!! metadata:
+=== comment ===
+string1.mx
+=== assert ===
+exitcode
+=== timeout ===
+0.1
+=== input ===
+
+=== phase ===
+codegen pretest
+=== is_public ===
+True
+=== exitcode ===
+106
+
+!!*/

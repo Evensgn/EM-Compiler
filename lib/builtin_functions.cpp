@@ -5,6 +5,7 @@
 char* __builtin_string_concat(char *str1, char *str2) {
     int len1 = *((long*) str1), len2 = *((long*) str2);
     char *catStr = (char*) malloc(9 + len1 + len2);
+    *((long*) catStr) = len1 + len2;
     str1 += 8;
     str2 += 8;
     catStr += 8;
@@ -14,7 +15,7 @@ char* __builtin_string_concat(char *str1, char *str2) {
     for (int i = 0; i < len2; ++i)
         catStr[++now] = str2[i];
     catStr[now + 1] = 0;
-    return catStr;
+    return catStr - 8;
 }
 
 int __builtin_string_equal(char *str1, char *str2) {
