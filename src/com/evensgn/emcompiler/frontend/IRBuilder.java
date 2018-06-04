@@ -33,6 +33,8 @@ public class IRBuilder extends BaseScopeScanner {
         List<Node> stmts = new ArrayList<>();
         for (GlobalVarInit init : globalInitList) {
             IdentifierExprNode lhs = new IdentifierExprNode(init.getName(), null);
+            VarEntity varEntity = (VarEntity) globalScope.get(Scope.varKey(init.getName()));
+            lhs.setVarEntity(varEntity);
             AssignExprNode assignExpr = new AssignExprNode(lhs, init.getInitExpr(), null);
             stmts.add(new ExprStmtNode(assignExpr, null));
         }

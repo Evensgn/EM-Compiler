@@ -19,7 +19,7 @@ public class NASMPrinter implements IRVisitor {
         this.out = out;
     }
 
-    private boolean isBssSection;
+    private boolean isBssSection, isDataSection;
 
     private String newId(String id) {
         int nowCnt = idCounter.getOrDefault(id, 0) + 1;
@@ -62,6 +62,14 @@ public class NASMPrinter implements IRVisitor {
         }
         out.println();
         isBssSection = false;
+
+        isDataSection = true;
+        out.println("\t\tsection\t.data");
+        for (StaticString staticString : node.getStaticStrs().values()) {
+            staticString.accept(this);
+        }
+        out.println();
+        isDataSection = false;
 
         out.println("\t\tsection\t.text\n");
         for (IRFunction irFunction : node.getFuncs().values()) {
@@ -349,12 +357,39 @@ public class NASMPrinter implements IRVisitor {
 
     @Override
     public void visit(StaticVar node) {
-        if (isBssSection) out.printf("%s:\tdq\t\t%d\n", dataId(node), node.getSize());
+        if (isBssSection) {
+            String op;
+            switch (node.getSize()) {
+                case 1: op = "resb"; break;
+                case 2: op = "resw"; break;
+                case 4: op = "resd"; break;
+                case 8: op = "resq"; break;
+                default: throw new CompilerError("invalid static data size");
+            }
+            out.printf("%s:\t%s\t1\n", dataId(node), op);
+        }
         else out.print(dataId(node));
+    }
+
+    private String staticStrDataSection(String str) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0, n = str.length(); i < n; ++i) {
+            char c = str.charAt(i);
+            sb.append((int) c);
+            sb.append(", ");
+        }
+        sb.append(0);
+        return sb.toString();
     }
 
     @Override
     public void visit(StaticString node) {
-        // TO DO
+        if (isDataSection) {
+            out.printf("%s:\n", dataId(node));
+            out.printf("\t\tdq\t\t%d\n", node.getSize());
+            out.printf("\t\tdb\t\t%s\n", staticStrDataSection(node.getValue()));
+        } else {
+            out.println(dataId(node));
+        }
     }
 }
