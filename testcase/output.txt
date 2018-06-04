@@ -4,51 +4,91 @@
 
 		section	.text
 
-# function gcd
+# function foo
 
-__block_gcd_entry_1:
+__block_foo_entry_1:
 		sub		rsp, 8
-		mov		rax, rdi
-		cqo
-		mov		rbx, rsi
-		idiv	rbx
-		mov		r10, rdx
+		mov		r10, rdi
+		imul	r10, 1000
+		mov		r11, rsi
+		imul	r11, 10
+		add		r10, r11
+		add		r10, rdx
+		push	r11
+		push	r10
+		push	rdi
+		push	rsi
+		push	rdx
+		push	0
+		mov		rdi, r10
+		call	_Z10printlnInti
+		add		rsp, 8
+		pop		rdx
+		pop		rsi
+		pop		rdi
+		pop		r10
+		pop		r11
 		xor		rax, rax
-		cmp		r10, 0
+		cmp		rdi, 1
 		sete	al
 		mov		r10, rax
 		cmp		r10, 1
 		je		__block_if_then_1
-		jmp		__block_if_else_1
-
-__block_if_else_1:
-		mov		rax, rdi
-		cqo
-		mov		rbx, rsi
-		idiv	rbx
-		mov		r10, rdx
-		push	rdi
-		push	rsi
-		push	r10
-		push	0
-		push	rsi
-		mov		rdi, qword [rsp]
-		mov		rsi, r10
-		add		rsp, 8
-		call	__block_gcd_entry_1
-		add		rsp, 8
-		pop		r10
-		pop		rsi
-		pop		rdi
-		mov		r10, rax
-		jmp		__block_gcd_end_1
+		jmp		__block_if_after_1
 
 __block_if_then_1:
-		mov		r10, rsi
-		jmp		__block_gcd_end_1
+		jmp		__block_foo_end_1
 
-__block_gcd_end_1:
-		mov		rax, r10
+__block_if_after_1:
+		mov		r10, rsi
+		mov		rsi, rdx
+		mov		rdx, r10
+		push	r11
+		push	r10
+		push	rsi
+		push	rdx
+		push	rdi
+		push	rdi
+		push	rsi
+		push	rdx
+		push	rsi
+		push	rdx
+		mov		rdi, 1
+		mov		rsi, qword [rsp+8]
+		mov		rdx, qword [rsp]
+		add		rsp, 16
+		call	__block_foo_entry_1
+		pop		rdx
+		pop		rsi
+		pop		rdi
+		pop		rdi
+		pop		rdx
+		pop		rsi
+		pop		r10
+		pop		r11
+		mov		r10, rax
+		mov		r10, rdi
+		imul	r10, 1000
+		imul	rsi, 10
+		add		r10, rsi
+		add		r10, rdx
+		push	r11
+		push	r10
+		push	rdi
+		push	rsi
+		push	rdx
+		push	0
+		mov		rdi, r10
+		call	_Z10printlnInti
+		add		rsp, 8
+		pop		rdx
+		pop		rsi
+		pop		rdi
+		pop		r10
+		pop		r11
+		jmp		__block_foo_end_1
+
+__block_foo_end_1:
 		add		rsp, 8
 		ret
 
@@ -61,46 +101,13 @@ main:
 __block___init_func_entry_1:
 		push	r10
 		push	0
-		mov		rdi, 10
-		mov		rsi, 1
-		call	__block_gcd_entry_1
+		mov		rdi, 7
+		mov		rsi, 5
+		mov		rdx, 3
+		call	__block_foo_entry_1
 		add		rsp, 8
 		pop		r10
 		mov		r10, rax
-		push	r10
-		push	0
-		mov		rdi, r10
-		call	_Z10printlnInti
-		add		rsp, 8
-		pop		r10
-		push	r10
-		push	0
-		mov		rdi, 34986
-		mov		rsi, 3087
-		call	__block_gcd_entry_1
-		add		rsp, 8
-		pop		r10
-		mov		r10, rax
-		push	r10
-		push	0
-		mov		rdi, r10
-		call	_Z10printlnInti
-		add		rsp, 8
-		pop		r10
-		push	r10
-		push	0
-		mov		rdi, 2907
-		mov		rsi, 1539
-		call	__block_gcd_entry_1
-		add		rsp, 8
-		pop		r10
-		mov		r10, rax
-		push	r10
-		push	0
-		mov		rdi, r10
-		call	_Z10printlnInti
-		add		rsp, 8
-		pop		r10
 		mov		rax, 0
 		add		rsp, 8
 		ret

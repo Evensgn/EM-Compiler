@@ -91,12 +91,18 @@ public class NASMTransformer {
                             }
                         }
 
+                        // push argument registers
+                        int numPushArg6Regs = irFunction.getArgVRegList().size() <= 6 ? irFunction.getArgVRegList().size() : 6;
+                        for (int i = 0; i < numPushArg6Regs; ++i) {
+                            inst.prependInst(new IRPush(inst.getParentBB(), arg6.get(i)));
+                        }
+                        numPushCallerSave += numPushArg6Regs;
+
                         // set arguments
                         boolean extraPush = false;
                         List<RegValue> args = ((IRFunctionCall) inst).getArgs();
                         List<Integer> arg6BakOffset = new ArrayList<>();
                         Map<PhysicalRegister, Integer> arg6BakOffsetMap = new HashMap<>();
-
 
                         // for rsp alignment
                         if ((numPushCallerSave + funcInfo.numExtraArgs) % 2 == 1) {
@@ -158,6 +164,11 @@ public class NASMTransformer {
                             if (calleeInfo.recursiveUsedRegs.contains(preg)) {
                                 inst.appendInst(new IRPop(inst.getParentBB(), preg));
                             }
+                        }
+
+                        // restore argument registers
+                        for (int i = 0; i < numPushArg6Regs; ++i) {
+                            inst.appendInst(new IRPop(inst.getParentBB(), arg6.get(i)));
                         }
 
                         // remove extra arguments
