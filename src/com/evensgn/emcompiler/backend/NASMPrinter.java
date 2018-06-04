@@ -4,12 +4,10 @@ import com.evensgn.emcompiler.Configuration;
 import com.evensgn.emcompiler.ir.*;
 import com.evensgn.emcompiler.utils.CompilerError;
 
-import javax.annotation.processing.SupportedSourceVersion;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.nio.Buffer;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -169,9 +167,9 @@ public class NASMPrinter implements IRVisitor {
             node.getLhs().accept(this);
             out.println();
             out.println("\t\tcqo");
-            out.print("\t\tmov\t\trdi, ");
+            out.print("\t\tmov\t\trbx, ");
             node.getRhs().accept(this);
-            out.println("\n\t\tidiv\trdi");
+            out.println("\n\t\tidiv\trbx");
             out.print("\t\tmov\t\t");
             node.getDest().accept(this);
             if (node.getOp() == DIV) {

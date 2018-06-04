@@ -2,44 +2,107 @@
 
 		extern	malloc
 
-		section	.data
-__static_data_static_str_1:
-		dq		8
-		db		98, 98, 98, 98, 98, 98, 98, 98, 0
-__static_data_static_str_2:
-		dq		4
-		db		97, 97, 97, 97, 0
-
 		section	.text
+
+# function gcd
+
+__block_gcd_entry_1:
+		sub		rsp, 8
+		mov		rax, rdi
+		cqo
+		mov		rbx, rsi
+		idiv	rbx
+		mov		r10, rdx
+		xor		rax, rax
+		cmp		r10, 0
+		sete	al
+		mov		r10, rax
+		cmp		r10, 1
+		je		__block_if_then_1
+		jmp		__block_if_else_1
+
+__block_if_else_1:
+		mov		rax, rdi
+		cqo
+		mov		rbx, rsi
+		idiv	rbx
+		mov		r10, rdx
+		push	rdi
+		push	rsi
+		push	r10
+		push	0
+		push	rsi
+		mov		rdi, qword [rsp]
+		mov		rsi, r10
+		add		rsp, 8
+		call	__block_gcd_entry_1
+		add		rsp, 8
+		pop		r10
+		pop		rsi
+		pop		rdi
+		mov		r10, rax
+		jmp		__block_gcd_end_1
+
+__block_if_then_1:
+		mov		r10, rsi
+		jmp		__block_gcd_end_1
+
+__block_gcd_end_1:
+		mov		rax, r10
+		add		rsp, 8
+		ret
 
 # function main
 
 main:
-		push	r12
-		mov		r10, qword __static_data_static_str_2
-		mov		r11, qword __static_data_static_str_1
+		sub		rsp, 8
 		jmp		__block___init_func_entry_1
 
 __block___init_func_entry_1:
-		mov		r12, r10
-		mov		r10, r11
-		push	r11
 		push	r10
-		mov		rdi, r12
-		mov		rsi, r10
-		call	__builtin_string_concat
+		push	0
+		mov		rdi, 10
+		mov		rsi, 1
+		call	__block_gcd_entry_1
+		add		rsp, 8
 		pop		r10
-		pop		r11
 		mov		r10, rax
-		mov		r10, qword [r10]
-		push	r11
 		push	r10
+		push	0
 		mov		rdi, r10
 		call	_Z10printlnInti
+		add		rsp, 8
 		pop		r10
-		pop		r11
+		push	r10
+		push	0
+		mov		rdi, 34986
+		mov		rsi, 3087
+		call	__block_gcd_entry_1
+		add		rsp, 8
+		pop		r10
+		mov		r10, rax
+		push	r10
+		push	0
+		mov		rdi, r10
+		call	_Z10printlnInti
+		add		rsp, 8
+		pop		r10
+		push	r10
+		push	0
+		mov		rdi, 2907
+		mov		rsi, 1539
+		call	__block_gcd_entry_1
+		add		rsp, 8
+		pop		r10
+		mov		r10, rax
+		push	r10
+		push	0
+		mov		rdi, r10
+		call	_Z10printlnInti
+		add		rsp, 8
+		pop		r10
 		mov		rax, 0
-		pop		r12
+		add		rsp, 8
 		ret
 
 
