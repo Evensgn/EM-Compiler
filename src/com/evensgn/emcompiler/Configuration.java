@@ -6,7 +6,7 @@ package com.evensgn.emcompiler;
  */
 public class Configuration {
     private static final int REG_SIZE = 8;
-    private static final boolean ENABLE_FUNCTION_INLINE = false;
+    private static final boolean ENABLE_FUNCTION_INLINE = true;
 
     public static String configInfo() {
         return "==== emcompiler Configuration ====\n" +
