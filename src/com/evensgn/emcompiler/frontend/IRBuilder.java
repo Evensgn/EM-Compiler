@@ -274,11 +274,17 @@ public class IRBuilder extends BaseScopeScanner {
             node.getCond().setTrueBB(thenBB);
             node.getCond().setFalseBB(elseBB);
             node.getCond().accept(this);
+            if (node.getCond() instanceof BoolConstExprNode) {
+                currentBB.setJumpInst(new IRBranch(currentBB, node.getCond().getRegValue(), node.getCond().getTrueBB(), node.getCond().getFalseBB()));
+            }
         } else {
             elseBB = null;
             node.getCond().setTrueBB(thenBB);
             node.getCond().setFalseBB(afterBB);
             node.getCond().accept(this);
+            if (node.getCond() instanceof BoolConstExprNode) {
+                currentBB.setJumpInst(new IRBranch(currentBB, node.getCond().getRegValue(), node.getCond().getTrueBB(), node.getCond().getFalseBB()));
+            }
         }
 
         currentBB = thenBB;
@@ -309,10 +315,14 @@ public class IRBuilder extends BaseScopeScanner {
         currentLoopAfterBB = afterBB;
 
         currentBB.setJumpInst(new IRJump(currentBB, condBB));
+
         currentBB = condBB;
         node.getCond().setTrueBB(bodyBB);
         node.getCond().setFalseBB(afterBB);
         node.getCond().accept(this);
+        if (node.getCond() instanceof BoolConstExprNode) {
+            currentBB.setJumpInst(new IRBranch(currentBB, node.getCond().getRegValue(), node.getCond().getTrueBB(), node.getCond().getFalseBB()));
+        }
 
         currentBB = bodyBB;
         node.getStmt().accept(this);
@@ -348,6 +358,9 @@ public class IRBuilder extends BaseScopeScanner {
             node.getCond().setTrueBB(bodyBB);
             node.getCond().setFalseBB(afterBB);
             node.getCond().accept(this);
+            if (node.getCond() instanceof BoolConstExprNode) {
+                currentBB.setJumpInst(new IRBranch(currentBB, node.getCond().getRegValue(), node.getCond().getTrueBB(), node.getCond().getFalseBB()));
+            }
         }
 
         if (node.getStep() != null) {
