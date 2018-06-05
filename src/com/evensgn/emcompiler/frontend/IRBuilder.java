@@ -232,7 +232,7 @@ public class IRBuilder extends BaseScopeScanner {
                     currentBB.addInst(new IRMove(currentBB, vreg, new IntImmediate(0)));
                 }
             } else {
-                if (node.getInit().getType() instanceof BoolType) {
+                if (node.getInit().getType() instanceof BoolType && !(node.getInit() instanceof BoolConstExprNode)) {
                     node.getInit().setTrueBB(new BasicBlock(currentFunc, null));
                     node.getInit().setFalseBB(new BasicBlock(currentFunc, null));
                 }
@@ -384,7 +384,7 @@ public class IRBuilder extends BaseScopeScanner {
         if (retType == null || retType instanceof VoidType) {
             currentBB.setJumpInst(new IRReturn(currentBB, null));
         } else {
-            if (retType instanceof BoolType) {
+            if (retType instanceof BoolType && !(node.getExpr() instanceof BoolConstExprNode)) {
                 node.getExpr().setTrueBB(new BasicBlock(currentFunc, null));
                 node.getExpr().setFalseBB(new BasicBlock(currentFunc, null));
                 node.getExpr().accept(this);

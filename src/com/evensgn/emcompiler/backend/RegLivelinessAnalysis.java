@@ -38,6 +38,9 @@ public class RegLivelinessAnalysis {
                             if (inst instanceof IRJump) {
                                 liveOut.addAll(((IRJump) inst).getTargetBB().getFirstInst().liveIn);
                             } else if (inst instanceof IRBranch) {
+                                if (((IRBranch) inst).getThenBB().getFirstInst() == null) {
+                                    System.err.println("?? how come: " + (((IRBranch) inst).getThenBB().getName()));
+                                }
                                 liveOut.addAll(((IRBranch) inst).getThenBB().getFirstInst().liveIn);
                                 liveOut.addAll(((IRBranch) inst).getElseBB().getFirstInst().liveIn);
                             }

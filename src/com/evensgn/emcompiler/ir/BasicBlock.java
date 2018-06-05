@@ -22,7 +22,7 @@ public class BasicBlock {
         if (hasJumpInst) {
             throw new CompilerError("cannot add instruction into finished basic block");
         }
-        if (lastInst == null) {
+        if (firstInst == null) {
             firstInst = lastInst = inst;
         } else {
             lastInst.linkNextInst(inst);
