@@ -9,9 +9,10 @@ public class Configuration {
     private static final boolean ENABLE_FUNCTION_INLINE = true;
 
     public static String configInfo() {
-        return "==== emcompiler Configuration ====\n" +
+        return "========= EM-Compiler Configuration =========\n" +
                 String.format("Size of register: %d\n", REG_SIZE) +
-                String.format("[Optimization] Enable function inline: %s\n", ENABLE_FUNCTION_INLINE ? "YES" : "NO");
+                String.format("[Optimization] Enable function inline: %s\n", ENABLE_FUNCTION_INLINE ? "YES" : "NO") +
+                "=============================================\n";
     }
 
     public static int getRegSize() {

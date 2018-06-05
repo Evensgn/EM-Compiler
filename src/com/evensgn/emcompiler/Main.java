@@ -1,7 +1,6 @@
 package com.evensgn.emcompiler;
 
 import com.evensgn.emcompiler.compiler.Compiler;
-import com.evensgn.emcompiler.utils.LLIRInterpreter;
 
 import java.io.*;
 
@@ -18,7 +17,9 @@ public class Main {
         System.out.println("  -h, --help                    Display this information");
         System.out.println("  -v, --version                 Display compiler version information");
         System.out.println("  -c, --config                  Display compiler configurations");
-        System.out.println("  -o <file>                     Place the output into <file>");
+        System.out.println("  -o <file>                     Place the output nasm code into <file>");
+        System.out.println("  --ast <file>                  Output abstract syntax tree into <file>");
+        System.out.println("  --ir <file>                   Output intermediate representation into <file>");
     }
 
     private static void printVersion() {
@@ -61,6 +62,16 @@ public class Main {
                     else errorArgs();
                     break;
 
+                case "--ast":
+                    if (i + 1 < args.length) astOutFile = args[++i];
+                    else errorArgs();
+                    break;
+
+                case "--ir":
+                    if (i + 1 < args.length) irOutFile = args[++i];
+                    else errorArgs();
+                    break;
+
                 default:
                     if (inFile == null) inFile = arg;
                     else errorArgs();
@@ -69,9 +80,6 @@ public class Main {
         if (isPrintVersion) printVersion();
         if (isPrintHelp) printHelp();
         if (isPrintConfig) printConfig();
-
-        // TEMP CODE FOR TEST
-        //irOutFile = "testcase/ir_output.txt";
 
         InputStream inS;
         PrintStream astOutS, irOutS, nasmOutS;
@@ -92,10 +100,5 @@ public class Main {
             System.err.println(e.getMessage());
             System.exit(1);
         }
-
-        /*
-        LLIRInterpreter leLeIRInterpreter = new LLIRInterpreter(new FileInputStream(irOutFile), false);
-        leLeIRInterpreter.run();
-        System.out.println("LLIRInterpreter exit code: " + leLeIRInterpreter.getExitcode());*/
     }
 }
