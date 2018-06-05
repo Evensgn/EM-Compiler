@@ -48,10 +48,10 @@ public class NASMTransformer {
             funcInfo.numExtraArgs = irFunction.getArgVRegList().size() - 6;
             if (funcInfo.numExtraArgs < 0) funcInfo.numExtraArgs = 0;
 
-            int extraArgOffset = -(funcInfo.usedCalleeSaveRegs.size() + funcInfo.numStackSlot + 1) * Configuration.getRegSize(); // return address
+            int extraArgOffset = (funcInfo.usedCalleeSaveRegs.size() + funcInfo.numStackSlot + 1) * Configuration.getRegSize(); // return address
             for (int i = 6; i < irFunction.getArgVRegList().size(); ++i) {
                 funcInfo.stackSlotOffsetMap.put(irFunction.getArgsStackSlotMap().get(irFunction.getArgVRegList().get(i)), extraArgOffset);
-                extraArgOffset -= Configuration.getRegSize();
+                extraArgOffset += Configuration.getRegSize();
             }
             funcInfoMap.put(irFunction, funcInfo);
         }
@@ -108,7 +108,7 @@ public class NASMTransformer {
                         Map<PhysicalRegister, Integer> arg6BakOffsetMap = new HashMap<>();
 
                         // for rsp alignment
-                        if ((numPushCallerSave + funcInfo.numExtraArgs) % 2 == 1) {
+                        if ((numPushCallerSave + calleeInfo.numExtraArgs) % 2 == 1) {
                             extraPush = true;
                             inst.prependInst(new IRPush(inst.getParentBB(), new IntImmediate(0)));
                         }
@@ -175,8 +175,8 @@ public class NASMTransformer {
                         }
 
                         // remove extra arguments
-                        if (funcInfo.numExtraArgs > 0 || extraPush) {
-                            int numPushArg = extraPush ? funcInfo.numExtraArgs + 1 : funcInfo.numExtraArgs;
+                        if (calleeInfo.numExtraArgs > 0 || extraPush) {
+                            int numPushArg = extraPush ? calleeInfo.numExtraArgs + 1 : calleeInfo.numExtraArgs;
                             inst.appendInst(new IRBinaryOperation(inst.getParentBB(), rsp, IRBinaryOperation.IRBinaryOp.ADD, rsp, new IntImmediate(numPushArg * Configuration.getRegSize())));
                         }
                     } else if (inst instanceof IRHeapAlloc) {

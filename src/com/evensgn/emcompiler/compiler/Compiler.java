@@ -63,8 +63,8 @@ public class Compiler {
         if (Configuration.isEnableFunctionInline()) new FunctionInlineProcessor(ir).run();
         if (irOutS != null) new IRPrinter(irOutS).visit(ir);
         new StaticDataProcessor(ir).run();
-        new RegLivelinessAnalysis(ir).run();
         new RegisterPreprocessor(ir).run();
+        new RegLivelinessAnalysis(ir).run();
         new RegisterAllocator(ir, NASMRegisterSet.generalRegs).run();
         new NASMTransformer(ir).run();
         new NASMPrinter(nasmOutS).visit(ir);

@@ -163,13 +163,16 @@ public class NASMPrinter implements IRVisitor {
     @Override
     public void visit(IRBinaryOperation node) {
         if (node.getOp() == DIV || node.getOp() == MOD) {
+            // to be optimized: not pushing rdx
+            out.print("\t\tmov\t\trbx, ");
+            node.getRhs().accept(this);
+            out.println();
             out.print("\t\tmov\t\trax, ");
             node.getLhs().accept(this);
             out.println();
+            out.println("\t\tpush\trdx");
             out.println("\t\tcdq");
-            out.print("\t\tmov\t\trbx, ");
-            node.getRhs().accept(this);
-            out.println("\n\t\tidiv\trbx");
+            out.println("\t\tidiv\trbx");
             out.print("\t\tmov\t\t");
             node.getDest().accept(this);
             if (node.getOp() == DIV) {
@@ -177,7 +180,9 @@ public class NASMPrinter implements IRVisitor {
             } else {
                 out.println(", rdx");
             }
-        } else if (node.getOp() == SHL || node.getOp() == SHR) {
+            out.println("\t\tpop\t\trdx");
+        } else if (node.getOp() == SHL ||
+                node.getOp() == SHR) {
             out.println("\t\tmov\t\trbx, rcx");
             out.print("\t\tmov\t\trcx, ");
             node.getRhs().accept(this);
