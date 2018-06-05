@@ -32,6 +32,9 @@ public class NASMTransformer {
                 if (preg.isCalleeSave()) funcInfo.usedCalleeSaveRegs.add(preg);
                 if (preg.isCallerSave()) funcInfo.usedCallerSaveRegs.add(preg);
             }
+            // could be optimized
+            funcInfo.usedCalleeSaveRegs.add(rbx);
+            funcInfo.usedCalleeSaveRegs.add(rbp);
 
             funcInfo.numStackSlot = irFunction.getStackSlots().size();
             for (int i = 0; i < funcInfo.numStackSlot; ++i) {
