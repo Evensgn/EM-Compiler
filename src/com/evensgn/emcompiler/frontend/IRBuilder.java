@@ -370,9 +370,15 @@ public class IRBuilder extends BaseScopeScanner {
         }
 
         currentBB = bodyBB;
-        node.getStmt().accept(this);
-        if (!currentBB.isHasJumpInst()) {
-            currentBB.setJumpInst(new IRJump(currentBB, stepBB));
+        if (node.getStmt() == null) {
+            if (!currentBB.isHasJumpInst()) {
+                currentBB.setJumpInst(new IRJump(currentBB, stepBB));
+            }
+        } else {
+            node.getStmt().accept(this);
+            if (!currentBB.isHasJumpInst()) {
+                currentBB.setJumpInst(new IRJump(currentBB, stepBB));
+            }
         }
 
         currentLoopStepBB = externalLoopStepBB;
