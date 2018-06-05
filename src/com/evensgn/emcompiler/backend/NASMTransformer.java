@@ -114,7 +114,7 @@ public class NASMTransformer {
                         }
                         for (int i = args.size() - 1; i > 5; --i) {
                             if (args.get(i) instanceof StackSlot) {
-                                inst.prependInst(new IRLoad(inst.getParentBB(), rax, Configuration.getRegSize(), rsp, funcInfo.stackSlotOffsetMap.get(args.get(i))));
+                                inst.prependInst(new IRLoad(inst.getParentBB(), rax, Configuration.getRegSize(), rbp, funcInfo.stackSlotOffsetMap.get(args.get(i))));
                                 inst.prependInst(new IRPush(inst.getParentBB(), rax));
                             } else {
                                 inst.prependInst(new IRPush(inst.getParentBB(), args.get(i)));
@@ -143,13 +143,13 @@ public class NASMTransformer {
                             if (args.size() <= i) break;
                             if (arg6BakOffset.get(i) == -1) {
                                 if (args.get(i) instanceof StackSlot) {
-                                    inst.prependInst(new IRLoad(inst.getParentBB(), rax, Configuration.getRegSize(), rsp, funcInfo.stackSlotOffsetMap.get(args.get(i))));
+                                    inst.prependInst(new IRLoad(inst.getParentBB(), rax, Configuration.getRegSize(), rbp, funcInfo.stackSlotOffsetMap.get(args.get(i))));
                                     inst.prependInst(new IRMove(inst.getParentBB(), arg6.get(i), rax));
                                 } else {
                                     inst.prependInst(new IRMove(inst.getParentBB(), arg6.get(i), args.get(i)));
                                 }
                             } else {
-                                inst.prependInst(new IRLoad(inst.getParentBB(), arg6.get(i), Configuration.getRegSize(), rsp, Configuration.getRegSize() * (bakOffset - arg6BakOffset.get(i) - 1)));
+                                inst.prependInst(new IRLoad(inst.getParentBB(), arg6.get(i), Configuration.getRegSize(), rbp, Configuration.getRegSize() * (bakOffset - arg6BakOffset.get(i) - 1)));
                             }
                         }
 
