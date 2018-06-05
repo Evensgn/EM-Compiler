@@ -42,7 +42,8 @@ public class RegLivelinessAnalysis {
                                 liveOut.addAll(((IRBranch) inst).getElseBB().getFirstInst().liveIn);
                             }
                         } else {
-                            liveOut.addAll(inst.getNextInst().liveIn);
+                            if (inst.getNextInst() != null)
+                                liveOut.addAll(inst.getNextInst().liveIn);
                         }
                         liveIn.addAll(liveOut);
                         IRRegister definedReg = inst.getDefinedRegister();

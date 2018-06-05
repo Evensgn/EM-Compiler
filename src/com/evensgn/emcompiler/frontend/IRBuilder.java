@@ -10,6 +10,7 @@ import javafx.scene.media.VideoTrack;
 import sun.awt.ConstrainableGraphics;
 import sun.security.krb5.Config;
 
+import javax.swing.plaf.synth.SynthScrollBarUI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class IRBuilder extends BaseScopeScanner {
     }
 
     private void processIRAssign(RegValue dest, int addrOffset,  ExprNode rhs, int size, boolean needMemOp) {
-        if (rhs.getType() instanceof BoolType) {
+        if (rhs.getTrueBB() != null) {
             BasicBlock mergeBB = new BasicBlock(currentFunc, null);
             if (needMemOp) {
                 rhs.getTrueBB().addInst(new IRStore(rhs.getTrueBB(), new IntImmediate(1), BoolType.getInstance().getVarSize(), dest, addrOffset));
@@ -62,8 +63,8 @@ public class IRBuilder extends BaseScopeScanner {
                 rhs.getTrueBB().addInst(new IRMove(rhs.getTrueBB(), (VirtualRegister) dest, new IntImmediate(1)));
                 rhs.getFalseBB().addInst(new IRMove(rhs.getFalseBB(), (VirtualRegister) dest, new IntImmediate(0)));
             }
-            rhs.getTrueBB().setJumpInst(new IRJump(rhs.getTrueBB(), mergeBB));
-            rhs.getFalseBB().setJumpInst(new IRJump(rhs.getFalseBB(), mergeBB));
+            if (!rhs.getTrueBB().isHasJumpInst()) rhs.getTrueBB().setJumpInst(new IRJump(rhs.getTrueBB(), mergeBB));
+            if (!rhs.getFalseBB().isHasJumpInst()) rhs.getFalseBB().setJumpInst(new IRJump(rhs.getFalseBB(), mergeBB));
             currentBB = mergeBB;
         } else {
             if (needMemOp) {
@@ -1079,7 +1080,7 @@ public class IRBuilder extends BaseScopeScanner {
 
     @Override
     public void visit(AssignExprNode node) {
-        if (node.getRhs().getType() instanceof BoolType) {
+        if (node.getRhs().getType() instanceof BoolType && !(node.getRhs() instanceof BoolConstExprNode)) {
             node.getRhs().setTrueBB(new BasicBlock(currentFunc, null));
             node.getRhs().setFalseBB(new BasicBlock(currentFunc, null));
         }
@@ -1159,9 +1160,6 @@ public class IRBuilder extends BaseScopeScanner {
     @Override
     public void visit(BoolConstExprNode node) {
         node.setRegValue(new IntImmediate(node.getValue() ? 1 : 0));
-        if (node.getTrueBB() != null) {
-            currentBB.setJumpInst(new IRBranch(currentBB, node.getRegValue(), node.getTrueBB(), node.getFalseBB()));
-        }
     }
 
     @Override
