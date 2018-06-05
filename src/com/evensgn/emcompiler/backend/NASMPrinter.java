@@ -178,7 +178,7 @@ public class NASMPrinter implements IRVisitor {
                 out.println(", rdx");
             }
         } else if (node.getOp() == SHL || node.getOp() == SHR) {
-            out.print("\t\tmov\t\trbx, rcx");
+            out.println("\t\tmov\t\trbx, rcx");
             out.print("\t\tmov\t\trcx, ");
             node.getRhs().accept(this);
             if (node.getOp() == SHL) {
@@ -188,7 +188,10 @@ public class NASMPrinter implements IRVisitor {
             }
             node.getLhs().accept(this);
             out.println(", cl");
-            out.print("\t\tmov\t\trcx, rbx");
+            out.println("\t\tmov\t\trcx, rbx");
+            out.print("\t\tand\t\t");
+            node.getLhs().accept(this);
+            out.println(", -1");
         } else {
             if (node.getDest() != node.getLhs())
                 throw new CompilerError("binary operation should have same dest and lhs");
@@ -240,6 +243,16 @@ public class NASMPrinter implements IRVisitor {
 
     @Override
     public void visit(IRComparison node) {
+        if (node.getLhs() instanceof PhysicalRegister) {
+            out.print("\t\tand\t\t");
+            node.getLhs().accept(this);
+            out.println(", -1");
+        }
+        if (node.getRhs() instanceof PhysicalRegister) {
+            out.print("\t\tand\t\t");
+            node.getRhs().accept(this);
+            out.println(", -1");
+        }
         out.println("\t\txor\t\trax, rax");
         out.print("\t\tcmp\t\t");
         node.getLhs().accept(this);
