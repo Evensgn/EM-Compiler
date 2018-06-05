@@ -14,6 +14,7 @@ public class StaticDataProcessor {
 
     private class FuncInfo {
         Set<StaticData> definedStaticData = new HashSet<>();
+        Set<StaticData> recursiveDefinedStaticData = new HashSet<>();
         Set<StaticData> recursiveUsedStaticData = new HashSet<>();
         Map<StaticData, VirtualRegister> staticDataVregMap = new HashMap<>();
     }
@@ -76,9 +77,11 @@ public class StaticDataProcessor {
         for (IRFunction irFunction : ir.getFuncs().values()) {
             FuncInfo funcInfo = funcInfoMap.get(irFunction);
             funcInfo.recursiveUsedStaticData.addAll(funcInfo.staticDataVregMap.keySet());
+            funcInfo.recursiveDefinedStaticData.addAll(funcInfo.definedStaticData);
             for (IRFunction calleeFunc : irFunction.recursiveCalleeSet) {
                 FuncInfo calleeFuncInfo = funcInfoMap.get(calleeFunc);
                 funcInfo.recursiveUsedStaticData.addAll(calleeFuncInfo.staticDataVregMap.keySet());
+                funcInfo.recursiveDefinedStaticData.addAll(calleeFuncInfo.definedStaticData);
             }
         }
 
@@ -99,9 +102,9 @@ public class StaticDataProcessor {
                         }
                     }
                     // load used static data after function call
-                    if (calleeFuncInfo.definedStaticData.isEmpty()) continue;
+                    if (calleeFuncInfo.recursiveDefinedStaticData.isEmpty()) continue;
                     Set<StaticData> loadStaticDataSet = new HashSet<>();
-                    loadStaticDataSet.addAll(calleeFuncInfo.definedStaticData);
+                    loadStaticDataSet.addAll(calleeFuncInfo.recursiveDefinedStaticData);
                     loadStaticDataSet.retainAll(usedStaticData);
                     for (StaticData staticData : loadStaticDataSet) {
                         if (staticData instanceof StaticString) continue;
