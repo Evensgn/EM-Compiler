@@ -6,6 +6,9 @@ import com.evensgn.emcompiler.ir.*;
 import com.evensgn.emcompiler.scope.*;
 import com.evensgn.emcompiler.type.*;
 import com.evensgn.emcompiler.utils.CompilerError;
+import javafx.scene.media.VideoTrack;
+import sun.awt.ConstrainableGraphics;
+import sun.security.krb5.Config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -383,9 +386,14 @@ public class IRBuilder extends BaseScopeScanner {
             if (retType instanceof BoolType) {
                 node.getExpr().setTrueBB(new BasicBlock(currentFunc, null));
                 node.getExpr().setFalseBB(new BasicBlock(currentFunc, null));
+                node.getExpr().accept(this);
+                VirtualRegister vreg = new VirtualRegister("retBoolValue");
+                processIRAssign(vreg, 0, node.getExpr(), Configuration.getRegSize(), false);
+                currentBB.setJumpInst(new IRReturn(currentBB, vreg));
+            } else {
+                node.getExpr().accept(this);
+                currentBB.setJumpInst(new IRReturn(currentBB, node.getExpr().getRegValue()));
             }
-            node.getExpr().accept(this);
-            currentBB.setJumpInst(new IRReturn(currentBB, node.getExpr().getRegValue()));
         }
     }
 

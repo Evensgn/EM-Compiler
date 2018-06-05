@@ -166,7 +166,7 @@ public class NASMPrinter implements IRVisitor {
             out.print("\t\tmov\t\trax, ");
             node.getLhs().accept(this);
             out.println();
-            out.println("\t\tcqo");
+            out.println("\t\tcdq");
             out.print("\t\tmov\t\trbx, ");
             node.getRhs().accept(this);
             out.println("\n\t\tidiv\trbx");
@@ -178,6 +178,7 @@ public class NASMPrinter implements IRVisitor {
                 out.println(", rdx");
             }
         } else if (node.getOp() == SHL || node.getOp() == SHR) {
+            out.print("\t\tmov\t\trbx, rcx");
             out.print("\t\tmov\t\trcx, ");
             node.getRhs().accept(this);
             if (node.getOp() == SHL) {
@@ -187,6 +188,7 @@ public class NASMPrinter implements IRVisitor {
             }
             node.getLhs().accept(this);
             out.println(", cl");
+            out.print("\t\tmov\t\trcx, rbx");
         } else {
             if (node.getDest() != node.getLhs())
                 throw new CompilerError("binary operation should have same dest and lhs");
