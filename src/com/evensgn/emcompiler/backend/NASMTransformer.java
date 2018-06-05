@@ -4,7 +4,6 @@ import com.evensgn.emcompiler.Configuration;
 import com.evensgn.emcompiler.ir.*;
 import com.evensgn.emcompiler.nasm.NASMRegister;
 
-import javax.swing.*;
 import java.util.*;
 
 import static com.evensgn.emcompiler.nasm.NASMRegisterSet.*;
@@ -76,6 +75,7 @@ public class NASMTransformer {
             }
             if (funcInfo.numStackSlot > 0)
                 firstInst.prependInst(new IRBinaryOperation(entryBB, rsp, IRBinaryOperation.IRBinaryOp.SUB, rsp, new IntImmediate(funcInfo.numStackSlot * Configuration.getRegSize())));
+            firstInst.prependInst(new IRMove(entryBB, rbp, rsp));
 
             for (BasicBlock bb : irFunction.getReversePostOrder()) {
                 for (IRInstruction inst = bb.getFirstInst(); inst != null; inst = inst.getNextInst()) {
@@ -205,12 +205,12 @@ public class NASMTransformer {
                     } else if (inst instanceof IRLoad) {
                         if (((IRLoad) inst).getAddr() instanceof StackSlot) {
                             ((IRLoad) inst).setAddrOffset(funcInfo.stackSlotOffsetMap.get(((IRLoad) inst).getAddr()));
-                            ((IRLoad) inst).setAddr(rsp);
+                            ((IRLoad) inst).setAddr(rbp);
                         }
                     } else if (inst instanceof IRStore) {
                         if (((IRStore) inst).getAddr() instanceof StackSlot) {
                             ((IRStore) inst).setAddrOffset(funcInfo.stackSlotOffsetMap.get(((IRStore) inst).getAddr()));
-                            ((IRStore) inst).setAddr(rsp);
+                            ((IRStore) inst).setAddr(rbp);
                         }
                     } else if (inst instanceof IRMove) {
                         // remove useless move: a <- a

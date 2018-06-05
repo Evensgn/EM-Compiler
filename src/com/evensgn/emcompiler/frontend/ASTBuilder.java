@@ -1,6 +1,7 @@
 package com.evensgn.emcompiler.frontend;
 
 import com.evensgn.emcompiler.ast.*;
+import com.evensgn.emcompiler.compiler.Compiler;
 import com.evensgn.emcompiler.parser.*;
 import com.evensgn.emcompiler.type.*;
 import com.evensgn.emcompiler.utils.CompilerError;
@@ -396,9 +397,28 @@ public class ASTBuilder extends EMxStarBaseVisitor<Node> {
         return new IntConstExprNode(value, Location.fromCtx(ctx));
     }
 
+    private String unescape(String str) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < str.length(); ++i) {
+            if (i + 1 < str.length() && str.charAt(i) == '\\') {
+                switch (str.charAt(i + 1)) {
+                    case '\\': sb.append('\\'); break;
+                    case 'n': sb.append('\n'); break;
+                    case '\"': sb.append('\"'); break;
+                    default: throw new CompilerError("invalid escaped string");
+                }
+                ++i;
+            } else {
+                sb.append(str.charAt(i));
+            }
+        }
+        return sb.toString();
+    }
+
     @Override
     public Node visitStringConst(EMxStarParser.StringConstContext ctx) {
-        return new StringConstExprNode(ctx.getText().substring(1, ctx.getText().length() - 1), Location.fromCtx(ctx));
+        String str = ctx.getText();
+        return new StringConstExprNode(unescape(str.substring(1, str.length() - 1)), Location.fromCtx(ctx));
     }
 
     @Override

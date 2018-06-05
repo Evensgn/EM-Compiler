@@ -46,7 +46,7 @@ public class StaticDataProcessor {
                     if (!usedRegisters.isEmpty()) {
                         renameMap.clear();
                         for (IRRegister reg : usedRegisters) {
-                            if (reg instanceof StaticData) {
+                            if (reg instanceof StaticData && !(reg instanceof StaticString)) {
                                 renameMap.put(reg, getStaticDataVreg(funcInfo.staticDataVregMap, (StaticData) reg));
                             } else {
                                 renameMap.put(reg, reg);
@@ -93,6 +93,7 @@ public class StaticDataProcessor {
                     FuncInfo calleeFuncInfo = funcInfoMap.get(calleeFunc);
                     // store defined static data before function call
                     for (StaticData staticData : funcInfo.definedStaticData) {
+                        if (staticData instanceof StaticString) continue;
                         if (calleeFuncInfo.recursiveUsedStaticData.contains(staticData)) {
                             inst.prependInst(new IRStore(bb, funcInfo.staticDataVregMap.get(staticData), Configuration.getRegSize(), staticData));
                         }
@@ -103,6 +104,7 @@ public class StaticDataProcessor {
                     loadStaticDataSet.addAll(calleeFuncInfo.definedStaticData);
                     loadStaticDataSet.retainAll(usedStaticData);
                     for (StaticData staticData : loadStaticDataSet) {
+                        if (staticData instanceof StaticString) continue;
                         inst.appendInst(new IRLoad(bb, funcInfo.staticDataVregMap.get(staticData), Configuration.getRegSize(), staticData, staticData instanceof StaticString));
                     }
                 }
