@@ -470,9 +470,6 @@ public class IRBuilder extends BaseScopeScanner {
         VirtualRegister vreg;
         IRFunction calleeFunc;
         List<RegValue> vArgs = new ArrayList<>();
-        if (thisExpr != null) {
-            thisExpr.accept(this);
-        }
         switch (funcName) {
             case IRRoot.BUILTIN_PRINT_FUNC_NAME:
             case IRRoot.BUILTIN_PRINTLN_FUNC_NAME:
