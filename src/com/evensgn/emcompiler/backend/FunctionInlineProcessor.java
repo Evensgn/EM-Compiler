@@ -27,7 +27,7 @@ public class FunctionInlineProcessor {
 
     public void run() {
         for (IRFunction irFunction : ir.getFuncs().values()) {
-            irFunction.setRecursiveCall(irFunction.calleeSet.contains(irFunction));
+            irFunction.setRecursiveCall(irFunction.recursiveCalleeSet.contains(irFunction));
             FuncInfo funcInfo = new FuncInfo();
             funcInfo.recursiveCall = irFunction.isRecursiveCall();
             funcInfoMap.put(irFunction, funcInfo);

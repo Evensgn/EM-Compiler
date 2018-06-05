@@ -5,6 +5,7 @@ import com.evensgn.emcompiler.ast.ProgramNode;
 import com.evensgn.emcompiler.backend.*;
 import com.evensgn.emcompiler.frontend.*;
 import com.evensgn.emcompiler.ir.IRBinaryOperation;
+import com.evensgn.emcompiler.ir.IRFunction;
 import com.evensgn.emcompiler.ir.IRRoot;
 import com.evensgn.emcompiler.nasm.NASMRegisterSet;
 import com.evensgn.emcompiler.parser.EMxStarLexer;
