@@ -948,6 +948,12 @@ public class IRBuilder extends BaseScopeScanner {
                     else node.setRegValue(new IntImmediate(0));
                     return;
                 }
+                if (lhs instanceof IntImmediate) {
+                    tmp = rhs;
+                    rhs = lhs;
+                    lhs = tmp;
+                    op = IRComparison.IRCmpOp.LESS;
+                }
                 break;
             case LESS:
                 op = IRComparison.IRCmpOp.LESS;
@@ -955,6 +961,12 @@ public class IRBuilder extends BaseScopeScanner {
                     if (lhsImm < rhsImm) node.setRegValue(new IntImmediate(1));
                     else node.setRegValue(new IntImmediate(0));
                     return;
+                }
+                if (lhs instanceof IntImmediate) {
+                    tmp = rhs;
+                    rhs = lhs;
+                    lhs = tmp;
+                    op = IRComparison.IRCmpOp.GREATER;
                 }
                 break;
             case GREATER_EQUAL:
@@ -964,6 +976,12 @@ public class IRBuilder extends BaseScopeScanner {
                     else node.setRegValue(new IntImmediate(0));
                     return;
                 }
+                if (lhs instanceof IntImmediate) {
+                    tmp = rhs;
+                    rhs = lhs;
+                    lhs = tmp;
+                    op = IRComparison.IRCmpOp.LESS_EQUAL;
+                }
                 break;
             case LESS_EQUAL:
                 op = IRComparison.IRCmpOp.LESS_EQUAL;
@@ -971,6 +989,12 @@ public class IRBuilder extends BaseScopeScanner {
                     if (lhsImm <= rhsImm) node.setRegValue(new IntImmediate(1));
                     else node.setRegValue(new IntImmediate(0));
                     return;
+                }
+                if (lhs instanceof IntImmediate) {
+                    tmp = rhs;
+                    rhs = lhs;
+                    lhs = tmp;
+                    op = IRComparison.IRCmpOp.GREATER_EQUAL;
                 }
                 break;
             case EQUAL:
@@ -980,6 +1004,11 @@ public class IRBuilder extends BaseScopeScanner {
                     else node.setRegValue(new IntImmediate(0));
                     return;
                 }
+                if (lhs instanceof IntImmediate) {
+                    tmp = rhs;
+                    rhs = lhs;
+                    lhs = tmp;
+                }
                 break;
             case INEQUAL:
                 op = IRComparison.IRCmpOp.INEQUAL;
@@ -987,6 +1016,11 @@ public class IRBuilder extends BaseScopeScanner {
                     if (lhsImm != rhsImm) node.setRegValue(new IntImmediate(1));
                     else node.setRegValue(new IntImmediate(0));
                     return;
+                }
+                if (lhs instanceof IntImmediate) {
+                    tmp = rhs;
+                    rhs = lhs;
+                    lhs = tmp;
                 }
                 break;
             default:

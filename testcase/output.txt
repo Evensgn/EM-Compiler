@@ -3,329 +3,364 @@
 		extern	malloc
 
 		section	.bss
-__static_data_a_1:	resq	1
-__static_data_n_1:	resq	1
+__static_data_A_1:	resq	1
+__static_data_B_1:	resq	1
+__static_data_C_1:	resq	1
+__static_data_N_1:	resq	1
 
 		section	.data
 __static_data_static_str_1:
-		dq		1
-		db		32, 0
+		dq		11
+		db		78, 101, 118, 101, 114, 32, 69, 118, 101, 114, 33, 0
 __static_data_static_str_2:
-		dq		1
-		db		10, 0
+		dq		13
+		db		108, 101, 110, 103, 116, 104, 32, 101, 114, 114, 111, 114, 33, 0
 
 		section	.text
-
-# function qsrt
-
-__block_qsrt_entry_1:
-		push	r12
-		push	r15
-		push	r14
-		push	r13
-		sub		rsp, 8
-		mov		rbp, rsp
-		mov		r12, qword [__static_data_a_1]
-		mov		r8, rdi
-		mov		qword [rbp], r8
-		mov		r14, rsi
-		mov		r10, rdi
-		add		r10, rsi
-		mov		rax, r10
-		cqo
-		mov		rbx, 2
-		idiv	rbx
-		mov		r11, rax
-		imul	r11, 8
-		add		r11, r12
-		mov		r11, qword [r11+8]
-		jmp		__block_while_cond_1
-
-__block_while_cond_1:
-		mov		r8, qword [rbp]
-		xor		rax, rax
-		cmp		r8, r14
-		setle	al
-		mov		r10, rax
-		cmp		r10, 1
-		je		__block_while_body_1
-		jmp		__block_while_after_1
-
-__block_while_body_1:
-		jmp		__block_while_cond_2
-
-__block_while_cond_2:
-		mov		r8, qword [rbp]
-		mov		r10, r8
-		imul	r10, 8
-		add		r10, r12
-		mov		r10, qword [r10+8]
-		xor		rax, rax
-		cmp		r10, r11
-		setl	al
-		mov		r10, rax
-		cmp		r10, 1
-		je		__block_while_body_2
-		jmp		__block_while_after_2
-
-__block_while_body_2:
-		mov		r8, qword [rbp]
-		mov		r10, r8
-		mov		r8, qword [rbp]
-		inc		r8
-		mov		qword [rbp], r8
-		jmp		__block_while_cond_2
-
-__block_while_after_2:
-		jmp		__block_while_cond_3
-
-__block_while_cond_3:
-		mov		r10, r14
-		imul	r10, 8
-		add		r10, r12
-		mov		r10, qword [r10+8]
-		xor		rax, rax
-		cmp		r10, r11
-		setg	al
-		mov		r10, rax
-		cmp		r10, 1
-		je		__block_while_body_3
-		jmp		__block_while_after_3
-
-__block_while_after_3:
-		mov		r8, qword [rbp]
-		xor		rax, rax
-		cmp		r8, r14
-		setle	al
-		mov		r10, rax
-		cmp		r10, 1
-		je		__block_if_then_1
-		jmp		__block_if_after_1
-
-__block_if_then_1:
-		mov		r8, qword [rbp]
-		mov		r10, r8
-		imul	r10, 8
-		add		r10, r12
-		mov		r10, qword [r10+8]
-		mov		r13, r14
-		imul	r13, 8
-		add		r13, r12
-		mov		r13, qword [r13+8]
-		mov		r8, qword [rbp]
-		mov		r15, r8
-		imul	r15, 8
-		add		r15, r12
-		mov		qword [r15+8], r13
-		mov		r13, r14
-		imul	r13, 8
-		add		r13, r12
-		mov		qword [r13+8], r10
-		mov		r8, qword [rbp]
-		mov		r10, r8
-		mov		r8, qword [rbp]
-		inc		r8
-		mov		qword [rbp], r8
-		dec		r14
-		jmp		__block_if_after_1
-
-__block_if_after_1:
-		jmp		__block_while_cond_1
-
-__block_while_body_3:
-		dec		r14
-		jmp		__block_while_cond_3
-
-__block_while_after_1:
-		xor		rax, rax
-		cmp		rdi, r14
-		setl	al
-		mov		r10, rax
-		cmp		r10, 1
-		je		__block_if_then_2
-		jmp		__block_if_after_2
-
-__block_if_then_2:
-		push	r11
-		push	rsi
-		push	r10
-		push	r8
-		push	rdi
-		push	rdi
-		push	rsi
-		push	0
-		push	rdi
-		mov		rdi, qword [rsp]
-		mov		rsi, r14
-		add		rsp, 8
-		call	__block_qsrt_entry_1
-		add		rsp, 8
-		pop		rsi
-		pop		rdi
-		pop		rdi
-		pop		r8
-		pop		r10
-		pop		rsi
-		pop		r11
-		mov		r10, rax
-		jmp		__block_if_after_2
-
-__block_if_after_2:
-		mov		r8, qword [rbp]
-		xor		rax, rax
-		cmp		r8, rsi
-		setl	al
-		mov		r10, rax
-		cmp		r10, 1
-		je		__block_if_then_3
-		jmp		__block_if_after_3
-
-__block_if_then_3:
-		push	r11
-		push	rsi
-		push	r10
-		push	r8
-		push	rdi
-		push	rdi
-		push	rsi
-		push	0
-		push	rsi
-		mov		rax, qword [rsp]
-		mov		rdi, rax
-		mov		rsi, qword [rsp]
-		add		rsp, 8
-		call	__block_qsrt_entry_1
-		add		rsp, 8
-		pop		rsi
-		pop		rdi
-		pop		rdi
-		pop		r8
-		pop		r10
-		pop		rsi
-		pop		r11
-		mov		r10, rax
-		jmp		__block_if_after_3
-
-__block_if_after_3:
-		mov		rax, 0
-		add		rsp, 8
-		pop		r13
-		pop		r14
-		pop		r15
-		pop		r12
-		ret
 
 # function main
 
 main:
 		push	r12
-		push	r14
 		push	r13
+		push	r14
 		mov		rbp, rsp
-		mov		r12, qword [__static_data_a_1]
-		mov		r13, qword [__static_data_n_1]
-		mov		r10, 10100
-		imul	r10, 8
-		add		r10, 8
-		push	r11
-		push	r10
-		mov		rdi, r10
-		call	malloc
-		pop		r10
-		pop		r11
-		mov		r10, rax
-		mov		qword [r10], 10100
-		mov		r12, r10
-		mov		r13, 15
+		mov		r12, qword [__static_data_N_1]
+		mov		r10, qword [__static_data_B_1]
+		mov		r11, qword [__static_data_C_1]
+		mov		r13, qword [__static_data_A_1]
 		jmp		__block___init_func_entry_1
 
 __block___init_func_entry_1:
+		push	r10
+		push	r11
+		call	_Z9getStringv
+		pop		r11
+		pop		r10
+		mov		r10, rax
+		mov		r13, r10
+		push	r10
+		push	r11
+		call	_Z9getStringv
+		pop		r11
+		pop		r10
+		mov		r10, rax
+		push	r10
+		push	r11
+		mov		rdi, r10
+		call	_Z26__member___string_parseIntPc
+		pop		r11
+		pop		r10
+		mov		r12, rax
+		mov		r14, qword [r13]
+		xor		rax, rax
+		cmp		r14, r12
+		setl	al
+		mov		r14, rax
+		cmp		r14, 1
+		je		__block_if_then_1
+		jmp		__block_if_after_1
+
+__block_if_after_1:
+		mov		r11, r12
+		dec		r11
+		push	r10
+		push	r11
+		mov		rdi, r13
+		mov		rsi, 0
+		mov		rdx, r11
+		call	_Z27__member___string_substringPcii
+		pop		r11
+		pop		r10
+		mov		r11, rax
+		push	r10
+		push	r11
+		mov		rdi, r11
+		call	__block_calc_entry_1
+		pop		r11
+		pop		r10
+		mov		r11, rax
+		push	r10
+		push	r11
+		mov		rdi, r11
+		call	_Z7printlnPc
+		pop		r11
+		pop		r10
 		mov		r14, 0
-		mov		r14, 1
-		jmp		__block_for_cond_1
+		jmp		__block_main_end_1
 
-__block_for_cond_1:
-		xor		rax, rax
-		cmp		r14, r13
-		setle	al
-		mov		r10, rax
-		cmp		r10, 1
-		je		__block_for_body_1
-		jmp		__block_for_after_1
-
-__block_for_body_1:
-		mov		r10, r13
-		inc		r10
-		sub		r10, r14
-		mov		r11, r14
-		imul	r11, 8
-		add		r11, r12
-		mov		qword [r11+8], r10
-		jmp		__block_for_step_1
-
-__block_for_step_1:
-		inc		r14
-		jmp		__block_for_cond_1
-
-__block_for_after_1:
-		mov		qword [__static_data_a_1], r12
-		push	r11
+__block_if_then_1:
 		push	r10
-		mov		rdi, 1
-		mov		rsi, r13
-		call	__block_qsrt_entry_1
-		pop		r10
-		pop		r11
-		mov		r10, rax
-		mov		r14, 1
-		jmp		__block_for_cond_2
-
-__block_for_cond_2:
-		xor		rax, rax
-		cmp		r14, r13
-		setle	al
-		mov		r10, rax
-		cmp		r10, 1
-		je		__block_for_body_2
-		jmp		__block_for_after_2
-
-__block_for_after_2:
 		push	r11
-		push	r10
 		mov		rdi, __static_data_static_str_2
-		call	_Z5printPc
-		pop		r10
+		call	_Z7printlnPc
 		pop		r11
-		mov		qword [__static_data_a_1], r12
-		mov		qword [__static_data_n_1], r13
-		mov		rax, 0
-		pop		r13
+		pop		r10
+		mov		r14, 0
+		jmp		__block_main_end_1
+
+__block_main_end_1:
+		mov		qword [__static_data_N_1], r12
+		mov		qword [__static_data_B_1], r10
+		mov		qword [__static_data_C_1], r11
+		mov		qword [__static_data_A_1], r13
+		mov		rax, r14
 		pop		r14
+		pop		r13
 		pop		r12
 		ret
 
-__block_for_body_2:
-		mov		r10, r14
-		imul	r10, 8
-		add		r10, r12
-		mov		r10, qword [r10+8]
-		push	r11
-		push	r10
-		mov		rdi, r10
-		call	_Z8printInti
-		pop		r10
-		pop		r11
-		push	r11
-		push	r10
-		mov		rdi, __static_data_static_str_1
-		call	_Z5printPc
-		pop		r10
-		pop		r11
-		jmp		__block_for_step_2
+# function calc
 
-__block_for_step_2:
-		inc		r14
-		jmp		__block_for_cond_2
+__block_calc_entry_1:
+		push	r12
+		push	r13
+		sub		rsp, 8
+		mov		rbp, rsp
+		mov		r13, qword [rdi]
+		xor		rax, rax
+		cmp		1, r13
+		sete	al
+		mov		r10, rax
+		cmp		r10, 1
+		je		__block_if_then_2
+		jmp		__block_if_after_2
+
+__block_if_after_2:
+		mov		rax, r13
+		cqo
+		mov		rbx, 2
+		idiv	rbx
+		mov		r10, rax
+		mov		r11, r10
+		dec		r11
+		push	r10
+		push	r11
+		push	rdi
+		push	0
+		push	rdi
+		mov		rdi, qword [rsp]
+		mov		rsi, 0
+		mov		rdx, r11
+		add		rsp, 8
+		call	_Z27__member___string_substringPcii
+		add		rsp, 8
+		pop		rdi
+		pop		r11
+		pop		r10
+		mov		r11, rax
+		push	r10
+		push	rdi
+		push	r11
+		push	rdi
+		mov		rdi, r11
+		call	__block_calc_entry_1
+		pop		rdi
+		pop		r11
+		pop		rdi
+		pop		r10
+		mov		r12, rax
+		dec		r13
+		push	r10
+		push	r11
+		push	rdi
+		push	0
+		push	rdi
+		mov		rdi, qword [rsp]
+		mov		rsi, r10
+		mov		rdx, r13
+		add		rsp, 8
+		call	_Z27__member___string_substringPcii
+		add		rsp, 8
+		pop		rdi
+		pop		r11
+		pop		r10
+		mov		r10, rax
+		push	r10
+		push	rdi
+		push	r11
+		push	rdi
+		mov		rdi, r10
+		call	__block_calc_entry_1
+		pop		rdi
+		pop		r11
+		pop		rdi
+		pop		r10
+		mov		r10, rax
+		mov		r13, r10
+		push	r10
+		push	r11
+		push	rdi
+		push	0
+		mov		rdi, r12
+		mov		rsi, r13
+		call	__builtin_string_less
+		add		rsp, 8
+		pop		rdi
+		pop		r11
+		pop		r10
+		mov		r10, rax
+		cmp		r10, 1
+		je		__block_if_then_3
+		jmp		__block_if_else_1
+
+__block_if_then_3:
+		push	r10
+		push	r11
+		push	rdi
+		push	0
+		mov		rdi, r12
+		mov		rsi, r13
+		call	__builtin_string_concat
+		add		rsp, 8
+		pop		rdi
+		pop		r11
+		pop		r10
+		mov		r10, rax
+		jmp		__block_calc_end_1
+
+__block_if_else_1:
+		push	r10
+		push	r11
+		push	rdi
+		push	0
+		mov		rdi, r12
+		mov		rsi, r13
+		call	__builtin_string_equal
+		add		rsp, 8
+		pop		rdi
+		pop		r11
+		pop		r10
+		mov		r10, rax
+		cmp		r10, 1
+		je		__block_if_then_4
+		jmp		__block_if_else_2
+
+__block_if_then_4:
+		push	r10
+		push	r11
+		push	rdi
+		push	0
+		mov		rdi, r12
+		mov		rsi, 0
+		call	_Z21__member___string_ordPci
+		add		rsp, 8
+		pop		rdi
+		pop		r11
+		pop		r10
+		mov		r11, rax
+		push	r10
+		push	r11
+		push	rdi
+		push	0
+		mov		rdi, r13
+		mov		rsi, 0
+		call	_Z21__member___string_ordPci
+		add		rsp, 8
+		pop		rdi
+		pop		r11
+		pop		r10
+		mov		r10, rax
+		xor		rax, rax
+		cmp		r11, r10
+		setl	al
+		mov		r10, rax
+		cmp		r10, 1
+		je		__block_if_then_5
+		jmp		__block_if_after_3
+
+__block_if_then_5:
+		push	r10
+		push	r11
+		push	rdi
+		push	0
+		mov		rdi, r12
+		mov		rsi, r13
+		call	__builtin_string_concat
+		add		rsp, 8
+		pop		rdi
+		pop		r11
+		pop		r10
+		mov		r10, rax
+		jmp		__block_calc_end_1
+
+__block_if_after_3:
+		push	r10
+		push	r11
+		push	rdi
+		push	0
+		mov		rdi, r13
+		mov		rsi, r12
+		call	__builtin_string_concat
+		add		rsp, 8
+		pop		rdi
+		pop		r11
+		pop		r10
+		mov		r10, rax
+		jmp		__block_calc_end_1
+
+__block_if_else_2:
+		push	r10
+		push	r11
+		push	rdi
+		push	0
+		mov		rdi, r13
+		mov		rsi, r12
+		call	__builtin_string_less
+		add		rsp, 8
+		pop		rdi
+		pop		r11
+		pop		r10
+		mov		r10, rax
+		cmp		r10, 1
+		je		__block_if_then_6
+		jmp		__block_if_after_4
+
+__block_if_then_6:
+		push	r10
+		push	r11
+		push	rdi
+		push	0
+		mov		rdi, r13
+		mov		rsi, r12
+		call	__builtin_string_concat
+		add		rsp, 8
+		pop		rdi
+		pop		r11
+		pop		r10
+		mov		r10, rax
+		jmp		__block_calc_end_1
+
+__block_if_after_4:
+		jmp		__block_if_after_5
+
+__block_if_after_5:
+		jmp		__block_if_after_6
+
+__block_if_after_6:
+		push	r10
+		push	r11
+		push	rdi
+		push	0
+		mov		rdi, __static_data_static_str_1
+		call	_Z7printlnPc
+		add		rsp, 8
+		pop		rdi
+		pop		r11
+		pop		r10
+		mov		r10, 0
+		jmp		__block_calc_end_1
+
+__block_if_then_2:
+		mov		r10, rdi
+		jmp		__block_calc_end_1
+
+__block_calc_end_1:
+		mov		rax, r10
+		add		rsp, 8
+		pop		r13
+		pop		r12
+		ret
 
 
 # built-in functions
