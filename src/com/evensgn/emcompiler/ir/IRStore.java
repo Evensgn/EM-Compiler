@@ -11,6 +11,7 @@ public class IRStore extends IRInstruction {
 
     public IRStore(BasicBlock parentBB, RegValue value, int size, RegValue addr, int addrOffset) {
         super(parentBB);
+        if (size == 0) System.err.println("oh bad size 0");
         this.value = value;
         this.size = size;
         this.addr = addr;
@@ -21,6 +22,7 @@ public class IRStore extends IRInstruction {
 
     public IRStore(BasicBlock parentBB, RegValue value, int size, StaticData addr) {
         this(parentBB, value, size, addr, 0);
+        if (size == 0) System.err.println("oh bad size 0");
         this.isStaticData = true;
     }
 

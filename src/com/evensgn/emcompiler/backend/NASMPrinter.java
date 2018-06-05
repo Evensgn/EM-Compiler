@@ -318,7 +318,7 @@ public class NASMPrinter implements IRVisitor {
                 sizeStr = "qword";
                 break;
             default:
-                throw new CompilerError("invalid load size");
+                throw new CompilerError("invalid load size: " + memSize);
         }
         return sizeStr;
     }

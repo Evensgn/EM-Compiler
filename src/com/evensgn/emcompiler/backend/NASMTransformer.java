@@ -88,6 +88,7 @@ public class NASMTransformer {
                         // push caller save registers which would be changed by callee
                         int numPushCallerSave = 0;
                         for (PhysicalRegister preg : funcInfo.usedCallerSaveRegs) {
+                            if (preg.isArg6() && preg.getArg6Idx() < irFunction.getArgVRegList().size()) continue;
                             if (calleeInfo.recursiveUsedRegs.contains(preg)) {
                                 ++numPushCallerSave;
                                 inst.prependInst(new IRPush(inst.getParentBB(), preg));
@@ -149,7 +150,7 @@ public class NASMTransformer {
                                     inst.prependInst(new IRMove(inst.getParentBB(), arg6.get(i), args.get(i)));
                                 }
                             } else {
-                                inst.prependInst(new IRLoad(inst.getParentBB(), arg6.get(i), Configuration.getRegSize(), rbp, Configuration.getRegSize() * (bakOffset - arg6BakOffset.get(i) - 1)));
+                                inst.prependInst(new IRLoad(inst.getParentBB(), arg6.get(i), Configuration.getRegSize(), rsp, Configuration.getRegSize() * (bakOffset - arg6BakOffset.get(i) - 1)));
                             }
                         }
 
@@ -164,6 +165,7 @@ public class NASMTransformer {
 
                         // restore caller save registers
                         for (PhysicalRegister preg : funcInfo.usedCallerSaveRegs) {
+                            if (preg.isArg6() && preg.getArg6Idx() < irFunction.getArgVRegList().size()) continue;
                             if (calleeInfo.recursiveUsedRegs.contains(preg)) {
                                 inst.appendInst(new IRPop(inst.getParentBB(), preg));
                             }

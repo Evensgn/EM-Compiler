@@ -57,8 +57,8 @@ public class IRBuilder extends BaseScopeScanner {
         if (rhs.getTrueBB() != null) {
             BasicBlock mergeBB = new BasicBlock(currentFunc, null);
             if (needMemOp) {
-                rhs.getTrueBB().addInst(new IRStore(rhs.getTrueBB(), new IntImmediate(1), BoolType.getInstance().getVarSize(), dest, addrOffset));
-                rhs.getFalseBB().addInst(new IRStore(rhs.getFalseBB(), new IntImmediate(0), BoolType.getInstance().getVarSize(), dest, addrOffset));
+                rhs.getTrueBB().addInst(new IRStore(rhs.getTrueBB(), new IntImmediate(1), Configuration.getRegSize(), dest, addrOffset));
+                rhs.getFalseBB().addInst(new IRStore(rhs.getFalseBB(), new IntImmediate(0), Configuration.getRegSize(), dest, addrOffset));
             } else {
                 rhs.getTrueBB().addInst(new IRMove(rhs.getTrueBB(), (VirtualRegister) dest, new IntImmediate(1)));
                 rhs.getFalseBB().addInst(new IRMove(rhs.getFalseBB(), (VirtualRegister) dest, new IntImmediate(0)));
@@ -68,7 +68,7 @@ public class IRBuilder extends BaseScopeScanner {
             currentBB = mergeBB;
         } else {
             if (needMemOp) {
-                currentBB.addInst(new IRStore(currentBB, rhs.getRegValue(), rhs.getType().getVarSize(), dest, addrOffset));
+                currentBB.addInst(new IRStore(currentBB, rhs.getRegValue(), Configuration.getRegSize(), dest, addrOffset));
             } else {
                 currentBB.addInst(new IRMove(currentBB, (IRRegister) dest, rhs.getRegValue()));
             }
@@ -423,7 +423,7 @@ public class IRBuilder extends BaseScopeScanner {
 
             VirtualRegister vreg = new VirtualRegister(null);
             currentBB.addInst(new IRBinaryOperation(currentBB, vreg, op, expr.getRegValue(), one));
-            currentBB.addInst(new IRStore(currentBB, vreg, expr.getType().getVarSize(), expr.getAddrValue(), expr.getAddrOffset()));
+            currentBB.addInst(new IRStore(currentBB, vreg, Configuration.getRegSize(), expr.getAddrValue(), expr.getAddrOffset()));
             if (!isSuffix) {
                 expr.setRegValue(vreg);
             }

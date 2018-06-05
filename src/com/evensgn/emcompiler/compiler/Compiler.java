@@ -59,14 +59,21 @@ public class Compiler {
         IRBuilder irBuilder = new IRBuilder(functionScopeScanner.getGlobalScope());
         irBuilder.visit(ast);
         IRRoot ir = irBuilder.getIR();
+        System.err.println("irBuilder");
         new TwoRegOpTransformer(ir).run();
+        System.err.println("twoRegOpTransformer");
         if (Configuration.isEnableFunctionInline()) new FunctionInlineProcessor(ir).run();
         if (irOutS != null) new IRPrinter(irOutS).visit(ir);
         new StaticDataProcessor(ir).run();
+        System.err.println("StaticDataProcessor");
         new RegisterPreprocessor(ir).run();
+        System.err.println("RegisterPreprocessor");
         new RegLivelinessAnalysis(ir).run();
+        System.err.println("RegLivelinessAnalysis");
         new RegisterAllocator(ir, NASMRegisterSet.generalRegs).run();
+        System.err.println("RegisterAllocator");
         new NASMTransformer(ir).run();
+        System.err.println("NASMTransformer");
         new NASMPrinter(nasmOutS).visit(ir);
     }
 }
