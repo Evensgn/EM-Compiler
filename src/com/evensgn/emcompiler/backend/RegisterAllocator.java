@@ -32,6 +32,8 @@ public class RegisterAllocator {
             preg0 = rbx;
             preg1 = physicalRegs.get(0);
         }
+        ir.setPreg0(preg0);
+        ir.setPreg1(preg1);
         this.physicalRegs.remove(preg0);
         this.physicalRegs.remove(preg1);
         numColors = this.physicalRegs.size();

@@ -12,6 +12,7 @@ public class IRRoot {
     private Map<String, StaticString> staticStrs = new HashMap<>();
     private boolean hasDivShiftInst = false;
     private int maxNumFuncArgs = 3;
+    private PhysicalRegister preg0, preg1;
 
     static public String irMemberFuncName(String className, String funcName) {
         return String.format("__member_%s_%s", className, funcName);
@@ -83,6 +84,22 @@ public class IRRoot {
         func = new IRFunction(BUILTIN_STRING_ORD_FUNC_NAME, "_Z21__member___string_ordPci");
         func.getUsedPhysicalGeneralRegs().addAll(NASMRegisterSet.generalRegs);
         addBuiltInFunc(func);
+    }
+
+    public PhysicalRegister getPreg0() {
+        return preg0;
+    }
+
+    public PhysicalRegister getPreg1() {
+        return preg1;
+    }
+
+    public void setPreg0(PhysicalRegister preg0) {
+        this.preg0 = preg0;
+    }
+
+    public void setPreg1(PhysicalRegister preg1) {
+        this.preg1 = preg1;
     }
 
     public void addFunc(IRFunction func) {

@@ -17,6 +17,7 @@ public class NASMPrinter implements IRVisitor {
     private PrintStream out;
     private Map<String, Integer> idCounter = new HashMap<>();
     private Map<Object, String> idMap = new HashMap<>();
+    private PhysicalRegister preg0, preg1;
 
     public NASMPrinter(PrintStream out) {
         this.out = out;
@@ -50,6 +51,9 @@ public class NASMPrinter implements IRVisitor {
 
     @Override
     public void visit(IRRoot node) {
+        preg0 = node.getPreg0();
+        preg1 = node.getPreg1();
+
         idMap.put(node.getFuncs().get("main").getStartBB(), "main");
 
         out.println("\t\tglobal\tmain");
@@ -170,7 +174,7 @@ public class NASMPrinter implements IRVisitor {
             out.print("\t\tmov\t\trax, ");
             node.getLhs().accept(this);
             out.println();
-            out.println("\t\tpush\trdx");
+            out.println("\t\tmov\t\t" + preg0.getName() + ", rdx");
             out.println("\t\tcdq");
             out.println("\t\tidiv\trbx");
             out.print("\t\tmov\t\t");
@@ -180,7 +184,7 @@ public class NASMPrinter implements IRVisitor {
             } else {
                 out.println(", rdx");
             }
-            out.println("\t\tpop\t\trdx");
+            out.println("\t\tmov\t\trdx, " + preg0.getName());
 
             /*
             // to be optimized: not pushing rdx, rbx
@@ -286,7 +290,7 @@ public class NASMPrinter implements IRVisitor {
 
     @Override
     public void visit(IRComparison node) {
-        /*if (node.getLhs() instanceof PhysicalRegister) {
+        if (node.getLhs() instanceof PhysicalRegister) {
             out.print("\t\tand\t\t");
             node.getLhs().accept(this);
             out.println(", -1");
@@ -295,7 +299,7 @@ public class NASMPrinter implements IRVisitor {
             out.print("\t\tand\t\t");
             node.getRhs().accept(this);
             out.println(", -1");
-        }*/
+        }
         out.println("\t\txor\t\trax, rax");
         out.print("\t\tcmp\t\t");
         node.getLhs().accept(this);
