@@ -67,6 +67,7 @@ public class Compiler {
         new RegLivelinessAnalysis(ir).run();
         new RegisterAllocator(ir).run();
         new NASMTransformer(ir).run();
+        new ExtraInstructionOptimizer(ir).run();
         new NASMPrinter(nasmOutS).visit(ir);
     }
 }
