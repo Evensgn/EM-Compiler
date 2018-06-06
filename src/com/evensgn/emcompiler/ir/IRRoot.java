@@ -1,6 +1,9 @@
 package com.evensgn.emcompiler.ir;
 
+import com.evensgn.emcompiler.ast.ForStmtNode;
+import com.evensgn.emcompiler.ast.StmtNode;
 import com.evensgn.emcompiler.nasm.NASMRegisterSet;
+import com.evensgn.emcompiler.parser.EMxStarParser;
 import com.evensgn.emcompiler.scope.Scope;
 
 import java.util.*;
@@ -141,6 +144,20 @@ public class IRRoot {
     public Map<String, StaticString> getStaticStrs() {
         return staticStrs;
     }
+
+    public static class ForRecord {
+        public BasicBlock condBB, stepBB, bodyBB, afterBB;
+        public boolean processed = false;
+
+        public ForRecord(BasicBlock condBB, BasicBlock stepBB, BasicBlock bodyBB, BasicBlock afterBB) {
+            this.condBB = condBB;
+            this.stepBB = stepBB;
+            this.bodyBB = bodyBB;
+            this.afterBB = afterBB;
+        }
+    }
+
+    public Map<StmtNode, ForRecord> forRecMap = new HashMap<>();
 
     public void updateCalleeSet() {
         Set<IRFunction> recursiveCalleeSet = new HashSet<>();

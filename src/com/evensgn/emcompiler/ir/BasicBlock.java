@@ -1,5 +1,7 @@
 package com.evensgn.emcompiler.ir;
 
+import com.evensgn.emcompiler.ast.ForStmtNode;
+import com.evensgn.emcompiler.ast.StmtNode;
 import com.evensgn.emcompiler.utils.CompilerError;
 
 import java.util.HashSet;
@@ -12,6 +14,7 @@ public class BasicBlock {
     private boolean hasJumpInst = false;
     private int postOrderIdx, preOrderIdx;
     private Set<BasicBlock> prevBBSet = new HashSet<>(), nextBBSet = new HashSet<>();
+    public StmtNode forNode = null;
 
     public BasicBlock(IRFunction func, String name) {
         this.func = func;
@@ -69,6 +72,12 @@ public class BasicBlock {
         } else {
             throw new CompilerError("invalid type of IRJumpInstruction");
         }
+    }
+
+    public void reInit() {
+        firstInst = null;
+        lastInst = null;
+        hasJumpInst = false;
     }
 
     public void removeJumpInst() {

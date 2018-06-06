@@ -1,7 +1,5 @@
 int main() {
-    int i, c;
-    for (i = 0; i <= 1000; ++i) {
-        c = c * 2;
-    }
-    return 0;
+int b = 1, c = 1;
+for (b = 0; b < 100000000; ++b)
+		c = c * 2 - c;
 }

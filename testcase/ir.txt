@@ -4,27 +4,29 @@ func main {
     jump %__init_func_entry
 
 %__init_func_entry:
-    $i = move 0
-    $c = move 0
-    $i = move 0
+    $b = move 1
+    $c = move 1
+    $b = move 0
     jump %for_cond
 
 %for_cond:
-    $vreg = sle $i 1000
+    $vreg = slt $b 100000000
     br $vreg %for_body %for_after
+
+%for_after:
+    ret 0
 
 %for_body:
     $vreg_2 = move $c
     $vreg_2 = mul $vreg_2 2
-    $c = move $vreg_2
+    $vreg_3 = move $vreg_2
+    $vreg_3 = sub $vreg_3 $c
+    $c = move $vreg_3
     jump %for_step
 
 %for_step:
-    $i = add $i 1
+    $b = add $b 1
     jump %for_cond
-
-%for_after:
-    ret 0
 
 }
 

@@ -196,6 +196,13 @@ public class FunctionInlineProcessor {
         }
         for (BasicBlock oldBB : reversePostOrder) {
             BasicBlock newBB = (BasicBlock) renameMap.get(oldBB);
+            if (oldBB.forNode != null) {
+                IRRoot.ForRecord forRec = ir.forRecMap.get(oldBB.forNode);
+                if (forRec.condBB == oldBB) forRec.condBB = newBB;
+                if (forRec.stepBB == oldBB) forRec.stepBB = newBB;
+                if (forRec.bodyBB == oldBB) forRec.bodyBB = newBB;
+                if (forRec.afterBB == oldBB) forRec.afterBB = newBB;
+            }
             for (IRInstruction inst = oldBB.getFirstInst(); inst != null; inst = inst.getNextInst()) {
                 for (RegValue usedRegValue : inst.getUsedRegValues()) {
                     copyRegValue(renameMap, usedRegValue);

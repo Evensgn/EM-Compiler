@@ -345,6 +345,9 @@ public class IRBuilder extends BaseScopeScanner {
         if (node.getStep() != null) stepBB = new BasicBlock(currentFunc, "for_step");
         else stepBB = condBB;
         afterBB = new BasicBlock(currentFunc, "for_after");
+        condBB.forNode = node; stepBB.forNode = node;
+        bodyBB.forNode = node; afterBB.forNode = node;
+        ir.forRecMap.put(node, new IRRoot.ForRecord(condBB, stepBB, bodyBB, afterBB));
 
         BasicBlock externalLoopStepBB = currentLoopStepBB, externalLoopAfterBB = currentLoopAfterBB;
         currentLoopStepBB = stepBB;

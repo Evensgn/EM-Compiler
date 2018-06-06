@@ -1,6 +1,7 @@
 package com.evensgn.emcompiler.backend;
 
 import com.evensgn.emcompiler.ast.AssignExprNode;
+import com.evensgn.emcompiler.ast.FuncCallExprNode;
 import com.evensgn.emcompiler.ir.*;
 
 import java.util.*;
@@ -87,8 +88,54 @@ public class RegLivelinessAnalysis {
                 }
             }
         }
-        // eliminate loop
 
+        // eliminate loop
+        for (IRRoot.ForRecord forRec : ir.forRecMap.values()) {
+            if (forRec.processed) continue;
+            boolean lieOutsideInst = false;
+            if (forRec.condBB == null || forRec.stepBB == null || forRec.bodyBB == null || forRec.afterBB == null) continue;
+            List<BasicBlock> bbList = new ArrayList<>();
+            bbList.add(forRec.condBB); bbList.add(forRec.stepBB); bbList.add(forRec.bodyBB); bbList.add(forRec.afterBB);
+            IRInstruction afterFirstInst = forRec.afterBB.getFirstInst();
+            for (int i = 0; i < 3; ++i) {
+                for (IRInstruction inst = forRec.condBB.getFirstInst(); inst != null; inst = inst.getNextInst()) {
+                    if (inst instanceof IRFunctionCall) {
+                        lieOutsideInst = true;
+                        continue;
+                    }
+                    if (inst.getDefinedRegister() != null) {
+                        if (afterFirstInst.liveIn.contains(inst.getDefinedRegister())) {
+                            lieOutsideInst = true;
+                        }
+                        continue;
+                    }
+                    if (inst instanceof IRStore) {
+                        lieOutsideInst = true;
+                        continue;
+                    }
+                    if (inst instanceof IRJump) {
+                        if (!bbList.contains(((IRJump) inst).getTargetBB()))
+                            lieOutsideInst = true;
+                        continue;
+                    }
+                    if (inst instanceof IRBranch) {
+                        if (!bbList.contains(((IRBranch) inst).getThenBB()) || !bbList.contains(((IRBranch) inst).getElseBB()))
+                            lieOutsideInst = true;
+                        continue;
+                    }
+                    if (inst instanceof IRReturn || inst instanceof IRPush || inst instanceof IRStore) {
+                        lieOutsideInst = true;
+                        continue;
+                    }
+                }
+            }
+            if (!lieOutsideInst) {
+                System.err.println("Gotcha");
+                forRec.condBB.reInit();
+                forRec.condBB.setJumpInst(new IRJump(forRec.condBB, forRec.afterBB));
+                forRec.processed = true;
+            }
+        }
     }
 
 
