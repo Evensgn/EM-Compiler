@@ -2,10 +2,14 @@ package com.evensgn.emcompiler.backend;
 
 import com.evensgn.emcompiler.Configuration;
 import com.evensgn.emcompiler.ir.*;
+import com.evensgn.emcompiler.nasm.NASMRegisterSet;
 import com.evensgn.emcompiler.utils.CompilerError;
 
 import javax.rmi.ssl.SslRMIClientSocketFactory;
 import java.util.*;
+
+import static com.evensgn.emcompiler.nasm.NASMRegisterSet.rax;
+import static com.evensgn.emcompiler.nasm.NASMRegisterSet.rbx;
 
 public class RegisterAllocator {
     private IRRoot ir;
@@ -13,11 +17,11 @@ public class RegisterAllocator {
     private PhysicalRegister preg0, preg1;
     private int numColors;
 
-    public RegisterAllocator(IRRoot ir, Collection<PhysicalRegister> physicalRegs) {
+    public RegisterAllocator(IRRoot ir) {
         this.ir = ir;
-        this.physicalRegs = new ArrayList<>(physicalRegs);
-        preg0 = this.physicalRegs.get(0);
-        preg1 = this.physicalRegs.get(1);
+        this.physicalRegs = new ArrayList<>(NASMRegisterSet.generalRegs);
+        preg0 = rax;
+        preg1 = rbx;
         this.physicalRegs.remove(preg0);
         this.physicalRegs.remove(preg1);
         numColors = this.physicalRegs.size();
