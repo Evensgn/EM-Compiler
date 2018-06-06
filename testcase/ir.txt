@@ -4,22 +4,26 @@ func main {
     jump %__init_func_entry
 
 %__init_func_entry:
-    $a = move 0
-    $b = move 0
+    $i = move 0
     $c = move 0
-    $a = move 2
-    $b = move 2
-    $c = move 2
-    $vreg = move $b
-    $vreg = add $vreg $c
-    $a = move $vreg
-    $vreg_2 = move $a
-    $vreg_2 = sub $vreg_2 $b
+    $i = move 0
+    jump %for_cond
+
+%for_cond:
+    $vreg = sle $i 1000
+    br $vreg %for_body %for_after
+
+%for_body:
+    $vreg_2 = move $c
+    $vreg_2 = mul $vreg_2 2
     $c = move $vreg_2
-    $vreg_3 = move 2
-    $vreg_3 = mul $vreg_3 $a
-    $vreg_4 = rem $vreg_3 $c
-    $b = move $vreg_4
+    jump %for_step
+
+%for_step:
+    $i = add $i 1
+    jump %for_cond
+
+%for_after:
     ret 0
 
 }

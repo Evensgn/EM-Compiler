@@ -77,7 +77,8 @@ public class RegLivelinessAnalysis {
             for (IRInstruction inst = bb.getLastInst(), prevInst; inst != null; inst = prevInst) {
                 prevInst = inst.getPrevInst();
                 if (inst instanceof IRBinaryOperation || inst instanceof IRComparison ||
-                        inst instanceof IRLoad || inst instanceof IRMove || inst instanceof IRUnaryOperation) {
+                        inst instanceof IRLoad || inst instanceof IRMove || inst instanceof IRUnaryOperation ||
+                        inst instanceof IRHeapAlloc) {
                     IRRegister dest = inst.getDefinedRegister();
                     if (dest == null || !inst.liveOut.contains(dest)) {
                         eliminationChanged = true;
@@ -86,6 +87,8 @@ public class RegLivelinessAnalysis {
                 }
             }
         }
+        // eliminate loop
+
     }
 
 
