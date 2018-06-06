@@ -20,8 +20,8 @@ public class RegisterAllocator {
     public RegisterAllocator(IRRoot ir) {
         this.ir = ir;
         this.physicalRegs = new ArrayList<>(NASMRegisterSet.generalRegs);
-        preg0 = rax;
-        preg1 = rbx;
+        preg0 = rbx;
+        preg1 = physicalRegs.get(0);
         this.physicalRegs.remove(preg0);
         this.physicalRegs.remove(preg1);
         numColors = this.physicalRegs.size();
