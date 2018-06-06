@@ -1,183 +1,50 @@
-int[][] sat;
-int[] assignment;
-int[] cond_ass;
-int k;
-int n;
-int m;
-int last;
+int main() {
+	int a = 10000;
+	int b = 0;
+	int c = 2800;
+	int d = 0;
+	int e = 0;
+	int[] f = new int[2801];
+	int g = 0;
 
-int myHash = 0;
+	for (;b-c!=0;)
+		f[b++] = a/5;
+	for (;; e = d%a){
+		d = 0;
+		g = c*2;
+		if (g==0) break;
 
-int check()
-{
-	int i;
-	int j;
-	for(i = 0; i < m; ++i)
-	{
-		int succ = 0;
-		for(j = 0; j < 3; ++j)
-		{
-			int var = sat[i][j];
-			if(var > 0 && assignment[var] == 1)
-				succ = 1;
-			if(var < 0 && assignment[-var] == 0)
-				succ = 1;
+		for (b=c;;d=d*b){
+			d=d+f[b]*a;
+			f[b] = d%--g;
+			d=d/g--;
+			if (--b==0) break;
 		}
-		if(succ == 0)
-			return 0;
-	}
-	return 1;
-}
 
-int cnt = 0;
-
-void myprint(string x)
-{
-    ++cnt;
-    if (cnt < 100) println("string: " + x);
-	int i;
-	for(i = 0; i < x.length(); ++i)
-	{
-		if (cnt < 100) print("myHash(" + toString(myHash) + ") + value(" + toString(x.ord(i)) + ") = ");
-		myHash = myHash + x.ord(i);
-		if (cnt < 100) println(toString(myHash));
+		c = c-14;
+		print(toString(e+d/a));
 	}
-}
 
-int payoff(int[] a, int[] b)
-{
-	int ret = 0;
-	int i;
-	for(i = 0; i < 3; ++i)
-	{
-		if(a[i] != b[i])
-			ret++;
-	}
-	return ret;
-}
-
-void print_cond(int dep)
-{
-	if(dep == n)
-	{
-		myprint("- " + toString(payoff(cond_ass, assignment)) + "*x");
-		int i;
-		for(i = 0; i < n; ++i)
-		{
-			if(i % 10 == 0)
-			{
-				myprint(toString(cond_ass[i + 1]));
-			}
-		}
-		return;
-	}
-	cond_ass[dep + 1] = 1;
-	print_cond(dep + 1);
-	cond_ass[dep + 1] = 0;
-	print_cond(dep + 1);
-}
-
-void dfs(int dep)
-{
-	if(dep == n)
-	{
-		if(check() == 1)
-		{
-			myprint("xz ");
-			print_cond(0);
-			myprint(" <= 0;\n");
-		}
-		return;
-	}
-	assignment[dep + 1] = 1;
-	dfs(dep + 1);
-	assignment[dep + 1] = 0;
-	dfs(dep + 1);
-}
-
-void print_last_cond(int dep)
-{
-	if(dep == n)
-	{
-		myprint("x");
-		int islast = 1;
-		int i;
-		for(i = 0; i < n; ++i)
-		{
-			if(assignment[i + 1] == 1)
-				islast = 0;
-			myprint(toString(assignment[i + 1]));
-		}
-		if(islast == 0)
-		{
-			myprint(" + ");
-		}
-		else
-		{
-			myprint(" = 1;\n");
-		}
-		return;
-	}
-	assignment[dep + 1] = 1;
-	print_last_cond(dep + 1);
-	assignment[dep + 1] = 0;
-	print_last_cond(dep + 1);
-}
-
-int main()
-{
-    println("myHash " + toString(myHash));
-	int mi;
-	string s = "012abcd\n";
-	for (mi = 0; mi < s.length(); ++mi) {
-	    print(toString(s.ord(mi)) + " ");
-	}
-	println("");
-	k = getInt();
-	n = 2 * k + 1;
-	m = k;
-	last = 1;
-	myprint("max: xz;\n");
-	sat = new int[m][];
-	int i;
-	for(i = 0; i < m; ++i)
-	{
-		int[] clause = new int[3];
-		clause[0] = last;
-		clause[1] = last + 1;
-		clause[2] = -(last + 2);
-		last = last + 2;
-		sat[i] = clause;
-	}
-	assignment = new int[n + 1];
-	cond_ass = new int[n + 1];
-	dfs(0);
-
-	cnt = 0;
-    println("\n PrintLastCond: " + toString(myHash));
-	print_last_cond(0);
-	println(toString(myHash));
-	return 0;
+  print("\n");
+  return 0;
 }
 
 
 
 /*!! metadata:
 === comment ===
-cnf_lp-5140309234-xietiancheng.txt3-cnf to lp, fast fast dfs
-=== is_public ===
-True
+pi-5090379042-jiaxiao.mx
+=== input ===
+
 === assert ===
 output
 === timeout ===
-4.0
-=== input ===
-5
-=== phase ===
-optim pretest
+0.1
 === output ===
-755895903
-=== exitcode ===
-
+3141592653589793238462643383279528841971693993751058209749445923078164062862089986280348253421170679821480865132823664709384469555822317253594081284811174502841270193852115559644622948954930381964428810975665933446128475648233786783165271201991456485669234634861045432664821339360726024914127372458706606315588174881520920962829254917153643678925903611330530548820466521384146951941511609433057273657595919530921861173819326117931051185480744623799627495673518857527248912279381830119491298336733624406566438602139494639522473719070217986943702770539217176293176752384674818467669451320005681271452635608277857713427577896091736371787214684409012249534301465495853710579227968925892354201995611212902196864344181598136297747713099605187072113499999983729780499510597317328160963185
+=== phase ===
+codegen pretest
+=== is_public ===
+True
 
 !!*/
