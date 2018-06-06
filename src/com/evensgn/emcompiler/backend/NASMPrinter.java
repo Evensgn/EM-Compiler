@@ -286,7 +286,7 @@ public class NASMPrinter implements IRVisitor {
 
     @Override
     public void visit(IRComparison node) {
-        if (node.getLhs() instanceof PhysicalRegister) {
+        /*if (node.getLhs() instanceof PhysicalRegister) {
             out.print("\t\tand\t\t");
             node.getLhs().accept(this);
             out.println(", -1");
@@ -295,7 +295,7 @@ public class NASMPrinter implements IRVisitor {
             out.print("\t\tand\t\t");
             node.getRhs().accept(this);
             out.println(", -1");
-        }
+        }*/
         out.println("\t\txor\t\trax, rax");
         out.print("\t\tcmp\t\t");
         node.getLhs().accept(this);
