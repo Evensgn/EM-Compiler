@@ -89,7 +89,6 @@ public class RegLivelinessAnalysis {
             }
         }
 
-        // eliminate loop
         for (IRRoot.ForRecord forRec : ir.forRecMap.values()) {
             if (forRec.processed) continue;
             boolean lieOutsideInst = false;
@@ -98,7 +97,7 @@ public class RegLivelinessAnalysis {
             bbList.add(forRec.condBB); bbList.add(forRec.stepBB); bbList.add(forRec.bodyBB); bbList.add(forRec.afterBB);
             IRInstruction afterFirstInst = forRec.afterBB.getFirstInst();
             for (int i = 0; i < 3; ++i) {
-                for (IRInstruction inst = forRec.condBB.getFirstInst(); inst != null; inst = inst.getNextInst()) {
+                for (IRInstruction inst = bbList.get(i).getFirstInst(); inst != null; inst = inst.getNextInst()) {
                     if (inst instanceof IRFunctionCall) {
                         lieOutsideInst = true;
                         continue;
@@ -130,7 +129,6 @@ public class RegLivelinessAnalysis {
                 }
             }
             if (!lieOutsideInst) {
-                System.err.println("Gotcha");
                 forRec.condBB.reInit();
                 forRec.condBB.setJumpInst(new IRJump(forRec.condBB, forRec.afterBB));
                 forRec.processed = true;
