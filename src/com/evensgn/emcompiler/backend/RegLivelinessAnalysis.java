@@ -3,9 +3,7 @@ package com.evensgn.emcompiler.backend;
 import com.evensgn.emcompiler.ast.AssignExprNode;
 import com.evensgn.emcompiler.ir.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class RegLivelinessAnalysis {
     private IRRoot ir;
@@ -90,8 +88,41 @@ public class RegLivelinessAnalysis {
         }
     }
 
-    void updateState(IRFunction func) {
-        // do nothing
+
+    private Map<BasicBlock, BasicBlock> jumpTargetBBMap = new HashMap<>();
+
+    BasicBlock replaceJumpTarget(BasicBlock bb) {
+        BasicBlock ret = bb, query = jumpTargetBBMap.get(bb);
+        while (query != null) {
+            ret = query;
+            query = jumpTargetBBMap.get(query);
+        }
+        return ret;
+    }
+
+    void removeBlankBB(IRFunction func) {
+        jumpTargetBBMap.clear();
+        for (BasicBlock bb : func.getReversePostOrder()) {
+            if (bb.getFirstInst() == bb.getLastInst()) {
+                IRInstruction inst = bb.getFirstInst();
+                if (inst instanceof IRJump) {
+                    jumpTargetBBMap.put(bb, ((IRJump) inst).getTargetBB());
+                }
+            }
+        }
+        for (BasicBlock bb : func.getReversePostOrder()) {
+            if (bb.getLastInst() instanceof IRJump) {
+                IRJump jumpInst = (IRJump) bb.getLastInst();
+                jumpInst.setTargetBB(replaceJumpTarget(jumpInst.getTargetBB()));
+            } else if (bb.getLastInst() instanceof IRBranch) {
+                IRBranch branchInst = (IRBranch) bb.getLastInst();
+                branchInst.setThenBB(replaceJumpTarget(branchInst.getThenBB()));
+                branchInst.setElseBB(replaceJumpTarget(branchInst.getElseBB()));
+                if (branchInst.getThenBB() == branchInst.getElseBB()) {
+                    branchInst.replace(new IRJump(bb, branchInst.getThenBB()));
+                }
+            }
+        }
     }
 
     public void run() {
@@ -104,7 +135,7 @@ public class RegLivelinessAnalysis {
             for (IRFunction irFunction : ir.getFuncs().values()) {
                 if (irFunction.isBuiltIn()) continue;
                 tryEliminate(irFunction);
-                updateState(irFunction);
+                removeBlankBB(irFunction);
                 livelinessAnalysis(irFunction);
             }
         }

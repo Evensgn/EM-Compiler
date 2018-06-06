@@ -1,45 +1,26 @@
 
-func f $x {
-%f_entry:
-    $vreg = seq $x 1
-    br $vreg %if_then %if_after
-
-%if_after:
-    $vreg_2 = seq $x 2
-    br $vreg_2 %if_then_2 %if_after_2
-
-%if_after_2:
-    $vreg_3 = move $x
-    $vreg_3 = sub $vreg_3 1
-    $vreg_4 = call f $vreg_3 
-    $vreg_5 = move $x
-    $vreg_5 = sub $vreg_5 2
-    $vreg_6 = call f $vreg_5 
-    $vreg_7 = move $vreg_4
-    $vreg_7 = add $vreg_7 $vreg_6
-    $return_value = move $vreg_7
-    jump %f_end
-
-%if_then_2:
-    $return_value = move 1
-    jump %f_end
-
-%if_then:
-    $return_value = move 1
-    jump %f_end
-
-%f_end:
-    ret $return_value
-
-}
-
 func main {
 %main_entry:
     jump %__init_func_entry
 
 %__init_func_entry:
-    $vreg = call f 5 
-    ret $vreg
+    $a = move 0
+    $b = move 0
+    $c = move 0
+    $a = move 2
+    $b = move 2
+    $c = move 2
+    $vreg = move $b
+    $vreg = add $vreg $c
+    $a = move $vreg
+    $vreg_2 = move $a
+    $vreg_2 = sub $vreg_2 $b
+    $c = move $vreg_2
+    $vreg_3 = move 2
+    $vreg_3 = mul $vreg_3 $a
+    $vreg_4 = rem $vreg_3 $c
+    $b = move $vreg_4
+    ret 0
 
 }
 

@@ -78,7 +78,7 @@ public class Main {
             }
         }
 
-        //irOutFile = "testcase/ir.txt";
+        irOutFile = "testcase/ir.txt";
         if (isPrintVersion) printVersion();
         if (isPrintHelp) printHelp();
         if (isPrintConfig) printConfig();

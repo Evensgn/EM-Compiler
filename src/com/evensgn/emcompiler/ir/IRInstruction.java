@@ -63,6 +63,19 @@ public abstract class IRInstruction {
         if (this == parentBB.getLastInst()) parentBB.setLastInst(prevInst);
     }
 
+    public void replace(IRInstruction inst) {
+        if (removed) {
+            throw new CompilerError("cannot remove an instruction already removed");
+        }
+        removed = true;
+        inst.setPrevInst(prevInst);
+        inst.setNextInst(nextInst);
+        if (prevInst != null) prevInst.setNextInst(inst);
+        if (nextInst != null) nextInst.setPrevInst(inst);
+        if (this == parentBB.getFirstInst()) parentBB.setFirstInst(inst);
+        if (this == parentBB.getLastInst()) parentBB.setLastInst(inst);
+    }
+
     public abstract void accept(IRVisitor visitor);
 
     public IRInstruction getPrevInst() {

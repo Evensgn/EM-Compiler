@@ -46,4 +46,8 @@ public class IRJump extends IRJumpInstruction {
                 (BasicBlock) renameMap.getOrDefault(targetBB, targetBB)
         );
     }
+
+    public void setTargetBB(BasicBlock targetBB) {
+        this.targetBB = targetBB;
+    }
 }

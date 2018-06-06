@@ -63,4 +63,12 @@ public class IRBranch extends IRJumpInstruction {
                 (BasicBlock) renameMap.getOrDefault(elseBB, elseBB)
         );
     }
+
+    public void setThenBB(BasicBlock thenBB) {
+        this.thenBB = thenBB;
+    }
+
+    public void setElseBB(BasicBlock elseBB) {
+        this.elseBB = elseBB;
+    }
 }
