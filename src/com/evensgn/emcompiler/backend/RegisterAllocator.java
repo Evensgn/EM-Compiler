@@ -8,8 +8,7 @@ import com.evensgn.emcompiler.utils.CompilerError;
 import javax.rmi.ssl.SslRMIClientSocketFactory;
 import java.util.*;
 
-import static com.evensgn.emcompiler.nasm.NASMRegisterSet.rax;
-import static com.evensgn.emcompiler.nasm.NASMRegisterSet.rbx;
+import static com.evensgn.emcompiler.nasm.NASMRegisterSet.*;
 
 public class RegisterAllocator {
     private IRRoot ir;
@@ -20,8 +19,19 @@ public class RegisterAllocator {
     public RegisterAllocator(IRRoot ir) {
         this.ir = ir;
         this.physicalRegs = new ArrayList<>(NASMRegisterSet.generalRegs);
-        preg0 = rbx;
-        preg1 = physicalRegs.get(0);
+        for (IRFunction func : ir.getFuncs().values()) {
+            if (func.getArgVRegList().size() > ir.getMaxNumFuncArgs())
+                ir.setMaxNumFuncArgs(func.getArgVRegList().size());
+        }
+        if (ir.getMaxNumFuncArgs() >= 5) physicalRegs.remove(r8);
+        if (ir.getMaxNumFuncArgs() >= 6) physicalRegs.remove(r9);
+        if (ir.isHasDivShiftInst()) {
+            preg0 = physicalRegs.get(0);
+            preg1 = physicalRegs.get(1);
+        } else {
+            preg0 = rbx;
+            preg1 = physicalRegs.get(0);
+        }
         this.physicalRegs.remove(preg0);
         this.physicalRegs.remove(preg1);
         numColors = this.physicalRegs.size();

@@ -163,6 +163,26 @@ public class NASMPrinter implements IRVisitor {
     @Override
     public void visit(IRBinaryOperation node) {
         if (node.getOp() == DIV || node.getOp() == MOD) {
+            // to be optimized: not pushing rdx
+            out.print("\t\tmov\t\trbx, ");
+            node.getRhs().accept(this);
+            out.println();
+            out.print("\t\tmov\t\trax, ");
+            node.getLhs().accept(this);
+            out.println();
+            out.println("\t\tpush\trdx");
+            out.println("\t\tcdq");
+            out.println("\t\tidiv\trbx");
+            out.print("\t\tmov\t\t");
+            node.getDest().accept(this);
+            if (node.getOp() == DIV) {
+                out.println(", rax");
+            } else {
+                out.println(", rdx");
+            }
+            out.println("\t\tpop\t\trdx");
+
+            /*
             // to be optimized: not pushing rdx, rbx
             out.println("\t\tpush\trbx");
             out.print("\t\tmov\t\trax, ");
@@ -183,10 +203,25 @@ public class NASMPrinter implements IRVisitor {
                 out.println(", rdx");
             }
             out.println("\t\tpop\t\trdx");
-            out.println("\t\tadd\t\trsp, 8");
+            out.println("\t\tadd\t\trsp, 8");*/
         } else if (node.getOp() == SHL ||
                 node.getOp() == SHR) {
-            out.println("\t\tpush\trcx");
+            out.println("\t\tmov\t\trbx, rcx");
+            out.print("\t\tmov\t\trcx, ");
+            node.getRhs().accept(this);
+            if (node.getOp() == SHL) {
+                out.print("\n\t\tsal\t\t");
+            } else {
+                out.print("\n\t\tsar\t\t");
+            }
+            node.getLhs().accept(this);
+            out.println(", cl");
+            out.println("\t\tmov\t\trcx, rbx");
+            out.print("\t\tand\t\t");
+            node.getLhs().accept(this);
+            out.println(", -1");
+
+            /*out.println("\t\tpush\trcx");
             out.print("\t\tmov\t\trcx, ");
             node.getRhs().accept(this);
             if (node.getOp() == SHL) {
@@ -199,7 +234,7 @@ public class NASMPrinter implements IRVisitor {
             out.println("\t\tpop\t\trcx");
             out.print("\t\tand\t\t");
             node.getLhs().accept(this);
-            out.println(", -1");
+            out.println(", -1");*/
         } else {
             if (node.getDest() != node.getLhs())
                 throw new CompilerError("binary operation should have same dest and lhs");

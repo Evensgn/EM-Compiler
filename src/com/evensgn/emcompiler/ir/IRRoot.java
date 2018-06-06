@@ -10,6 +10,9 @@ public class IRRoot {
     private Map<String, IRFunction> builtInFuncs = new HashMap<>();
     private List<StaticData> staticDataList = new ArrayList<>();
     private Map<String, StaticString> staticStrs = new HashMap<>();
+    private boolean hasDivShiftInst = false;
+    private int maxNumFuncArgs = 3;
+
     static public String irMemberFuncName(String className, String funcName) {
         return String.format("__member_%s_%s", className, funcName);
     }
@@ -164,7 +167,6 @@ public class IRRoot {
     static public final String BUILTIN_STRING_ORD_FUNC_NAME = "__member_" +  Scope.STRING_CLASS_NAME+ "_" + "ord";
     static public final String BUILTIN_ARRAY_SIZE_FUNC_NAME = "__member_" + Scope.ARRAY_CLASS_NAME + "_" + "size";
 
-
     public void addStaticData(StaticData staticData) {
         staticDataList.add(staticData);
     }
@@ -175,5 +177,21 @@ public class IRRoot {
 
     public void accept(IRVisitor visitor) {
         visitor.visit(this);
+    }
+
+    public boolean isHasDivShiftInst() {
+        return hasDivShiftInst;
+    }
+
+    public int getMaxNumFuncArgs() {
+        return maxNumFuncArgs;
+    }
+
+    public void setHasDivShiftInst(boolean hasDivShiftInst) {
+        this.hasDivShiftInst = hasDivShiftInst;
+    }
+
+    public void setMaxNumFuncArgs(int maxNumFuncArgs) {
+        this.maxNumFuncArgs = maxNumFuncArgs;
     }
 }

@@ -27,8 +27,8 @@ public class NASMRegisterSet {
         rsp = new NASMRegister("rsp", false, true, false, -1);
         rbp = new NASMRegister("rbp", false, false, true, -1);
         // r8 and r9 are actually general registers
-        r8 = new NASMRegister("r8", false, true, false, 4);
-        r9 = new NASMRegister("r9", false, true, false, 5);
+        r8 = new NASMRegister("r8", true, true, false, 4);
+        r9 = new NASMRegister("r9", true, true, false, 5);
         r10 = new NASMRegister("r10", true, true, false, -1);
         r11 = new NASMRegister("r11", true, true, false, -1);
         r12 = new NASMRegister("r12", true, false, true, -1);

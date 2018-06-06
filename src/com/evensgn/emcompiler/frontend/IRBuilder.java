@@ -884,6 +884,7 @@ public class IRBuilder extends BaseScopeScanner {
                     node.setRegValue(new IntImmediate(lhsImm / rhsImm));
                     return;
                 }
+                ir.setHasDivShiftInst(true);
                 break;
             case MOD:
                 op = IRBinaryOperation.IRBinaryOp.MOD;
@@ -891,6 +892,7 @@ public class IRBuilder extends BaseScopeScanner {
                     node.setRegValue(new IntImmediate(lhsImm % rhsImm));
                     return;
                 }
+                ir.setHasDivShiftInst(true);
                 break;
             case ADD:
                 op = IRBinaryOperation.IRBinaryOp.ADD;
@@ -912,6 +914,7 @@ public class IRBuilder extends BaseScopeScanner {
                     node.setRegValue(new IntImmediate(lhsImm << rhsImm));
                     return;
                 }
+                ir.setHasDivShiftInst(true);
                 break;
             case SHR:
                 op = IRBinaryOperation.IRBinaryOp.SHR;
@@ -919,6 +922,7 @@ public class IRBuilder extends BaseScopeScanner {
                     node.setRegValue(new IntImmediate(lhsImm >> rhsImm));
                     return;
                 }
+                ir.setHasDivShiftInst(true);
                 break;
             case BITWISE_AND:
                 op = IRBinaryOperation.IRBinaryOp.BITWISE_AND;
