@@ -5,7 +5,7 @@ import com.evensgn.emcompiler.ir.*;
 import java.util.*;
 
 public class FunctionInlineProcessor {
-    private final int MAX_INLINE_INST = 10;
+    private final int MAX_INLINE_INST = 8;
     private final int MAX_FUNC_INST = 1 << 16;
 
     private IRRoot ir;
