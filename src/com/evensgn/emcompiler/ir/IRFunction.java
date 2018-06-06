@@ -40,6 +40,8 @@ public class IRFunction {
         this.isBuiltIn = true;
     }
 
+    public IRFunction() {}
+
     public Set<IRFunction> calleeSet = new HashSet<>();
     public Set<IRFunction> recursiveCalleeSet = new HashSet<>();
 
@@ -52,6 +54,17 @@ public class IRFunction {
                 }
             }
         }
+    }
+
+    public void setNewBBGraph(BasicBlock newStartBB, BasicBlock newEndBB) {
+        startBB = newStartBB;
+        endBB = newEndBB;
+        reversePreOrder = null;
+        reversePostOrder = null;
+    }
+
+    public void setArgVRegList(List<VirtualRegister> argVRegList) {
+        this.argVRegList = argVRegList;
     }
 
     public List<VirtualRegister> getArgVRegList() {
@@ -69,6 +82,10 @@ public class IRFunction {
 
     public BasicBlock getStartBB() {
         return startBB;
+    }
+
+    public void setStartBB(BasicBlock startBB) {
+        this.startBB = startBB;
     }
 
     public BasicBlock getEndBB() {

@@ -1,18 +1,16 @@
 package com.evensgn.emcompiler.backend;
 
 import com.evensgn.emcompiler.ir.*;
+import com.sun.corba.se.impl.ior.OldJIDLObjectKeyTemplate;
 
 import java.util.*;
 
 public class FunctionInlineProcessor {
     private final int MAX_INLINE_INST = 1 << 4;
-    private final int MAX_FUNC_INST = 1 << 16;
+    private final int MAX_FUNC_INST = 1 << 12;
+    private final int MAX_INLINE_DEPTH = 5;
 
     private IRRoot ir;
-
-    public IRRoot getIR() {
-        return ir;
-    }
 
     private class FuncInfo {
         int numInst = 0, numCalled = 0;
@@ -20,6 +18,7 @@ public class FunctionInlineProcessor {
     }
 
     private Map<IRFunction, FuncInfo> funcInfoMap = new HashMap<>();
+    private Map<IRFunction, IRFunction> funcBakUpMap = new HashMap<>();
 
     public FunctionInlineProcessor(IRRoot ir) {
         this.ir = ir;
@@ -64,8 +63,8 @@ public class FunctionInlineProcessor {
                         nextInst = inst.getNextInst();
                         if (!(inst instanceof IRFunctionCall)) continue;
                         FuncInfo calleeInfo = funcInfoMap.get(((IRFunctionCall) inst).getFunc());
-                        if (calleeInfo == null) continue;
-                        if (calleeInfo.recursiveCall) continue;
+                        if (calleeInfo == null) continue; // skip built-in functions
+                        if (calleeInfo.recursiveCall) continue; // skip self recursive function
                         if (calleeInfo.numInst > MAX_INLINE_INST || calleeInfo.numInst + funcInfo.numInst > MAX_FUNC_INST) continue;
 
                         nextInst = inlineFunctionCall((IRFunctionCall) inst);
@@ -90,11 +89,78 @@ public class FunctionInlineProcessor {
             irFunction.updateCalleeSet();
         }
         ir.updateCalleeSet();
+
+        // inline recursive functions
+        reversePostOrder = new ArrayList<>();
+        changed = true;
+        for (int i = 0; changed && i < MAX_INLINE_DEPTH; ++i) {
+            changed = false;
+
+            // bak up self recursive functions
+            funcBakUpMap.clear();
+            for (IRFunction irFunction : ir.getFuncs().values()) {
+                FuncInfo funcInfo = funcInfoMap.get(irFunction);
+                if (!funcInfo.recursiveCall) continue;
+                funcBakUpMap.put(irFunction, genBakUpFunc(irFunction));
+            }
+
+            for (IRFunction irFunction : ir.getFuncs().values()) {
+                FuncInfo funcInfo = funcInfoMap.get(irFunction);
+                reversePostOrder.clear();
+                reversePostOrder.addAll(irFunction.getReversePostOrder());
+                thisFuncChanged = false;
+                for (BasicBlock bb : reversePostOrder) {
+                    for (IRInstruction inst = bb.getFirstInst(), nextInst; inst != null; inst = nextInst) {
+                        // inst.getNextInst() may be changed later
+                        nextInst = inst.getNextInst();
+                        if (!(inst instanceof IRFunctionCall)) continue;
+                        FuncInfo calleeInfo = funcInfoMap.get(((IRFunctionCall) inst).getFunc());
+                        if (calleeInfo == null) continue; // skip built-in functions
+                        if (calleeInfo.numInst > MAX_INLINE_INST || calleeInfo.numInst + funcInfo.numInst > MAX_FUNC_INST) continue;
+
+                        nextInst = inlineFunctionCall((IRFunctionCall) inst);
+                        int numAddInst = calleeInfo.numInst;
+                        funcInfo.numInst += numAddInst;
+                        changed = true;
+                        thisFuncChanged = true;
+                    }
+                }
+                if (thisFuncChanged) {
+                    irFunction.calcReversePostOrder();
+                }
+            }
+        }
+        for (IRFunction irFunction : ir.getFuncs().values()) {
+            irFunction.updateCalleeSet();
+        }
+        ir.updateCalleeSet();
     }
 
+    private IRFunction genBakUpFunc(IRFunction func) {
+        IRFunction bakFunc = new IRFunction();
+        Map<Object, Object> bbRenameMap = new HashMap<>();
+        for (BasicBlock bb : func.getReversePostOrder()) {
+            bbRenameMap.put(bb, new BasicBlock(bakFunc, bb.getName()));
+        }
+        for (BasicBlock bb : func.getReversePostOrder()) {
+            BasicBlock bakBB = (BasicBlock) bbRenameMap.get(bb);
+            for (IRInstruction inst = bb.getFirstInst(); inst != null; inst = inst.getNextInst()) {
+                if (inst instanceof IRJumpInstruction) {
+                    bakBB.setJumpInst((IRJumpInstruction) inst.copyRename(bbRenameMap));
+                } else {
+                    bakBB.addInst(inst.copyRename(bbRenameMap));
+                }
+            }
+        }
+        bakFunc.setStartBB((BasicBlock) bbRenameMap.get(func.getStartBB()));
+        bakFunc.setEndBB((BasicBlock) bbRenameMap.get(func.getEndBB()));
+        bakFunc.setArgVRegList(func.getArgVRegList());
+        return bakFunc;
+    }
 
     private IRInstruction inlineFunctionCall(IRFunctionCall funcCallInst) {
-        IRFunction callerFunc = funcCallInst.getParentBB().getFunc(), calleeFunc = funcCallInst.getFunc();
+        IRFunction callerFunc = funcCallInst.getParentBB().getFunc(), calleeFunc;
+        calleeFunc = funcBakUpMap.getOrDefault(funcCallInst.getFunc(), funcCallInst.getFunc());
         List<BasicBlock> reversePostOrder = calleeFunc.getReversePostOrder();
 
         Map<Object, Object> renameMap = new HashMap<>();

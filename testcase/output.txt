@@ -2,228 +2,52 @@
 
 		extern	malloc
 
-		section	.bss
-__static_data_N_1:	resq	1
-__static_data_b_1:	resq	1
-__static_data_resultCount_1:	resq	1
-
-		section	.data
-__static_data_static_str_1:
-		dq		1
-		db		32, 0
-__static_data_static_str_2:
-		dq		7
-		db		84, 111, 116, 97, 108, 58, 32, 0
-
 		section	.text
+
+# function f
+
+__block_f_entry_1:
+		push	rbx
+		push	rbp
+		sub		rsp, 8
+		mov		rbp, rsp
+		mov		r9, rdi
+		dec		r9
+		push	r9
+		push	rdi
+		mov		rdi, r9
+		call	__block_f_entry_1
+		pop		rdi
+		pop		r9
+		mov		r9, rax
+		mov		rax, r9
+		add		rsp, 8
+		pop		rbp
+		pop		rbx
+		ret
 
 # function main
 
 main:
-		push	r12
-		push	r14
-		push	r13
 		push	rbx
 		push	rbp
+		sub		rsp, 8
 		mov		rbp, rsp
-		mov		r9, qword [__static_data_resultCount_1]
-		mov		r10, qword [__static_data_b_1]
-		mov		r12, qword [__static_data_N_1]
-		mov		r12, 15000
-		mov		r9, 15001
-		imul	r9, 8
-		add		r9, 8
-		push	r11
-		push	r9
-		push	r10
-		mov		rdi, r9
-		push	0
-		call	malloc
-		add		rsp, 8
-		pop		r10
-		pop		r9
-		pop		r11
-		mov		r9, rax
-		mov		qword [r9], 15001
-		mov		r10, r9
-		mov		r9, 0
 		jmp		__block___init_func_entry_1
 
 __block___init_func_entry_1:
-		mov		r13, 0
-		mov		r13, 1
-		jmp		__block_for_cond_1
-
-__block_for_cond_1:
-		and		r13, -1
-		and		r12, -1
-		xor		rax, rax
-		cmp		r13, r12
-		setle	al
-		mov		r11, rax
-		cmp		r11, 1
-		je		__block_for_body_1
-		jmp		__block_for_after_1
-
-__block_for_body_1:
-		mov		r11, r13
-		imul	r11, 8
-		add		r11, r10
-		mov		qword [r11+8], 1
-		jmp		__block_for_step_1
-
-__block_for_step_1:
-		inc		r13
-		jmp		__block_for_cond_1
-
-__block_for_after_1:
-		mov		r13, 2
-		jmp		__block_for_cond_2
-
-__block_for_cond_2:
-		and		r13, -1
-		and		r12, -1
-		xor		rax, rax
-		cmp		r13, r12
-		setle	al
-		mov		r11, rax
-		cmp		r11, 1
-		je		__block_for_body_2
-		jmp		__block_for_after_2
-
-__block_for_after_2:
-		push	r11
 		push	r9
-		push	r10
 		push	0
-		mov		rdi, __static_data_static_str_2
-		call	_Z5printPc
+		mov		rdi, 5
+		call	__block_f_entry_1
 		add		rsp, 8
-		pop		r10
 		pop		r9
-		pop		r11
-		push	r11
-		push	r9
-		push	r10
-		push	0
-		mov		rdi, r9
-		call	_Z10printlnInti
+		mov		r9, rax
+		mov		rax, r9
 		add		rsp, 8
-		pop		r10
-		pop		r9
-		pop		r11
-		mov		qword [__static_data_resultCount_1], r9
-		mov		qword [__static_data_b_1], r10
-		mov		qword [__static_data_N_1], r12
-		mov		rax, 0
 		pop		rbp
 		pop		rbx
-		pop		r13
-		pop		r14
-		pop		r12
 		ret
-
-__block_for_body_2:
-		mov		r11, r13
-		imul	r11, 8
-		add		r11, r10
-		mov		r11, qword [r11+8]
-		cmp		r11, 1
-		je		__block_if_then_1
-		jmp		__block_if_after_1
-
-__block_if_then_1:
-		mov		r14, 2
-		and		r13, -1
-		xor		rax, rax
-		cmp		r13, 3
-		setg	al
-		mov		r11, rax
-		cmp		r11, 1
-		je		__block_and_lhs_true_1
-		jmp		__block_if_after_2
-
-__block_and_lhs_true_1:
-		mov		r11, r13
-		sub		r11, 2
-		imul	r11, 8
-		add		r11, r10
-		mov		r11, qword [r11+8]
-		cmp		r11, 1
-		je		__block_if_then_2
-		jmp		__block_if_after_2
-
-__block_if_then_2:
-		inc		r9
-		mov		r11, r13
-		sub		r11, 2
-		push	r11
-		push	r9
-		push	r10
-		push	0
-		mov		rdi, r11
-		call	_Z8printInti
-		add		rsp, 8
-		pop		r10
-		pop		r9
-		pop		r11
-		push	r11
-		push	r9
-		push	r10
-		push	0
-		mov		rdi, __static_data_static_str_1
-		call	_Z5printPc
-		add		rsp, 8
-		pop		r10
-		pop		r9
-		pop		r11
-		push	r11
-		push	r9
-		push	r10
-		push	0
-		mov		rdi, r13
-		call	_Z10printlnInti
-		add		rsp, 8
-		pop		r10
-		pop		r9
-		pop		r11
-		jmp		__block_if_after_2
-
-__block_if_after_2:
-		jmp		__block_while_cond_1
-
-__block_while_cond_1:
-		mov		r11, r13
-		imul	r11, r14
-		and		r11, -1
-		and		r12, -1
-		xor		rax, rax
-		cmp		r11, r12
-		setle	al
-		mov		r11, rax
-		cmp		r11, 1
-		je		__block_while_body_1
-		jmp		__block_while_after_1
-
-__block_while_body_1:
-		mov		r11, r13
-		imul	r11, r14
-		imul	r11, 8
-		add		r11, r10
-		mov		qword [r11+8], 0
-		inc		r14
-		jmp		__block_while_cond_1
-
-__block_while_after_1:
-		jmp		__block_if_after_1
-
-__block_if_after_1:
-		jmp		__block_for_step_2
-
-__block_for_step_2:
-		mov		r11, r13
-		inc		r13
-		jmp		__block_for_cond_2
 
 
 # built-in functions
