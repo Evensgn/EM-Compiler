@@ -170,6 +170,11 @@ public class StaticUsagePreScanner extends BaseScopeScanner {
 
     @Override
     public void visit(AssignExprNode node) {
+        if (node.getRhs().getType() instanceof ArrayType && !(node.getRhs() instanceof NewExprNode)) {
+            node.getLhs().accept(this);
+            node.getRhs().accept(this);
+            return;
+        }
         inDefine = true;
         node.getLhs().accept(this);
         inDefine = false;
