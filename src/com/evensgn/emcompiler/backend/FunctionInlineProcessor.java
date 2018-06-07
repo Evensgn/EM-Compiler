@@ -6,8 +6,8 @@ import com.sun.corba.se.impl.ior.OldJIDLObjectKeyTemplate;
 import java.util.*;
 
 public class FunctionInlineProcessor {
-    private final int MAX_INLINE_INST = 25;
-    private final int MAX_LOW_INLINE_INST = 25;
+    private final int MAX_INLINE_INST = 30;
+    private final int MAX_LOW_INLINE_INST = 30;
     private final int MAX_FUNC_INST = 1 << 12;
     private final int MAX_INLINE_DEPTH = 5;
 
