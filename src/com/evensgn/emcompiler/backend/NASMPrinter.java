@@ -129,11 +129,15 @@ public class NASMPrinter implements IRVisitor {
         node.getCond().accept(this);
         out.println(", 1");
         out.printf("\t\tje\t\t%s\n", bbId(node.getThenBB()));
+        // remove meaningless jump
+        if (node.getElseBB().getPostOrderIdx() + 1 == node.getParentBB().getPostOrderIdx()) return;
         out.printf("\t\tjmp\t\t%s\n", bbId(node.getElseBB()));
     }
 
     @Override
     public void visit(IRJump node) {
+        // remove meaningless jump
+        if (node.getTargetBB().getPostOrderIdx() + 1 == node.getParentBB().getPostOrderIdx()) return;
         out.printf("\t\tjmp\t\t%s\n", bbId(node.getTargetBB()));
     }
 

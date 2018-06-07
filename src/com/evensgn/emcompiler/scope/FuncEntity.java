@@ -15,6 +15,7 @@ public class FuncEntity extends Entity {
     private Type returnType;
     private String className;
     private boolean isConstruct = false, isMember = false, isBuiltIn = false;
+    private boolean outInfluence = false;
 
     public FuncEntity(String name, Type type) {
         super(name, type);
@@ -77,6 +78,7 @@ public class FuncEntity extends Entity {
 
     public void setBuiltIn(boolean builtIn) {
         isBuiltIn = builtIn;
+        if (builtIn) outInfluence = true;
     }
 
     public String getClassName() {
@@ -85,5 +87,13 @@ public class FuncEntity extends Entity {
 
     public void setMember(boolean member) {
         isMember = member;
+    }
+
+    public boolean isOutInfluence() {
+        return outInfluence || isBuiltIn;
+    }
+
+    public void setOutInfluence(boolean outInfluence) {
+        this.outInfluence = outInfluence;
     }
 }
