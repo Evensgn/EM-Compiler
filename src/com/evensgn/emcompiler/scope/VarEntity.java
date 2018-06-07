@@ -10,6 +10,8 @@ public class VarEntity extends Entity {
     private int addrOffset;
     private boolean isMember = false;
     private String className;
+    private boolean isGlobal = false;
+    private boolean unUsed = false;
 
     public VarEntity(String name, Type type) {
         super(name, type);
@@ -39,5 +41,21 @@ public class VarEntity extends Entity {
 
     public void setAddrOffset(int addrOffset) {
         this.addrOffset = addrOffset;
+    }
+
+    public boolean isGlobal() {
+        return isGlobal;
+    }
+
+    public void setGlobal(boolean global) {
+        isGlobal = global;
+    }
+
+    public boolean isUnUsed() {
+        return unUsed;
+    }
+
+    public void setUnUsed(boolean unUsed) {
+        this.unUsed = unUsed;
     }
 }

@@ -12,7 +12,9 @@ import sun.security.krb5.Config;
 
 import javax.swing.plaf.synth.SynthScrollBarUI;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class IRBuilder extends BaseScopeScanner {
     private final String INIT_FUNC_NAME = "__init_func";
@@ -24,6 +26,7 @@ public class IRBuilder extends BaseScopeScanner {
     private boolean isFuncArgDecl = false, wantAddr = false;
     private BasicBlock currentLoopStepBB, currentLoopAfterBB;
     private String currentClassName = null;
+    private boolean assignLhs = false, uselessStatic = false;
 
     public IRRoot getIR() {
         return ir;
@@ -32,7 +35,6 @@ public class IRBuilder extends BaseScopeScanner {
     public IRBuilder(Scope globalScope) {
         this.globalScope = globalScope;
     }
-
     private FuncDeclNode makeInitFunc() {
         List<Node> stmts = new ArrayList<>();
         for (GlobalVarInit init : globalInitList) {
@@ -210,6 +212,7 @@ public class IRBuilder extends BaseScopeScanner {
     @Override
     public void visit(VarDeclNode node) {
         VarEntity entity = (VarEntity) currentScope.get(Scope.varKey(node.getName()));
+        if (entity.isUnUsed()) return;
         if (currentScope.isTop()) {
             // global variables should be placed in data section
             Type type = node.getType().getType();
@@ -635,6 +638,8 @@ public class IRBuilder extends BaseScopeScanner {
         boolean wantAddrBak = wantAddr;
         wantAddr = false;
         node.getArr().accept(this);
+        if (uselessStatic) return;
+        assignLhs = false;
         node.getSub().accept(this);
         wantAddr = wantAddrBak;
 
@@ -660,6 +665,7 @@ public class IRBuilder extends BaseScopeScanner {
         boolean wantAddrBak = wantAddr;
         wantAddr = false;
         node.getExpr().accept(this);
+        assignLhs = false;
         wantAddr = wantAddrBak;
 
         RegValue classAddr = node.getExpr().getRegValue();
@@ -1103,16 +1109,24 @@ public class IRBuilder extends BaseScopeScanner {
 
     @Override
     public void visit(AssignExprNode node) {
+        boolean needMemOp = isMemoryAccess(node.getLhs());
+        wantAddr = needMemOp;
+        assignLhs = true;
+        uselessStatic = false;
+        node.getLhs().accept(this);
+        assignLhs = false;
+        wantAddr = false;
+
+        if (uselessStatic) {
+            uselessStatic = false;
+            return;
+        }
+
         if (node.getRhs().getType() instanceof BoolType && !(node.getRhs() instanceof BoolConstExprNode)) {
             node.getRhs().setTrueBB(new BasicBlock(currentFunc, null));
             node.getRhs().setFalseBB(new BasicBlock(currentFunc, null));
         }
         node.getRhs().accept(this);
-
-        boolean needMemOp = isMemoryAccess(node.getLhs());
-        wantAddr = needMemOp;
-        node.getLhs().accept(this);
-        wantAddr = false;
 
         RegValue dest;
         int addrOffset;
@@ -1131,6 +1145,10 @@ public class IRBuilder extends BaseScopeScanner {
     public void visit(IdentifierExprNode node) {
         // should be a variable instead of a function
         VarEntity varEntity = node.getVarEntity();
+        if ((varEntity.getType() instanceof ArrayType || varEntity.isGlobal()) && varEntity.isUnUsed()) {
+            uselessStatic = true;
+            return;
+        }
         if (varEntity.getIrRegister() == null) {
             ThisExprNode thisExprNode = new ThisExprNode(null);
             thisExprNode.setType(new ClassType(currentClassName));

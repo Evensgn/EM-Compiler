@@ -48,6 +48,7 @@ public class FunctionScopeScanner extends BaseScopeScanner {
         }
         checkVarDeclInit(node);
         VarEntity entity = new VarEntity(node.getName(), node.getType().getType());
+        if (currentScope == globalScope) entity.setGlobal(true);
         currentScope.putCheck(node.location(), node.getName(), Scope.varKey(node.getName()), entity);
     }
 

@@ -91,7 +91,7 @@ public class RegLivelinessAnalysis {
 
         for (IRRoot.ForRecord forRec : ir.forRecMap.values()) {
             if (forRec.processed) continue;
-            boolean lieOutsideInst = false;
+            boolean isFieldOutside = false;
             if (forRec.condBB == null || forRec.stepBB == null || forRec.bodyBB == null || forRec.afterBB == null) continue;
             List<BasicBlock> bbList = new ArrayList<>();
             bbList.add(forRec.condBB); bbList.add(forRec.stepBB); bbList.add(forRec.bodyBB); bbList.add(forRec.afterBB);
@@ -99,43 +99,42 @@ public class RegLivelinessAnalysis {
             for (int i = 0; i < 3; ++i) {
                 for (IRInstruction inst = bbList.get(i).getFirstInst(); inst != null; inst = inst.getNextInst()) {
                     if (inst instanceof IRFunctionCall) {
-                        lieOutsideInst = true;
+                        isFieldOutside = true;
                         continue;
                     }
                     if (inst.getDefinedRegister() != null) {
                         if (afterFirstInst.liveIn.contains(inst.getDefinedRegister())) {
-                            lieOutsideInst = true;
+                            isFieldOutside = true;
                         }
                         continue;
                     }
                     if (inst instanceof IRStore) {
-                        lieOutsideInst = true;
+                        isFieldOutside = true;
                         continue;
                     }
                     if (inst instanceof IRJump) {
                         if (!bbList.contains(((IRJump) inst).getTargetBB()))
-                            lieOutsideInst = true;
+                            isFieldOutside = true;
                         continue;
                     }
                     if (inst instanceof IRBranch) {
                         if (!bbList.contains(((IRBranch) inst).getThenBB()) || !bbList.contains(((IRBranch) inst).getElseBB()))
-                            lieOutsideInst = true;
+                            isFieldOutside = true;
                         continue;
                     }
                     if (inst instanceof IRReturn || inst instanceof IRPush || inst instanceof IRStore) {
-                        lieOutsideInst = true;
+                        isFieldOutside = true;
                         continue;
                     }
                 }
             }
-            if (!lieOutsideInst) {
+            if (!isFieldOutside) {
                 forRec.condBB.reInit();
                 forRec.condBB.setJumpInst(new IRJump(forRec.condBB, forRec.afterBB));
                 forRec.processed = true;
             }
         }
     }
-
 
     private Map<BasicBlock, BasicBlock> jumpTargetBBMap = new HashMap<>();
 
