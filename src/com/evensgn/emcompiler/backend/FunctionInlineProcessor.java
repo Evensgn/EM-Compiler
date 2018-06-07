@@ -7,6 +7,7 @@ import java.util.*;
 
 public class FunctionInlineProcessor {
     private final int MAX_INLINE_INST = 1 << 4;
+    private final int MAX_LOW_INLINE_INST = 1 << 6;
     private final int MAX_FUNC_INST = 1 << 12;
     private final int MAX_INLINE_DEPTH = 5;
 
@@ -67,7 +68,7 @@ public class FunctionInlineProcessor {
                         if (calleeInfo == null) continue; // skip built-in functions
                         if (calleeInfo.recursiveCall) continue; // skip self recursive function
                         if (calleeInfo.memFunc) continue;
-                        if (calleeInfo.numInst > MAX_INLINE_INST || calleeInfo.numInst + funcInfo.numInst > MAX_FUNC_INST) continue;
+                        if (calleeInfo.numInst > MAX_LOW_INLINE_INST || calleeInfo.numInst + funcInfo.numInst > MAX_FUNC_INST) continue;
 
                         nextInst = inlineFunctionCall((IRFunctionCall) inst);
                         funcInfo.numInst += calleeInfo.numInst;
