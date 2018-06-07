@@ -152,8 +152,10 @@ public class StaticUsagePreScanner extends BaseScopeScanner {
 
     @Override
     public void visit(NewExprNode node) {
-        for (ExprNode dim : node.getDims()) {
-            dim.accept(this);
+        if (node.getDims() != null) {
+            for (ExprNode dim : node.getDims()) {
+                dim.accept(this);
+            }
         }
     }
 

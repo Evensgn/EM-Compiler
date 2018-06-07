@@ -1,123 +1,58 @@
-space @A 8
-space @B 8
-space @C 8
-space @N 8
-space @es 8
-@static_str@static_str_2
-func main {
-%main_entry:
-    jump %__init_func_entry
-
-%__init_func_entry:
-    $getString = call getString 
-    @A = move $getString
-    $getString_2 = call getString 
-    @B = move $getString_2
-    $parseInt = call __member___string_parseInt @B 
-    @N = move $parseInt
-    $qq = move 0
-    $vreg = load 8 @es 0
-    $qq = move $vreg
-    $sizeOrLength = load 8 @A 0
-    $vreg_2 = slt $sizeOrLength @N
-    br $vreg_2 %if_then %if_after
-
-%if_after:
-    $vreg_3 = move @N
-    $vreg_3 = sub $vreg_3 1
-    $subString = call __member___string_substring @A 0 $vreg_3 
-    $vreg_4 = call calc $subString 
-    @C = move $vreg_4
-    call println @C 
-    $return_value = move 0
-    jump %main_end
+space @init_anger 8
+space @work_anger 8
+@static_str@static_str_2@static_str_3@static_str_4@static_str_5@static_str_6@static_str_7
+func work $st $ta {
+%work_entry:
+    $vreg = load 8 $ta 8
+    $vreg_2 = sle $vreg 100
+    br $vreg_2 %if_then %if_else
 
 %if_then:
-    call println @static_str_2 
-    $return_value = move 0
-    jump %main_end
+    call print $st 
+    call print @static_str_2 
+    $vreg_3 = load 8 $ta 0
+    call print $vreg_3 
+    call println @static_str_3 
+    jump %if_after
 
-%main_end:
-    ret $return_value
+%if_else:
+    call print $st 
+    call print @static_str_2 
+    $vreg_4 = load 8 $ta 0
+    call print $vreg_4 
+    call println @static_str_6 
+    jump %if_after
+
+%if_after:
+    $vreg_5 = load 8 $ta 8
+    $vreg_6 = move $vreg_5
+    $vreg_6 = add $vreg_6 @work_anger
+    store 8 $ta $vreg_6 8
+    ret 0
 
 }
 
-func calc $A {
-%calc_entry:
-    $sizeOrLength = load 8 $A 0
-    $len = move $sizeOrLength
-    $vreg = seq $len 1
-    br $vreg %if_then_2 %if_after_2
+func main {
+%main_entry:
+    @init_anger = move 100
+    @work_anger = move 10
+    jump %__init_func_entry
 
-%if_then_2:
-    $return_value = move $A
-    jump %calc_end
-
-%if_after_2:
-    $vreg_2 = div $len 2
-    $mid = move $vreg_2
-    $vreg_3 = move $mid
-    $vreg_3 = sub $vreg_3 1
-    $subString = call __member___string_substring $A 0 $vreg_3 
-    $vreg_4 = call calc $subString 
-    $L = move $vreg_4
-    $vreg_5 = move $len
-    $vreg_5 = sub $vreg_5 1
-    $subString_2 = call __member___string_substring $A $mid $vreg_5 
-    $vreg_6 = call calc $subString_2 
-    $R = move $vreg_6
-    $vreg_7 = call __builtin_string_less $L $R 
-    br $vreg_7 %if_then_3 %if_else
-
-%if_else:
-    $vreg_8 = call __builtin_string_equal $L $R 
-    br $vreg_8 %if_then_4 %if_else_2
-
-%if_then_4:
-    $ord = call __member___string_ord $L 0 
-    $l = move $ord
-    $ord_2 = call __member___string_ord $R 0 
-    $r = move $ord_2
-    $vreg_9 = slt $l $r
-    br $vreg_9 %if_then_5 %if_after_3
-
-%if_then_5:
-    $vreg_10 = call __builtin_string_concat $L $R 
-    $return_value = move $vreg_10
-    jump %calc_end
-
-%if_after_3:
-    $vreg_11 = call __builtin_string_concat $R $L 
-    $return_value = move $vreg_11
-    jump %calc_end
-
-%if_else_2:
-    $vreg_12 = call __builtin_string_less $R $L 
-    br $vreg_12 %if_then_6 %if_after_4
-
-%if_then_6:
-    $vreg_13 = call __builtin_string_concat $R $L 
-    $return_value = move $vreg_13
-    jump %calc_end
-
-%if_after_4:
-    jump %if_after_5
-
-%if_after_5:
-    jump %if_after_6
-
-%if_after_6:
-    call println @static_str 
-    $return_value = move 0
-    jump %calc_end
-
-%if_then_3:
-    $vreg_14 = call __builtin_string_concat $L $R 
-    $return_value = move $vreg_14
-    jump %calc_end
-
-%calc_end:
-    ret $return_value
+%__init_func_entry:
+    $mr = move 0
+    $mars = move 0
+    $vreg = alloc 16
+    $mr = move $vreg
+    store 8 $mr @static_str_7 0
+    store 8 $mr 0 8
+    $vreg_2 = alloc 16
+    $mars = move $vreg_2
+    store 8 $mars @static_str_5 0
+    store 8 $mars @init_anger 8
+    $vreg_3 = call work @static_str_4 $mr 
+    $vreg_4 = call work @static_str $mars 
+    $vreg_5 = call work @static_str $mars 
+    ret 0
 
 }
 
