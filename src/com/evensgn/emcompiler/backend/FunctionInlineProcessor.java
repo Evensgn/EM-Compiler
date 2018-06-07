@@ -7,7 +7,7 @@ import java.util.*;
 
 public class FunctionInlineProcessor {
     private final int MAX_INLINE_INST = 1 << 4;
-    private final int MAX_LOW_INLINE_INST = 1 << 6;
+    private final int MAX_LOW_INLINE_INST = 1 << 5;
     private final int MAX_FUNC_INST = 1 << 12;
     private final int MAX_INLINE_DEPTH = 5;
 
