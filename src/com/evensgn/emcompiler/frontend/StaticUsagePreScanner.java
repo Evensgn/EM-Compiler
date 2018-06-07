@@ -36,8 +36,10 @@ public class StaticUsagePreScanner extends BaseScopeScanner {
             }
         }
         for (VarEntity varEntity : unUsedStaticSet) {
+            //System.err.println("unUsedStatic? " + varEntity.getName());
             if (usedStaticSet.contains(varEntity)) continue;
             varEntity.setUnUsed(true);
+            //System.err.println("unUsedStatic: " + varEntity.getName());
         }
     }
 
@@ -133,7 +135,8 @@ public class StaticUsagePreScanner extends BaseScopeScanner {
         if (inDefine) {
             node.getArr().accept(this);
             inDefine = false;
-            node.getArr().accept(this);
+            node.getSub().accept(this);
+            inDefine = true;
         } else {
             node.getArr().accept(this);
             node.getSub().accept(this);
@@ -179,7 +182,9 @@ public class StaticUsagePreScanner extends BaseScopeScanner {
         if (varEntity != null) {
             if (varEntity.getType() instanceof ArrayType || varEntity.isGlobal()) {
                 if (inDefine) unUsedStaticSet.add(varEntity);
-                else usedStaticSet.add(varEntity);
+                else {
+                    usedStaticSet.add(varEntity);
+                }
             }
         }
     }
