@@ -6,7 +6,7 @@ import com.sun.corba.se.impl.ior.OldJIDLObjectKeyTemplate;
 import java.util.*;
 
 public class FunctionInlineProcessor {
-    private final int MAX_INLINE_INST = 1 << 4;
+    private final int MAX_INLINE_INST = 1 << 6;
     private final int MAX_FUNC_INST = 1 << 12;
     private final int MAX_INLINE_DEPTH = 5;
 
@@ -14,7 +14,7 @@ public class FunctionInlineProcessor {
 
     private class FuncInfo {
         int numInst = 0, numCalled = 0;
-        boolean recursiveCall;
+        boolean recursiveCall, memFunc = false;
     }
 
     private Map<IRFunction, FuncInfo> funcInfoMap = new HashMap<>();
@@ -29,6 +29,7 @@ public class FunctionInlineProcessor {
             irFunction.setRecursiveCall(irFunction.recursiveCalleeSet.contains(irFunction));
             FuncInfo funcInfo = new FuncInfo();
             funcInfo.recursiveCall = irFunction.isRecursiveCall();
+            funcInfo.memFunc = irFunction.isMemFunc();
             funcInfoMap.put(irFunction, funcInfo);
         }
         for (IRFunction irFunction : ir.getFuncs().values()) {
@@ -65,6 +66,7 @@ public class FunctionInlineProcessor {
                         FuncInfo calleeInfo = funcInfoMap.get(((IRFunctionCall) inst).getFunc());
                         if (calleeInfo == null) continue; // skip built-in functions
                         if (calleeInfo.recursiveCall) continue; // skip self recursive function
+                        if (calleeInfo.memFunc) continue;
                         if (calleeInfo.numInst > MAX_INLINE_INST || calleeInfo.numInst + funcInfo.numInst > MAX_FUNC_INST) continue;
 
                         nextInst = inlineFunctionCall((IRFunctionCall) inst);
@@ -116,6 +118,7 @@ public class FunctionInlineProcessor {
                         if (!(inst instanceof IRFunctionCall)) continue;
                         FuncInfo calleeInfo = funcInfoMap.get(((IRFunctionCall) inst).getFunc());
                         if (calleeInfo == null) continue; // skip built-in functions
+                        if (calleeInfo.memFunc) continue;
                         if (calleeInfo.numInst > MAX_INLINE_INST || calleeInfo.numInst + funcInfo.numInst > MAX_FUNC_INST) continue;
 
                         nextInst = inlineFunctionCall((IRFunctionCall) inst);

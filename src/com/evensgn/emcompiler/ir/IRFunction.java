@@ -158,6 +158,16 @@ public class IRFunction {
         Collections.reverse(reversePreOrder);
     }
 
+    private boolean isMemFunc = false;
+
+    public void setMemFunc(boolean memFunc) {
+        isMemFunc = memFunc;
+    }
+
+    public boolean isMemFunc() {
+        return isMemFunc;
+    }
+
     public void setRecursiveCall(boolean recursiveCall) {
         this.recursiveCall = recursiveCall;
     }
