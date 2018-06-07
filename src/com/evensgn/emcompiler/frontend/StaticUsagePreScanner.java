@@ -122,6 +122,7 @@ public class StaticUsagePreScanner extends BaseScopeScanner {
 
     @Override
     public void visit(FuncCallExprNode node) {
+        node.getFunc().accept(this);
         for (ExprNode arg : node.getArgs()) {
             arg.accept(this);
         }
