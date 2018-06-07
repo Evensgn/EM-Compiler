@@ -35,8 +35,8 @@ public class StaticUsagePreScanner extends BaseScopeScanner {
                 decl.accept(this);
             }
         }
-        unUsedStaticSet.retainAll(usedStaticSet);
         for (VarEntity varEntity : unUsedStaticSet) {
+            if (usedStaticSet.contains(varEntity)) continue;
             varEntity.setUnUsed(true);
         }
     }

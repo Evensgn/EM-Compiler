@@ -4,7 +4,60 @@ func main {
     jump %__init_func_entry
 
 %__init_func_entry:
-    ret 0
+    $la = move 5
+    $vreg = move $la
+    $vreg = mul $vreg 8
+    $vreg = add $vreg 8
+    $vreg = alloc $vreg
+    store 8 $vreg $la 0
+    $vreg_2 = move $vreg
+    $a = move $vreg_2
+    $cnt = move 0
+    $i = move 0
+    $i = move 0
+    jump %for_cond
+
+%for_cond:
+    $vreg_3 = slt $i $la
+    br $vreg_3 %for_body %for_after
+
+%for_body:
+    $vreg_4 = move $i
+    $vreg_4 = mul $vreg_4 8
+    $vreg_4 = add $vreg_4 $a
+    $cnt = add $cnt 1
+    store 8 $vreg_4 $cnt 8
+    jump %for_step
+
+%for_step:
+    $i = add $i 1
+    jump %for_cond
+
+%for_after:
+    $sum = move 0
+    $i = move 0
+    jump %for_cond_2
+
+%for_cond_2:
+    $vreg_5 = slt $i $la
+    br $vreg_5 %for_body_2 %for_after_2
+
+%for_body_2:
+    $vreg_6 = move $i
+    $vreg_6 = mul $vreg_6 8
+    $vreg_6 = add $vreg_6 $a
+    $vreg_6 = load 8 $vreg_6 8
+    $vreg_7 = move $sum
+    $vreg_7 = add $vreg_7 $vreg_6
+    $sum = move $vreg_7
+    jump %for_step_2
+
+%for_step_2:
+    $i = add $i 1
+    jump %for_cond_2
+
+%for_after_2:
+    ret $sum
 
 }
 
