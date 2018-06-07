@@ -119,8 +119,8 @@ expression
     |   lhs=expression op='&' rhs=expression                    # binaryExpr
     |   lhs=expression op='^' rhs=expression                    # binaryExpr
     |   lhs=expression op='|' rhs=expression                    # binaryExpr
-    |   lhs=expression op='&&' rhs=expression                   # binaryExpr
-    |   lhs=expression op='||' rhs=expression                   # binaryExpr
+    |   <assoc=right> lhs=expression op='&&' rhs=expression     # binaryExpr
+    |   <assoc=right> lhs=expression op='||' rhs=expression     # binaryExpr
     |   <assoc=right> lhs=expression op='=' rhs=expression      # assignExpr
     |   primaryExpression                                       # primaryExpr
     ;

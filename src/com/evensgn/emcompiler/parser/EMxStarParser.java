@@ -2191,7 +2191,7 @@ public class EMxStarParser extends Parser {
 						setState(240);
 						((BinaryExprContext)_localctx).op = match(T__30);
 						setState(241);
-						((BinaryExprContext)_localctx).rhs = expression(5);
+						((BinaryExprContext)_localctx).rhs = expression(4);
 						}
 						break;
 					case 11:
@@ -2204,7 +2204,7 @@ public class EMxStarParser extends Parser {
 						setState(243);
 						((BinaryExprContext)_localctx).op = match(T__31);
 						setState(244);
-						((BinaryExprContext)_localctx).rhs = expression(4);
+						((BinaryExprContext)_localctx).rhs = expression(3);
 						}
 						break;
 					case 12:
@@ -3116,8 +3116,8 @@ public class EMxStarParser extends Parser {
 		"\u010b\5(\25\13\u00e8\u00e9\f\t\2\2\u00e9\u00ea\7\36\2\2\u00ea\u010b\5"+
 		"(\25\n\u00eb\u00ec\f\b\2\2\u00ec\u00ed\7\37\2\2\u00ed\u010b\5(\25\t\u00ee"+
 		"\u00ef\f\7\2\2\u00ef\u00f0\7 \2\2\u00f0\u010b\5(\25\b\u00f1\u00f2\f\6"+
-		"\2\2\u00f2\u00f3\7!\2\2\u00f3\u010b\5(\25\7\u00f4\u00f5\f\5\2\2\u00f5"+
-		"\u00f6\7\"\2\2\u00f6\u010b\5(\25\6\u00f7\u00f8\f\4\2\2\u00f8\u00f9\7\t"+
+		"\2\2\u00f2\u00f3\7!\2\2\u00f3\u010b\5(\25\6\u00f4\u00f5\f\5\2\2\u00f5"+
+		"\u00f6\7\"\2\2\u00f6\u010b\5(\25\5\u00f7\u00f8\f\4\2\2\u00f8\u00f9\7\t"+
 		"\2\2\u00f9\u010b\5(\25\4\u00fa\u00fb\f\27\2\2\u00fb\u010b\t\3\2\2\u00fc"+
 		"\u00fd\f\26\2\2\u00fd\u00fe\7\16\2\2\u00fe\u010b\7\65\2\2\u00ff\u0100"+
 		"\f\25\2\2\u0100\u0101\7\n\2\2\u0101\u0102\5(\25\2\u0102\u0103\7\13\2\2"+
